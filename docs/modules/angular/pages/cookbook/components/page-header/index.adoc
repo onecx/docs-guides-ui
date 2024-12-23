@@ -8,7 +8,17 @@
 == Overview
 This document aims to showcase how to use the PageHeader component.
 
-This component should be used for creating a header for the pages. It can be customized based on the page needs. Please, visit the storybook page for the {page_header_storybook}[PageHeader component] and interact with the examples to find out if the component is suitable for the desired use-case.
+This component should be used for creating a header for the pages. Please, visit the storybook page for the {page_header_storybook}[PageHeader component] and interact with the examples to find out if the component is suitable for the desired use-case.
+
+[#customization]
+== Customization
+The PageHeader component allows to customize its content:
+
+* control header title, subtitle and figure
+* display page details
+* display action buttons and menu items
+
+To find out how to work with PageHeader component, please visit the {page_header_storybook}[storybook page] and interact with the examples to find out the required features. For more in-depth information on the PageHeader component interface, please access further documentation.
 
 // TODO: Add reference to BreadcrumbService
 [#inputs]
