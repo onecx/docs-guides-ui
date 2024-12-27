@@ -94,22 +94,6 @@ _Adapt in File:_ `+<feature>-search.component.html+`
         ...
 ----
 
-* `*ocxAdvanced` directive
-
-The `*ocxAdvanced` directive specifies whether a field is part of the basic or advanced mode. This mode can be toggled using a button in the search header. The directive will be added to the div element
-
-[source, html]
-----
- <form [formGroup]="criteriaGroup">
-      <div class="grid mt-0 p-fluid">
-        <div *ocxAdvanced class="col-12 md:col-3">
-          <span class="p-float-label">
-           // PLACE YOUR INPUT FIELD HERE
-          </span>
-        </div>
-        ...
-----
-
 :!sectnums:
 [#examples-for-different-input-fields]
 == Examples for different input fields
