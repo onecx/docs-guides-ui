@@ -1,8 +1,12 @@
-= Configure the search results
+= DataTableColumn
 
-== DataTableColumn properties overview 
+:idprefix:
+:idseparator: -
 
-.DataTableColumn
+[#data-table-column-properties-overview]
+== DataTableColumn properties overview
+
+.DataTableColumn interface
 [cols="3,2,9"]
 |===
 | Property name | Type | Description
@@ -19,7 +23,7 @@
 
 include::partial$column-type.adoc[]
 
-.FilterType
+.FilterType enum
 [source, javascript]
 ----
   export declare enum FilterType {
