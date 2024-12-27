@@ -14,8 +14,6 @@
 **** xref:angular:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar]
 **** xref:angular:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown]
 **** xref:angular:ngrx/cookbook/adding-search-criteria/multiselect.adoc[Multiselect]
-*** xref:angular:ngrx/cookbook/search-results[Configure search results]
-**** xref:angular:ngrx/cookbook/search-results/data-table-column.adoc[DataTableColumn]
 * Libraries
 ** xref:angular:libraries/symlink.adoc[How to create a SymLink]
 ** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
