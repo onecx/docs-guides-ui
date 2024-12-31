@@ -1,14 +1,16 @@
-= AutoComplete with array of type object
+= AutoComplete for suggestions with array of type object
 
 :idprefix:
 :idseparator: -
 :!sectids:
 [#goal]
-== Goal: Add an AutoComplete for suggestions with array of type object as a search criteria input field for your search page. 
+== Goal: Add Autocmplete Object
 :sectids:
 :sectnums:
 
-NOTE: Please replace all occurences of `+exampleStringObject+`, `+property1+`, `+property2+` and `+exampleStringObjectProperty1+`, `+exampleStringObjectProperty2+` respectively with the actual names in the following code snippets.
+Add an AutoComplete for suggestions with array of type object as a search criteria input field for your search page. 
+
+NOTE: Please replace all occurences of *exampleStringObject*, *property1*, *property2* and *exampleStringObjectProperty1*, *exampleStringObjectProperty2* respectively with the actual names in the following code snippets.
 
 In this section, we aim to add an AutoComplete input field. The suggestions will be an array of type string. For this use case, we want to display `property1` (a string type property of the object) in the input field and the suggestions and perform a search with `property2` for the search criteria. The object has the following interface:
 
@@ -323,4 +325,4 @@ _Adapt in File:_ `+<feature>-search.effects.ts+`
 ...
 ----
 
-NOTE: Don't forget to add the translations to your de.json and en.json.
+NOTE: Don't forget to add the translations to your *de.json* and *en.json*.
