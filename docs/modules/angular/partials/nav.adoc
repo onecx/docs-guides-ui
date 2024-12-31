@@ -2,6 +2,8 @@
 * xref:angular:general/index.adoc[General]
 ** xref:angular:general/guidelines.adoc[Guidelines]
 * Cookbook
+** Services
+*** xref:angular:cookbook/service/portal-dialog-service/index.adoc[PortalDialogService]
 ** Components
 *** xref:angular:cookbook/components/page-header/index.adoc[PageHeader]
 *** xref:angular:cookbook/components/group-by-count-diagram/index.adoc[GroupByCountDiagram]
