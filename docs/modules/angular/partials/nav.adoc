@@ -2,8 +2,10 @@
 * xref:angular:general/index.adoc[General]
 ** xref:angular:general/guidelines.adoc[Guidelines]
 * Cookbook
-** xref:angular:cookbook/components/group-by-count-diagram/index.adoc[GroupByCountDiagram]
-** xref:angular:cookbook/components/search-header/index.adoc[SearchHeader]
+** Components
+*** xref:angular:cookbook/components/page-header/index.adoc[PageHeader]
+*** xref:angular:cookbook/components/group-by-count-diagram/index.adoc[GroupByCountDiagram]
+*** xref:angular:cookbook/components/search-header/index.adoc[SearchHeader]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
 ** Cookbook
 *** xref:angular:ngrx/cookbook/adding-search-criteria/general.adoc[Adding Search Criteria]
