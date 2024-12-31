@@ -4,11 +4,13 @@
 :idseparator: -
 :!sectids:
 [#goal]
-== Goal: Add a MultiSelect as a search criteria input field for your search page.
+== Goal: Add MultiSelect Input
 :sectids:
 :sectnums:
 
-NOTE: Please replace all occurences of `+exampleDate+` with the actual name in the following code snippets
+Add a MultiSelect as a search criteria input field for your search page.
+
+NOTE: Please replace all occurences of *exampleEnum* with the actual name in the following code snippets
 
 [#parameters]
 == Parameters
@@ -76,4 +78,4 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
     );
 ----
 
-NOTE: Don't forget to add the translations to your de.json and en.json.
+NOTE: Don't forget to add the translations to your *de.json* and *en.json*.

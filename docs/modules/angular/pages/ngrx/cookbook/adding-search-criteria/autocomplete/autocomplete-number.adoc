@@ -5,15 +5,17 @@
 :!sectids:
 
 [#goal]
-== Goal: Add an AutoComplete for suggestions with array of type number as a search criteria input field for your search page. 
+== Goal: Add AutoComplete Number
 :sectids:
 :sectnums:
 
-NOTE: Please replace all occurences of `+exampleNumberArray+` with the actual name in the following code snippets
+Add an AutoComplete for suggestions with array of type number as a search criteria input field for your search page. 
+
+NOTE: Please replace all occurences of *exampleNumberArray* with the actual name in the following code snippets
 
 [#parameters]
 == Parameters
-Please define the member for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here.
+Please define the member for your *<%= featurePropertyName %>SearchCriteriasSchema* here.
 
 
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
@@ -249,4 +251,4 @@ _Adapt in File:_ `+<feature>-search.effects.ts+`
 ...
 ----
 
-NOTE: Don't forget to add the translations to your de.json and en.json.
+NOTE: Don't forget to add the translations to your *de.json* and *en.json*.
