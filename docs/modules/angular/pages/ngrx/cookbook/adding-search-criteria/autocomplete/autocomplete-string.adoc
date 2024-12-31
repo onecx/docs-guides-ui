@@ -1,18 +1,20 @@
-= AutoComplete with array of type string
+= AutoComplete for suggestions with array of type string
 
 :idprefix:
 :idseparator: -
 :!sectids:
 [#goal]
-== Goal: Add an AutoComplete for suggestions with array of type string as a search criteria input field for your search page. 
+== Goal: Add AutoComplet String 
 :sectids:
 :sectnums:
 
+Add an AutoComplete for suggestions with array of type string as a search criteria input field for your search page. 
+
 [#parameters]
 == Parameters
-Please define the member for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+Please define the member for your *<%= featurePropertyName %>SearchCriteriasSchema* here
 
-NOTE: Please replace all occurences of `+exampleStringArray+` with the actual name in the following code snippets.
+NOTE: Please replace all occurences of *exampleStringArray* with the actual name in the following code snippets.
 
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
@@ -242,4 +244,4 @@ _Adapt in File:_ `+<feature>-search.effects.ts+`
 ...
 ----
 
-NOTE: Don't forget to add the translations to your de.json and en.json.
+NOTE: Don't forget to add the translations to your *de.json* and *en.json*.

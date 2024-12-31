@@ -1,12 +1,14 @@
-= Configure the search criteria and parameters
+= Adding search criteria
 
 :idprefix:
 :idseparator: -
 :!sectids:
-[#configure-search-results]
-== To configure the search criteria and parameters, the following steps must be taken.
+[#configure-search-criteria]
+== Goal: Configure search criteria
 :sectids:
 :sectnums:
+
+Configure the search criteria input field and parameters for you search page.
 
 [#request-object]
 == Request Object
