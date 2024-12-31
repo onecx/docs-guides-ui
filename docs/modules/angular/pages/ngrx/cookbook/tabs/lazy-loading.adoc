@@ -1,0 +1,204 @@
+= Lazy loading tabs
+
+:idprefix:
+:idseparator: -
+
+:!sectids:
+[#goal]
+== Goal: Load tabs dynamically
+:sectids:
+:sectnums:
+
+Only load data for a tab when it is selected. 
+
+NOTE: Please replace all occurences of *exampleDetailsTab* with the actual name in the following code snippets
+
+[#state-and-viewmodel]
+== State & viewmodel
+Add additional member for the tabs in your state and viewmodel:
+
+_Adapt in Files:_ `+<feature>-details.state.ts+`
+
+[source, javascript]
+----
+...
+    activeTab: 'ExampleDetailsTab' | ... | 'Other';
+...
+----
+
+_Adapt in Files:_ `+<feature>-search.viewmodel.ts+`
+
+[source, javascript]
+----
+...
+    exampleDetailsTab: exampleDetailsTabViewModel;
+...
+----
+
+[#actions]
+== Actions
+Create following actions to handle the events regarding autocomplete:
+
+_Adapt in File:_ `+<feature>-details.actions.ts+`
+
+[source, javascript]
+----
+...
+    events: {
+        'other tab selected': emptyProps(),
+        'example details tab selected': emptyProps(),
+        'example details received': props<{
+        exampleDetails: ExampleResponse;
+        }>(),
+        'example details loading failed': props<{ error: string | null }>(),
+    },
+...
+----
+
+[#html]
+== HTML
+
+_Adapt in File:_ `+<feature>-details.component.html+`
+
+[source, html]
+----
+    <ocx-portal-page *ngrxLet="viewModel$; let vm">
+        <p-tabView
+            [(activeIndex)]="activeTabIndex"
+            (onChange)="handleTabChange($event)"
+        >
+            <p-tabPanel
+                [header]="'FEATURE_DETAILS.TABS.EXAMPLE_DETAILS' | translate"
+            >
+                <div *ngIf="vm" >
+                    <app-example-details-tab
+                        [vm]="vm?.exampleDetails"
+                    ></app-example-details-tab>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </ocx-portal-page>
+----
+
+// TODO: add ocx-data-loading-error component for error handling here or create a separate cookbook for it?
+
+[#component]
+== Component
+
+_Adapt in File:_ `+<feature>-details.component.ts+`
+
+[source, javascript]
+----
+    handleTabChange(event: { originalEvent: Event; index: number }) {
+        switch (event.index) {
+            case 0:
+                this.store.dispatch(FeatureDetailsActions.exampleDetailsTabSelected());
+                break;
+            ...
+            default:
+                this.store.dispatch(FeatureDetailsActions.otherTabSelected());
+        }
+    }
+----
+
+[#reducers]
+== Reducers
+In the reducers file you need to define the functions:
+
+_Adapt in File:_ `+<feature>-search.reducers.ts+`
+
+[source, javascript]
+----
+...
+    on(
+        <%= featureClassName %>DetailsActions.exampleDetailsTabSelected,
+        (state: <%= featureClassName %>DetailsState): <%= featureClassName %>DetailsState => ({
+            ...state,
+            activeTab: 'ExampleDetailsTab',
+        })
+    ),
+    on(
+        <%= featureClassName %>DetailsActions.exampleDetailsReceived,
+        (state: <%= featureClassName %>DetailsState, { exampleDetails }): <%= featureClassName %>DetailsState => ({
+            ...state,
+            exampleDetails: exampleDetails,
+        })
+    ),
+    on(
+        <%= featureClassName %>DetailsActions.exampleDetailsLoadingFailed,
+        (state: <%= featureClassName %>DetailsState): <%= featureClassName %>DetailsState => ({
+            ...state,
+            exampleDetails: undefined,
+        })
+    ),
+...
+----
+
+[#selectors]
+== Selectors
+ Add the missing selectors:
+
+_Adapt in File:_ `+<feature>-details.selectors.ts+`
+
+[source, javascript]
+----
+...
+    export const select<%= featureClassName %>DetailsViewModel = createSelector(
+        ...
+        selectExampleDetailsTabViewModel,
+        ...
+      (
+        ...
+        exampleDetailsTab,
+        ...
+      ): <%= featureClassName %>DetailsViewModel => ({
+        ...
+        exampleDetailsTab,
+        ...
+      }),
+    );
+...
+----
+
+[#effects]
+== Effects
+
+_Adapt in File:_ `+<feature>-details.effects.ts+`
+
+[source, javascript]
+----
+    exampleDetailsTab$ = createEffect(() => {
+        return this.actions$.pipe(
+            ofType(
+                <%= featureClassName %>DetailsActions.exampleDetailsTabSelected,
+            ),
+            concatLatestFrom(() =>
+                this.store.select(<%= featureClassName %>DetailsSelectors.selectActiveTab),
+            ),
+            filter(([, activeTab]) => activeTab === 'ExampleDetailsTab'),
+            concatLatestFrom(() =>
+                this.store.select(<%= featureClassName %>DetailsSelectors.selectSomePropertyContainingId),
+            ),
+            switchMap(([, id]) => {
+                return this.<%= featureClassName %>DetailsService
+                    .getExampleDetailsTabDataById(id)
+                    .pipe(
+                        map(({ exampleDetailsTabData }) => {
+                        return <%= featureClassName %>DetailsActions.exampleDetailsReceived({
+                            exampleDetails: exampleDetailsTabData,
+                        });
+                    }),
+                    catchError((error) =>
+                        of(
+                            <%= featureClassName %>DetailsActions.exampleDetailsLoadingFailed({
+                                error,
+                            }),
+                        ),
+                    ),
+                );
+            }),
+        );
+    });
+----
+
+NOTE: Don't forget to add the translations to your *de.json* and *en.json*.
