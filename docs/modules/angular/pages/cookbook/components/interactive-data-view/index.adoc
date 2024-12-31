@@ -1,5 +1,9 @@
 = OneCX InteractiveDataView
 
+:idprefix:
+:idseparator: -
+
+[#overview]
 == Overview
 This document aims to showcase how to manage InteractiveDataView Component.
 

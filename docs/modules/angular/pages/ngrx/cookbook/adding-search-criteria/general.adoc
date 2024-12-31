@@ -1,49 +1,45 @@
-= Configure the search criteria and parameters
+= Adding search criteria
 
 :idprefix:
 :idseparator: -
 :!sectids:
-[#configure-search-results]
-== To configure the search results, the following steps must be taken.
+[#configure-search-criteria]
+== Goal: Configure search criteria
 :sectids:
 :sectnums:
+
+Configure the search criteria input field and parameters for you search page.
 
 [#request-object]
 == Request Object
 Add additional properties to the `+<feature>-bff.yaml+`
 
-* The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted.
-** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
-
 _Adapt in File:_ `+<feature>-bff.yaml+`
 
 [source, yml]
 ----
-  <Feature>SearchRequest:
-    type: object
-    properties:
-      limit:
-        type: integer
-        format: int32
-        maximum: 2500
-      id:
-        type: string
-      changeMe:
-        type: string
-      ...
+Search<Feature>Request:
+      type: object
+      properties:
+        pageNumber: 
+          type: integer
+          format: int32
+          default: 0
+          description: 'The number of the page.'          
+        pageSize:
+          type: integer
+          format: int32
+          default: 100
+          maximum: 1000
+          description: 'The size of the page.'      
+        id:
+          type: string
+        # Add additional properties here
 ----
-
-IMPORTANT: Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
 
 [#parameters]
 == Parameters
 Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
-
-* Adapt search parameters
-** keys *need* to match the keys from your OpenAPIs SearchCriteria Object
-** always start with `+z.string()+`
-** when required, you can use `+.transform()+` to extend the validation
-** dates are always mapped to strings (as JSON does not know DateTime)
 
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
@@ -83,7 +79,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
 Please specify here your desired search criterias
 
 * The input fields must be added
-** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
+** `+formControlName+` must match to your SearchCriteria model
 
 _Adapt in File:_ `+<feature>-search.component.html+`
 
