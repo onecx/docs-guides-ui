@@ -41,7 +41,7 @@ To correctly bootstrap and render the standalone version of an application, it's
 The newly created bootstrap file must contain the following code:
 ```
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
-import { AppModule } from '@app/app.module'
+import { AppModule } from './app/app.module'
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
@@ -65,7 +65,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-2. `TranslateModule.forRoot()` has to be configured in the app modules imports array. `createTranslateLoader` has to be imported from `@onecx/angular-utils` and ensures that the correct translation files is loaded on app load.
+2. `TranslateModule.forRoot()` has to be configured in the app modules imports array. `createTranslateLoader` has to be imported from `@onecx/angular-utils` and ensures that the correct translation files is loaded on app load. If `@onecx/angular-utils` is not yet installed in the project, it has to be installed first.
 
   imports: [
     ...
