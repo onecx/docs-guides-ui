@@ -1,5 +1,8 @@
 = Angular
 
+:idprefix:
+:idseparator: -
+
 Angular is a TypeScript-based, free and open-source single-page web application framework
 
 https://angular.io/[Angular homepage] 
@@ -16,15 +19,18 @@ https://github.com/onecx-apps/ping-angular-app-ui[Ping angular app ui]
 
 NgRx Store provides reactive state management for Angular apps inspired by Redux.
 
+[#requirements]
 == Requirements
 
 For the developing the Quarkus application we need to install these tools:
 
+[#developer-ide]
 === Developer IDE
 
     * https://code.visualstudio.com/[Visual Studio Code]
 
 
+[#vs-code-extensions]
 === VS Code extensions
 * https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode[SonarLint]
 
@@ -52,11 +58,13 @@ For the developing the Quarkus application we need to install these tools:
 
 * https://plugins.jetbrains.com/plugin/7973-sonarlint[SonarLint]
 
+[#useful-browser-plugins]
 === Useful browser plugins
 * https://angular.io/guide/devtools#devtools-overview[Angular dev tools extension]
 * https://developer.chrome.com/docs/lighthouse/overview/[Lighthouse]
 
 * https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd[ReduxDevTools]
 
+[#useful-links]
 === Useful links
 * https://storybook.js.org/[Storybook]

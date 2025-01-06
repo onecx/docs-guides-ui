@@ -1,0 +1,10 @@
+= AutoComplete search criteria input field
+
+:idprefix:
+:idseparator: -
+
+There are different cases for implementing AutoComplete depending on the array type of the Request and Response object for the suggestions/options. Each case requires a different way of implementation:
+
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-string.adoc[AutoComplete with array of type string]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-number.adoc[AutoComplete with array of type number]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-object.adoc[AutoComplete with array of type object]

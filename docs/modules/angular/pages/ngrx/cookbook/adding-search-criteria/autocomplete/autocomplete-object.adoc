@@ -1,0 +1,328 @@
+= AutoComplete for suggestions with array of type object
+
+:idprefix:
+:idseparator: -
+:!sectids:
+[#goal]
+== Goal: Add Autocmplete Object
+:sectids:
+:sectnums:
+
+Add an AutoComplete for suggestions with array of type object as a search criteria input field for your search page. 
+
+NOTE: Please replace all occurences of *exampleStringObject*, *property1*, *property2* and *exampleStringObjectProperty1*, *exampleStringObjectProperty2* respectively with the actual names in the following code snippets.
+
+In this section, we aim to add an AutoComplete input field. The suggestions will be an array of type string. For this use case, we want to display `property1` (a string type property of the object) in the input field and the suggestions and perform a search with `property2` for the search criteria. The object has the following interface:
+
+[source, javascript]
+----
+...
+    export interface ExampleStringObject { 
+        property1?: string;
+        property2?: string;
+    }
+...
+----
+
+[#parameters]
+== Parameters
+Please define the member for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+
+_Adapt in File:_ `+<feature>-search.parameters.ts+`
+
+[source, javascript]
+----
+    exampleStringObjectProperty2: z.string().optional(),
+----
+
+[#state-and-viewmodel]
+== State & viewmodel
+Add additional array member for the AutoComplete suggestions in your state and viewmodel:
+
+_Adapt in Files:_ `+<feature>-search.state.ts+`
+
+[source, javascript]
+----
+...
+    exampleStringObjectOptions: ExampleStringObject[];
+    exampleStringObjectProperty1InputText: string;
+...
+----
+
+_Adapt in Files:_ `+<feature>-search.viewmodel.ts+`
+
+[source, javascript]
+----
+...
+    exampleStringObjectOptions: ExampleStringObject[];
+    selectedExampleStringObject: ExampleStringObject | null;
+...
+----
+
+[#actions]
+== Actions
+Create following actions to handle the events regarding AutoComplete:
+
+_Adapt in File:_ `+<feature>-search.actions.ts+`
+
+[source, javascript]
+----
+...
+    events: {
+        'exampleStringObject field changed': props<{ exampleObjectProperty1InputText: string }>(),
+        'exampleStringObject options loaded successfully': props<{
+            exampleStringObjectOptions: ExampleStringObject[];
+        }>(),
+        'exampleStringObject options loading failed': emptyProps(),
+        'exampleStringObject option selected': props<{
+            exampleStringObjectOption: ExampleStringObject;
+        }>(),
+        'restored selected exampleStringObject on page reload': emptyProps(),
+        'restored selected exampleStringObject on page reload successfully': props<{
+            selectedExampleStringObject: ExampleStringObject;
+        }>(),
+        'restored selected exampleStringObject on page reload failed': props<{
+            error: string | null;
+        }>(),
+    },
+...
+----
+
+[#html]
+== HTML
+Add the following code to your formGroup in the html file:
+
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+[source, html]
+----
+    <span class="p-float-label">
+        <p-autoComplete
+            id="exampleStringObject"
+            formControlName="exampleStringObject"
+            (completeMethod)="searchExampleStringObject($event)"
+            optionLabel="property1"
+            optionValue="property2"
+            appendTo="body"
+            [suggestions]="vm?.exampleStringObjectOptions ?? []"
+            [forceSelection]="true"
+            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
+            [showEmptyMessage]="true"
+            [emptyMessage]="
+            vm?.exampleStringObjectOptions?.length === 0
+                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
+                : ''
+            "
+            (onSelect)="exampleStringObjectSelected($event)"
+        >
+        </p-autoComplete>
+        <label for="exampleStringObject">{{
+            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
+        }}</label>
+    </span>
+----
+
+[#component]
+== Component
+Add the respective methods to handle the different events:
+
+_Adapt in File:_ `+<feature>-search.component.ts+`
+
+[source, javascript]
+----
+...
+  exampleStringObjectSearch(event: AutoCompleteCompleteEvent) {
+    this.store.dispatch(
+      <feature>SearchActions.exampleStringObjectFieldChanged({
+        exampleStringObjectProperty1InputText: event.query,
+      }),
+    );
+  }
+
+  exampleStringObjectSelected(event: AutoCompleteSelectEvent) {
+    this.store.dispatch(
+      <feature>SearchActions.exampleStringObjectOptionSelected({ option: event.value }),
+    );
+  }
+...
+----
+
+[#reducers]
+== Reducers
+In the reducers file you need to define the functions:
+
+_Adapt in File:_ `+<feature>-search.reducers.ts+`
+
+[source, javascript]
+----
+...
+  on(
+    <%= featureClassName %>SearchActions.exampleStringObjectOptionsLoadedSuccessfully,
+    (state: <%= featureClassName %>SearchState, { exampleStringObjectOptions }): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleStringObjectOptions: exampleStringObjectOptions,
+    }),
+  ),
+  on(
+    <%= featureClassName %>SearchActions.exampleStringObjectOptionsLoadingFailed,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleStringObjectOptions: [],
+    }),
+  ),
+  on(
+    <%= featureClassName %>SearchActions.exampleStringObjectFieldChanged,
+    (
+      state: <%= featureClassName %>SearchState,
+      { exampleStringObjectProperty1InputText },
+    ): <%= featureClassName %>SearchState => ({
+        ...state,
+        exampleStringObjectProperty1InputText: exampleStringObjectProperty1InputText,
+      });
+    },
+  ),
+  on(
+    <%= featureClassName %>SearchActions.exampleStringObjectOptionSelected,
+    (
+      state: <%= featureClassName %>SearchState,
+      { exampleStringObjectOption },
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleStringObjectProperty1InputText: exampleStringObjectOption?.property1 ?? '',
+    }),
+  ),
+  on(
+    <%= featureClassName %>SearchActions.restoredSelectedExampleStringObjectOnPageReloadSuccessfully,
+    (
+      state: <%= featureClassName %>SearchState,
+      { selectedExampleStringObject },
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleStringObjectProperty1InputText: selectedExampleStringObject.property1 ?? '',
+      exampleStringObjectOptions: [selectedExampleStringObject],
+    }),
+  ),
+  on(
+    <%= featureClassName %>SearchActions.restoredSelectedExampleStringObjectOnPageReloadFailed,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleStringObjectProperty1InputText: '',
+    }),
+  ),
+...
+----
+
+[#selectors]
+== Selectors
+Add the missing selectors:
+
+_Adapt in File:_ `+<feature>-search.selectors.ts+`
+
+[source, javascript]
+----
+...
+  export const selectSelectedExampleStringObject = createSelector(
+    <feature>SearchSelectors.selectExampleStringObjectProperty1InputText,
+    <feature>SearchSelectors.selectCriteria,
+    (
+      exampleStringObjectProperty1InputText: string,
+      searchCriteria: <%= featureClassName %>SearchCriteria,
+    ): ExampleStringObject | null => {
+      if (exampleStringObjectProperty1InputText?.length && searchCriteria?.exampleStringObjectProperty2) {
+        return {
+          property1: exampleStringObjectProperty1InputText,
+          property2: searchCriteria.exampleStringObjectProperty2,
+        };
+      }
+      return null;
+    },
+  );
+
+  export const select<%= featureClassName %>SearchViewModel = createSelector(
+    ...
+    <feature>SearchSelectors.selectExampleStringObjectOptions,
+    selectSelectedExampleStringObject,
+    ...
+    (
+      ...
+      exampleStringObjectOptions,
+      selectedExampleStringObject,
+      ...
+    ): <%= featureClassName %>SearchViewModel => ({
+      ...
+      exampleStringObjectOptions,
+      selectedExampleStringObject,
+      ...
+    }),
+  );
+...
+----
+
+[#effects]
+== Effects
+Create the effect for getting the suggestions
+
+_Adapt in File:_ `+<feature>-search.effects.ts+`
+
+[source, javascript]
+----
+...
+    searchExampleStringObject$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(<%= featureClassName %>SearchActions.exampleStringObjectFieldChanged),
+        filter((action) => action.exampleStringObjectProperty1InputText.length > 2),
+        mergeMap((action) => {
+          return this.<feature>Service
+            .searchExampleStringObject(action.exampleStringObjectProperty1InputText)
+            .pipe(
+              map((response) =>
+                <%= featureClassName %>SearchActions.exampleStringObjectOptionsLoadedSuccessfully({
+                  exampleStringObjectOptions: response.exampleStringObjects,
+                }),
+              ),
+              catchError(() =>
+                of(<%= featureClassName %>SearchActions.exampleStringObjectOptionsLoadingFailed()),
+              ),
+            );
+        }),
+      ),
+    );
+
+    restoreSelectedExampleStringObject$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(routerNavigatedAction),
+        filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
+        filterOutOnlyQueryParamsChanged(this.router),
+        filter(
+          (action) => action?.payload?.routerState?.root?.queryParams['exampleStringObjectProperty2'],
+        ),
+        concatLatestFrom(() =>
+          this.store.select(<feature>SearchSelectors.selectCriteria),
+        ),
+        switchMap(([action]) =>
+          this.<feature>Service
+            .searchExampleStringObject(
+              '',
+              action?.payload?.routerState?.root?.queryParams['exampleStringObjectProperty2'],
+            )
+            .pipe(
+              map((exampleStringObject) =>
+                <%= featureClassName %>SearchActions.restoredSelectedExampleStringObjectOnPageReloadSuccessfully(
+                  { selectedExampleStringObject: exampleStringObject?.exampleStringObjects[0] },
+                ),
+              ),
+              catchError((error) =>
+                of(
+                  <%= featureClassName %>SearchActions.restoredSelectedExampleStringObjectOnPageReloadFailed(
+                    { error },
+                  ),
+                ),
+              ),
+            ),
+        ),
+      ),
+    );
+...
+----
+
+NOTE: Don't forget to add the translations to your *de.json* and *en.json*.

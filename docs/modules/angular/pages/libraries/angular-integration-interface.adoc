@@ -1,33 +1,39 @@
 = OneCX angular-integration-interface Library
 
+:idprefix:
+:idseparator: -
+
 :integration-interface_url: xref:javascript:libraries/integration-interface.adoc
-:global_error_topic_url: xref:javascript:libraries/integration-interface.adoc#global_error_topic
-:global_loading_topic_url: xref:javascript:libraries/integration-interface.adoc#global_loading_topic
-:current_mfe_topic_url: xref:javascript:libraries/integration-interface.adoc#current_mfe_topic
-:current_page_topic_url: xref:javascript:libraries/integration-interface.adoc#current_page_topic
-:current_workspace_topic_url: xref:javascript:libraries/integration-interface.adoc#current_workspace_topic
-:is_authenticated_topic_url: xref:javascript:libraries/integration-interface.adoc#is_authenticated_topic
-:configuration_topic_url: xref:javascript:libraries/integration-interface.adoc#configuration_topic
-:message_topic_url: xref:javascript:libraries/integration-interface.adoc#message_topic
-:remote_components_topic_url: xref:javascript:libraries/integration-interface.adoc#remote_components_topic
-:current_theme_topic_url: xref:javascript:libraries/integration-interface.adoc#current_theme_topic
-:user_profile_topic_url: xref:javascript:libraries/integration-interface.adoc#user_profile_topic
-:permissions_topic_url: xref:javascript:libraries/integration-interface.adoc#permissions_topic
-:config_object_url: xref:javascript:libraries/integration-interface.adoc#config_object
-:theme_object_url: xref:javascript:libraries/integration-interface.adoc#theme_object
+:global_error_topic_url: xref:javascript:libraries/integration-interface.adoc#global-error-topic
+:global_loading_topic_url: xref:javascript:libraries/integration-interface.adoc#global-loading-topic
+:current_mfe_topic_url: xref:javascript:libraries/integration-interface.adoc#current-mfe-topic
+:current_page_topic_url: xref:javascript:libraries/integration-interface.adoc#current-page-topic
+:current_workspace_topic_url: xref:javascript:libraries/integration-interface.adoc#current-workspace-topic
+:is_authenticated_topic_url: xref:javascript:libraries/integration-interface.adoc#is-authenticated-topic
+:configuration_topic_url: xref:javascript:libraries/integration-interface.adoc#configuration-topic
+:message_topic_url: xref:javascript:libraries/integration-interface.adoc#message-topic
+:remote_components_topic_url: xref:javascript:libraries/integration-interface.adoc#remote-components-topic
+:current_theme_topic_url: xref:javascript:libraries/integration-interface.adoc#current-theme-topic
+:user_profile_topic_url: xref:javascript:libraries/integration-interface.adoc#user-profile-topic
+:permissions_topic_url: xref:javascript:libraries/integration-interface.adoc#permissions-topic
+:config_object_url: xref:javascript:libraries/integration-interface.adoc#config-object
+:theme_object_url: xref:javascript:libraries/integration-interface.adoc#theme-object
 :route_object_url: xref:javascript:libraries/integration-interface.adoc#Route-object
 
 
+[#overview]
 == Overview
 `@onecx/angular-integration-interface` library is a set of tools aiming to ease the development of Angular applications integrated with OneCX by utilizing and extending functionalities of {integration-interface_url}[@onecx/integration-interface]. This library offers Injectable services exposing a set of functionalities useful for integrating Microfrontends with OneCX without directly utilizing Topics.
 
+[#services]
 == Services
 
+[#app-config-service]
 === App Config Service
 Usage::
 *Initialize and access configuration variables for a specific Microfrontend*. 
 +
-It is similar to xref:libraries/angular-integration-interface.adoc#xref:libraries/angular-integration-interface.adoc#configuration_service[],]  *App Config Service* should be used for a Microfrontend configuration management. If sharing the configuration variable with multiple Microfrontends is desired, please use xref:libraries/angular-integration-interface.adoc#xref:libraries/angular-integration-interface.adoc#configuration_service[and]  variables via Shell Application.
+It is similar to xref:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService], however *App Config Service* should be used for a Microfrontend configuration management. If sharing the configuration variable with multiple Microfrontends is desired, please use xref:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService] and provide variables via Shell Application.
 
 Topics used::
 None
@@ -59,7 +65,7 @@ API::
 |`getConfig()` |`{ [key: string]: string }` |Gets all configuration variables defined for the Microfrontend.
 |===
 
-[#app_state_service]
+[#app-state-service]
 === App State Service
 Usage::
 *Access information about the platform state*.
@@ -95,14 +101,14 @@ API::
 |`[.line-through]#currentPortal$#` | [.line-through]`{current_workspace_topic_url}[CurrentWorkspaceTopic]` | Deprecated. Use currentWorkspace$ instead.
 |===
 
-[#configuration_service]
+[#configuration-service]
 === Configuration Service
 Usage::
 *Initialize and access configuration variables for a platform*. 
 +
 This service is initialized by, and contains configuration variables, for the Shell Application that could be used in any place on the platform.
 +
-xref:libraries/angular-integration-interface.adoc#configuration_service[should]  be initialized by Microfrontends*. They can utilize specific functionality of this service to access and update configuration data.
+xref:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService] *should not be initialized by Microfrontends*. They can utilize specific functionality of this service to access and update configuration data.
 
 Topics used::
 
@@ -137,7 +143,7 @@ API::
 |`getConfig()` |`{config_object_url}[Config]` |Gets all configuration variables defined for the app from the topic.
 |===
 
-[#portal_message_service]
+[#portal-message-service]
 === Portal Message Service
 Usage::
 *Display messages for a short period in an overlay on the top of the page*.
@@ -190,6 +196,7 @@ API::
 |detailParameters? |`object` | Translation parameters of the Message detail text.
 |===
 
+[#remote-components-service]
 === Remote Components Service
 Usage::
 *Access Remote Components' information*.
@@ -211,7 +218,7 @@ API::
 |`remoteComponents$` | `{remote_components_topic_url}[RemoteComponentsTopic]` | {remote_components_topic_url}[RemoteComponentsTopic] instance.
 |===
 
-[#theme_service]
+[#theme-service]
 === Theme Service
 Usage::
 *Change the page display style by applying Themes*.
@@ -225,7 +232,7 @@ Topics used::
 Dependencies::
 
 * HttpClient
-* xref:libraries/angular-integration-interface.adoc#configuration_service[ConfigurationService]
+* xref:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService]
 
 API::
 *Theme Service* properties enable access to topic instances:
@@ -252,7 +259,7 @@ API::
 
 |===
 
-[#user_service]
+[#user-service]
 === User Service
 Usage::
 *Access the user's data, settings and permissions*.
@@ -288,6 +295,7 @@ API::
 |`hasPermission(permissionKey: string | string[])` | `boolean` | Checks if user has specified permission/permissions using PermissionTopic's latest value.
 |===
 
+[#workspace-service]
 === Workspace Service
 Usage::
 *Manage Workspace resources*.
@@ -300,7 +308,7 @@ None.
 Dependencies::
 
 * HttpClient
-* xref:libraries/angular-integration-interface.adoc#app_state_service[AppStateService]
+* xref:libraries/angular-integration-interface.adoc#app-state-service[AppStateService]
 
 API::
 *Workspace Service* methods can be used for constructing routes to Applications:

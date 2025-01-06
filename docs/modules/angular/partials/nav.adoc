@@ -2,11 +2,27 @@
 * xref:angular:general/index.adoc[General]
 ** xref:angular:general/guidelines.adoc[Guidelines]
 * Cookbooks
-** xref:cookbooks/vanilla-to-onecx/migrate-to-onecx.adoc[Migrate vanilla Angular apps to OneCX]
-** xref:cookbooks/enable-standalone/enable-standalone-mode.adoc[Enable standalone mode for OneCX apps]
+** Migrations
+*** xref:angular:cookbook/migrations/vanilla-to-onecx/index.adoc[Migrate vanilla Angular apps to OneCX]
+*** xref:angular:cookbook/migrations/enable-standalone/index.adoc[Enable standalone mode for OneCX apps]
+** Services
+*** xref:angular:cookbook/service/portal-dialog-service/index.adoc[PortalDialogService]
+** Components
+*** xref:angular:cookbook/components/page-header/index.adoc[PageHeader]
+*** xref:angular:cookbook/components/group-by-count-diagram/index.adoc[GroupByCountDiagram]
+*** xref:angular:cookbook/components/search-header/index.adoc[SearchHeader]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
+** Cookbook
+*** xref:angular:ngrx/cookbook/adding-search-criteria/general.adoc[Adding Search Criteria]
+**** xref:angular:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete]
+***** xref:angular:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-string.adoc[AutoComplete with array of type string]
+***** xref:angular:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-number.adoc[AutoComplete with array of type number]
+***** xref:angular:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-object.adoc[AutoComplete with array of type object]
+**** xref:angular:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar]
+**** xref:angular:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown]
+**** xref:angular:ngrx/cookbook/adding-search-criteria/multiselect.adoc[Multiselect]
+*** xref:angular:ngrx/cookbook/tabs/lazy-loading.adoc[Lazy Loading Tabs]
 * Libraries
 ** xref:angular:libraries/symlink.adoc[How to create a SymLink]
 ** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
-** xref:angular:libraries/workingWithSharedLibraries.adoc[]
-
+** xref:angular:libraries/working-with-shared-libraries.adoc[]

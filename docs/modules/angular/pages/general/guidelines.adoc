@@ -1,6 +1,11 @@
 = Guidelines
+
+:idprefix:
+:idseparator: -
+
 This chapter gives guidance which guidelines should be followed during the development.
 
+[#testing]
 == Testing
 
 * Write Unit Tests and Component Tests.
@@ -8,6 +13,7 @@ This chapter gives guidance which guidelines should be followed during the devel
 *	Manually test with shell and in the standalone mode.
 *	Tests should run in the build pipeline.
 
+[#asynchronous-behavior-observables]
 == Asynchronous behavior / observables
 
 The following guideline are applying for asynchronous code and the work with Observables:
@@ -29,6 +35,7 @@ The following guideline are applying for asynchronous code and the work with Obs
 
 
 
+[#translations]
 == Translations
 The following guideline are applying for translations:
 
@@ -43,6 +50,7 @@ The following guideline are applying for translations:
 * No wrapper “DEFAULTS” is needed in the translation files in a library. 
 
 
+[#components]
 == Components
 The following guidelines are applying for components:
 
@@ -53,6 +61,7 @@ The following guidelines are applying for components:
 **	https://devonfw.com/docs/typescript/current/angular/components-layer.html#_smart_and_dumb_components[Smart component, dumb component-principle]
 
 
+[#code-quality]
 == Code quality
 Committed code must have a certain quality. The following guidelines must be considered:
 
@@ -68,6 +77,7 @@ Committed code must have a certain quality. The following guidelines must be con
 **	If you need to format a specific file, you can use:
 ***	`nx format:write –files  *_filepath_*`
 
+[#project-structure]
 == Project structure
 The following examples shows a potential folder structure, that might be extended based on the need. 
 

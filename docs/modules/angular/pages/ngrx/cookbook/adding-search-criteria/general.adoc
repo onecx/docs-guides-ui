@@ -1,0 +1,125 @@
+= Adding search criteria
+
+:idprefix:
+:idseparator: -
+:!sectids:
+[#configure-search-criteria]
+== Goal: Configure search criteria
+:sectids:
+:sectnums:
+
+Configure the search criteria input field and parameters for you search page.
+
+[#request-object]
+== Request Object
+Add additional properties to the `+<feature>-bff.yaml+`
+
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+[source, yml]
+----
+Search<Feature>Request:
+      type: object
+      properties:
+        pageNumber: 
+          type: integer
+          format: int32
+          default: 0
+          description: 'The number of the page.'          
+        pageSize:
+          type: integer
+          format: int32
+          default: 100
+          maximum: 1000
+          description: 'The size of the page.'      
+        id:
+          type: string
+        # Add additional properties here
+----
+
+[#parameters]
+== Parameters
+Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
+
+_Adapt in File:_ `+<feature>-search.parameters.ts+`
+
+[source, javascript]
+----
+    exampleString: z.string().optional(),
+    exampleNumber: z
+        .string()
+        .transform((v) => (v ? Number(v) : undefined))
+        .optional(),
+    exampleStringArray: z
+        .union([z.string(), z.array(z.string())])
+        .transform((v: string | string[] | undefined): string[] | undefined =>
+        v instanceof Array || !v
+            ? (v as string[] | undefined)
+            : ([v] as string[]),
+        )
+        .transform((v: string[] | undefined) => v?.map((e) => e))
+        .optional(),
+    exampleNumberArray: z
+        .union([z.string(), z.array(z.string())])
+        .transform((v: string | string[] | undefined): string[] | undefined =>
+        v instanceof Array || !v
+            ? (v as string[] | undefined)
+            : ([v] as string[]),
+        )
+        .transform((v: string[] | undefined) => v?.map((e) => Number(e)))
+        .optional(),
+    exampleEnum: z
+        .string()
+        .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum)
+        .optional(),
+----
+
+[#html]
+== HTML
+Please specify here your desired search criterias
+
+* The input fields must be added
+** `+formControlName+` must match to your SearchCriteria model
+
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+[subs=+macros]
+[source, html]
+----
+ <form [formGroup]="criteriaGroup">
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+           // PLACE YOUR INPUT FIELD HERE
+          </span>
+        </div>
+        ...
+----
+
+:!sectnums:
+[#examples-for-different-input-fields]
+== Examples for different input fields
+:sectnums:
+
+* text input field of type string
+** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
+
+[source, html]
+----
+    <input
+      id="id"
+      pInputText
+      type="text"
+      formControlName="id"
+      class="p-inputtext p-component"
+    />
+    <label for="id">{{
+      'YOUR_PRODUCT.CRITERIA.ID' | translate
+    }}</label>
+----
+
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar input field]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown input field]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect input field]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]

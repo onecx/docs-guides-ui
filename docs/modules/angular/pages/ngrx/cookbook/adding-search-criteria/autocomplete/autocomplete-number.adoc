@@ -1,0 +1,254 @@
+= AutoComplete for suggestions with array of type number
+
+:idprefix:
+:idseparator: -
+:!sectids:
+
+[#goal]
+== Goal: Add AutoComplete Number
+:sectids:
+:sectnums:
+
+Add an AutoComplete for suggestions with array of type number as a search criteria input field for your search page. 
+
+NOTE: Please replace all occurences of *exampleNumberArray* with the actual name in the following code snippets
+
+[#parameters]
+== Parameters
+Please define the member for your *<%= featurePropertyName %>SearchCriteriasSchema* here.
+
+
+_Adapt in File:_ `+<feature>-search.parameters.ts+`
+
+[source, javascript]
+----
+    exampleNumberArray: z
+        .union([z.string(), z.array(z.string())])
+        .transform((v: string | string[] | undefined): string[] | undefined =>
+        v instanceof Array || !v
+            ? (v as string[] | undefined)
+            : ([v] as string[]),
+        )
+        .transform((v: string[] | undefined) => v?.map((e) => Number(e)))
+        .optional(),
+----
+
+[#state-and-viewmodel]
+== State & viewmodel
+Add additional array member for the AutoComplete suggestions in your state and viewmodel:
+
+_Adapt in Files:_ `+<feature>-search.viewmodel.ts+` and `+<feature>-search.state.ts+`
+
+[source, javascript]
+----
+...
+    exampleNumberArrayOptions: number[]
+...
+----
+
+[#actions]
+== Actions
+Create following actions to handle the events regarding AutoComplete:
+
+_Adapt in File:_ `+<feature>-search.actions.ts+`
+
+[source, javascript]
+----
+...
+    events: {
+        'exampleNumberArray data text entered': props<{ exampleNumberArrayInputValue: number }>(),
+        'exampleNumberArray data received ': props<{ exampleNumberArrayOptions: number[] }>(),
+        'exampleNumberArray data loading failed': emptyProps(),
+        'exampleNumberArray selected': props<{ selectedexampleNumberArrayValue: number }>(),
+        'exampleNumberArray unselected': props<{ unSelectedexampleNumberArrayValue: number }>(),
+    },
+...
+----
+
+[#html]
+== HTML
+Add the following code to your formGroup in the html file:
+
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+[source, html]
+----
+    <span class="p-float-label">
+        <p-autoComplete
+            id="exampleNumberArray"
+            formControlName="exampleNumberArray"
+            (completeMethod)="searchexampleNumberArrayData($event)"
+            [optionLabel]="optionLabelTransformer" <-- NECESSARY FOR PROPERPLY HANDLING ITEMS OF TYPE NUMBER
+            [suggestions]="vm?.exampleNumberArrayOptions ?? []"
+            [forceSelection]="true"
+            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
+            [showEmptyMessage]="true"
+            [emptyMessage]="
+            vm?.exampleNumberArrayOptions?.length === 0
+                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
+                : ''
+            "
+            (onSelect)="selectexampleNumberArrayValue($event)"
+            (onUnselect)="unSelectexampleNumberArrayValue($event)"
+        >
+        </p-autoComplete>
+        <label for="exampleNumberArray">{{
+            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
+        }}</label>
+    </span>
+----
+
+[#component]
+== Component
+Add the respective methods to handle the different events and in addition a transformer method to correctly deal with the number type it needs to convert the number to a string:
+
+_Adapt in File:_ `+<feature>-search.component.ts+`
+
+[source, javascript]
+----
+...
+    optionLabelTransformer(item: number): string {
+      return item?.toString();
+    }
+
+    searchexampleNumberArrayData(event: AutoCompleteCompleteEvent) {
+      this.store.dispatch(
+        <feature>SearchActions.exampleNumberArrayDataTextEntered({
+            exampleNumberArrayInputValue: event.query,
+        }),
+      );
+    }
+
+    selectexampleNumberArrayValue(event: AutoCompleteSelectEvent) {
+      this.store.dispatch(
+        <feature>SearchActions.exampleNumberArraySuggestionSelected({
+            selectedexampleNumberArrayValue: event.value,
+        }),
+      );
+    }
+
+    unSelectexampleNumberArrayValue(event: AutoCompleteUnselectEvent) {
+      this.store.dispatch(
+        <feature>SearchActions.exampleNumberArraySuggestionUnselected({
+            unSelectedexampleNumberArrayValue: event.value,
+        }),
+      );
+    }
+...
+----
+
+[#reducers]
+== Reducers
+In the reducers file you need to define the functions:
+
+_Adapt in File:_ `+<feature>-search.reducers.ts+`
+
+[source, javascript]
+----
+...
+  on(
+    <%= featureClassName %>SearchActions.exampleNumberArrayDataReceived,
+    (state: <%= featureClassName %>SearchState, { exampleNumberArrayOptions }): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleNumberArrayOptions: exampleNumberArrayOptions,
+    }),
+  ),
+  on(
+    <%= featureClassName %>SearchActions.exampleNumberArrayDataLoadingFailed,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleNumberArrayOptions: [],
+    }),
+  ),
+  on(
+    <%= featureClassName %>SearchActions.exampleNumberArraySuggestionSelected,
+    (
+      state: <%= featureClassName %>SearchState,
+      { selectedexampleNumberArrayValue },
+    ): <%= featureClassName %>SearchState => {
+      const isValuePresent =
+        state.exampleNumberArraySelectedValues.includes(selectedexampleNumberArrayValue);
+      return {
+        ...state,
+        exampleNumberArraySelectedValues: isValuePresent
+          ? state.exampleNumberArraySelectedValues
+          : [...state.exampleNumberArraySelectedValues, selectedexampleNumberArrayValue],
+        exampleNumberArrayOptions: [],
+      };
+    },
+  ),
+  on(
+    <%= featureClassName %>SearchActions.exampleNumberArraySuggestionUnselected,
+    (
+      state: <%= featureClassName %>SearchState,
+      { unSelectedexampleNumberArrayValue },
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      exampleNumberArraySelectedValues: state.exampleNumberArraySelectedValues.filter(
+        (exampleNumberArray) => exampleNumberArray !== unSelectedexampleNumberArrayValue,
+      ),
+      exampleNumberArrayOptions: [],
+    }),
+  ),
+...
+----
+
+[#selectors]
+== Selectors
+Add the missing selectors:
+
+_Adapt in File:_ `+<feature>-search.selectors.ts+`
+
+[source, javascript]
+----
+...
+    export const select<%= featureClassName %>SearchViewModel = createSelector(
+      ...
+      <feature>SearchSelectors.
+      selectExampleNumberArrayOptions,
+      ...
+      (
+        ...
+        exampleNumberArrayOptions,
+        ...
+      ): <%= featureClassName %>SearchViewModel => ({
+        ...
+        exampleNumberArrayOptions,
+        ...
+      }),
+    );
+...
+----
+
+[#effects]
+== Effects
+Create the effect for getting the suggestions
+
+_Adapt in File:_ `+<feature>-search.effects.ts+`
+
+[source, javascript]
+----
+...
+    searchexampleNumberArray$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(<%= featureClassName %>SearchActions.exampleNumberArrayDataTextEntered),
+        mergeMap((action) => {
+          return this.<feature>Service
+            .searchexampleNumberArray(action.exampleNumberArrayInputText)
+            .pipe(
+              map((response) =>
+                <%= featureClassName %>SearchActions.exampleNumberArrayDataReceived({
+                  exampleNumberArrayOptions: response.exampleNumberArray, <-- NAME OF THE MEMBER WHICH IS DEFINED IN THE RESPONSE OBJECT
+                }),
+              ),
+              catchError(() =>
+                of<%= featureClassName %>SearchActions.exampleNumberArrayDataLoadingFailed()),
+              ),
+            );
+        }),
+      ),
+    );
+...
+----
+
+NOTE: Don't forget to add the translations to your *de.json* and *en.json*.

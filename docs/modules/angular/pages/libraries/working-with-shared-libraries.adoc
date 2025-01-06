@@ -1,12 +1,18 @@
 = Working with shared libraries
+
+:idprefix:
+:idseparator: -
+
 This chapter gives guidance how to work with shared libraries
 
+[#guidelines]
 == Guidelines
 The goal is to be able to perform changes in shared libraries and so see the changes (after building the library and starting the application) immediately.
 
 * Create a symlink, see subchapter "SymLink"
 * Adapt the https://storybook.js.org/[storybook], if you add a new component
 
+[#troubleshooting]
 == Troubleshooting
 *	Create a symlink
 **	Documentation about https://docs.npmjs.com/cli/v9/commands/npm-link[`npm link`]

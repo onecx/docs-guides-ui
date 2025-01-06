@@ -1,7 +1,11 @@
 = OneCX integration-interface Library
 
-:angular_issues_url: xref:latest@docs:general:implementation-details/mfe-content-loading/webcomponents.adoc#angular_issues
+:idprefix:
+:idseparator: -
 
+:angular_issues_url: xref:latest@docs:general:implementation-details/mfe-content-loading/webcomponents.adoc#angular-issues
+
+[#overview]
 == Overview
 `@onecx/integration-interface` library is a set of tools written in **Typescript** that enables communication between Microfrontends. The library can be used in any desired technology.
 
@@ -11,7 +15,7 @@ NOTE: For Angular-based applications, the xref:angular:libraries/angular-integra
 == Topics
 include::partial$topic.adoc[]
 
-[#configuration_topic]
+[#configuration-topic]
 === Configuration Topic
 Usage::
 Read information about the **platform configuration**.
@@ -23,9 +27,9 @@ Data::
 [source,typescript]
 interface Config { [key: string]: string }
 
-NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#configuration_service[@onecx/angular-integration-interface offers an Injectable ConfigurationService service] exposing functions useful when dealing with configuration management. This service is used by the Shell Application.
+NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#configuration-service[@onecx/angular-integration-interface offers an Injectable ConfigurationService service] exposing functions useful when dealing with configuration management. This service is used by the Shell Application.
 
-[#current_mfe_topic]
+[#current-mfe-topic]
 === Current Mfe Topic
 Usage::
 Read information about the **currently accessed Microfrontend**. The only publisher for this Topic should be the host Application (Shell).
@@ -54,7 +58,7 @@ Data::
 
 include::partial$app-state-service-note.adoc[]
 
-[#current_page_topic]
+[#current-page-topic]
 === Current Page Topic
 Usage::
 Read information about the **currently accessed Page**. The only publisher for this Topic should be **PortalPageComponent(ocx-portal-page)**.
@@ -80,10 +84,10 @@ Data::
 
 include::partial$app-state-service-note.adoc[]
 
-[#current_theme_topic]
+[#current-theme-topic]
 === Current Theme Topic
 Usage::
-Read information about the **currently applied Theme**. Writing new messages to this Topic will not change the current Theme applied to a page, which might cause inconsistency. If it is desired to change the current Theme, please consider using xref:angular:libraries/angular-integration-interface.adoc#theme_service[Theme Service]. For other technologies, make sure to apply the chosen Theme before publishing a new message to the Topic.
+Read information about the **currently applied Theme**. Writing new messages to this Topic will not change the current Theme applied to a page, which might cause inconsistency. If it is desired to change the current Theme, please consider using xref:angular:libraries/angular-integration-interface.adoc#theme-service[Theme Service]. For other technologies, make sure to apply the chosen Theme before publishing a new message to the Topic.
 Shell actions::
 During Workspace construction, Shell is going to load and apply Theme assigned to the Workspace. That Theme's information will also be published to the Topic.
 Data::
@@ -106,9 +110,9 @@ Data::
 |[.line-through]#previewImageUrl?# | [.line-through]#`string`# | Deprecated.
 |===
 
-NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#theme_service[@onecx/angular-integration-interface offers an Injectable ThemeService service] exposing functions useful when dealing with theme management.
+NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#theme-service[@onecx/angular-integration-interface offers an Injectable ThemeService service] exposing functions useful when dealing with theme management.
 
-[#current_workspace_topic]
+[#current-workspace-topic]
 === Current Workspace Topic
 Usage::
 Read information about the **currently accessed Workspace**. The only publisher for this Topic should be host Application (Shell).
@@ -170,7 +174,7 @@ Data::
 
 include::partial$app-state-service-note.adoc[]
 
-[#events_topic]
+[#events-topic]
 === Events Topic
 Usage::
 Write and read information about the **custom events within the platform**. Useful whenever it is desired to exchange information between Apps and no Topic has been created for that purpose.
@@ -193,7 +197,7 @@ Data::
 [source,typescript]
 type TopicEvent Type = { type: string; payload?: unknown | undefined }
 
-[#global_error_topic]
+[#global-error-topic]
 === Global Error Topic
 Usage::
 Write and read information about the **global errors within the platform**.
@@ -204,7 +208,7 @@ Data::
 
 include::partial$app-state-service-note.adoc[]
 
-[#global_loading_topic]
+[#global-loading-topic]
 === Global Loading Topic
 Usage::
 Write and read information about the **global loading happening within the platform**.
@@ -215,7 +219,7 @@ Data::
 
 include::partial$app-state-service-note.adoc[]
 
-[#is_authenticated_topic]
+[#is-authenticated-topic]
 === Is Authenticated Topic
 Usage::
 Wait for an **authentication indicator**, do certain actions. Whenever this topic is initialized, Microfrontend's content can assume that the user accessing the page is authenticated.
@@ -227,7 +231,7 @@ Data::
 
 include::partial$app-state-service-note.adoc[]
 
-[#message_topic]
+[#message-topic]
 === Message Topic
 Usage::
 Write **messages to be displayed in an overlay on the top of the page**. Useful when it is desired to inform about a certain event happening via a message displayed for a short period of time. Publish a new message to display it.
@@ -238,9 +242,9 @@ Data::
 
 NOTE: **Message object** structure is based on the https://primeng.org/toast[PrimeNG Toast API], which is used internally to display messages.
 
-NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#portal_message_service[@onecx/angular-integration-interface offers an Injectable PortalMessageService service] exposing functions useful when dealing with displaying messages.
+NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#portal-message-service[@onecx/angular-integration-interface offers an Injectable PortalMessageService service] exposing functions useful when dealing with displaying messages.
 
-[#permissions_topic]
+[#permissions-topic]
 === Permissions Topic
 Usage::
 Read **user's permissions related to current Microfrontend**. The only publisher for this Topic should be the host Application (Shell).
@@ -249,9 +253,9 @@ On Route activation publishes information about permissions related to the acces
 Data::
 **Array<string>**, each representing user's permission.
 
-NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#user_service[@onecx/angular-integration-interface offers an Injectable UserService service] exposing functions useful when dealing with user related data.
+NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#user-service[@onecx/angular-integration-interface offers an Injectable UserService service] exposing functions useful when dealing with user related data.
 
-[#permissions_rpc_topic]
+[#permissions-rpc-topic]
 === Permissions Rpc Topic
 Usage::
 Read the **user's permissions related to any Application**. Useful when it is desired to check if permission not related to the the current Microfrontend is met for current User (e.g., used for Remote Components). This topic should be used in a request-response fashion. Request messages should have the `permissions` property undefined and should be made by the Microfrontend containing Applications. Response messages will have the `permissions` property defined (`Array<string>`) and should be made by the Shell Application.
@@ -273,7 +277,7 @@ Data::
 NOTE: For Angular-based applications, the `@onecx/angular-remote-components` offers an Injectable PermissionService service exposing functions useful when dealing with permission management for Remote Components.
 
 
-[#remote_components_topic]
+[#remote-components-topic]
 === Remote Components Topic
 Usage::
 Read **currently accessed Workspace Remote Components data**. The only publisher for this Topic should be the host Application (Shell).
@@ -324,7 +328,7 @@ Data::
 NOTE: For Angular-basedAngular-based applications, it's best to utilize the `@onecx/angular-remote-components` library offering an Injectable SlotService service and SlotComponent useful for working with Remote Components. Those offerings are based on the Remote Components Topic.
 
 
-[#user_profile_topic]
+[#user-profile-topic]
 === User Profile Topic
 Usage::
 Read **current User information**. The only publisher for this Topic should be the host Application (Shell).
@@ -431,8 +435,5 @@ Data::
 |locale? |`string` | User's locale.
 |timezone? |`string` | User's timezone.
 |===
-+
-[[UserProfileAccountSettingsNotificationSettings-object]]
-**UserProfileAccountSettingsNotificationSettings object** describing current User's notification settings with the following structure:
 
-NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#user_service[@onecx/angular-integration-interface offers an Injectable UserService service] exposing functions useful when dealing with user related data.
+NOTE: For Angular-based applications, the xref:angular:libraries/angular-integration-interface.adoc#user-service[@onecx/angular-integration-interface offers an Injectable UserService service] exposing functions useful when dealing with user related data.

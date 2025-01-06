@@ -1,4 +1,8 @@
 = SymLink / npm link
+
+:idprefix:
+:idseparator: -
+
 This chapter gives guidance how to create a symlink for onecx-portal-core-ui.
 
 .Onecx-portal-core-ui 
@@ -21,5 +25,6 @@ This chapter gives guidance how to create a symlink for onecx-portal-core-ui.
 * `npm link @onecx/portal-integration-angular --save -force` 
 * `npm link @onecx/keycloak-auth --save -force` 
 
+[#furher-links]
 == Further links
 * Documentation about https://docs.npmjs.com/cli/v9/commands/npm-link[`npm link`]
