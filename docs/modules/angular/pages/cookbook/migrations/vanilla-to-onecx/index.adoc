@@ -310,7 +310,7 @@ During the loading of an app, OneCX will try to load it's environment file. To a
 After completing all steps listed above, the application should be ready to be used as a microfrontend in the OneCX platform. After starting the application with its start command (e.g. `npm start`), the applications entrypoint file (remoteEntry.js) should be accessible at http://localhost:4200/remoteEntry.js.
 
 == Standalone Mode
-After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:cookbooks/enable-standalone/enable-standalone-mode.adoc[Enable OneCX app to run in standalone] cookbook.
+After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:angular:cookbook/migrations/enable-standalone/index.adoc[Enable OneCX app to run in standalone] cookbook.
 
 == Troubleshooting
 === Compilation error `TypeError: The 'compilation' argument must be an instance of Compilation`
