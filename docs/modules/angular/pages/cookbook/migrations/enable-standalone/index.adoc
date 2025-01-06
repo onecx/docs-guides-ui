@@ -4,15 +4,20 @@ Bastian Jakobi bastian.jakobi@capgemini.com
 
 The goal of this guide is to provide step by step instructions on how to enable standalone mode for an existing OneCX application and allowing it to run without a shell. 
 
+[#general]
 == General
+
+[#prerequisites]
 === Prerequisites
 This guide assumes that an Angular project is already set up and migrated to be compatible with OneCX.
 
 Note that this guide does not cover general Angular project setup or the steps to migrate to OneCX.
 
+[#steps]
 == Steps
 The goal of this cookbook is to refactor an existing OneCX compatible app so that it can not only run inside the OneCX platform but also as a standalone application. All steps have been tested in an app generated with Angular CLI and migrated to be compatible with OneCX but should also work in other OneCX compatible Angular apps (e.g. apps generated with NX).
 
+[#install-dependecies]
 === Install `@onecx/standalone-shell`
 In order to run a OneCX app in standalone, it's necessary to mock/provide some of the functionality that would usually be provided by the OneCX platform. To make this easy, `@onecx/standalone-shell` provides all the necessary code wrapped in a importable Angular module. Before using the module, the necessary dependency has to be added to the app.
 
@@ -21,6 +26,7 @@ In order to run a OneCX app in standalone, it's necessary to mock/provide some o
 npm i @onecx/standalone-shell
 ----
 
+[#add-standalone-module]
 === Import `StandaloneShellModule` and modify app.component.html + app.component.ts
 When running an app in standalone, `app.module.ts`, `app.component.html` and `app.component.ts` are treated as the application entrypoints. To add standalone capabilities to the application, the `StandaloneShellModule` provided by `@onecx/standalone-shell` has to be added to the imports array of `app.module.ts`.
 
@@ -32,9 +38,11 @@ Afterwards the entire application has to be wrapped in a standalone-shell-viewpo
 
 Afterwards it should be ensured that the applications remote entrypoint (e.g. `app-entrypoint.component.ts`) and the applications standalone entrypoint (e.g. `app.component.ts`) have different selector names. The selector name can be found inside the `@Component` annotation that is placed before the component class in the components TypeScript file.
 
+[#update-index-html]
 === Use `AppComponent` selector in `index.html`
 To correctly render the standalone entrypoint, it has to be referenced in `index.html`. Therefore the element tag placed inside the body of `index.html` must match the selector name of the applications standalone entrypoint (e.g. `app.component.ts`), which can be obtained as mentioned above.
 
+[#create-standalone-entrypoints]
 === Create separate `main.ts` and `bootstrap.ts` for standalone
 To correctly bootstrap and render the standalone version of an application, it's necessary to create separate main and bootstrap files alongside the already existing files used for microfrontend bootstrapping (e.g. `remote-main.ts` and `remote-bootstrap.ts`).
 
@@ -54,6 +62,7 @@ import('./bootstrap').catch((err) => console.error(err))
 
 After creating the files, the newly created main files must be referenced in the `files` array in `tsconfig.app.json` so that it's included in the applications bundle. Additionally it should be verified that the `build.options.main` property in the applications configuration file (e.g. `angular.json` or `project.json`) points to the newly created main file.
 
+[#configure-translation-loading]
 === Optional: Set up `@ngx-translate` translation loading
 To ensure correct translation loading in an application using `@ngx-translate` a few more modifications have to be applied to `app.module.ts`.
 
@@ -81,5 +90,6 @@ To ensure correct translation loading in an application using `@ngx-translate` a
 
 3. The path to the applications translations is provided automatically by the previously imported `StandaloneShellModule`.
 
+[#verify-standalone-mode]
 === Verify that the app is running in standalone
 After following the above mentioned steps the app should be accessible on its configured URL (e.g. http://localhost:4200).
