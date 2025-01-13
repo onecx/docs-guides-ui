@@ -28,7 +28,7 @@ npm i @onecx/standalone-shell
 
 [#add-standalone-module]
 === Import `StandaloneShellModule` and modify app.component.html + app.component.ts
-When running an app in standalone, `app.module.ts`, `app.component.html` and `app.component.ts` are treated as the application entrypoints. To add standalone capabilities to the application, the `StandaloneShellModule` provided by `@onecx/standalone-shell` has to be added to the imports array of `app.module.ts`.
+When running an app in standalone, `app.module.ts`, `app.component.html` and `app.component.ts` are treated as the application entrypoints. To add standalone capabilities to the application, the `StandaloneShellModule` provided by `@onecx/standalone-shell` has to be added to the imports array of `app.module.ts`. *Make sure to add the import as the last entry of the imports array.*
 
 Afterwards the entire application has to be wrapped in a standalone-shell-viewport component provided as part of the imported `StandaloneShellModule`. To achieve this goal the contents of `app.component.html` have to be replaced with the following code:
 
