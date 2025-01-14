@@ -17,14 +17,20 @@ Note that this guide does not cover general Angular project setup or the steps t
 == Steps
 The goal of this cookbook is to refactor an existing OneCX compatible app so that it can not only run inside the OneCX platform but also as a standalone application. All steps have been tested in an app generated with Angular CLI and migrated to be compatible with OneCX but should also work in other OneCX compatible Angular apps (e.g. apps generated with NX).
 
+To achieve the goal of running an application in standalone, a second set of entrypoint files has to be created. Similarly to the applications remote module in remote scenarios, the standalone entrypoin files will be used to add necessary imports and providers, and route requests to the correct feature modules.
+
 [#install-dependecies]
 === Install `@onecx/standalone-shell`
-In order to run a OneCX app in standalone, it's necessary to mock/provide some of the functionality that would usually be provided by the OneCX platform. To make this easy, `@onecx/standalone-shell` provides all the necessary code wrapped in a importable Angular module. Before using the module, the necessary dependency has to be added to the app.
+In order to run a OneCX app in standalone, it's necessary to mock/provide some of the functionality that would usually be provided by the OneCX platform. To make this easy, `@onecx/standalone-shell` provides all the necessary code wrapped in a importable Angular module. Before using the module, the necessary dependency has to be added to the app. The dependency has to be installed using the version that is also used for other @onecx libraries in the project.
 
 [source,console]
 ----
 npm i @onecx/standalone-shell
 ----
+
+[#rename-entrypoint-files]
+=== Rename existing entrypoint files
+To avoid confusion, the projects `main.ts` and `bootstrap.ts` files should be renamed to `remote-main.ts` and `remote-bootstrap.ts`. If `remote-main.ts` and `remote-bootstrap.ts` already exist in the project, no further action is required.
 
 [#add-standalone-module]
 === Import `StandaloneShellModule` and modify app.component.html + app.component.ts
@@ -37,6 +43,10 @@ Afterwards the entire application has to be wrapped in a standalone-shell-viewpo
 ```
 
 Afterwards it should be ensured that the applications remote entrypoint (e.g. `app-entrypoint.component.ts`) and the applications standalone entrypoint (e.g. `app.component.ts`) have different selector names. The selector name can be found inside the `@Component` annotation that is placed before the component class in the components TypeScript file.
+
+[#align-imports-and-providers-with-remote]
+=== Add necessary imports and providers to `app.module.ts`
+Since `app.module.ts` is not loaded in remote scenarios and the projects remote module is skipped in standalone mode it's crucial that all critical imports and providers are present in both modules. To achieve this goal it's recommended to create two exported variables in the remote module file before the actual module class. The variable `commonImports` should contain an array of imports that need to be present in both modules. Similarly the variable `commonProviders` should contain an array of providers that need to be present in both modules. After creating those variables they should be added to the `imports` and `providers` array in both modules. By doing this, the applications remote module is treated as the single source of truth, which helps with preventing import and provider errors.
 
 [#update-index-html]
 === Use `AppComponent` selector in `index.html`
