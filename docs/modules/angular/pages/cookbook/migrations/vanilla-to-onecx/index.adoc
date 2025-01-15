@@ -1,5 +1,4 @@
 = Migrate vanilla Angular apps to OneCX
-Bastian Jakobi bastian.jakobi@capgemini.com
 :source-highlighter: highlight.js
 
 The goal of this guide is to provide step by step instructions on how to migrate a vanilla Angular app to a OneCX compatible microfrontend application. 

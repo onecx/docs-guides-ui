@@ -1,5 +1,4 @@
 = Enable OneCX app to run in standalone
-Bastian Jakobi bastian.jakobi@capgemini.com
 :source-highlighter: highlight.js
 
 The goal of this guide is to provide step by step instructions on how to enable standalone mode for an existing OneCX application and allowing it to run without a shell. 
