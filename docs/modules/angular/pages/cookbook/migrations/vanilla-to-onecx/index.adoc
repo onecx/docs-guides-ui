@@ -33,7 +33,7 @@ npm i @angular/elements@18 @angular-architects/module-federation @onecx/angular-
 .Dev-Dependencies [.red]#(Only Angular CLI)#
 [source,console]
 ----
-npm i -D webpack webpack-merge ngx-build-plus
+npm i -D webpack webpack-merge ngx-build-plus@18
 ----
 NOTE: For `nx` based applications the above mentioned dev dependencies are not needed as these apps already ship with a configurable builder.
 
@@ -68,9 +68,11 @@ NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application
     "serve": {
         "builder": "ngx-build-plus:dev-server",
         "options": {
+            ...
             "buildTarget": "YOUR_APP_NAME:build",
             "port": 4200,
             "publicHost": "http://localhost:4200",
+            "extraWebpackConfig": "webpack.config.js"
         },
         "configurations": {
             ...
