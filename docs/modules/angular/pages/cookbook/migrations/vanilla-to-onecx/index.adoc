@@ -82,15 +82,6 @@ NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application
             "port": 4200,
             "publicHost": "http://localhost:4200",
             "extraWebpackConfig": "webpack.config.js",
-            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "./YOUR_ASSETS_FOLDER",
-                "output": "assets"
-              },
-              ...
-            ]
         },
         "configurations": {
             ...
@@ -126,7 +117,16 @@ To correctly bundle an app for use in a microfrontend context, the default bundl
             "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
             "customWebpackConfig": {
               "path": "webpack.config.js"
-            }
+            },
+            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "./YOUR_ASSETS_FOLDER",
+                "output": "assets"
+              },
+              ...
+            ]
         },
         ...
         "configurations": {
