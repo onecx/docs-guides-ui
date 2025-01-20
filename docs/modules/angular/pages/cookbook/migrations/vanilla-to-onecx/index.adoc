@@ -55,6 +55,15 @@ NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application
             "main": "src/main.ts",
             "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
             "extraWebpackConfig": "webpack.config.js",
+            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "./YOUR_ASSETS_FOLDER",
+                "output": "assets"
+              },
+              ...
+            ]
         },
         ...
         "configurations": {
@@ -72,7 +81,16 @@ NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application
             "buildTarget": "YOUR_APP_NAME:build",
             "port": 4200,
             "publicHost": "http://localhost:4200",
-            "extraWebpackConfig": "webpack.config.js"
+            "extraWebpackConfig": "webpack.config.js",
+            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "./YOUR_ASSETS_FOLDER",
+                "output": "assets"
+              },
+              ...
+            ]
         },
         "configurations": {
             ...
@@ -205,7 +223,7 @@ In this example the `remote.module.ts` file provides a remote entrypoint compone
 NOTE: Depending on the application this file will vary heavily and contain different providers, imports etc.. To ensure correct routing using the Angular router, instead of specifying a path for each route, a matcher should be specified using the `startsWith` function from the xref:latest@docs:general:implementation-details/mfe-content-loading/webcomponents.adoc#onecx-angular-webcomponents[`@onecx/angular-webcomponents`] package.
 
 [#configure-remote-module-translation-loading]
-===== Optional: Set up `@ngx-translate` translation loading in the remote module
+==== Optional: Set up `@ngx-translate` translation loading in the remote module
 To ensure correct translation loading in an application using `@ngx-translate` a few modifications have to be applied to the remote module mentioned above.
 
 1. A few imports have to be added at the beginning of the remote module file.
@@ -323,7 +341,7 @@ If necessary, this file can be used to overwrite or extend the contents of the b
 
 [#environment-file]
 === Add environment file `env.json`
-During the loading of an app, OneCX will try to load it's environment file. To avoid any errors, a file called `env.json` should be accessible at http://localhost:4200/env.json. This can be achieved by adding the respective file to the assets or public folder of the application. The file can be used to pass environment variables to OneCX. For now it can just contain an empty object (`{}`).
+During the loading of an app, OneCX will try to load it's environment file. To avoid any errors, a file called `env.json` should be accessible at http://localhost:4200/assets/env.json. This can be achieved by adding the respective file to the assets folder of the application. The file can be used to pass environment variables to OneCX. For now it can just contain an empty object (`{}`).
 
 [#test-remote-entrypoint]
 === Verify that the app is exposing a remote entry point
