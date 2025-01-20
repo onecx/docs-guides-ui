@@ -81,7 +81,7 @@ NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application
             "buildTarget": "YOUR_APP_NAME:build",
             "port": 4200,
             "publicHost": "http://localhost:4200",
-            "extraWebpackConfig": "webpack.config.js",
+            "extraWebpackConfig": "webpack.config.js"
         },
         "configurations": {
             ...
