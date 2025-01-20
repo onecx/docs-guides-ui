@@ -1,0 +1,7 @@
+= Migrate to OneCX version 6
+
+== Change FilterType values
+Please, make sure to update `FilterType` usage:
+
+* `FilterType.EQUAL` &#8594; `FilterType.EQUALS`
+* `FilterType.TRUTHY` &#8594; `FilterType.IS_NOT_EMPTY`
