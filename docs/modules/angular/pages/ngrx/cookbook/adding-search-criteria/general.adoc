@@ -96,12 +96,9 @@ _Adapt in File:_ `+<feature>-search.component.html+`
         ...
 ----
 
-:!sectnums:
-[#examples-for-different-input-fields]
-== Examples for different input fields
-:sectnums:
+Input field examples:
 
-* text input field of type string
+* Text input field
 ** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
 ** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
 
