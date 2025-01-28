@@ -3,6 +3,16 @@
 == Overview
 This document aims to showcase how to manage translations.
 
+_Adapt in File:_  `+de.json+` / `+en.json+`
+
+[source, json]
+----
+  {
+    "EXAMPLE_FEATURE_SEARCH.CRITERIA.ID": "Example input field label"
+  } 
+----
+
+
 // TODO: How to import
 // TODO: How to use - storybook
 
