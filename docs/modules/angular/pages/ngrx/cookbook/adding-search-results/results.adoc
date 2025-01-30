@@ -4,6 +4,7 @@
 :idseparator: -
 
 :data_table_column_properties_cookbook_url: xref:latest@guides:angular/cookbook/components/interactive-data-view/data-table-column.adoc
+:result_diagram_cookbook_url: xref:latest@guides:angular:cookbook/components/group-by-count-diagram/index.adoc
 
 :!sectids:
 [#configure-search-results]
@@ -83,4 +84,46 @@ _Adapt in File:_ <feature>-search.selectors.ts
   );
 ----                                                         
   
-                                                         
+[#diagram]
+== Result Diagram
+
+* Assign the id of your selected column to `+diagramColumnId+`, which is used as a key in the diagram to show the distribution of data of that column.
+
+_Adapt in File:_ `+<feature>-search.component.ts+`
+
+[source, javascript]
+----
+    // Please select the column to be displayed in the diagram
+    diagramColumnId = 'selectedColumnId';
+    diagramColumn$ = this.viewModel$.pipe(
+      map(
+        (vm) =>
+          vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn
+      )
+    ); 
+----
+
+* Adjust the position of the result diagram
+
+If you want to change the position of the result diagram, you can change the layout of the ocx-content-container.
+
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+.vertical layout
+[source, html]
+----
+    <ocx-content-container layout="vertical">
+        ...
+    </ocx-content-container>
+----
+
+.horizontal layout
+[source, html]
+----
+    <ocx-content-container layout="horizontal">
+        ...
+    </ocx-content-container>
+----
+
+The diagram itself is defined through `+<ocx-group-by-count-diagram></ocx-group-by-count-diagram>+` component.
+Please refer to the {result_diagram_cookbook_url}[result diagram cookbook] for more adaptations.
