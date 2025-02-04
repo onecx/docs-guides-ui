@@ -1,0 +1,63 @@
+= Adding details page
+
+:idprefix:
+:idseparator: -
+
+:data_table_column_properties_cookbook_url: xref:latest@guides:angular/cookbook/components/interactive-data-view/data-table-column.adoc
+:result_diagram_cookbook_url: xref:latest@guides:angular:cookbook/components/group-by-count-diagram/index.adoc
+:page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
+
+:adding_results_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc
+
+:!sectids:
+[#configure-details-page]
+== Goal: Display data on details page
+:sectids:
+:sectnums:
+
+Configure the data to be shown to the user after click on the details icon in the search result table.
+
+[#header]
+== Header Component
+
+The lables and values to be displayed in header component, should be defined in `+<feature>-details.component.ts+`, by defining the property of type `ObjectDetailItem`.
+
+.Example extended header items
+[source, javascript]
+----
+  headerLabels: ObjectDetailItem[] = [
+      {
+        label: 'Name',
+        value: vm.details?.name
+      }
+    ];
+----
+  
+Please, reference the {page_header_url}[PageHeader docs] for more information on the `ObjectDetailItem` usage.
+  
+[#tab]
+== Tab Component
+Implement a method for handling tabs change in `+<feature>-details.component.ts+` file.
+
+.Example:
+[source, typescript]
+----
+  handleTabChange(event: any) {
+    switch (event.index) {
+      case 2:
+        this.store.dispatch(FeatureDetailsActions.ownersTabSelected());
+        break;
+      case 3:
+        this.store.dispatch(FeatureDetailsActions.buildingPartTabSelected());
+        break;
+      case 4:
+        this.store.dispatch(
+          FeatureDetailsActions.constructionTasksTabSelected()
+        );
+        break;
+      default:
+        this.store.dispatch(FeatureDetailsActions.otherTabSelected());
+    }
+  }
+----
+  
