@@ -24,9 +24,31 @@ In this section, we aim to add an AutoComplete input field. The suggestions will
 ...
 ----
 
+[#bff]
+== OpenAPI specification of search criteria in BFF endpoint
+
+In the file `+<feature>-bff.yaml+` you should adapt not only the `+Search<Feature>Request+`, but also add a definition for `+ExampleStringObject+`.  
+
+[source, yaml]
+---- 
+    Search<Feature>Request:
+      type: object
+      properties:
+        exampleStringObject:
+          $ref: "#/components/schemas/ExampleStringObject"
+
+    ExampleStringObject:
+      type: object
+      properties:
+        property1:
+          type: string
+        property2:
+          type: string
+----
+
 [#parameters]
-== Parameters
-Please define the member for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+== Search criteria representation in typescript parameters
+Please define the member for your `+<feature>SearchCriteriasSchema+` here
 
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
@@ -34,6 +56,41 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
 ----
     exampleStringObjectProperty2: z.string().optional(),
 ----
+
+[#html]
+== HTML input fields for search criteria
+Add the following code to your formGroup in the html file:
+
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+[source, html]
+----
+    <span class="p-float-label">
+        <p-autoComplete
+            id="exampleStringObject"
+            formControlName="exampleStringObject"
+            (completeMethod)="searchExampleStringObject($event)"
+            optionLabel="property1"
+            optionValue="property2"
+            appendTo="body"
+            [suggestions]="vm?.exampleStringObjectOptions ?? []"
+            [forceSelection]="true"
+            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
+            [showEmptyMessage]="true"
+            [emptyMessage]="
+            vm?.exampleStringObjectOptions?.length === 0
+                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
+                : ''
+            "
+            (onSelect)="exampleStringObjectSelected($event)"
+        >
+        </p-autoComplete>
+        <label for="exampleStringObject">{{
+            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
+        }}</label>
+    </span>
+----
+
 
 [#state-and-viewmodel]
 == State & viewmodel
@@ -88,42 +145,8 @@ _Adapt in File:_ `+<feature>-search.actions.ts+`
 ...
 ----
 
-[#html]
-== HTML
-Add the following code to your formGroup in the html file:
-
-_Adapt in File:_ `+<feature>-search.component.html+`
-
-[source, html]
-----
-    <span class="p-float-label">
-        <p-autoComplete
-            id="exampleStringObject"
-            formControlName="exampleStringObject"
-            (completeMethod)="searchExampleStringObject($event)"
-            optionLabel="property1"
-            optionValue="property2"
-            appendTo="body"
-            [suggestions]="vm?.exampleStringObjectOptions ?? []"
-            [forceSelection]="true"
-            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
-            [showEmptyMessage]="true"
-            [emptyMessage]="
-            vm?.exampleStringObjectOptions?.length === 0
-                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
-                : ''
-            "
-            (onSelect)="exampleStringObjectSelected($event)"
-        >
-        </p-autoComplete>
-        <label for="exampleStringObject">{{
-            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
-        }}</label>
-    </span>
-----
-
 [#component]
-== Component
+== Handle events
 Add the respective methods to handle the different events:
 
 _Adapt in File:_ `+<feature>-search.component.ts+`
