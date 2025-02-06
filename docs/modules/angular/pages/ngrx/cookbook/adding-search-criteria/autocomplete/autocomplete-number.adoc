@@ -115,7 +115,7 @@ _Adapt in File:_ `+<feature>-search.actions.ts+`
 ----
 
 [#component]
-== Translations
+== Handle events
 Add the respective methods to handle the different events and in addition a transformer method to correctly deal with the number type it needs to convert the number to a string:
 
 _Adapt in File:_ `+<feature>-search.component.ts+`
