@@ -71,7 +71,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 ----
 
 [#component]
-== Component
+== Translations
 Furthermore, the following needs to be done to have the correct translations displayed:
 
 _Adapt in File:_ `+<feature>-search.component.ts+`
