@@ -10,9 +10,27 @@
 
 Add an AutoComplete for suggestions with array of type string as a search criteria input field for your search page. 
 
+
+[#bff]
+== OpenAPI specification of search criteria in BFF endpoint
+
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+[source, yaml]
+---- 
+Search<Feature>Request:
+  type: object
+  properties:
+    exampleStringArray: 
+      type: array
+      items:
+        type: string 
+----
+
+
 [#parameters]
-== Parameters
-Please define the member for your *<%= featurePropertyName %>SearchCriteriasSchema* here
+== Search criteria representation in typescript parameters
+Please define the member for your *<feature>SearchCriteriasSchema* here
 
 NOTE: Please replace all occurences of *exampleStringArray* with the actual name in the following code snippets.
 
@@ -29,6 +47,38 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         )
         .transform((v: string[] | undefined) => v?.map((e) => e))
         .optional(),
+----
+
+[#html]
+== HTML input fields for search criteria
+Add the following code to your formGroup in the html file:
+
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+[source, html]
+----
+    <span class="p-float-label">
+        <p-autoComplete
+            id="exampleStringArray"
+            formControlName="exampleStringArray"
+            (completeMethod)="searchExampleStringArrayData($event)"
+            [suggestions]="vm?.exampleStringArrayOptions ?? []"
+            [forceSelection]="true"
+            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
+            [showEmptyMessage]="true"
+            [emptyMessage]="
+            vm?.exampleStringArrayOptions?.length === 0
+                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
+                : ''
+            "
+            (onSelect)="selectExampleStringArrayValue($event)"
+            (onUnselect)="unSelectExampleStringArrayValue($event)"
+        >
+        </p-autoComplete>
+        <label for="exampleStringArray">{{
+            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
+        }}</label>
+    </span>
 ----
 
 [#state-and-viewmodel]
@@ -63,40 +113,10 @@ _Adapt in File:_ `+<feature>-search.actions.ts+`
 ...
 ----
 
-[#html]
-== HTML
-Add the following code to your formGroup in the html file:
 
-_Adapt in File:_ `+<feature>-search.component.html+`
-
-[source, html]
-----
-    <span class="p-float-label">
-        <p-autoComplete
-            id="exampleStringArray"
-            formControlName="exampleStringArray"
-            (completeMethod)="searchExampleStringArrayData($event)"
-            [suggestions]="vm?.exampleStringArrayOptions ?? []"
-            [forceSelection]="true"
-            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
-            [showEmptyMessage]="true"
-            [emptyMessage]="
-            vm?.exampleStringArrayOptions?.length === 0
-                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
-                : ''
-            "
-            (onSelect)="selectExampleStringArrayValue($event)"
-            (onUnselect)="unSelectExampleStringArrayValue($event)"
-        >
-        </p-autoComplete>
-        <label for="exampleStringArray">{{
-            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
-        }}</label>
-    </span>
-----
 
 [#component]
-== Component
+== Handle events
 Add the respective methods to handle the different events:
 
 _Adapt in File:_ `+<feature>-search.component.ts+`
