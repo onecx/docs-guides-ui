@@ -41,7 +41,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
     exampleEnum: z
         .union([z.string(), z.array(z.string())])
         .transform(singleToArray)
-        .transform((value) => value.map((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum))
+        .transform((value) => value.map((v) => v as <feature>SearchRequestExampleEnum))
         .optional(),
 ----
 
