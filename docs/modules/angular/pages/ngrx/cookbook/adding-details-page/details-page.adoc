@@ -3,11 +3,7 @@
 :idprefix:
 :idseparator: -
 
-:data_table_column_properties_cookbook_url: xref:latest@guides:angular/cookbook/components/interactive-data-view/data-table-column.adoc
-:result_diagram_cookbook_url: xref:latest@guides:angular:cookbook/components/group-by-count-diagram/index.adoc
 :page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
-
-:adding_results_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc
 
 :!sectids:
 [#configure-details-page]
