@@ -1,5 +1,7 @@
 = OneCX Translations
 
+:module_loading_cookbook_url: xref:latest@guides:angular/cookbook/migrations/vanilla-to-onecx/index.html#configure-remote-module-translation-loading
+
 == Overview
 This document aims to showcase how to manage translations. In order to use translations in your project, you need to have following dependencies in `+package.json+` file:
 
@@ -18,46 +20,7 @@ npm i @ngx-translate/core
 npm i @ngx-translate/http-loader
 ----
 
-In the `+src/app/app.module.ts+` or in `+src/app/feature/feature.module.ts+` import and initialize ngx-translate as follows:
-[source, typescript]
-----
-import {
-  MissingTranslationHandler,
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
-import {
-  createTranslateLoader,
-  PortalMissingTranslationHandler,
-  translateServiceInitializer,
-} from '@onecx/portal-integration-angular';
-
-@NgModule({
- imports: [
-    TranslateModule.forRoot({
-      extend: true,
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService],
-      },
-      missingTranslationHandler: {
-        provide: MissingTranslationHandler,
-        useClass: PortalMissingTranslationHandler,
-      },
-    }),
- ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: translateServiceInitializer,
-      multi: true,
-      deps: [UserService, TranslateService],
-    }
- ]
-})
-----
+In the `+src/app/app.module.ts+` or in `+src/app/feature/feature.module.ts+` import and initialize ngx-translate as described in the {module_loading_cookbook_url}[cookbook].
 
 Then in your `+feature.component.ts+` initialize translation service:
 [source, typescript]
@@ -87,44 +50,4 @@ Then the actual displayed text needs to be specified in `+de.json+` / `+en.json+
   } 
 ----
 
-In order to translate enums used for dropdown options, this can be done by using `+enumToDropdownOptions+` function in the `+feature.component.ts+` file, at the same time also initializing translation service as shown above. For example:
-[source, typescript]
-----
-import {
-  enumToDropdownOptions
-} from '@onecx/portal-integration-angular';
-
-  status$ = enumToDropdownOptions(
-    this.translateService,
-    ExampleFeatureStatus,
-    'EXAMPLE_FEATURE_SEARCH.CRITERIA.STATUS.OPTIONS.'
-  );
-----
-
-Then in HTML file options should be passed to `+p-dropdown+` component:
-[source, html]
-----
-<p-dropdown
-  id="status"
-  [options]="(status$ | async) ?? []"
-></p-dropdown>
-----
-
-And the actual values needs to be spcified again in `+de.json+` / `+en.json+` files, taking into an account the current values of the enum to be translated:
-[source, json]
-----
-"EXAMPLE_FEATURE_SEARCH": {
-  "CRITERIA": {
-    "STATUS": {
-      "TITLE": "Status",
-      "OPTIONS": {
-        "INITIAL": "Initial",
-        "IN_CREATION": "In creation",
-        "RELEASED": "Communicated",
-        "COMPLETED": "Completed"
-      }
-    }
-  }
-}
-----
 
