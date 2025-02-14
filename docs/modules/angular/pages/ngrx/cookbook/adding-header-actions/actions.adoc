@@ -53,7 +53,7 @@ const actions: Action[] = [
 :!sectnums:
 == Optional steps
 
-In case you will need to have an effect or reducer for your header action, perform following actions, based on the need.
+In case you will need to have an effect (if your action should trigger an API) or reducer (if your action changes the state) for your header action, perform following actions, based on the need.
 
 :sectids:
 :sectnums:
