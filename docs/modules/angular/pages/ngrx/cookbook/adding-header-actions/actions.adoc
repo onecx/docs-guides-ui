@@ -49,11 +49,16 @@ const actions: Action[] = [
         },
       ];
 ----
+:!sectids:
+:!sectnums:
+== Optional steps
 
+:sectids:
+:sectnums:
 [#action_group]
 == Define actions in action group
 
-Modify `+<feature>.actions.ts+` file, specifying input parameters for the actions. If no paramters required, provide `+emptyProps()+`:
+In case you will need to have an effect or reducer for your header action, modify `+<feature>.actions.ts+` file, specifying input parameters for the actions. If no paramters required, provide `+emptyProps()+`:
 
 .Example:
 [source, javascript]
@@ -77,7 +82,7 @@ export const FeatureSearchActions = createActionGroup({
 [#reducer]
 == Create Reducer
 
-In order to update the state of the model, define reducer `+<feature>.reducers.ts+` file for your action:
+If you need to update the state of the model, define reducer `+<feature>.reducers.ts+` file for your action:
 
 .Example:
 [source, javascript]
@@ -97,7 +102,7 @@ export const featureSearchReducer = createReducer(
 [#effect]
 == Create Effect
 
-In case your action needs to call som API, create an effect in `+<feature>.effects.ts+` file:
+In case your action needs to call some API, create an effect in `+<feature>.effects.ts+` file:
 
 .Example:
 [source, javascript]
