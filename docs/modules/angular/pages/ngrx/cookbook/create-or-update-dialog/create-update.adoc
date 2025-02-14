@@ -3,16 +3,11 @@
 :idprefix:
 :idseparator: -
 
-:data_table_column_properties_cookbook_url: xref:latest@guides:angular/cookbook/components/interactive-data-view/data-table-column.adoc
-:result_diagram_cookbook_url: xref:latest@guides:angular:cookbook/components/group-by-count-diagram/index.adoc
-:page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
 :portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
-
-:adding_results_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc
 
 :!sectids:
 [#configure-create-update-page]
-== Goal: Display data on details page
+== Goal: Display dialog to create or update desired entity
 :sectids:
 :sectnums:
 
@@ -146,7 +141,7 @@ Please, ensure that form control names match the names of the properties in the 
 </div>
 ----
                   
-[#parameters]
+[#field]
 == Add form fields to typescript component
               
 Add the corresponding form controls into the formGroup. Please, ensure that form control names match the names of the properties in the OpenApi specification.
