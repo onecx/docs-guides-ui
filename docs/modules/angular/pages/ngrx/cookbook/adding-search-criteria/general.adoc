@@ -28,10 +28,10 @@ Search<Feature>Request:
         # Add additional properties here
 ----
 
-* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar criteria]
-* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown criteria]
-* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect criteria]
-* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete criteria]
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc#bff[Calendar criteria]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc#bff[Dropdown criteria]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc#bff[MultiSelect criteria]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc#bff[AutoComplete criteria]
 
 [#parameters]
 == Search criteria representation in typescript parameters
@@ -55,10 +55,10 @@ export const featureSearchCriteriasSchema = z.object({
 } satisfies Partial<Record<keyof SearchPropertiesRequest, ZodTypeAny>>);
 ----
 
-* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar parameter]
-* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown parameter]
-* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect parameter]
-* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete parameter]
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc#parameters[Calendar parameter]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc#parameters[Dropdown parameter]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc#parameters[MultiSelect parameter]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc#parameters[AutoComplete parameter]
 
 
 [#html]
@@ -103,7 +103,7 @@ Input field examples:
     }}</label>
 ----
 
-* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar input field]
-* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown input field]
-* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect input field]
-* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc#html[Calendar input field]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc#html[Dropdown input field]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc#html[MultiSelect input field]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc#html[AutoComplete input field]
