@@ -29,7 +29,7 @@ permission:
                 SEARCH: Search feature
 ----
 
-The permissions can be used in your implemntation by refering to it in following way: `+"FEATURE#ACTION"+`
+The permissions can be used in your implementation by refering to it in following way: `+"FEATURE#ACTION"+`
 
 For example for header actions, permission property needs to be specified:
 
