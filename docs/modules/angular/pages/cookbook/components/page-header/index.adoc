@@ -1,6 +1,7 @@
 = OneCX PageHeader
 
 :page_header_storybook: https://main--65f7f64d4506c9f2dfe59383.chromatic.com/?path=/docs/components-pageheadercomponent--docs
+:details_page_cookbook: xref:latest@guides:angular:ngrx/cookbook/adding-details-page/details-page.adoc
 :idprefix:
 :idseparator: -
 
@@ -111,3 +112,7 @@ ObjectDetailItem is used to define the detail item to be displayed for the page 
 | `actionItemAriaLabel? | `string` | Text for the aria label of the detail action button.
 | [.line-through]`tooltip? | [.line-through]`string` | Deprecated. Use `valueTooltip` instead.
 |===
+
+=== Usage
+
+* Adding details page {details_page_cookbook}[cookbook]
