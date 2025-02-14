@@ -1,6 +1,7 @@
 = OneCX PortalDialogService
 
 :dynamic_dialog_config_url: https://primeng.org/dynamicdialog#api.dynamicdialog-config
+:create_update_dialog_cookbook: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#action
 
 [#overview]
 == Overview
@@ -228,3 +229,7 @@ To control the autofocus of the dialog, use `autoFocusButton` and `autoFocusButt
 [#further-customizations]
 ==== Further Customizations
 For the explanations of further properties, please refer to the {dynamic_dialog_config_url}[PrimeNg's DynamicDialog config object documentation].
+
+=== Usage
+
+* Adding create/update dialog {create_update_dialog_cookbook}[cookbook]
