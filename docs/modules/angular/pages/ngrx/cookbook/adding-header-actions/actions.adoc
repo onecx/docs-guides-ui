@@ -53,12 +53,14 @@ const actions: Action[] = [
 :!sectnums:
 == Optional steps
 
+In case you will need to have an effect or reducer for your header action, perform following actions, based on the need.
+
 :sectids:
 :sectnums:
 [#action_group]
 == Define actions in action group
 
-In case you will need to have an effect or reducer for your header action, modify `+<feature>.actions.ts+` file, specifying input parameters for the actions. If no paramters required, provide `+emptyProps()+`:
+Modify `+<feature>.actions.ts+` file, specifying input parameters for the actions. If no paramters required, provide `+emptyProps()+`:
 
 .Example:
 [source, javascript]
