@@ -84,11 +84,6 @@ Or the permissions can be defined for particular HTML element, like result data 
           </ocx-interactive-data-view>
 ----
 
-
-[TIP] 
-.Import the permissions into your environment
-You can use `./import-onecx.sh` scrpit from `oncex-dev` environment setup to upload the permissions.
-
 [IMPORTANT] 
 .Clarify the permission-role concept
 ==== 
