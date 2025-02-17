@@ -2,6 +2,7 @@
 
 :search_header_storybook: https://main--65f7f64d4506c9f2dfe59383.chromatic.com/?path=/docs/components-searchheadercomponent--docs
 :page_header_url: xref:angular/cookbook/components/page-header/index.adoc
+:header_actions_cookbook: xref:latest@guides:angular:ngrx/cookbook/adding-header-actions/actions.adoc
 
 :idprefix:
 :idseparator: -
@@ -104,3 +105,8 @@ SearchConfigData is used for the SearchConfig component.
 | `displayedColumnsIds` | `string[]` | List of columns to display.
 | `viewMode` | `'basic' \| 'advanced'` | The viewMode for displaying input fields as `'basic'` or `'advanced'`.
 |===
+
+
+=== Usage
+
+* Adding header actions {header_actions_cookbook}[cookbook]
