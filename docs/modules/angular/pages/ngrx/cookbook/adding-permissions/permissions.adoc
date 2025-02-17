@@ -1,0 +1,92 @@
+= Permissions
+
+:idprefix:
+:idseparator: -
+
+:sectids:
+:sectnums:
+
+[#define-header-actions]
+== Modify Helm configuration
+
+You can mofidy the definition of permissions in `+values.yml+` located in `+conf/chart/+` folder.
+
+.Helm's values.yml
+[source, yml]
+----
+permission:
+    enabled: true
+    spec:
+        permissions:
+            FEATURE:
+                CREATE: Create feature
+                EDIT: Edit feature
+                DELETE: Delete feature
+                SAVE: Update and save feature
+                IMPORT: Import feature
+                EXPORT: Export feature
+                VIEW: View mode for feature
+                SEARCH: Search feature
+----
+
+The permissions can be used in your implementation by refering to it in following way: `+"FEATURE#ACTION"+`
+
+For example for header actions, permission property needs to be specified:
+
+.Example from `+feature.component.ts+`
+[source, typescript]
+----
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+    map((vm) => {
+      const actions: Action[] = [
+        {
+          labelKey: 'PROPERTY_DETAILS.HEADER_ACTIONS.REFRESH',
+          icon: PrimeIcons.REFRESH,
+          titleKey: 'PROPERTY_DETAILS.HEADER_ACTIONS.REFRESH_TOOLTIP',
+          show: 'asOverflow',
+          permission: 'PROPERTY#VIEW',
+          actionCallback: () => {
+              this.store.dispatch(PropertyDetailsActions.refreshDetailsButtonClicked());
+            }
+          },    
+      ];
+      return actions;
+    })
+  );
+----
+
+In the HTML view the permissions can be specified for the full page:
+
+.Example from `+feature.component.html+`
+[source, html]
+----
+<ocx-portal-page
+  permission="FEATURE#SEARCH"
+  > 
+  ...
+  </ocx-portal-page>
+----
+
+Or the permissions can be defined for particular HTML element, like result data table:
+
+.Example from `+feature.component.html+`
+[source, html]
+----
+          <ocx-interactive-data-view
+            actionColumnPosition="left"
+            (viewItem)="details($event)"
+            [data]="vm.results"
+            [columns]="vm.columns"
+            viewPermission="PROPERTY#VIEW"
+            editPermission="PROPERTY#EDIT"
+          >
+          ...
+          </ocx-interactive-data-view>
+----
+
+[IMPORTANT] 
+.Clarify the permission-role concept
+==== 
+1. Please clarify the permission-role concept with your business analyst or your solution designer.
+2. Delete permissions that you do not need.
+====

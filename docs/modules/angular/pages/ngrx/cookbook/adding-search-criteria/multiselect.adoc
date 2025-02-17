@@ -12,9 +12,27 @@ Add a MultiSelect as a search criteria input field for your search page.
 
 NOTE: Please replace all occurences of *exampleEnum* with the actual name in the following code snippets
 
+[#bff]
+== OpenAPI specification of search criteria in BFF endpoint
+
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+[source, yaml]
+---- 
+    Feature:
+      type: object
+      properties:
+        exampleEnum:
+          type: string
+          enum:
+            - REQUIRED
+            - INSTALLED
+            - CANCELED
+----
+
 [#parameters]
-== Parameters
-First, add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
+== Search criteria representation in typescript parameters
+First, add a new member to the <feature>SearchCriteriasSchema:
 
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
@@ -23,12 +41,12 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
     exampleEnum: z
         .union([z.string(), z.array(z.string())])
         .transform(singleToArray)
-        .transform((value) => value.map((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum))
+        .transform((value) => value.map((v) => v as <feature>SearchRequestExampleEnum))
         .optional(),
 ----
 
 [#html]
-== HTML
+== HTML input fields for search criteria
 Next, add the following code to your formGroup in the html file and adapt by replacing all occurences of `+exampleEnum+` with the actual name which is defined.
 
 _Adapt in File:_ `+<feature>-search.component.html+`
@@ -53,7 +71,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 ----
 
 [#component]
-== Component
+== Translations
 Furthermore, the following needs to be done to have the correct translations displayed:
 
 _Adapt in File:_ `+<feature>-search.component.ts+`

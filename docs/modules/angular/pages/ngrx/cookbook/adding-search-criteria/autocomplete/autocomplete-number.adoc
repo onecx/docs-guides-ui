@@ -13,8 +13,24 @@ Add an AutoComplete for suggestions with array of type number as a search criter
 
 NOTE: Please replace all occurences of *exampleNumberArray* with the actual name in the following code snippets
 
+[#bff]
+== OpenAPI specification of search criteria in BFF endpoint
+
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+[source, yaml]
+---- 
+Search<Feature>Request:
+  type: object
+  properties:
+    exampleNumberArray: 
+      type: array
+      items:
+        type: integer 
+----
+
 [#parameters]
-== Parameters
+== Search criteria representation in typescript parameters
 Please define the member for your *<%= featurePropertyName %>SearchCriteriasSchema* here.
 
 
@@ -31,6 +47,39 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         )
         .transform((v: string[] | undefined) => v?.map((e) => Number(e)))
         .optional(),
+----
+
+[#html]
+== HTML input fields for search criteria
+Add the following code to your formGroup in the html file:
+
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+[source, html]
+----
+    <span class="p-float-label">
+        <p-autoComplete
+            id="exampleNumberArray"
+            formControlName="exampleNumberArray"
+            (completeMethod)="searchexampleNumberArrayData($event)"
+            [optionLabel]="optionLabelTransformer" <-- NECESSARY FOR PROPERPLY HANDLING ITEMS OF TYPE NUMBER
+            [suggestions]="vm?.exampleNumberArrayOptions ?? []"
+            [forceSelection]="true"
+            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
+            [showEmptyMessage]="true"
+            [emptyMessage]="
+            vm?.exampleNumberArrayOptions?.length === 0
+                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
+                : ''
+            "
+            (onSelect)="selectexampleNumberArrayValue($event)"
+            (onUnselect)="unSelectexampleNumberArrayValue($event)"
+        >
+        </p-autoComplete>
+        <label for="exampleNumberArray">{{
+            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
+        }}</label>
+    </span>
 ----
 
 [#state-and-viewmodel]
@@ -65,41 +114,8 @@ _Adapt in File:_ `+<feature>-search.actions.ts+`
 ...
 ----
 
-[#html]
-== HTML
-Add the following code to your formGroup in the html file:
-
-_Adapt in File:_ `+<feature>-search.component.html+`
-
-[source, html]
-----
-    <span class="p-float-label">
-        <p-autoComplete
-            id="exampleNumberArray"
-            formControlName="exampleNumberArray"
-            (completeMethod)="searchexampleNumberArrayData($event)"
-            [optionLabel]="optionLabelTransformer" <-- NECESSARY FOR PROPERPLY HANDLING ITEMS OF TYPE NUMBER
-            [suggestions]="vm?.exampleNumberArrayOptions ?? []"
-            [forceSelection]="true"
-            [multiple]="true" <-- ONLY NECESSARY IF MULTIPLE VALUES CAN BE SELECTED 
-            [showEmptyMessage]="true"
-            [emptyMessage]="
-            vm?.exampleNumberArrayOptions?.length === 0
-                ? ('YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ID_NOT_FOUND' | translate)
-                : ''
-            "
-            (onSelect)="selectexampleNumberArrayValue($event)"
-            (onUnselect)="unSelectexampleNumberArrayValue($event)"
-        >
-        </p-autoComplete>
-        <label for="exampleNumberArray">{{
-            'YOUR_PRODUCT_SEARCH.CRITERIA.ID' | translate
-        }}</label>
-    </span>
-----
-
 [#component]
-== Component
+== Handle events
 Add the respective methods to handle the different events and in addition a transformer method to correctly deal with the number type it needs to convert the number to a string:
 
 _Adapt in File:_ `+<feature>-search.component.ts+`

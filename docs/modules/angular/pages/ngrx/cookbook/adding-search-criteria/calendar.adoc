@@ -12,9 +12,24 @@ Add a Calendar as a search criteria input field for your search page.
 
 NOTE: Please replace all occurences of *exampleDate* with the actual name in the following code snippets
 
+[#bff]
+== OpenAPI specification of search criteria in BFF endpoint
+
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+[source, yaml]
+---- 
+    Feature:
+      type: object
+      properties:
+        exampleDate:
+          type: string
+          format: "date-time"
+----
+
 [#parameters]
-== Parameters
-First add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
+== Search criteria representation in typescript parameters
+First add a new member to the <Feature>SearchCriteriasSchema:
 
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
@@ -27,7 +42,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
 ----
 
 [#html]
-== HTML
+== HTML input fields for search criteria
 Next, add the following code to your formGroup in the html file and adapt:
 
 * by replacing all occurences of `+exampleDate+` with the actual name which is defined

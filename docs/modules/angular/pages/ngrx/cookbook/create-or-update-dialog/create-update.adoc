@@ -1,0 +1,236 @@
+= Define Fields for Create/Update Dialogs
+
+:idprefix:
+:idseparator: -
+
+:portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+
+:!sectids:
+[#configure-create-update-page]
+== Goal: Display dialog to create or update desired entity
+:sectids:
+:sectnums:
+
+Configure the dialog with input fields enabling the user to create or update desired entity.
+
+[#bff]
+== OpenAPI specification of the objects in BFF endpoint
+
+
+The generator creates new objects in the OpenAPI specification for Create/Update Requests and Responses.
+The Request objects are referencing the data object to be Created/Updated. Please, adjust the data objects in `+<feature>-bff.yaml+` file if not prepared already. Data object properties will be used for input fields.
+
+.Example:
+[source, yaml]          
+----
+  /endpoint/path/feature/{id}:
+    put:
+      operationId: updateFeature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/FeatureUpdateCreateDTO"
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureDTO"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestException"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestException"
+
+  /endpoint/path/feature::
+    post:
+      operationId: createFeature
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/FeatureUpdateCreateDTO"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureDTO"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestException"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestException"
+
+    FeatureUpdateCreateDTO:
+      type: object
+      properties:
+        firstProperty:
+          type: string
+        secondProperty:
+          type: string
+          # Add additional properties here
+
+
+    FeatureDTO:
+      type: object
+      properties:
+        firstProperty:
+          type: string
+        anotherProperty:
+          type: string
+          # Add additional properties here
+
+----
+
+*Be cautious while making changes to the data object*, it is used for the other features like search and details pages.
+
+If extending the data object is not an option, instead please consider modifying the Create/Update Request component objects to use flat field list instead of the data object and adjust them based on the needs. Such modification also requires changes to the preparation of the request.
+ 
+Changes to Response component objects require a modification in response handling. By default response properties are not used by the generated code.           
+    
+            
+[#html]
+== HTML input fields for create/update
+You need to specify the HTML components, into which the desired values for create or update can be entered by the user.
+Please, ensure that form control names match the names of the properties in the OpenApi specification.
+
+.Example of input field for one property
+[source,html]
+----
+<div [title]="'EXAMPLE_CREATE_UPDATE.FORM.FIRST_PROPERTY' | translate">
+    <span class="p-float-label" controlErrorAnchor>
+    <input
+        pInputText
+        type="text"
+        id="example_detail_form_first_property"
+        class="w-full pt-3 pb-2"
+        formControlName="firstProperty"
+    />
+    <label class="ocx-required-label" for="example_detail_form_first_property">
+        {{ 'EXAMPLE_CREATE_UPDATE.FORM.FIRST_PROPERTY' | translate }}</label
+    >
+    </span>
+</div>
+----
+                  
+[#field]
+== Add form fields to typescript component
+              
+Add the corresponding form controls into the formGroup. Please, ensure that form control names match the names of the properties in the OpenApi specification.
+
+Use appropriate validators if required.
+
+.Example form control
+[source,js]
+----
+this.formGroup = new FormGroup({
+    firstProperty: new FormControl(null, [Validators.maxLength(255)]),
+    ...
+});
+----
+                            
+                            
+[#action]                  
+== Add header action for "create" button
+
+Besides performing other steps needed for adding header action,         
+you should add an effect which triggers the opening of the pop-up dialog in `+<feature>-search.effects.ts+`.
+To configure the dialog or modify its contents, please refer to the {portal_dialog_service_url}[PortalDialogService docs].
+
+                        
+.Example effect:
+[source, typescript]
+----
+import {
+  PortalDialogService,
+} from '@onecx/portal-integration-angular';
+                      
+  createButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FeatureSearchActions.createFeatureClicked),
+      concatLatestFrom(() => this.store.select(featureCreateUpdateViewModel)),
+      switchMap(([, vm]) => {
+        return this.portalDialogService.openDialog<unknown>(
+          'FEATURE_CREATION.CREATE_NEW',
+          {
+            type: FeatureCreateUpdateComponent,
+            inputs: {
+              vm: vm
+            }
+          },
+          {
+            key: 'GENERAL.CANCEL',
+            icon: 'pi pi-times'
+          },
+          {
+            key: 'GENERAL.CREATE',
+            icon: 'pi pi-check'
+          },
+          {
+            baseZIndex: 100,
+            width: '50%'
+          }
+        )
+      }),
+      switchMap((dialogResult) => {
+        if (!dialogResult || dialogResult.button == 'primary') {
+          return of(IndividualSearchActions.cancelFeatureClicked())
+        }
+        if (!dialogResult?.result) {
+          throw new Error('DialogResult was not set as expected!')
+        }
+
+        return this.fetureService.createFeature(dialogResult.result).pipe(
+          map((data) => {
+            this.messageService.success({
+              summaryKey: 'FEATURE_CREATION.CREATION_SUCCESS'
+            })
+            FeatureSearchActions.createFeatureSucceeded()
+            return FeatureSearchActions.detailsButtonClicked({
+              id: data.id
+            })
+          })
+        )
+      }),
+      catchError((error) => {
+        this.messageService.error({
+          summaryKey: 'FEATURE_CREATION.CREATION_FAILED'
+        })
+        return of(
+          FeatureSearchActions.createFeatureFailed({
+            error
+          })
+        )
+      })
+    )
+  })
+----
+

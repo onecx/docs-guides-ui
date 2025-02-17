@@ -8,75 +8,62 @@
 :sectids:
 :sectnums:
 
-Configure the search criteria input field and parameters for you search page.
+Configure the search criteria in openAPI specification of BFF endpoint. Define parameters in typescript corresponding to search criteria in openAPI. Add HTML components, enabling the user to provide search criteria.
 
 [#request-object]
-== Request Object
-Add additional properties to the `+<feature>-bff.yaml+`
+== OpenAPI specification of search criteria in BFF endpoint
+Add the search criteria to the `+<feature>-bff.yaml+` file to the `+properties+` section.
 
-_Adapt in File:_ `+<feature>-bff.yaml+`
+Search criteria examples:
+
+* Text criteria `+exampleString+` (replace with the name of your search criteria of type string):
 
 [source, yml]
 ----
 Search<Feature>Request:
       type: object
       properties:
-        pageNumber: 
-          type: integer
-          format: int32
-          default: 0
-          description: 'The number of the page.'          
-        pageSize:
-          type: integer
-          format: int32
-          default: 100
-          maximum: 1000
-          description: 'The size of the page.'      
-        id:
+        exampleString:
           type: string
         # Add additional properties here
 ----
 
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc#bff[Calendar criteria]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc#bff[Dropdown criteria]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc#bff[MultiSelect criteria]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc#bff[AutoComplete criteria]
+
 [#parameters]
-== Parameters
-Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
+== Search criteria representation in typescript parameters
+Please define the members for your `+<feature>SearchCriteriaSchema+` in file `+<feature>-search.parameters.ts+`.
 
-_Adapt in File:_ `+<feature>-search.parameters.ts+`
+While defining search parameters note that:
 
-[source, javascript]
+* keys *need* to match the keys from your OpenAPIs SearchCriteria Object
+* always start with `+z.string()+`
+* when required, you can use `+.transform()+` to extend the validation
+
+Parameter examples:
+
+* Text parameter `+exampleString+` (replace with the name of your search criteria of type string):
+
+[source, typescript]
 ----
+export const featureSearchCriteriasSchema = z.object({
     exampleString: z.string().optional(),
-    exampleNumber: z
-        .string()
-        .transform((v) => (v ? Number(v) : undefined))
-        .optional(),
-    exampleStringArray: z
-        .union([z.string(), z.array(z.string())])
-        .transform((v: string | string[] | undefined): string[] | undefined =>
-        v instanceof Array || !v
-            ? (v as string[] | undefined)
-            : ([v] as string[]),
-        )
-        .transform((v: string[] | undefined) => v?.map((e) => e))
-        .optional(),
-    exampleNumberArray: z
-        .union([z.string(), z.array(z.string())])
-        .transform((v: string | string[] | undefined): string[] | undefined =>
-        v instanceof Array || !v
-            ? (v as string[] | undefined)
-            : ([v] as string[]),
-        )
-        .transform((v: string[] | undefined) => v?.map((e) => Number(e)))
-        .optional(),
-    exampleEnum: z
-        .string()
-        .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum)
-        .optional(),
+    // Add additional parameters here
+} satisfies Partial<Record<keyof SearchPropertiesRequest, ZodTypeAny>>);
 ----
+
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc#parameters[Calendar parameter]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc#parameters[Dropdown parameter]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc#parameters[MultiSelect parameter]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc#parameters[AutoComplete parameter]
+
 
 [#html]
-== HTML
-Please specify here your desired search criterias
+== HTML input fields for search criteria
+You need to specify the HTML components, into which the search criteria can be entered or selected by the user.
 
 * The input fields must be added
 ** `+formControlName+` must match to your SearchCriteria model
@@ -96,12 +83,9 @@ _Adapt in File:_ `+<feature>-search.component.html+`
         ...
 ----
 
-:!sectnums:
-[#examples-for-different-input-fields]
-== Examples for different input fields
-:sectnums:
+Input field examples:
 
-* text input field of type string
+* Text input field
 ** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
 ** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
 
@@ -119,7 +103,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     }}</label>
 ----
 
-* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar input field]
-* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown input field]
-* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect input field]
-* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc#html[Calendar input field]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc#html[Dropdown input field]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc#html[MultiSelect input field]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc#html[AutoComplete input field]

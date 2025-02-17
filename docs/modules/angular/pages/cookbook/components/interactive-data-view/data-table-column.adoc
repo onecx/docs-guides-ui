@@ -1,5 +1,7 @@
 = DataTableColumn
 
+:adding_search_results_cookbook: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#columns
+
 :idprefix:
 :idseparator: -
 
@@ -39,3 +41,7 @@ include::partial$column-type.adoc[]
 | `EQUAL` | Will create a set of unique values for filtering.
 | `TRUTHY` | Will always have two filter options which result in empty and not empty.
 |===
+
+== Usage
+
+* Adding search results {adding_search_results_cookbook}[cookbook]

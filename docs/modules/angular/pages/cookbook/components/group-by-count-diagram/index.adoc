@@ -1,6 +1,7 @@
 = OneCX GroupByCountDiagram
 
 :group_by_count_diagram_storybook: https://main--65f7f64d4506c9f2dfe59383.chromatic.com/?path=/docs/components-groupbycountdiagramcomponent--docs
+:adding_search_results_cookbook: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#diagram
 
 :idprefix:
 :idseparator: -
@@ -96,3 +97,7 @@ include::partial$column-type.adoc[]
         activeDiagramType?: DiagramType
     }
 ----
+=== Usage
+
+* Adding search results {adding_search_results_cookbook}[cookbook]
+

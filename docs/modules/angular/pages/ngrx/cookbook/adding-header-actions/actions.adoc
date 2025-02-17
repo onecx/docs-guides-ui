@@ -1,0 +1,163 @@
+= Adding header actions
+
+:idprefix:
+:idseparator: -
+
+:search_header_url: xref:latest@guides:angular:cookbook/components/search-header/index.adoc
+
+:sectids:
+:sectnums:
+
+[#define-header-actions]
+== Define actions in component
+
+If you want to add additional header actions, you need to extend `+<feature>.component.ts+` defining the array with actions there:
+
+[source, javascript]
+----
+headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+  map((vm) => {
+    const actions: Action[] = [
+    ...
+    ];
+    return actions;
+  })
+);
+----
+
+.Example:
+[source, javascript]
+----
+headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+  map((vm) => {
+    const actions: Action[] = [
+        {
+          labelKey: 'FEATURE_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          icon: PrimeIcons.DOWNLOAD,
+          titleKey: 'FEATURE_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          show: 'asOverflow',
+          actionCallback: () => this.exportItems(),
+        },
+        {
+          labelKey: vm.chartVisible
+            ? 'FEATURE_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : 'FEATURE_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+          icon: PrimeIcons.EYE,
+          titleKey: vm.chartVisible
+            ? 'FEATURE_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : 'FEATURE_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+          show: 'asOverflow',
+          actionCallback: () => this.toggleChartVisibility(),
+        },
+        {
+          labelKey: 'FEATURE_SEARCH.HEADER_ACTIONS.MY_HEADER_ACTION',
+          icon: PrimeIcons.SYNC,
+          titleKey: 'FEATURE_SEARCH.HEADER_ACTIONS.MY_HEADER_ACTION',
+          show: 'asOverflow',
+          actionCallback: () => this.myHeaderAction(),
+        },
+      ];
+    return actions;
+  })
+);
+----
+
+== Pass the property in the HTML 
+
+The property which was defined in typescript component should be passed to `+ocx-search-header+` HTML component.
+Please, reference the {search_header_url}[SearchHeader docs] for more information about this component.
+
+.Example:
+[source, html]
+----
+<ocx-search-header
+  [actions]="(headerActions$ | async) ?? []"
+>
+...
+</ocx-search-header>
+----
+
+:!sectids:
+:!sectnums:
+== Optional steps
+
+In case for your header action you will need to have an effect (if your action should trigger an API) or reducer (if your action changes the state), perform following actions, based on the need.
+
+:sectids:
+:sectnums:
+[#action_group]
+== Define actions in action group
+
+Modify `+<feature>.actions.ts+` file, specifying input parameters for the actions. If no paramters required, provide `+emptyProps()+`:
+
+.Example:
+[source, javascript]
+----
+export const FeatureSearchActions = createActionGroup({
+  source: 'FeatureSearch',
+  events: {
+    'Details button clicked': props<{
+      id: number | string;
+    }>(),
+
+    'Search button clicked': props<{
+      searchCriteria: FeatureSearchCriteria;
+    }>(),
+    'Reset button clicked': emptyProps(),
+  },
+});
+
+----
+
+[#reducer]
+== Create Reducer
+
+If you need to update the state of the model, define reducer `+<feature>.reducers.ts+` file for your action:
+
+.Example:
+[source, javascript]
+----
+export const featureSearchReducer = createReducer(
+  initialState,
+  on(
+    FeatureSearchActions.someActionButtonClicked,
+    (state: FeatureSearchState): FeatureSearchState => ({
+      ...state,
+      results: initialState.results,
+    })
+ )
+);
+----
+
+[#effect]
+== Create Effect
+
+In case your action needs to call some API, create an effect in `+<feature>.effects.ts+` file:
+
+.Example:
+[source, javascript]
+----
+doSomeActionById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FeatureActions.someActionButtonClicked),
+      concatLatestFrom(() => this.store.select(selectFeatureViewModel)),
+      switchMap(([, data]) =>
+        this.someService.getFeatureById(data?.id).pipe(
+          map((result) =>
+            FeatureActions.someActionReceived({
+              details: result
+            })
+          ),
+          catchError((error) =>
+            of(
+              FeatureActions.someActionFailed({
+                 error,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+----
+
