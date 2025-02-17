@@ -3,6 +3,8 @@
 :idprefix:
 :idseparator: -
 
+:search_header_url: xref:latest@guides:angular:cookbook/components/search-header/index.adoc
+
 :sectids:
 :sectnums:
 
@@ -59,6 +61,22 @@ headerActions$: Observable<Action[]> = this.viewModel$.pipe(
   })
 );
 ----
+
+== Pass the property in the HTML 
+
+The property which was defined in typescript component should be passed to `+ocx-search-header+` HTML component.
+Please, reference the {search_header_url}[SearchHeader docs] for more information about this component.
+
+.Example:
+[source, html]
+----
+<ocx-search-header
+  [actions]="(headerActions$ | async) ?? []"
+>
+...
+</ocx-search-header>
+----
+
 :!sectids:
 :!sectnums:
 == Optional steps
