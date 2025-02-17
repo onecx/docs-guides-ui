@@ -13,15 +13,22 @@ If you want to add additional header actions, you need to extend `+<feature>.com
 
 [source, javascript]
 ----
-const actions: Action[] = [
+headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+  map((vm) => {
+    const actions: Action[] = [
     ...
-]
+    ];
+    return actions;
+  })
+);
 ----
 
 .Example:
 [source, javascript]
 ----
-const actions: Action[] = [
+headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+  map((vm) => {
+    const actions: Action[] = [
         {
           labelKey: 'FEATURE_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           icon: PrimeIcons.DOWNLOAD,
@@ -48,6 +55,9 @@ const actions: Action[] = [
           actionCallback: () => this.myHeaderAction(),
         },
       ];
+    return actions;
+  })
+);
 ----
 :!sectids:
 :!sectnums:
