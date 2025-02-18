@@ -3,6 +3,8 @@
 :idprefix:
 :idseparator: -
 
+:feature_explanation: xref:latest@nx-plugins:getting_started/explanations.adoc#feature
+
 :sectids:
 :sectnums:
 
@@ -31,20 +33,22 @@ permission:
 
 The permissions can be used in your implementation by refering to it in following way: `+"FEATURE#ACTION"+`
 
+_`Feature` should be replaced as explained {feature_explanation}[here]_
+
 For example for header actions, permission property needs to be specified:
 
-.Example from `+feature.component.ts+`
+.Example from {feature_explanation}[`+feature.component.ts+`]
 [source, typescript]
 ----
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
       const actions: Action[] = [
         {
-          labelKey: 'PROPERTY_DETAILS.HEADER_ACTIONS.REFRESH',
+          labelKey: 'FEATURE_DETAILS.HEADER_ACTIONS.REFRESH',
           icon: PrimeIcons.REFRESH,
-          titleKey: 'PROPERTY_DETAILS.HEADER_ACTIONS.REFRESH_TOOLTIP',
+          titleKey: 'FEATURE_DETAILS.HEADER_ACTIONS.REFRESH_TOOLTIP',
           show: 'asOverflow',
-          permission: 'PROPERTY#VIEW',
+          permission: 'FEATURE#VIEW',
           actionCallback: () => {
               this.store.dispatch(PropertyDetailsActions.refreshDetailsButtonClicked());
             }
@@ -57,7 +61,7 @@ For example for header actions, permission property needs to be specified:
 
 In the HTML view the permissions can be specified for the full page:
 
-.Example from `+feature.component.html+`
+.Example from {feature_explanation}[`+feature.component.html+`]
 [source, html]
 ----
 <ocx-portal-page
@@ -69,7 +73,7 @@ In the HTML view the permissions can be specified for the full page:
 
 Or the permissions can be defined for particular HTML element, like result data table:
 
-.Example from `+feature.component.html+`
+.Example from {feature_explanation}[`+feature.component.html+`]
 [source, html]
 ----
           <ocx-interactive-data-view
@@ -77,12 +81,13 @@ Or the permissions can be defined for particular HTML element, like result data 
             (viewItem)="details($event)"
             [data]="vm.results"
             [columns]="vm.columns"
-            viewPermission="PROPERTY#VIEW"
-            editPermission="PROPERTY#EDIT"
+            viewPermission="FEATURE#VIEW"
+            editPermission="FEATURE#EDIT"
           >
           ...
           </ocx-interactive-data-view>
 ----
+_`Feature` should be replaced as explained {feature_explanation}[here]_
 
 [IMPORTANT] 
 .Clarify the permission-role concept
