@@ -3,6 +3,7 @@
 :idprefix:
 :idseparator: -
 
+:feature_explanation: xref:latest@nx-plugins:getting_started/explanations.adoc#feature
 :search_header_url: xref:latest@guides:angular:cookbook/components/search-header/index.adoc
 
 :sectids:
@@ -11,7 +12,7 @@
 [#define-header-actions]
 == Define actions in component
 
-If you want to add additional header actions, you need to extend `+<feature>.component.ts+` defining the array with actions there:
+If you want to add additional header actions, you need to extend {feature_explanation}[`+<feature>.component.ts+`] defining the array with actions there:
 
 [source, javascript]
 ----
@@ -108,11 +109,12 @@ export const FeatureSearchActions = createActionGroup({
 });
 
 ----
+_`Feature` should be replaced as explained {feature_explanation}[here]_
 
 [#reducer]
 == Create Reducer
 
-If you need to update the state of the model, define reducer `+<feature>.reducers.ts+` file for your action:
+If you need to update the state of the model, define reducer {feature_explanation}[`+<feature>.reducers.ts+`] file for your action:
 
 .Example:
 [source, javascript]
@@ -129,10 +131,12 @@ export const featureSearchReducer = createReducer(
 );
 ----
 
+_`Feature` should be replaced as explained {feature_explanation}[here]_
+
 [#effect]
 == Create Effect
 
-In case your action needs to call some API, create an effect in `+<feature>.effects.ts+` file:
+In case your action needs to call some API, create an effect in {feature_explanation}[`+<feature>.effects.ts+`] file:
 
 .Example:
 [source, javascript]
@@ -160,4 +164,4 @@ doSomeActionById$ = createEffect(() => {
     );
   });
 ----
-
+_`Feature` should be replaced as explained {feature_explanation}[here]_
