@@ -4,6 +4,7 @@
 :idseparator: -
 
 :page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
+:feature_explanation: xref:latest@nx-plugins:getting_started/explanations.adoc#feature
 
 :!sectids:
 [#configure-details-page]
@@ -16,7 +17,7 @@ Configure the data to be shown to the user after click on the details icon in th
 [#header]
 == Header Component
 
-The lables and values to be displayed in header component, should be defined in `+<feature>-details.component.ts+`, by defining the property of type `ObjectDetailItem`.
+The lables and values to be displayed in header component, should be defined in {feature_explanation}[`+<feature>-details.component.ts+`], by defining the property of type `ObjectDetailItem`.
 
 .Example extended header items
 [source, javascript]
@@ -33,7 +34,7 @@ Please, reference the {page_header_url}[PageHeader docs] for more information on
   
 [#tab]
 == Tab Component
-Implement a method for handling tabs change in `+<feature>-details.component.ts+` file.
+Implement a method for handling tabs change in {feature_explanation}[`+<feature>-details.component.ts+`] file.
 
 .Example:
 [source, typescript]
