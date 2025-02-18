@@ -57,4 +57,4 @@ Implement a method for handling tabs change in {feature_explanation}[`+<feature>
     }
   }
 ----
-  
+_`Feature` should be replaced as explained {feature_explanation}[here]_  
