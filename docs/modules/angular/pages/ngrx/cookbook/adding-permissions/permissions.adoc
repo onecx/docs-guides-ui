@@ -33,7 +33,7 @@ permission:
 
 The permissions can be used in your implementation by refering to it in following way: `+"FEATURE#ACTION"+`
 
-_`Feature` should be replaced as explained {feature_explanation}[here]_
+_`Feature` should be replaced as explained {feature_explanation}[here] in all places._
 
 For example for header actions, permission property needs to be specified:
 
