@@ -101,7 +101,8 @@ After creating the files, the newly created main files must be referenced in the
 === Optional: Set up `@ngx-translate` translation loading
 To ensure correct translation loading in an application using `@ngx-translate` a few more modifications have to be applied to `./src/app/app.module.ts`.
 
-1. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard` from `@onecx/angular-integration-interface`. This ensure correct translation loading for each route. Note that the route configuration might be placed in a separate routing module (e.g. `./src/app/app-routing.module.ts`) or in the `commonImports` you created in your applications remote module.
+. The package `@ngx-translate/core` has to be installed in the project.
+. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard` from `@onecx/angular-integration-interface`. This ensures correct translation loading for each route. Note that the route configuration might be placed in a separate routing module (e.g. `./src/app/app-routing.module.ts`) or in the `commonImports` you created in your applications remote module.
 
     imports: [
       ...
@@ -109,21 +110,26 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-2. `TranslateModule.forRoot()` has to be configured in the app modules imports array. `createTranslateLoader` has to be imported from `@onecx/angular-utils` and ensures that the correct translation files is loaded on app load. If `@onecx/angular-utils` is not yet installed in the project, it has to be installed first.
+. `TranslateModule.forRoot()` has to be configured in the app modules imports array or the `commonImports` array that is being shared between `app.module.ts` and the application's remote module. `createTranslateLoader` has to be imported from `@onecx/angular-utils` and ensures that the correct translation files is loaded on app load. If `@onecx/angular-utils` is not yet installed in the project, it has to be installed first. Note that the property `isolate` should not be necessary in a pure standalone setup and is only required when adding the `TranslateModule` configuration to a `commonImports` array.
 
   imports: [
     ...
     TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: createTranslateLoader,
-          deps: [HttpClient]
-        }
-      }),
-      ...
+      isolate: false,
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      }
+    }),
+    ...
   ],
 
-3. The path to the applications translations is provided automatically by the previously imported `StandaloneShellModule`.
+. The path to the applications translations is provided automatically by the previously imported `StandaloneShellModule`. If any errors occur during translation loading, the network tab of the browsers developer tools can be used to verify that the application's translation files are placed in the correct location.
+
+Disclaimer: If any of the applications feature modules use ngx-translate features, such as the `translate` pipe, `TranslateModule` might have to be added to the feature modules imports array.
+
+[#configure-styles]
 
 [#verify-standalone-mode]
 === Verify that the app is running in standalone
