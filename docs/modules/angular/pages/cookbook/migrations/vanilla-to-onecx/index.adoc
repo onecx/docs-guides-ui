@@ -259,7 +259,6 @@ To ensure correct translation loading in an application using `@ngx-translate` a
     imports: [
       ...
       TranslateModule.forRoot({
-          extend: true,
           isolate: false,
           loader: {
             provide: TranslateLoader,
@@ -284,7 +283,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
     ...
   ]
 
-Disclaimer: If any of the applications feature modules use ngx-translate features, such as the `translate` pipe, `TranslateModule.forChild()` might have to be added to the feature modules imports array.
+Disclaimer: If any of the applications feature modules use ngx-translate features, such as the `translate` pipe, `TranslateModule` might have to be added to the feature modules imports array.
 
 [#expose-entrypoint]
 ==== Create `remote-bootstrap.ts` and `remote-main.ts`

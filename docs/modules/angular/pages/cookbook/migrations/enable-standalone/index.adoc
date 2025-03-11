@@ -110,12 +110,11 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-. `TranslateModule.forRoot()` has to be configured in the app modules imports array or the `commonImports` array that is being shared between `app.module.ts` and the application's remote module. `createTranslateLoader` has to be imported from `@onecx/angular-utils` and ensures that the correct translation files is loaded on app load. If `@onecx/angular-utils` is not yet installed in the project, it has to be installed first. Note that the properties `extend` and `isolate` should not be necessary in a pure standalone setup and are only required when adding the `TranslateModule` configuration to a `commonImports` array.
+. `TranslateModule.forRoot()` has to be configured in the app modules imports array or the `commonImports` array that is being shared between `app.module.ts` and the application's remote module. `createTranslateLoader` has to be imported from `@onecx/angular-utils` and ensures that the correct translation files is loaded on app load. If `@onecx/angular-utils` is not yet installed in the project, it has to be installed first. Note that the property `isolate` should not be necessary in a pure standalone setup and is only required when adding the `TranslateModule` configuration to a `commonImports` array.
 
   imports: [
     ...
     TranslateModule.forRoot({
-      extend: true,
       isolate: false,
       loader: {
         provide: TranslateLoader,
@@ -128,7 +127,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
 
 . The path to the applications translations is provided automatically by the previously imported `StandaloneShellModule`. If any errors occur during translation loading, the network tab of the browsers developer tools can be used to verify that the application's translation files are placed in the correct location.
 
-Disclaimer: If any of the applications feature modules use ngx-translate features, such as the `translate` pipe, `TranslateModule.forChild()` might have to be added to the feature modules imports array.
+Disclaimer: If any of the applications feature modules use ngx-translate features, such as the `translate` pipe, `TranslateModule` might have to be added to the feature modules imports array.
 
 [#configure-styles]
 
