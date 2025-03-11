@@ -226,12 +226,27 @@ NOTE: Depending on the application this file will vary heavily and contain diffe
 ==== Optional: Set up `@ngx-translate` translation loading in the remote module
 To ensure correct translation loading in an application using `@ngx-translate` a few modifications have to be applied to the remote module mentioned above.
 
-1. A few imports have to be added at the beginning of the remote module file.
+. The package `@ngx-translate/core` has to be installed in the project.
+
+. After installing the package, it has to be added to the `shared` configuration in the `webpack.config.js` file. This ensures that the package is shared between the app and OneCX.
+
+    const config = withModuleFederationPlugin({
+      ...
+      shared: share({
+        ...
+        '@ngx-translate/core': { requiredVersion: 'auto' },
+        ...
+      }),
+    })
+
+. After the initial configuration, translation files can be created and translations can be used in the app.
+
+. After creating the translation files, a few imports have to be added at the beginning of the remote module file.
 
     import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
     import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-utils'
 
-2. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard`. This ensures correct translation loading for each route.
+. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard`. This ensures correct translation loading for each route.
 
     imports: [
       ...
@@ -239,7 +254,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-3. `TranslateModule.forRoot()` has to be configured in the modules imports array. The factory function `createTranslateLoader` ensures that the correct translation files is loaded on app load.
+. `TranslateModule.forRoot()` has to be configured in the modules imports array or the `commonImports` array that is being shared between `app.module.ts` and the remote module. The factory function `createTranslateLoader` ensures that the correct translation files is loaded on app load.
 
     imports: [
       ...
@@ -255,7 +270,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-4. The path to the applications translations has to be provided using an injection token and `translationPathFactory`.
+. The path to the applications translations has to be provided using an injection token and `translationPathFactory`.
 
   providers: [
     ...
@@ -268,6 +283,8 @@ To ensure correct translation loading in an application using `@ngx-translate` a
     },
     ...
   ]
+
+Disclaimer: If any of the applications feature modules use ngx-translate features, such as the `translate` pipe, `TranslateModule.forChild()` might have to be added to the feature modules imports array.
 
 [#expose-entrypoint]
 ==== Create `remote-bootstrap.ts` and `remote-main.ts`
