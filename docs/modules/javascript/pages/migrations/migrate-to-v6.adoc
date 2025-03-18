@@ -3,6 +3,8 @@
 :idprefix:
 :idseparator: -
 
+:theming_url: xref:angular:cookbook/theming.adoc
+
 [#migration-checklist]
 == Migration checklist
 [%interactive]
@@ -112,9 +114,7 @@ In this example:
 * the *secondary color* theme variable is changed
 * the *default focus highlight* is changed
 
-// TODO: Add link
-// TODO: Types of overrides to provide (Promise, func)
-More about what and how to override can be found in here.
+More about what and how to override can be found in {theming_url}[theming documentation].
 
 [#filter-type]
 == FilterType values changes
