@@ -96,11 +96,11 @@ Misc variables::
 |`--body-bg-color`
 |Background color of the document's body, used for the content pane's background color.
 |`--overlay-content-bg-color`
-|DEPRECATED
+|
 |`--solid-surface-text-color`
-|DEPRECATED
+|
 |`--content-alt-bg-color`
-|DEPRECATED
+|
 |===
 ====
 
@@ -140,7 +140,7 @@ Shell-related misc variables::
 |`--menu-active-item-bg-color`
 |Background color of the active menu item, located in the sidebar, next to the content pane.
 |`--menu-inline-border-color`
-|?
+|
 
 |===
 ====
