@@ -1,0 +1,211 @@
+= OneCX react-integration-interface Library
+
+:idprefix:
+:idseparator: -
+
+:integration-interface_url: xref:javascript:libraries/integration-interface.adoc
+:global_error_topic_url: xref:javascript:libraries/integration-interface.adoc#global-error-topic
+:global_loading_topic_url: xref:javascript:libraries/integration-interface.adoc#global-loading-topic
+:current_mfe_topic_url: xref:javascript:libraries/integration-interface.adoc#current-mfe-topic
+:current_page_topic_url: xref:javascript:libraries/integration-interface.adoc#current-page-topic
+:current_workspace_topic_url: xref:javascript:libraries/integration-interface.adoc#current-workspace-topic
+:is_authenticated_topic_url: xref:javascript:libraries/integration-interface.adoc#is-authenticated-topic
+:configuration_topic_url: xref:javascript:libraries/integration-interface.adoc#configuration-topic
+:message_topic_url: xref:javascript:libraries/integration-interface.adoc#message-topic
+:remote_components_topic_url: xref:javascript:libraries/integration-interface.adoc#remote-components-topic
+:current_theme_topic_url: xref:javascript:libraries/integration-interface.adoc#current-theme-topic
+:user_profile_topic_url: xref:javascript:libraries/integration-interface.adoc#user-profile-topic
+:permissions_topic_url: xref:javascript:libraries/integration-interface.adoc#permissions-topic
+:config_object_url: xref:javascript:libraries/integration-interface.adoc#config-object
+:theme_object_url: xref:javascript:libraries/integration-interface.adoc#theme-object
+:route_object_url: xref:javascript:libraries/integration-interface.adoc#Route-object
+
+
+[#overview]
+== Overview
+`@onecx/react-integration-interface` library is a set of tools aiming to ease the development of React applications integrated with OneCX by utilizing and extending functionalities of {integration-interface_url}[@onecx/integration-interface]. This library offers contexts containing a set of functionalities useful for integrating Microfrontends with OneCX without directly utilizing Topics.
+
+[#contexts]
+== Contexts
+
+[#app-state-provider]
+=== App State Provider
+Usage::
+*Access information about the platform state*.
++
+This context creates new instances of several Topics that contain information about the current state of the platform and makes sure they are cleaned up correctly on destruction.
+
+Topics used::
+
+* {global_error_topic_url}[GlobalErrorTopic]
+* {global_loading_topic_url}[GlobalLoadingTopic]
+* {current_mfe_topic_url}[CurrentMfeTopic]
+* {current_page_topic_url}[CurrentPageTopic]
+* {current_workspace_topic_url}[CurrentWorkspaceTopic]
+* {is_authenticated_topic_url}[IsAuthenticatedTopic]
+
+Dependencies::
+None
+
+API::
+*App State Provider* properties enable access to topic instances:
++
+.App State Provider properties
+[cols="1,1,2"]
+|===
+|Property name |Type | Description
+
+|`globalError$` | `{global_error_topic_url}[GlobalErrorTopic]` | {global_error_topic_url}[GlobalErrorTopic] instance.
+|`globalLoading$` | `{global_loading_topic_url}[GlobalLoadingTopic]` | {global_loading_topic_url}[GlobalLoadingTopic] instance.
+|`currentMfe$` | `{current_mfe_topic_url}[CurrentMfeTopic]` | {current_mfe_topic_url}[CurrentMfeTopic] instance.
+|`currentPage$` | `{current_page_topic_url}[CurrentPageTopic]` | {current_page_topic_url}[CurrentPageTopic] instance.
+|`currentWorkspace$` | `{current_workspace_topic_url}[CurrentWorkspaceTopic]` | {current_workspace_topic_url}[CurrentWorkspaceTopic] instance.
+|`isAuthenticated$` | `{is_authenticated_topic_url}[IsAuthenticatedTopic]` | {is_authenticated_topic_url}[IsAuthenticatedTopic] instance.
+|`[.line-through]#currentPortal$#` | [.line-through]`{current_workspace_topic_url}[CurrentWorkspaceTopic]` | Deprecated. Use currentWorkspace$ instead.
+|===
+
+[#configuration-provider]
+=== Configuration Provider
+Usage::
+*Initialize and access configuration variables for a platform*.
++
+This provider is initialized by, and contains configuration variables, for the Shell Application that could be used in any place on the platform.
++
+
+
+Topics used::
+
+* {configuration_topic_url}[ConfigurationTopic]
+
+Dependencies::
+
+* HttpClient
+
+API::
+*Configuration Provider* properties:
++
+.Configuration Provider properties
+[cols="1,1,2"]
+|===
+|Property name |Type | Description
+
+|`config$` | `{configuration_topic_url}[ConfigurationTopic]` | {configuration_topic_url}[ConfigurationTopic] instance.
+|`isInitialized` | `Promise<void>` | Promise resolved when Configuration Provider is initialized.
+|===
++
+*Configuration Provider* methods can be used for platform configuration variable management:
++
+.Configuration Provider methods
+[cols="1,1,2"]
+|===
+|Method signature |Return type | Description
+
+|`init()` | `Promise<boolean>` | Initializes Configuration Service by loading Shell configuration variables and publishes them via ConfigurationTopic. Should not be used in Microfrontends.
+|`getProperty(key: CONFIG_KEY)` | `string`| Gets value set for a key from topic.
+|`async setProperty(key: string, val:string)` | `void` | Updates the value for a key in the configuration. Publishes new message via ConfigurationTopic.
+|`getConfig()` |`{config_object_url}[Config]` |Gets all configuration variables defined for the app from the topic.
+|===
+
+
+[#theme-provider]
+=== Theme Provider
+Usage::
+*Change the page display style by applying Themes*.
++
+This service allows changing the currently used Theme by applying it to the document and informs about it via a new message in the {current_theme_topic_url}[CurrentThemeTopic].
+
+Topics used::
+
+* {current_theme_topic_url}[CurrentThemeTopic]
+
+Dependencies::
+
+* HttpClient
+* xref:libraries/react-integration-interface.adoc#configuration-provider[ConfigurationProvider]
+
+API::
+*Theme Provider* properties enable access to topic instances:
++
+.Theme Provider properties
+[cols="1,1,2"]
+|===
+|Property name |Type | Description
+
+|`currentTheme$` | `{current_theme_topic_url}[CurrentThemeTopic]` | {current_theme_topic_url}[CurrentThemeTopic] instance.
+|===
++
+*Theme Provider* methods:
++
+.Theme Provider methods
+[cols="1,1,2"]
+|===
+|Method signature |Return type | Description
+
+|`apply(theme: {theme_object_url}[Theme])` | `Promise<void>` | Applies {theme_object_url}[Theme] via document style manipulation (styles will be lost on page exit). Publishes a new message via {current_theme_topic_url}[CurrentThemeTopic].
+|`getThemeHref(themeId: string)` | `string` | Get theme href
+|`loadAndApplyTheme(themeName: string)` | `void` | Load and apply theme
+
+|===
+
+[#user-provider]
+=== User Provider
+Usage::
+*Access the user's data, settings and permissions*.
++
+This service contains user-related information and allows checking user permissions by utilizing Topics.
+
+Topics used::
+
+* {user_profile_topic_url}[UserProfileTopic]
+* {permissions_topic_url}[PermissionsTopic]
+
+API::
+*User Provider* properties enable access to the user's information:
++
+.User Provider properties
+[cols="1,1,2"]
+|===
+|Property name |Type | Description
+
+|`profile$` | `{user_profile_topic_url}[UserProfileTopic]` | {user_profile_topic_url}[UserProfileTopic] instance.
+|`lang$` | `BehaviorSubject<string>` | User's language. For every new message in the {user_profile_topic_url}[UserProfileTopic], the language will be updated based on the user's locale information.
+|`isInitialized` | `Promise<void>` | Promise resolved when User Service is initialized.
+|`permissions$` | `BehaviorSubject<string[]>` | Permission.
+|===
++
+*User Provider* methods:
++
+.User Provider methods
+[cols="1,1,2"]
+|===
+|Method signature |Return type | Description
+
+|`hasPermission(permissionKey: string | string[])` | `boolean` | Checks if user has specified permission/permissions using PermissionTopic's latest value.
+|===
+
+[#workspace-hook]
+=== Workspace Hook
+Usage::
+*Manage Workspace resources*.
++
+This hook offers set of methods useful when developing Microfrontends referencing other Applications via routing.
+
+Topics used::
+None.
+
+Dependencies::
+
+* HttpClient
+* xref:libraries/react-integration-interface.adoc#app-state-provider[AppStateProvider]
+
+API::
+*Workspace Hook* - *useWorkspace* can be used for constructing routes to Applications:
++
+.Workspace Hook methods
+[cols="1,1,2"]
+|===
+|Method signature |Return type | Description
+
+|`getUrl(productName: string, appId: string, endpointName?: string, endpointParameters?:Record<string, unknown>)` | `Observable<string>` | Constructs a valid url for a desired Application in context of the current Workspace. It is possible to use {route_object_url}[Route] endpoints to further customize an accessed resource.
+|`doesUrlExistFor(productName: string, appId: string, endpointName?: string)` | `Observable<boolean>` | Checks if a valid url exists for a desired Application in context of the current Workspace. It is possible to use {route_object_url}[Route] endpoints to further customize an accessed resource.
+|===

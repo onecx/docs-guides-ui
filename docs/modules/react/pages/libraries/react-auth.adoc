@@ -1,0 +1,51 @@
+= OneCX @onecx/react-auth Library
+
+[#overview]
+== Overview
+
+This document provides an overview of the `axiosFactory` function, which creates an `axios` instance with additional features such as automatically adding authorization headers to HTTP requests.
+
+* axios: The main library for making HTTP requests.
+
+[#axios-factory]
+== axiosFactory Function
+
+The axiosFactory function creates an axios instance with additional functionality, such as automatically adding authorization headers. It is particularly useful in applications that require authentication for every HTTP request.
+
+```javascript
+export const axiosFactory: (baseURL?: string) => AuthenticatedAxiosInstance = (
+  baseURL
+) => {
+  // Implementation
+};
+```
+* baseURL: An optional parameter specifying the base URL for HTTP requests.
+* The axios instance is extended with a tokens property.
+* An interceptor is added to automatically include authorization headers in HTTP requests, except for those in the WHITELIST.
+
+[#example-usage]
+== Example Usage
+
+```javascript
+
+// Create an axios instance with a base URL
+const apiClient = axiosFactory('https://api.example.com');
+
+// Make a GET request
+apiClient.get('/data')
+  .then(response => {
+    console.log('Data received:', response.data);
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+// Make a POST request with authorization headers
+apiClient.post('/submit', { name: 'John Doe' })
+  .then(response => {
+    console.log('Submission successful:', response.data);
+  })
+  .catch(error => {
+    console.error('Error submitting data:', error);
+  });
+```
