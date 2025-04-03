@@ -13,27 +13,21 @@ ConfigurationService (angular-integration-interface) is now asynchronous. Please
 Some components will be removed. Please check if you are using following components:
 
 === removed from portal-integration-angular
-[cols="2*", options="noheader,grid=none"]
-|===
-| portal-footer| 
-| portal-header | => Please use these components from shell-core instead
-| portal-viewport | 
-|===
 
-[cols="2*", options="noheader,grid=none"]
-|===
-| portal-menu | 
-| portal-menu-horizontal | => Removed without replacement
-| inline-profile | 
-|===
+* portal-footer 
+* portal-header
+* portal-viewport + 
+=> *These components are now in shell-core* 
 
-[cols="2*", options="noheader,grid=none"]
-|===
-| core/initializer/standalone.initializer.ts  | =>  Please use standalone mode instead xref:angular:pages:migrations:enable-standalone/index.adoc[Documentation]
-|===
+* portal-menu
+* portal-menu-horizontal 
+* inline-profile +
+=> *Menu components are now in onecx-workspace-ui*
 
-[cols="2*", options="noheader,grid=none"]
-|===
-| services/app.menu.service.ts  | => Please refer to MenuItemService workspace-ui
-|===
+* core/initializer/standalone.initializer.ts + 
+=>  *Please use standalone mode instead xref:angular:pages:migrations:enable-standalone/index.adoc[Documentation]*
+
+* services/app.menu.service.ts +
+=> *Please refer to MenuItemService onecx-workspace-ui*
+
 
