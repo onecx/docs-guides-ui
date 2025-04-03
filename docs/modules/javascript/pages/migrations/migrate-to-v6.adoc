@@ -17,7 +17,7 @@ Some components will be removed. Please check if you are using following compone
 * portal-footer 
 * portal-header
 * portal-viewport + 
-=> *These components are now in shell-core* 
+=> *These components are now in @onecx/shell-core* 
 
 * portal-menu
 * portal-menu-horizontal 
