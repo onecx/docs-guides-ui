@@ -22,12 +22,12 @@ Some components will be removed. Please check if you are using following compone
 * portal-menu
 * portal-menu-horizontal 
 * inline-profile +
-=> *Menu components are now in onecx-workspace-ui*
+=> *They are now remote components in onecx-workspace-ui*
 
 * core/initializer/standalone.initializer.ts + 
 =>  *Please use standalone mode instead xref:angular:pages:migrations:enable-standalone/index.adoc[Documentation]*
 
 * services/app.menu.service.ts +
-=> *Please refer to MenuItemService onecx-workspace-ui*
+=> *If someone wants to load menu item they should create an endpoint in the BFF of the own app and create their own function.*
 
 
