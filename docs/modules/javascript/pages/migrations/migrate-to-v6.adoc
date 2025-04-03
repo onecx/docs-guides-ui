@@ -5,3 +5,29 @@ Please, make sure to update `FilterType` usage:
 
 * `FilterType.EQUAL` &#8594; `FilterType.EQUALS`
 * `FilterType.TRUTHY` &#8594; `FilterType.IS_NOT_EMPTY`
+
+== Check usage of ConfigurationService 
+ConfigurationService (@onecx/angular-integration-interface) is now asynchronous. Please check if usage needs to be adapted.
+
+== Check deleted components
+Some components will be removed. Please check if you are using following components:
+
+=== Removed from @onecx/portal-integration-angular
+
+* portal-footer 
+* portal-header
+* portal-viewport + 
+=> *These components are now in @onecx/shell-core* 
+
+* portal-menu
+* portal-menu-horizontal 
+* inline-profile +
+=> *They are now remote components in onecx-workspace-ui*
+
+* core/initializer/standalone.initializer.ts + 
+=>  *Please use standalone mode instead xref:angular:pages:migrations:enable-standalone/index.adoc[Documentation]*
+
+* services/app.menu.service.ts +
+=> *If someone wants to load menu item they should create an endpoint in the BFF of the own app and create their own function.*
+
+
