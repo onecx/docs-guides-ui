@@ -1,7 +1,5 @@
 = Migrate to OneCX version 6
 
-:standalone_guide_url: xref:angular:pages:migrations:enable-standalone/index.adoc
-
 == Change FilterType values
 Please, make sure to update `FilterType` usage:
 
@@ -31,7 +29,7 @@ Some components will be removed. Please check if you are using following compone
 
 [cols="2*", options="noheader,grid=none"]
 |===
-| core/initializer/standalone.initializer.ts  | =>  Please use standalone mode instead {standalone_guide_url}[Documentation]
+| core/initializer/standalone.initializer.ts  | =>  Please use standalone mode instead xref:angular:pages:migrations:enable-standalone/index.adoc[Documentation]
 |===
 
 [cols="2*", options="noheader,grid=none"]
