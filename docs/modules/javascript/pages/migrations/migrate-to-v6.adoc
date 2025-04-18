@@ -11,9 +11,11 @@
 * [ ] <<removed-packages, Remove @onecx/keycloak-auth>>
 * [ ] <<removed-packages, Remove @onecx/portal-layout-styles>>
 * [ ] <<removed-packages, Remove @onecx/portal-integration-interface>>
+* [ ] <<deleted-components, Check deleted components>>
 * [ ] <<new-plugin, Add new plugin to webpack config>>
 * [ ] <<theme-config, Provide theme configuration for Microfrontends and Remote Components>>
 * [ ] <<filter-type, Update FilterType usage>>
+* [ ] <<configuration-service, Update ConfigurationService usage>>
 * [ ] <<theme-service, Update ThemeService usage>>
 * [ ] <<base-url, Replace BASE_URL injection token>>
 * [ ] <<angular-in-webpack, Remove `singleton:true` from angular packages in webpack>>
@@ -26,6 +28,30 @@ In the version 6 of OneCX the following packages are not longer available:
 * *@onecx/keycloak-auth*
 * *@onecx/portal-layout-styles*
 * *@onecx/portal-integration-interface*
+
+[#deleted-components]
+== Check deleted components
+Some components will be removed. Please check if you are using following components:
+
+
+[#removed-from-integration-angular]
+=== Removed from @onecx/portal-integration-angular
+
+* portal-footer 
+* portal-header
+* portal-viewport + 
+=> *These components are now in @onecx/shell-core* 
+
+* portal-menu
+* portal-menu-horizontal 
+* inline-profile +
+=> *They are now remote components in onecx-workspace-ui*
+
+* core/initializer/standalone.initializer.ts + 
+=>  *Please use standalone mode instead xref:angular:pages:migrations:enable-standalone/index.adoc[Documentation]*
+
+* services/app.menu.service.ts +
+=> *If someone wants to load menu item they should create an endpoint in the BFF of the own app and create their own function.*
 
 [#new-plugin]
 == Add required plugin to webpack config (will be changed to OneCX plugin)
@@ -123,6 +149,10 @@ Please, make sure to update `FilterType` usage:
 * `FilterType.EQUAL` &#8594; `FilterType.EQUALS`
 * `FilterType.TRUTHY` &#8594; `FilterType.IS_NOT_EMPTY`
 
+[#configuration-service]
+== Check usage of ConfigurationService 
+ConfigurationService (@onecx/angular-integration-interface) is now asynchronous. Please check if usage needs to be adapted.
+
 [#theme-service]
 == ThemeService removed functionality
 ThemeService in version 6 should *only be used to access the currentTheme* via `currentTheme$` property. The following have been removed:
@@ -188,4 +218,3 @@ Make sure to adjust the Application to the Angular 19 requirements. Based on the
 [#primeng-19-further-changes]
 === PrimeNG 19 changes
 If the migrated Application uses PrimeNG components, please make sure to adjust the implementation according to the PrimeNG 19 requirements and API changes.
-
