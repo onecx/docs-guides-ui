@@ -216,6 +216,3 @@ provideThemeConfig({
   }
 })
 ```
-
-// TODO: How to use overrides for OneCX theme variables
-// TODO: How to use overrides for OneCX components
