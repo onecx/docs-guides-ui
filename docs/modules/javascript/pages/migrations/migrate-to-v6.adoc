@@ -7,35 +7,71 @@
 
 [#migration-checklist]
 == Migration checklist
+* General changes
 [%interactive]
-* [ ] <<removed-packages, Remove @onecx/keycloak-auth>>
-* [ ] <<removed-packages, Remove @onecx/portal-layout-styles>>
-* [ ] <<removed-packages, Remove @onecx/portal-integration-interface>>
-* [ ] <<deleted-components, Check deleted components>>
-* [ ] <<new-plugin, Add new plugin to webpack config>>
-* [ ] <<theme-config, Provide theme configuration for Microfrontends and Remote Components>>
-* [ ] <<filter-type, Update FilterType usage>>
-* [ ] <<configuration-service, Update ConfigurationService usage>>
-* [ ] <<theme-service, Update ThemeService usage>>
-* [ ] <<base-url, Replace BASE_URL injection token>>
-* [ ] <<angular-in-webpack, Remove `singleton:true` from angular packages in webpack>>
-* [ ] <<translation-bootstrap, Move translation related providers to bootstrap.ts for Remote Components>>
+** [ ] <<removed-packages, Remove @onecx/keycloak-auth>>
+** [ ] <<removed-packages, Remove @onecx/portal-layout-styles>>
+** [ ] <<removed-packages, Remove @onecx/portal-integration-interface>>
+** [ ] <<styles-update, Update application styles>>
+** [ ] <<deleted-components, Check deleted components>>
+** [ ] <<filter-type, Update FilterType usage>>
+** [ ] <<theme-service, Update ThemeService usage>>
+** [ ] <<configuration-service, Update ConfigurationService usage>>
+** [ ] <<base-url, Replace BASE_URL injection token>>
+** [ ] <<angular-in-webpack, Remove `singleton:true` from angular packages in webpack>>
+** [ ] <<translation-bootstrap, Move translation related providers to bootstrap.ts for Remote Components>>
+* PrimeNg related changes
+[%interactive]
+** [ ] <<new-plugin, Add new plugin to webpack config>>
+** [ ] <<theme-config, Provide theme configuration for Microfrontends and Remote Components>>
+
+[#general-changes]
+== General changes
 
 [#removed-packages]
-== Removed packages
+=== Removed packages
 In the version 6 of OneCX the following packages are not longer available:
 
 * *@onecx/keycloak-auth*
 * *@onecx/portal-layout-styles*
 * *@onecx/portal-integration-interface*
 
+[#styles-update]
+=== Update application styles
+Please, make sure to *remove @onecx/portal-layout-styles and @onecx/portal-integration-interface references from application styles*.
+
+Since version 6 styles from @onecx/portal-layout-styles will no longer be available globally on a page. *Please, make sure that your application does not use any styles (css classes, animations, etc.) defined by portal-layout-styles*. In case it does, you will need to implement those in your application.
+
+The only css styles available for each application since version 6:
+- styles exposed via app_url/styles.css file (where app_url is a url to the deployed application)
+- component styles defined in the application (styles defined for each component inside the application)
+- PrimeNG component styles (only if the application uses primeNG)
+
+==== Expose styles.css on top level
+In case if  your application needs to share styles between components you should make sure to *expose styles.css file. Shell will assume that this file is called styles.css and is exposed on the top level of your deployed application*. In order to make sure this is done properly, we are recommending to update the project configuration with the following config:
+
+.project.json or angular.json
+```
+...
+"styles": [
+  {
+    "input": "./src/styles.scss",
+    "bundleName": "styles",
+    "inject": false
+  }
+]
+...
+```
+
+The above snippet assumes that the exposed style sheet is in *src/styles.scss*.
+
 [#deleted-components]
-== Check deleted components
+=== Check deleted components
 Some components will be removed. Please check if you are using following components:
 
 
 [#removed-from-integration-angular]
-=== Removed from @onecx/portal-integration-angular
+==== Removed from @onecx/portal-integration-angular
 
 * portal-footer 
 * portal-header
@@ -53,108 +89,19 @@ Some components will be removed. Please check if you are using following compone
 * services/app.menu.service.ts +
 => *If someone wants to load menu item they should create an endpoint in the BFF of the own app and create their own function.*
 
-[#new-plugin]
-== Add required plugin to webpack config (will be changed to OneCX plugin)
-Since version 6 its required to add the following plugin into the webpack of the Application.
-
-.Webpack plugin snippet
-```
-const { ModifySourcePlugin, ReplaceOperation } = require('modify-source-webpack-plugin')
-...
-const modifyPrimeNgPlugin = new ModifySourcePlugin({
-  rules: [
-    {
-      test: (module) => {
-        return module.resource && module.resource.includes('primeng')
-      },
-      operations: [
-        new ReplaceOperation(
-          'all',
-          'document\\.createElement\\(([^)]+)\\)',
-          'document.createElementFromPrimeNg({"this": this, "arguments": Array.from(arguments), element: $1})'
-        ),
-        new ReplaceOperation('all', 'Theme.setLoadedStyleName', '(function(_){})')
-      ]
-    }
-  ]
-})
-module.exports = {
-  ...webpackConfig,
-  plugins: [...plugins, modifyPrimeNgPlugin]
-}
-```
-
-[#theme-config]
-== Provide ThemeConfig
-Since version 6 of OneCX it is required to add an additional provider to the Microfrontends and Remote Components.
-
-.mfe.remote.module.ts
-```
-import { provideThemeConfig } from '@onecx/angular-utils'
-...
-@NgModule({
-    providers: [
-        provideThemeConfig()
-    ]
-}) export class MyMfe {}
-```
-
-.remote-component.bootstrap.ts
-```
-import { provideThemeConfig } from '@onecx/angular-utils'
-
-bootstrapRemoteComponent(RemoteComponent, 'my-remote-component', environment.production, [
-  provideThemeConfig()
-])
-```
-
-[#theme-overrides]
-=== Provide theme overrides
-New theming introduced in version 6 of OneCX is based on PrimeNG theming mechanism. However, in OneCX it is possible to style the content differently per Application. The mechanism that allows that is called theme overrides.
-
-Each Mfe or Remote Component can specify their overrides that will guarantee that certain styles are applied differently than in other applications on the page. Here is an example of how to provide overrides.
-
-```
-provideThemeConfig({
-  overrides: {
-    semantic: {
-      extend: {
-        onecx: {
-          secondaryColor: 'red'
-        },
-      },
-      focusRing: {
-        width: '2px',
-        style: 'solid',
-        color: '{primary.color}',
-        offset: '0px',
-        shadow: 'none',
-      },
-    }
-  }
-})
-```
-
-In this example:
-
-* the *secondary color* theme variable is changed
-* the *default focus highlight* is changed
-
-More about what and how to override can be found in {theming_url}[theming documentation].
-
 [#filter-type]
-== FilterType values changes
+=== FilterType values changes
 Please, make sure to update `FilterType` usage:
 
 * `FilterType.EQUAL` &#8594; `FilterType.EQUALS`
 * `FilterType.TRUTHY` &#8594; `FilterType.IS_NOT_EMPTY`
 
 [#configuration-service]
-== Check usage of ConfigurationService 
+=== Check usage of ConfigurationService 
 ConfigurationService (@onecx/angular-integration-interface) is now asynchronous. Please check if usage needs to be adapted.
 
 [#theme-service]
-== ThemeService removed functionality
+=== ThemeService removed functionality
 ThemeService in version 6 should *only be used to access the currentTheme* via `currentTheme$` property. The following have been removed:
 
 * `baseUrlV1` property
@@ -165,15 +112,15 @@ ThemeService in version 6 should *only be used to access the currentTheme* via `
 Please, make sure that those methods are no longer used.
 
 [#base-url]
-== BASE_URL injection token
+=== BASE_URL injection token
 `BASE_URL` injection token should no longer be used, instead please use `REMOTE_COMPONENT_CONFIG`
 
 [#angular-in-webpack]
-== Adjust angular packages in webpack
+=== Adjust angular packages in webpack
 Make sure that all angular packages *do not have `singleton:true` set in webpack.config.js*. 
 
 [#translation-bootstrap]
-== Move translation providers to bootstrap.ts for Remote Components
+=== Move translation providers to bootstrap.ts for Remote Components
 For each Remote Component translation related providers are required to be defined in the bootstrap.ts instead of the component.ts file.
 
 .remote-component.bootstrap.ts
@@ -208,6 +155,98 @@ bootstrapRemoteComponent(RemoteComponent, 'ocx-my-remote-component', environment
   }
 ])
 ```
+
+[#primeng-related-changes]
+== PrimeNG related changes
+
+[#new-plugin]
+=== Add required plugin to webpack config (will be changed to OneCX plugin)
+Since version 6 its required to add the following plugin into the webpack of the Application.
+
+.Webpack plugin snippet
+```
+const { ModifySourcePlugin, ReplaceOperation } = require('modify-source-webpack-plugin')
+...
+const modifyPrimeNgPlugin = new ModifySourcePlugin({
+  rules: [
+    {
+      test: (module) => {
+        return module.resource && module.resource.includes('primeng')
+      },
+      operations: [
+        new ReplaceOperation(
+          'all',
+          'document\\.createElement\\(([^)]+)\\)',
+          'document.createElementFromPrimeNg({"this": this, "arguments": Array.from(arguments), element: $1})'
+        ),
+        new ReplaceOperation('all', 'Theme.setLoadedStyleName', '(function(_){})')
+      ]
+    }
+  ]
+})
+module.exports = {
+  ...webpackConfig,
+  plugins: [...plugins, modifyPrimeNgPlugin]
+}
+```
+
+[#theme-config]
+=== Provide ThemeConfig
+Since version 6 of OneCX it is required to add an additional provider to the Microfrontends and Remote Components.
+
+.mfe.remote.module.ts
+```
+import { provideThemeConfig } from '@onecx/angular-utils'
+...
+@NgModule({
+    providers: [
+        provideThemeConfig()
+    ]
+}) export class MyMfe {}
+```
+
+.remote-component.bootstrap.ts
+```
+import { provideThemeConfig } from '@onecx/angular-utils'
+
+bootstrapRemoteComponent(RemoteComponent, 'my-remote-component', environment.production, [
+  provideThemeConfig()
+])
+```
+
+[#theme-overrides]
+==== Provide theme overrides
+New theming introduced in version 6 of OneCX is based on PrimeNG theming mechanism. However, in OneCX it is possible to style the content differently per Application. The mechanism that allows that is called theme overrides.
+
+Each Mfe or Remote Component can specify their overrides that will guarantee that certain styles are applied differently than in other applications on the page. Here is an example of how to provide overrides.
+
+```
+provideThemeConfig({
+  overrides: {
+    semantic: {
+      extend: {
+        onecx: {
+          secondaryColor: 'red'
+        },
+      },
+      focusRing: {
+        width: '2px',
+        style: 'solid',
+        color: '{primary.color}',
+        offset: '0px',
+        shadow: 'none',
+      },
+    }
+  }
+})
+```
+
+In this example:
+
+* the *secondary color* theme variable is changed
+* the *default focus highlight* is changed
+
+More about what and how to override can be found in {theming_url}[theming documentation].
 
 [#further-considerations]
 == Further considerations
