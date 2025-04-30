@@ -14,12 +14,12 @@ const mfConfig = {
   },
 };
 ```
-For retrieving OneCX portal components, we need to take a slightly different approach. Making it work statically, as it currently does, is difficult due to the complexity of the portal. It is webpack based with Angular mf, which means it uses internal scope. It also has traefik, which makes it even more complex. So the approach we had to take was to use a framework-agnostic type of connection. So we use module-federation 2.0. The whole process can be divided into 3 steps:
+For retrieving OneCX portal components, we need to take a slightly different approach. Making it work statically, as it currently is, would be difficult due to the complexity of the portal. Right now we have webpack based with Angular mf there, which means it uses internal scope. It also has traefik, which makes it even more complex. So the approach we had to take was to use a framework-agnostic type of connection. Therefore we used module-federation 2.0. The whole process can be divided into 3 steps:
 
 
 [## init]
 ==== 1) Initialization
-It is usually added to the _app.tsx file and creates a __FEDERATION__ object in the window. This object is very useful because it contains all information about each registered remote. Information like: remotes, shared libs, caches, preloads etc. Because of the shared libs info, it is also much easier to detect which remote has older or newer version of some libs, so migrating is much easier.
+Initialization is usually added to the _app.tsx file and  it also creates a __FEDERATION__ object in the window. This object is very useful because it contains all information about each registered remote. You can find there information about remotes, shared libs, caches, preloads etc. Because of the shared libs info, it will be also much easier to detect which remote has older or newer version of any library, and for that reason migrating will be much easier.
 ```
 init({
   name: 'test-ui',
@@ -42,7 +42,7 @@ init({
 [# register]
 ==== 2) Register Remote
 
-To register remotes we should use another function from the same `@module-federation/enhanced/runtime` library. It simply registers a remote in the __FEDERATION__ object. It can be forced, which means you can overwrite a remote on some conditions.
+To register remotes we should use another function from the same `@module-federation/enhanced/runtime` library. It simply registers a remote in the __FEDERATION__ object. You could also turn on 'force' option, which basically means you can dynamically overwrite a remote.
 ```
 registerRemotes(
 
@@ -102,11 +102,11 @@ export default withSlot(Testing);
 [##SlotComponent]
 ==== 2) SlotComponent
 
-is just a container with a name property that you use to specify which component you want to use. What the component does is, based on the name property, it checks if there is even such a slot and if it has any components, and if it does, it creates an empty slot container with a tag name of those components. For example:
+This component is just a container with a name property that you use to specify which shared component you want to use. What the component does is, based on the name property, it checks if there even is such a slot and if it has any components, and if it does, it creates an empty slot container with a tag name of those components. For example:
 ```
 <ocx-user-siderbar-menu-component></ocx-user-siderbar-menu-component>
 ```
-Then it just fetches the actual remoteEntry's using information from the `RemoteComponents` topic. After that, the fetched components are registered in the window, and this is the moment when you can see components inside created containers.
+Then it just fetches the actual webcomponents(remoteEntry's) using information from the `RemoteComponents` topic. After that, the fetched components are registered in the window, and this is the moment when you can see components inside created containers.
 
 ```
 [#Example Usage]:
@@ -128,3 +128,9 @@ This library works smoothly with vite applications.
 
 [#nextjs]
 == Next.js
+
+
+[NOTE]
+====
+The next applications need more research to be able to share components. Although there is no problem with consuming other components.
+====
