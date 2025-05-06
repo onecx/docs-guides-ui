@@ -164,7 +164,7 @@ To use this feature, it's required to add the options object as an argument to t
 * Promise that resolves with defined overrides
 * Function that returns one of the above
 
-The object containing overrides should have the same structure as https://primeng.org/theming#definepreset[PrimeNG's presets]. The presets can contain general variables like primary color or surface color, but its also possible to define customizations for components.
+The object containing overrides must have the same structure as https://primeng.org/theming#definepreset[PrimeNG's presets]. The presets can contain general variables like primary color or surface color, but its also possible to define customizations for components.
 
 Each PrimeNG component specifies a list of design tokens (e.g., https://v18.primeng.org/button#Buttonclasses[button component design tokens]). Those can be used to override certain styles of each component.
 
