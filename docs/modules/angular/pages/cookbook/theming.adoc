@@ -58,11 +58,11 @@ Button-related variables::
 |CSS variable
 |Description
 |`--button-hover-bg`
-|Default color on hover of the button.
+|Default color on hover of a button.
 |`--button-active-bg`
-|Default background color of the button in active state.
+|Default background color of a button in active state.
 |`--danger-button-bg`
-|Default background color of the button with danger severity.
+|Default background color of a button with danger severity.
 |===
 ====
 
