@@ -7,7 +7,7 @@
 == Overview
 Starting with version 6 of OneCX, new theming mechanisms were introduce in order to:
 
-* fulfill the need for a common theme within pages
+* fulfill the need for a common theme across pages
 * allow to style each application in isolation
 
 [#theme-variables]
