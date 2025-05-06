@@ -40,9 +40,9 @@ Text-related variables::
 |CSS variable
 |Description
 |`--font-family`
-|Default font family for any text content.
+|Default font family for text content.
 |`--font-size`
-|Default font size for any text content.
+|Default font size for text content.
 |`--text-color`
 |Primary font text color.
 |`--text-secondary-color`
