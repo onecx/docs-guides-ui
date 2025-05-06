@@ -43,6 +43,7 @@ Please, make sure to *remove @onecx/portal-layout-styles and @onecx/portal-integ
 Since version 6 styles from @onecx/portal-layout-styles will no longer be available globally on a page. *Please, make sure that your application does not use any styles (css classes, animations, etc.) defined by portal-layout-styles*. In case it does, you will need to implement those in your application.
 
 The only css styles available for each application since version 6:
+
 - styles exposed via app_url/styles.css file (where app_url is a url to the deployed application)
 - component styles defined in the application (styles defined for each component inside the application)
 - PrimeNG component styles (only if the application uses primeNG)
