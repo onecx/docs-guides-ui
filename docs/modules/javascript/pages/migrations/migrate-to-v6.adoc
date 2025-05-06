@@ -117,7 +117,7 @@ Please, make sure that those methods are no longer used.
 
 [#angular-in-webpack]
 === Adjust angular packages in webpack
-Make sure that all angular packages *do not have `singleton:true` set in webpack.config.js*. 
+Make sure that all angular packages *do not have `singleton: true` set in webpack.config.js*. 
 
 [#translation-bootstrap]
 === Move translation providers to bootstrap.ts for Remote Components
