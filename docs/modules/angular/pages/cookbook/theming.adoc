@@ -92,7 +92,7 @@ Misc variables::
 |CSS variable
 |Description
 |`--divider-color`
-|Default color of the divider HTML elements, such as `<hr>` or component's border.
+|Default color of divider HTML elements, such as `<hr>` or component borders.
 |`--body-bg-color`
 |Background color of the document's body, used for the content pane's background color.
 |`--overlay-content-bg-color`
