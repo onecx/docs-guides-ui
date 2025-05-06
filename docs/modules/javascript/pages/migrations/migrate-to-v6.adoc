@@ -216,7 +216,7 @@ bootstrapRemoteComponent(RemoteComponent, 'my-remote-component', environment.pro
 
 [#theme-overrides]
 ==== Provide theme overrides
-New theming introduced in version 6 of OneCX is based on PrimeNG theming mechanism. However, in OneCX it is possible to style the content differently per Application. The mechanism that allows that is called theme overrides.
+The new theming system introduced in version 6 of OneCX is based on PrimeNG's theming mechanism. However, in OneCX it is possible to style the content differently per Application. The mechanism that allows that is called theme overrides.
 
 Each Mfe or Remote Component can specify their overrides that will guarantee that certain styles are applied differently than in other applications on the page. Here is an example of how to provide overrides.
 
