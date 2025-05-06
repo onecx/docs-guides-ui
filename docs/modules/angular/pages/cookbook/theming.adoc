@@ -22,13 +22,13 @@ Basic variables::
 |CSS variable
 |Description
 |`--primary-color`
-|Primary color of the non-text content.
+|Primary color of non-text content.
 |`--secondary-color`
-|Secondary color of the non-text content.
+|Secondary color of non-text content.
 |`--content-bg-color`
-|Default background color of the non-text content.
+|Default background color of non-text content.
 |`--hover-bg-color`
-|Default background color on hover of the non-text content.
+|Default background color on hover of non-text content.
 |===
 ====
 
