@@ -161,7 +161,7 @@ bootstrapRemoteComponent(RemoteComponent, 'ocx-my-remote-component', environment
 
 [#new-plugin]
 === Add required plugin to webpack config (will be changed to OneCX plugin)
-Since version 6 its required to add the following plugin into the webpack of the Application.
+Since version 6 it's required to add the following plugin to the webpack configuration of the application.
 
 .Webpack plugin snippet
 ```
