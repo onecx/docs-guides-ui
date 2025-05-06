@@ -74,13 +74,13 @@ Message-related variables::
 |CSS variable
 |Description
 |`--info-message-bg`
-|Default background color of the message with info severity.
+|Default background color of a message with info severity.
 |`--success-message-bg`
-|Default background color of the message with success severity.
+|Default background color of a message with success severity.
 |`--warning-message-bg`
-|Default background color of the message with warning severity.
+|Default background color of a message with warning severity.
 |`--error-message-bg`
-|Default background color of the message with error severity.
+|Default background color of a message with error severity.
 |===
 ====
 
