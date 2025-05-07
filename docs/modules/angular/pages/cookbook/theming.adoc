@@ -1,0 +1,222 @@
+= OneCX Theming
+
+:idprefix:
+:idseparator: -
+
+[#overview]
+== Overview
+Starting with version 6 of OneCX, new theming mechanisms were introduce in order to:
+
+* fulfill the need for a common theme across pages
+* allow to style each application in isolation
+
+[#theme-variables]
+== Theme variables
+Theme variables are still accessible from any application. Whenever a workspace is accessed, Shell is going to update the theme used on a page so it matches the current workspace. This will result in the following variables to be accessible in any component:
+
+[#basic-variables]
+Basic variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--primary-color`
+|Primary color of non-text content.
+|`--secondary-color`
+|Secondary color of non-text content.
+|`--content-bg-color`
+|Default background color of non-text content.
+|`--hover-bg-color`
+|Default background color on hover of non-text content.
+|===
+====
+
+[#text-variables]
+Text-related variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--font-family`
+|Default font family for text content.
+|`--font-size`
+|Default font size for text content.
+|`--text-color`
+|Primary font text color.
+|`--text-secondary-color`
+|Secondary font text color for elements in lower design hierarchy, usually less prominent.
+|===
+====
+
+[#button-variables]
+Button-related variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--button-hover-bg`
+|Default color on hover of a button.
+|`--button-active-bg`
+|Default background color of a button in active state.
+|`--danger-button-bg`
+|Default background color of a button with danger severity.
+|===
+====
+
+[#message-variables]
+Message-related variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--info-message-bg`
+|Default background color of a message with info severity.
+|`--success-message-bg`
+|Default background color of a message with success severity.
+|`--warning-message-bg`
+|Default background color of a message with warning severity.
+|`--error-message-bg`
+|Default background color of a message with error severity.
+|===
+====
+
+[#misc-variables]
+Misc variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--divider-color`
+|Default color of divider HTML elements, such as `<hr>` or component borders.
+|`--body-bg-color`
+|Background color of the document's body, used for the content pane's background color.
+// Unclear usage
+// |`--overlay-content-bg-color`
+// |
+// Unclear usage
+// |`--solid-surface-text-color`
+// |
+// Unclear usage
+// |`--content-alt-bg-color`
+// |
+|===
+====
+
+[#shell-variables]
+Shell-related misc variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--topbar-bg-color`
+|Background color of the topbar, above the content pane.
+|`--topbar-item-text-color`
+|Text color of the items located in the topbar, above the content pane.
+|`--topbar-text-color`
+|Color of the text located directly in the topbar, above the content pane.
+|`--topbar-left-bg-color`
+|Background color of the topbar's left side.
+|`--topbar-item-text-hover-bg-color`
+|Background color, on hover, for the items located in the topbar, above the content pane.
+|`--topbar-menu-button-bg-color`
+|Background color of the vertical menu toggle.
+|`--logo-color`
+|Color of the topbar's logo.
+|`--menu-bg-color`
+|Background color of the sidebar, next to the content pane.
+|`--menu-text-color`
+|Default text color of the menu, located in the sidebar, next to the content pane
+|`--menu-item-text-color`
+|Text color of the menu item, located in the sidebar, next to the content pane.
+|`--menu-item-bg-color`
+|Background color of the menu item, located in the sidebar, next to the content pane.
+|`--menu-item-hover-bg-color`
+|Background color on hover of the menu item, located in the sidebar, next to the content pane.
+|`--menu-active-item-text-color`
+|Text color of the active menu item, located in the sidebar, next to the content pane.
+|`--menu-active-item-bg-color`
+|Background color of the active menu item, located in the sidebar, next to the content pane.
+// Unclear usage
+// |`--menu-inline-border-color`
+// |
+
+|===
+====
+
+[#theme-overrides]
+== Theme overrides
+Theme mechanism is based on the PrimeNG theming. However, in OneCX it is possible to style the content differently per Application. The mechanism that allows that is called theme overrides. Each Mfe or Remote Component can specify their overrides that will guarantee that certain styles are applied differently than in other applications on the page.
+
+[#appropriate-scenarios]
+=== Appropriate Scenarios
+This feature should be used when the application wants to control the style of:
+
+* PrimeNG components
+* OneCX components
+
+[#usage-instructions]
+=== Usage instructions
+To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument should have a property called `overrides` that can be one of the following:
+
+* Object with defined overrides
+* Promise that resolves with defined overrides
+* Function that returns one of the above
+
+The object containing overrides must have the same structure as https://primeng.org/theming#definepreset[PrimeNG's presets]. The presets can contain general variables like primary color or surface color, but its also possible to define customizations for components.
+
+Each PrimeNG component specifies a list of design tokens (e.g., https://v18.primeng.org/button#Buttonclasses[button component design tokens]). Those can be used to override certain styles of each component.
+
+[#examples]
+=== Examples
+
+Overriding the primary color with static values::
+```
+const primary = {
+    50: '#ecfeff',
+    100: '#cffafe',
+    200: '#a5f3fc',
+    300: '#67e8f9',
+    400: '#22d3ee',
+    500: '#06b6d4',
+    600: '#0891b2',
+    700: '#0e7490',
+    800: '#155e75',
+    900: '#164e63',
+    950: '#083344',
+}
+provideThemeConfig({
+  overrides: {
+    semantic: {
+      primary: primary,
+      colorScheme: {
+        light: {
+            primary: primary
+        }
+      }
+    }
+  }
+})
+```
+
+Overriding the form field focus border color with token value::
+```
+provideThemeConfig({
+  overrides: {
+    semantic: {
+      colorScheme: {
+        light: {
+            formField: {
+                focusBorderColor: '{primary.600}',
+            }
+        }
+      }
+    }
+  }
+})
+```
