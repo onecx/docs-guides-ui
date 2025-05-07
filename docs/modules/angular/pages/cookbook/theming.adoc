@@ -95,12 +95,15 @@ Misc variables::
 |Default color of divider HTML elements, such as `<hr>` or component borders.
 |`--body-bg-color`
 |Background color of the document's body, used for the content pane's background color.
-|`--overlay-content-bg-color`
-|
-|`--solid-surface-text-color`
-|
-|`--content-alt-bg-color`
-|
+// Unclear usage
+// |`--overlay-content-bg-color`
+// |
+// Unclear usage
+// |`--solid-surface-text-color`
+// |
+// Unclear usage
+// |`--content-alt-bg-color`
+// |
 |===
 ====
 
@@ -139,8 +142,9 @@ Shell-related misc variables::
 |Text color of the active menu item, located in the sidebar, next to the content pane.
 |`--menu-active-item-bg-color`
 |Background color of the active menu item, located in the sidebar, next to the content pane.
-|`--menu-inline-border-color`
-|
+// Unclear usage
+// |`--menu-inline-border-color`
+// |
 
 |===
 ====
