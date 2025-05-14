@@ -58,7 +58,7 @@ In case if  your application needs to share styles between components you should
   {
     "input": "./src/styles.scss",
     "bundleName": "styles",
-    "inject": false
+    "inject": true
   }
 ]
 ...
