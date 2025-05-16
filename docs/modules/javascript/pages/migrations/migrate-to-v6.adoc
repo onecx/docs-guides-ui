@@ -14,6 +14,7 @@
 ** [ ] <<removed-packages, Remove @onecx/portal-integration-interface>>
 ** [ ] <<styles-update, Update application styles>>
 ** [ ] <<deleted-components, Check deleted components>>
+** [ ] <<standalone-mode, Adjust standalone mode usage>>
 ** [ ] <<filter-type, Update FilterType usage>>
 ** [ ] <<theme-service, Update ThemeService usage>>
 ** [ ] <<configuration-service, Update ConfigurationService usage>>
@@ -89,6 +90,24 @@ Some components will be removed. Please check if you are using following compone
 
 * services/app.menu.service.ts +
 => *If someone wants to load menu item they should create an endpoint in the BFF of the own app and create their own function.*
+
+[#standalone-mode]
+== Adjust Standalone Mode
+In version 6 of OneCX *@onecx/standalone-shell* library has been renamed to *@onecx/angular-standalone-shell*. Please, make sure that all imports, package.json and webpack config are adjusted accordingly.
+
+Additionally, since version 6, apart from *StandaloneShellModule* import it is required to add *provideStandaloneProviders* in the standalone module providers array. Please, make sure to adjust the standalone module.
+
+.updated-app-standalone.module.ts example
+```
+import { StandaloneShellModule, provideStandaloneProviders } from '@onecx/angular-standalone-shell'
+...
+@NgModule({
+    imports: [StandaloneShellModule]
+    providers: [
+        provideStandaloneProviders()
+    ]
+}) export class AppModule {}
+```
 
 [#filter-type]
 === FilterType values changes
