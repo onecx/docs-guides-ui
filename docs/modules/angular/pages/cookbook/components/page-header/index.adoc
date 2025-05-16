@@ -1,6 +1,7 @@
 = OneCX PageHeader
 
-:page_header_storybook: https://main--65f7f64d4506c9f2dfe59383.chromatic.com/?path=/docs/components-pageheadercomponent--docs
+// '--' has to be escaped in link
+:page_header_storybook: https://main\--65f7f64d4506c9f2dfe59383.chromatic.com/?path=/docs/components-pageheadercomponent\--docs
 :idprefix:
 :idseparator: -
 
