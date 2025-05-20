@@ -36,6 +36,10 @@ In the version 6 of OneCX the following packages are not longer available:
 * *@onecx/portal-layout-styles*
 * *@onecx/portal-integration-interface*
 
+[#portal-layout-styles-removal]
+==== Portal Layout Styles Removal
+Since version 6 of OneCX `@onecx/portal-layout-styles` library is no longer available. The library should not be used anymore and every application should make sure to <<styles-update, update application styles>>.
+
 [#styles-update]
 === Update application styles
 Please, make sure to *remove @onecx/portal-layout-styles and @onecx/portal-integration-interface references from application styles*.
