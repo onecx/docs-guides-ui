@@ -3,7 +3,7 @@
 :idprefix:
 :idseparator: -
 
-This service provides a convenient way to display translated toast messages in an Angular application.
+This service provides a convenient way to display translated toast messages in an Angular application. It is available via `@onecx/angular-integration-interface`
 
 [#overview]
 == Overview
@@ -20,6 +20,8 @@ To use the `PortalMessageService`, inject it into your component or service:
 
 [source,typescript]
 ----
+import { PortalMessageService } from '@onecx/angular-integration-interface'
+
 constructor(private portalMessageService: PortalMessageService) {}
 ----
 
