@@ -1,0 +1,84 @@
+= OneCX PrimeNG Theming
+
+:idprefix:
+:idseparator: -
+
+[#overview]
+== Overview
+In OneCX PrimeNG theming is handled by the OneCX shell in collaboration with OneCX Theme Management application.
+
+OneCX compatible application:
+
+* can influence PrimeNG design token values for itself.
+
+[#theme-overrides]
+== Theme Overrides
+In OneCX it is possible to style the PrimeNG content differently for each Application. The mechanism that allows that is called theme overrides. Each application can specify what overrides should be applied to style PrimeNG content differently than in other applications on the page.
+
+[#appropriate-scenarios]
+=== Appropriate Scenarios
+This feature should be used when the application wants to control the style of:
+
+* PrimeNG components
+* OneCX components that base on PrimeNG components
+
+[#usage-instructions]
+=== Usage Instructions
+To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument should have a property called `overrides` that can be one of the following:
+
+* Object with defined overrides
+* Promise that resolves with defined overrides
+* Function that returns one of the above
+
+The object containing overrides must have the same structure as https://primeng.org/theming#definepreset[PrimeNG's presets]. The presets can contain general variables like primary color or surface color, but its also possible to define customizations for components.
+
+Each PrimeNG component specifies a list of design tokens (e.g., https://v18.primeng.org/button#Buttonclasses[button component design tokens]). Those can be used to override certain styles of each component.
+
+[#examples]
+=== Examples
+
+Overriding the primary color with static values::
+```
+const primary = {
+    50: '#ecfeff',
+    100: '#cffafe',
+    200: '#a5f3fc',
+    300: '#67e8f9',
+    400: '#22d3ee',
+    500: '#06b6d4',
+    600: '#0891b2',
+    700: '#0e7490',
+    800: '#155e75',
+    900: '#164e63',
+    950: '#083344',
+}
+provideThemeConfig({
+  overrides: {
+    semantic: {
+      primary: primary,
+      colorScheme: {
+        light: {
+            primary: primary
+        }
+      }
+    }
+  }
+})
+```
+
+Overriding the form field focus border color with token value::
+```
+provideThemeConfig({
+  overrides: {
+    semantic: {
+      colorScheme: {
+        light: {
+            formField: {
+                focusBorderColor: '{primary.600}',
+            }
+        }
+      }
+    }
+  }
+})
+```
