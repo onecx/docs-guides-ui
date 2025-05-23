@@ -7,7 +7,7 @@ This service provides a convenient way to display translated toast messages in a
 
 [#overview]
 == Overview
-This document aims to:
+This document will focus on how to:
 
 * use `PortalMessageService` to display toast messages.
 * customize toast messages.
