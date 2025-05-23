@@ -282,6 +282,7 @@ API::
 |`profile$` | `{user_profile_topic_url}[UserProfileTopic]` | {user_profile_topic_url}[UserProfileTopic] instance.
 |`lang$` | `BehaviorSubject<string>` | User's language. For every new message in the {user_profile_topic_url}[UserProfileTopic], the language will be updated based on the user's locale information.
 |`isInitialized` | `Promise<void>` | Promise resolved when User Service is initialized.
+|`getPermissions()` | `Observable<string[]>` | Observable with list of permissions for the current user.
 |[.line-through]`permissions$` | [.line-through]`BehaviorSubject<string[]>` | Deprecated.
 |===
 +
