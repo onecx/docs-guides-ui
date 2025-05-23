@@ -6,11 +6,13 @@
 *** xref:angular:cookbook/migrations/vanilla-to-onecx/index.adoc[Migrate vanilla Angular apps to OneCX]
 *** xref:angular:cookbook/migrations/enable-standalone/index.adoc[Enable standalone mode for OneCX apps]
 ** Services
+*** xref:angular:cookbook/service/portal-message-service/index.adoc[PortalMessageService]
 *** xref:angular:cookbook/service/portal-dialog-service/index.adoc[PortalDialogService]
 ** Components
 *** xref:angular:cookbook/components/page-header/index.adoc[PageHeader]
 *** xref:angular:cookbook/components/group-by-count-diagram/index.adoc[GroupByCountDiagram]
 *** xref:angular:cookbook/components/search-header/index.adoc[SearchHeader]
+** xref:angular:cookbook/toast-messages.adoc[Toast messages]
 ** xref:angular:cookbook/theming.adoc[Theming]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
 ** Cookbook
