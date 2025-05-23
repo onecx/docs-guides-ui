@@ -5,7 +5,7 @@
 
 [#overview]
 == Overview
-In OneCX application theming is handled by the OneCX shell in collaboration with OneCX Theme Management application.
+In an OneCX application theming is handled by the OneCX shell in collaboration with the OneCX Theme Management application.
 
 OneCX compatible application:
 
