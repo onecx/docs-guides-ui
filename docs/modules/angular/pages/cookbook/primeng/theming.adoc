@@ -24,7 +24,7 @@ This feature should be used when the application wants to control the style of:
 
 [#usage-instructions]
 === Usage Instructions
-To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument should have a property called `overrides` that can be one of the following:
+To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument has a property called `overrides` that can be one of the following:
 
 * Object with defined overrides
 * Promise that resolves with defined overrides
