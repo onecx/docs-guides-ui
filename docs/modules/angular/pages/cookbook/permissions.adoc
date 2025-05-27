@@ -3,10 +3,11 @@
 :idprefix:
 :idseparator: -
 :user_service: xref:libraries/angular-integration-interface.adoc#user-service
+:permission_management: xref:latest@onecx-permission:general:index.adoc
 
 [#overview]
 == Overview
-In OneCX permission management and validation is done by core applications of the platform. The Permission Management application is in charge of managing permissions. For Angular applications {user_service}[User Service] is available for permission checking.
+In {permission_management}[OneCX permission management] and validation is done by core applications of the platform. The Permission Management application is in charge of managing permissions. For Angular applications {user_service}[User Service] is available for permission checking.
 
 OneCX compatible application:
 
@@ -47,8 +48,8 @@ To get a list of all permissions for the current user in the context of the appl
 [source,typescript]
 ----
 const userService = inject(UserService)
-// Check for single permission
-userService.getPermission().pipe((
+// Get all application permissions
+userService.getPermissions().pipe((
     // Pipe the permission list
 ))
 ----
