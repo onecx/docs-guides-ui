@@ -21,6 +21,11 @@ To setup the multi-language translations support follow the steps listed below. 
 === Step 1: Install ngx-translate Library
 The `@ngx-translate/core` package has to be installed in the project.
 
+[source,bash]
+----
+npm i @ngx-translate/core
+----
+
 [#share-ngx-translate]
 === Step 2: Share ngx-translate In Webpack Configuration
 The `@ngx-translate/core` package has to be added as a shared package in webpack configuration.
@@ -56,7 +61,7 @@ Create translation files (e.g., en.json, de.json) in a directory such as assets/
 === Step 4: Import Required Utilities
 In your remote module file, import the following:
 
-.remote-module.ts
+.remote.module.ts
 [source,typescript]
 ----
 import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
@@ -67,7 +72,7 @@ import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from 
 === Step 5: Wrap Routes with Initialization Guard
 Wrap your routes with addInitializeModuleGuard to ensure translations are loaded correctly:
 
-.remote-module.ts
+.remote.module.ts
 [source,typescript]
 ----
 imports: [
@@ -81,7 +86,7 @@ imports: [
 === Step 6: Configure TranslateModule
 Add TranslateModule.forRoot() to your module's imports array (or commonImports if shared):
 
-.remote-module.ts
+.remote.module.ts
 [source,typescript]
 ----
 imports: [
@@ -102,7 +107,7 @@ imports: [
 === Step 7: Provide Translation Path
 Use the TRANSLATION_PATH injection token to specify the location of your translation files:
 
-.remote-module.ts
+.remote.module.ts
 [source,typescript]
 ----
 providers: [
@@ -124,7 +129,7 @@ providers: [
 === Step 8: Support in Feature Modules
 If any feature modules use ngx-translate features (e.g., translate pipe), ensure TranslateModule is also imported in those modules:
 
-.feature-module.ts
+.feature.module.ts
 [source,typescript]
 ----
 @NgModule({
@@ -153,7 +158,7 @@ Use translations via *translate* pipe.
 
 [#translate-service-usage]
 === TranslateService Usage
-Use translations via *translate* pipe.
+Use translations via *TranslateService*.
 
 .component.ts
 [source,typescript]
