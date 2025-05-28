@@ -22,7 +22,7 @@ To use the WorkspaceService, inject it into your component or service:
 ----
 import { WorkspaceService } from '@onecx/angular-integration-interface';
 
-constructor(private workspaceService: WorkspaceService) {}
+private workspaceService = inject(WorkspaceService)
 ----
 
 Then, use one of the following methods:
@@ -47,21 +47,30 @@ Here is a summary of all arguments:
 [source,typescript]
 ----
 this.workspaceService.getUrl('orders', 'orders-ui').subscribe((url) => {
-      console.log('Generated URL:', url)
+      console.log('Generated URL:', url) // Generated URL: https://dev.one-cx.org/shell/admin/orders
     })
 ----
 
-This example will return a URL string for the Orders UI (UI component) of Orders application.
+This example will return a URL string for the Orders UI (UI component) of Orders application where:
+
+* `https://dev.one-cx.org/shell` is shell's deployment path
+* `admin` is current workspace
+* `orders` is the orders UI path
 
 .url-with-endpoint
 [source,typescript]
 ----
 this.workspaceService.getUrl('onecx-workspace', 'onecx-workspace-ui', 'workspace', { 'workspace-name': 'admin' }).subscribe((url) => {
-      console.log('Generated URL for Workspace UI (admin workspace details endpoint):', url)
+      console.log('Generated URL for Workspace UI (admin workspace details endpoint):', url) // Generated URL: https://dev.one-cx.org/shell/admin/workspace/admin
     })
 ----
 
-This example will return a URL string for the Workspace UI (UI component) of the Workspace application to a specific endpoint defined to access workspace details based on the `workspace-name` endpointParameter.
+This example will return a URL string for the Workspace UI (UI component) of the Workspace application to a specific endpoint defined to access workspace details based on the `workspace-name` endpointParameter where:
+
+* `https://dev.one-cx.org/shell` is shell's deployment path
+* `admin` is current workspace
+* `workspace` is the workspace UI path.
+* `admin` (2nd occurrence) is the workspace details page for `admin` workspace.
 
 [#check-if-url-exists]
 ==== Check If URL Exists
