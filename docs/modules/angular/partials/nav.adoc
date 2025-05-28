@@ -15,6 +15,7 @@
 ** xref:angular:cookbook/toast-messages.adoc[Toast messages]
 ** xref:angular:cookbook/theming.adoc[Theming]
 ** xref:angular:cookbook/multi-language.adoc[Multi-language translations]
+** xref:angular:cookbook/permissions.adoc[Permissions]
 ** PrimeNG
 *** xref:angular:cookbook/primeng/theming.adoc[Theming with PrimeNG]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
