@@ -8,6 +8,7 @@
 ** Services
 *** xref:angular:cookbook/service/portal-message-service/index.adoc[PortalMessageService]
 *** xref:angular:cookbook/service/portal-dialog-service/index.adoc[PortalDialogService]
+*** xref:angular:cookbook/service/workspace-service/index.adoc[WorkspaceService]
 ** Components
 *** xref:angular:cookbook/components/page-header/index.adoc[PageHeader]
 *** xref:angular:cookbook/components/group-by-count-diagram/index.adoc[GroupByCountDiagram]
@@ -16,6 +17,7 @@
 ** xref:angular:cookbook/theming.adoc[Theming]
 ** xref:angular:cookbook/multi-language.adoc[Multi-language translations]
 ** xref:angular:cookbook/permissions.adoc[Permissions]
+** xref:angular:cookbook/routing-in-workspace.adoc[Routing in workspace]
 ** PrimeNG
 *** xref:angular:cookbook/primeng/theming.adoc[Theming with PrimeNG]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
