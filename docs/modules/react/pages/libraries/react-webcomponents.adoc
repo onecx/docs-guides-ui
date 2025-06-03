@@ -1,0 +1,201 @@
+= OneCX @onecx/react-webcomponents Library
+
+[#overview]
+== Overview
+`@onecx/react-webcomponents` library is a set of tools aiming to ease the development of Angular applications integrated with OneCX by utilizing and extending functionalities of {integration-interface_url}[@onecx/integration-interface]. This library offers Injectable services exposing a set of functionalities useful for integrating Microfrontends with OneCX without directly utilizing Topics.
+
+[#nextjs]
+== Next.js
+
+The `createNextjsWebComponent` and `createNextjsAppWebComponent` functions are utilities designed to convert Next.js components and applications into custom web components. These functions enable the use of Next.js components in environments that do not natively support Next.js, such as vanilla JavaScript projects or frameworks that work with standard web components.
+
+The functions leverage the `@r2wc/react-to-web-component` library to facilitate the conversion and registration of web components. Additionally, they provide advanced routing and context handling for Next.js applications.
+
+=== createNextjsWebComponent Function
+
+The createNextjsWebComponent function converts a Next.js component into a custom web component and registers it with the browser's custom elements registry.
+
+```javascript
+const createNextjsWebComponent = (
+  component: NextComponentType,
+  elementName: string
+) => {
+  // Implementation
+};
+```
+* component: A Next.js component to be converted into a web component.
+* elementName: The name of the custom element to be registered (e.g., my-custom-element).
+
+==== Example Usage
+
+```javascript
+import { createNextjsWebComponent } from '@onecx/react-webcomponents';
+import MyNextjsComponent from './MyNextjsComponent';
+
+// Convert the Next.js component into a web component and register it
+createNextjsWebComponent(MyNextjsComponent, 'my-nextjs-element');
+
+// Now, you can use the custom element in your HTML:
+// <my-nextjs-element></my-nextjs-element>
+```
+
+=== createNextjsAppWebComponent Function
+
+The createNextjsAppWebComponent function converts a Next.js application into a custom web component with advanced routing and context handling.
+
+
+[IMPORTANT]
+====
+The current implementation of `createNextjsAppWebComponent` supports only **static routing**. This means that the `routes` object must define explicit paths, such as:
+
+```javascript
+const routes = {
+  '/': HomePage,
+  '/about': AboutPage,
+};
+```
+====
+
+
+```javascript
+const createNextjsAppWebComponent = (
+  CustomPage: ({ Component, pageProps }: AppProps) => JSX.Element,
+  routes: Record<string, NextComponentType>,
+  elementName: string
+) => {
+  // Implementation
+};
+```
+
+* CustomPage: A Next.js custom page component.
+* routes: A record of route paths and their corresponding Next.js components.
+* elementName: The name of the custom element to be registered (e.g., my-nextjs-app).
+
+[NOTE]
+====
+Current solution does not support next.js functionality related to server side actions
+====
+
+==== Example Usage
+
+```javascript
+import { createNextjsAppWebComponent } from '@onecx/react-webcomponents';
+import CustomPage from './CustomPage';
+import HomePage from './HomePage';
+import AboutPage from './AboutPage';
+
+// Define routes
+const routes = {
+  '/': HomePage,
+  '/about': AboutPage,
+};
+
+// Convert the Next.js app into a web component and register it
+createNextjsAppWebComponent(CustomPage, routes, 'my-nextjs-app');
+
+// Now, you can use the custom element in your HTML:
+// <my-nextjs-app></my-nextjs-app>
+```
+
+==== Future Improvements
+* Add Dynamic Segment Parsing:
+** Implement logic to extract dynamic parameters (e.g., :id) from the URL.
+** Example:
+```javascript
+const routes = {
+  '/users/:id': UserPage,
+};
+```
+* Support Wildcard Routes
+** Add support for wildcard paths (e.g., /posts/*).
+** Example:
+```javascript
+const routes = {
+  '/posts/*': PostsPage,
+};
+```
+* Integrate a Routing Library:
+** Use a routing library like react-router or next-routes to handle advanced routing scenarios.
+
+
+[#vite]
+== Vite
+
+The `createViteAppWebComponent` function is a utility that converts a React component or React App into a custom web component. This allows React components to be used in environments that do not natively support React, such as vanilla JavaScript projects or frameworks that work with standard web components. Relies on the browser's custom elements API for registering and using web components.
+
+The function leverages the `@r2wc/react-to-web-component` library to facilitate the conversion and registration of the web component.
+
+```javascript
+const createViteAppWebComponent = (
+  app: React.ComponentType,
+  elementName: string
+) => {
+  // Implementation
+};
+```
+
+* app: A React component to be converted into a web component.
+* elementName: The name of the custom element to be registered (e.g., my-custom-element).
+[#example-usage]
+=== Example Usage
+For React component:
+```javascript
+import React from 'react';
+import { createViteAppWebComponent } from '@onecx/react-webcomponents';
+
+// Define a simple React component
+const MyReactComponent = () => {
+  return <div>Hello, World!</div>;
+};
+
+// Convert the React component into a web component and register it
+createViteAppWebComponent(MyReactComponent, 'my-custom-element');
+
+// Now, you can use the custom element in your HTML:
+// <my-custom-element></my-custom-element>
+```
+
+For Vite App:
+```javascript
+import App from './app';
+import { createViteAppWebComponent } from '@onecx/react-webcomponents';
+
+createViteAppWebComponent(App, 'my-custom-app');
+
+```
+
+where:
+```javascript
+const AppRouter = () => {
+  const { href } = useAppHref();
+  return (
+    <Router>
+      <Routes>
+        <Route path={href} element={<Home />} />
+        <Route path={href + '/about'} element={<About />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export function App() {
+  return (
+      <AppStateProvider>
+        <ConfigurationProvider>
+          <ThemeProvider>
+            <UserProvider>
+              <AppRouter />
+              <Components />
+            </UserProvider>
+          </ThemeProvider>
+        </ConfigurationProvider>
+      </AppStateProvider>
+  );
+}
+export default App;
+```
+
+[#routing-utils]
+== Routing Utils
+
+The `useAppHref` function is a custom React hook designed to retrieve and normalize URLs (base URL, app base href, and href) for use in micro-frontend (MFE) applications. It relies on the `ConfigurationProvider` and `AppStateProvider` hooks contexts the `@onecx/react-integration-interface` library to fetch and manage application state and configuration. Relies on RxJS for observable handling.
