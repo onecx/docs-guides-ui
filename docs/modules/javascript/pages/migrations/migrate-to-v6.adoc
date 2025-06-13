@@ -21,6 +21,7 @@
 ** [ ] <<base-url, Replace BASE_URL injection token>>
 ** [ ] <<angular-in-webpack, Remove `singleton:true` from angular packages in webpack>>
 ** [ ] <<translation-bootstrap, Move translation related providers to bootstrap.ts for Remote Components>>
+** [ ] <<removed-add-initialize-guard, Remove addInitializeModuleGuard()>>
 * PrimeNg related changes
 [%interactive]
 ** [ ] <<new-plugin, Add new plugin to webpack config>>
@@ -179,6 +180,12 @@ bootstrapRemoteComponent(RemoteComponent, 'ocx-my-remote-component', environment
   }
 ])
 ```
+
+[#removed-add-initialize-guard]
+=== Remove addInitializeModuleGuard()
+With the removal of addInitializeModuleGuard(), the translations will be provided by the TranslationConnectionService. Please add the provideTranslationConnectionService() in the provider of your .module.ts.
+
+If you already import AngularAcceleratorModule, then it is not necessary, because it is already added there.
 
 [#primeng-related-changes]
 == PrimeNG related changes
