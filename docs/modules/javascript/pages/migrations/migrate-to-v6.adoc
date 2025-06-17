@@ -79,6 +79,42 @@ The above snippet assumes that the exposed style sheet is in *src/styles.scss*.
 === Check deleted components
 Some components will be removed. Please check if you are using following components:
 
+[#removed-from-angular-accelerator]
+==== Removed from @onecx/angular-accelerator
+
+* ocx-button-dialog +
+=> *This component should be replaced by ocx-dialog-inline* 
+* createRemoteComponentTranslateLoader
+* createRemoteComponentAndMfeTranslateLoader +
+=> *Use createTranslateLoader with remoteComponentTranslationPathFactory from @onecx/angular-utils*
+* createTranslateLoader +
+=> *Use createTranslateLoader with translationPathFactory from @onecx/angular-utils*
+* HasPermissionChecker
+* AlwaysGrantPermissionChecker
+* TranslationCacheService
+* AsyncTranslateLoader
+* CachingTranslateLoader
+* TranslateCombinedLoader
+* HAS_PERMISSION_CHECKER + 
+=> *Import from @onecx/angular-utils* 
+* ocx-data-loading-error
+* isValidDate +
+=> *Removed from the library*
+
+[#removed-from-angular-integration-interface]
+==== Removed from @onecx/angular-integration-interface
+
+* provideAppServiceMock +
+=> *Use provideAppStateServiceMock*
+* IAuthService
+* AUTH_SERVICE +
+=> *Removed from the library*
+
+[#removed-from-angular-remote-components]
+==== Removed from @onecx/angular-remote-components
+
+* BASE_URL +
+=> *Use REMOTE_COMPONENT_CONFIG from @onecx/angular-utils*
 
 [#removed-from-integration-angular]
 ==== Removed from @onecx/portal-integration-angular
@@ -98,6 +134,20 @@ Some components will be removed. Please check if you are using following compone
 
 * services/app.menu.service.ts +
 => *If someone wants to load menu item they should create an endpoint in the BFF of the own app and create their own function.*
+
+[#removed-from-ngrx-accelerator]
+==== Removed from @onecx/ngrx-accelerator
+
+* filterForOnlyQueryParamsChanged +
+=> *Use filterOutOnlyQueryParamsChanged*
+* filterForQueryParamsChanged +
+=> *Use filterOutQueryParamsHaveNotChanged*
+
+[#removed-from-shell-core]
+==== Removed from @onecx/shell-core
+
+* ocx-shell-footer +
+=> *Now remote component in onecx-workspace-ui*
 
 [#standalone-mode]
 == Adjust Standalone Mode
