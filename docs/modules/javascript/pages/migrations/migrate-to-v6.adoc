@@ -23,8 +23,11 @@
 ** [ ] <<translation-bootstrap, Move translation related providers to bootstrap.ts for Remote Components>>
 * PrimeNg related changes
 [%interactive]
-** [ ] <<new-plugin, Add new plugin to webpack config>>
+** [ ] <<primeng-new-plugin, Add new plugin to webpack config>>
 ** [ ] <<theme-config, Provide theme configuration for Microfrontends and Remote Components>>
+* Angular material related changes
+[%interactive]
+** [ ] <<material-new-plugin, Add new plugin to webpack config>>
 
 [#general-changes]
 == General changes
@@ -179,7 +182,7 @@ bootstrapRemoteComponent(RemoteComponent, 'ocx-my-remote-component', environment
 [#primeng-related-changes]
 == PrimeNG related changes
 
-[#new-plugin]
+[#primeng-new-plugin]
 === Add required plugin to webpack config (will be changed to OneCX plugin)
 Since version 6 it's required to add the following plugin to the webpack configuration of the application.
 
@@ -267,6 +270,43 @@ In this example:
 * the *default focus highlight* is changed
 
 More about what and how to override can be found in {theming_url}[theming documentation].
+
+[#material-related-changes]
+== Angular Material related changes
+
+[#material-new-plugin]
+=== Add required plugin to webpack config (will be changed to OneCX plugin)
+Since version 6 it's required to add the following plugin to the webpack configuration of the application.
+
+.Webpack plugin snippet
+```
+const { ModifySourcePlugin, ReplaceOperation } = require('modify-source-webpack-plugin')
+...
+const modifyMaterialPlugin = new ModifySourcePlugin({
+  rules: [
+    {
+      test: (module) => {
+        return (
+          module.resource &&
+          (module.resource.includes("@angular/material") ||
+            module.resource.includes("@angular/cdk"))
+        );
+      },
+      operations: [
+        new ReplaceOperation(
+          "all",
+          "document\\.createElement\\(",
+          'document.createElementFromMaterial({"this": this, "arguments": Array.from(arguments)},',
+        ),
+      ],
+    }
+  ]
+})
+module.exports = {
+  ...webpackConfig,
+  plugins: [...plugins, modifyMaterialPlugin]
+}
+```
 
 [#further-considerations]
 == Further considerations
