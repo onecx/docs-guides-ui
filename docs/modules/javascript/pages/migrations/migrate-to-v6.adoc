@@ -83,7 +83,7 @@ The snippet above assumes that the exposed style sheet is in *src/styles.scss*. 
 
 [#replace-portal-core-module]
 === Replace PortalCoreModule
-If your application was using *PortalCoreModule* from *@onecx/portal-integration-angular*, it should replace all occurrences with *AngularAcceleratorModule* from *@onecx/angular-accelerator*. This will make sure that all components and directives 
+If your application was using *PortalCoreModule* from *@onecx/portal-integration-angular*, you should replace all occurrences with *AngularAcceleratorModule* from *@onecx/angular-accelerator*. This will make sure that all components and directives are working.
 
 [#deleted-components]
 === Check deleted components
