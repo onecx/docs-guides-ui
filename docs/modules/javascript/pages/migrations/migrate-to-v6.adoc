@@ -205,7 +205,7 @@ Some components will be removed. Please check if you are using following compone
 
 * SearchCriteriaComponent (ocx-search-criteria)
 * CriteriaTemplateComponent (ocx-criteria-template) +
-=> *Please, consider using the SearchHeaderComponent (ocx-search-header) from @onecx/angular-accelerator*
+=> *Consider using the SearchHeaderComponent (ocx-search-header) from @onecx/angular-accelerator*
 
 * standaloneInitializer + 
 =>  *Please use standalone mode instead xref:angular:cookbook/migrations/enable-standalone/index.adoc[Documentation]*
