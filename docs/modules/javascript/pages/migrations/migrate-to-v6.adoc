@@ -201,7 +201,7 @@ Some components will be removed. Please check if you are using following compone
 => *Consider using the InteractiveDataViewComponent (ocx-interactive-data-view) from @onecx/angular-accelerator*
 
 * PageContentComponent (ocx-page-content) +
-=> *Please, consider using the OcxContentComponent (ocx-content) or OcxContentContainerComponent (ocx-content-container) from @onecx/angular-accelerator*
+=> *Consider using the OcxContentComponent (ocx-content) or OcxContentContainerComponent (ocx-content-container) from @onecx/angular-accelerator*
 
 * SearchCriteriaComponent (ocx-search-criteria)
 * CriteriaTemplateComponent (ocx-criteria-template) +
