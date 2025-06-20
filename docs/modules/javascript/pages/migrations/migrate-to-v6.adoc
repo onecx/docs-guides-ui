@@ -13,6 +13,7 @@
 ** [ ] <<removed-packages, Remove @onecx/portal-layout-styles>>
 ** [ ] <<removed-packages, Remove @onecx/portal-integration-interface>>
 ** [ ] <<styles-update, Update application styles>>
+** [ ] <<replace-portal-core-module, Replace PortalCoreModule>>
 ** [ ] <<deleted-components, Check deleted components>>
 ** [ ] <<standalone-mode, Adjust standalone mode usage>>
 ** [ ] <<filter-type, Update FilterType usage>>
@@ -35,7 +36,7 @@
 
 [#removed-packages]
 === Removed packages
-In the version 6 of OneCX the following packages are not longer available:
+In the version 6 of OneCX the following packages are no longer available:
 
 * *@onecx/keycloak-auth*
 * *@onecx/portal-layout-styles*
@@ -44,6 +45,10 @@ In the version 6 of OneCX the following packages are not longer available:
 [#portal-layout-styles-removal]
 ==== Portal Layout Styles Removal
 Since version 6 of OneCX `@onecx/portal-layout-styles` library is no longer available. The library should not be used anymore and every application should make sure to <<styles-update, update application styles>>.
+
+[#portal-integration-angular]
+==== Portal Integration Angular Removal
+Since version 6 of OneCX, the `@onecx/portal-integration-angular` library is no longer available. The list of features that are still supported in other libraries and alternative solutions can be found in the <<removed-from-integration-angular, removed from @onecx/portal-integration-interface>> section. It is important to <<replace-portal-core-module, replace PortalCoreModule>> if used in the application to preserve existing functionality.
 
 [#styles-update]
 === Update application styles
@@ -57,6 +62,7 @@ The only css styles available for each application since version 6:
 - component styles defined in the application (styles defined for each component inside the application)
 - PrimeNG component styles (only if the application uses primeNG)
 
+[#expose-styles-on-top-level]
 ==== Expose styles.css on top level
 In case if  your application needs to share styles between components you should make sure to *expose styles.css file. Shell will assume that this file is called styles.css and is exposed on the top level of your deployed application*. In order to make sure this is done properly, we are recommending to update the project configuration with the following config:
 
@@ -73,7 +79,11 @@ In case if  your application needs to share styles between components you should
 ...
 ```
 
-The above snippet assumes that the exposed style sheet is in *src/styles.scss*.
+The snippet above assumes that the exposed style sheet is in *src/styles.scss*. Setting the *inject* property to *true* might lead to hashing, meaning the exposed file would be called *styles.HASH.css*, where *HASH* is a generated hash value during the project building. If this applies to your application, make sure to adjust the exposal so the hash is not included.
+
+[#replace-portal-core-module]
+=== Replace PortalCoreModule
+If your application was using *PortalCoreModule* from *@onecx/portal-integration-angular*, you should replace all occurrences with *AngularAcceleratorModule* from *@onecx/angular-accelerator*. This will make sure that all components and directives are working.
 
 [#deleted-components]
 === Check deleted components
@@ -82,58 +92,131 @@ Some components will be removed. Please check if you are using following compone
 [#removed-from-angular-accelerator]
 ==== Removed from @onecx/angular-accelerator
 
-* ocx-button-dialog +
-=> *This component should be replaced by ocx-dialog-inline* 
 * createRemoteComponentTranslateLoader
 * createRemoteComponentAndMfeTranslateLoader +
 => *Use createTranslateLoader with remoteComponentTranslationPathFactory from @onecx/angular-utils*
+
 * createTranslateLoader +
 => *Use createTranslateLoader with translationPathFactory from @onecx/angular-utils*
+
 * HasPermissionChecker
 * AlwaysGrantPermissionChecker
 * TranslationCacheService
 * AsyncTranslateLoader
 * CachingTranslateLoader
 * TranslateCombinedLoader
-* HAS_PERMISSION_CHECKER + 
+* HAS_PERMISSION_CHECKER (injection token) + 
 => *Import from @onecx/angular-utils* 
-* ocx-data-loading-error
+
+* DataLoadingErrorComponent (ocx-data-loading-error)
 * isValidDate +
 => *Removed from the library*
 
 [#removed-from-angular-integration-interface]
 ==== Removed from @onecx/angular-integration-interface
-
 * provideAppServiceMock +
 => *Use provideAppStateServiceMock*
+
 * IAuthService
-* AUTH_SERVICE +
+* AUTH_SERVICE (injection token) +
 => *Removed from the library*
 
 [#removed-from-angular-remote-components]
 ==== Removed from @onecx/angular-remote-components
-
-* BASE_URL +
+* BASE_URL (injection token) +
 => *Use REMOTE_COMPONENT_CONFIG from @onecx/angular-utils*
 
 [#removed-from-integration-angular]
 ==== Removed from @onecx/portal-integration-angular
+* PortalCoreModule +
+=> *This module has to be <<replace-portal-core-module, replaced by AngularAcceleratorModule>>*
 
-* portal-footer 
-* portal-header
-* portal-viewport + 
+* ColumnGroupSelectionComponent (ocx-column-group-selection)
+* CustomGroupColumnSelectorComponent (ocx-custom-group-column-selector)
+* DataLayoutSelectionComponent (ocx-data-layout-selection)
+* DataListGridComponent (ocx-data-list-grid)
+* DataListGridSortingComponent (ocx-data-list-grid-sorting)
+* DataTableComponent (ocx-data-table)
+* DataViewComponent (ocx-data-view)
+* DiagramComponent (ocx-diagram)
+* FilterViewComponent (ocx-filter-view)
+* GroupByCountDiagramComponent (ocx-group-by-count-diagram)
+* InteractiveDataViewComponent (ocx-interactive-data-view)
+* LifecycleComponent (ocx-lifecycle)
+* PageHeaderComponent (ocx-page-header)
+* SearchHeaderComponent (ocx-search-header)
+* DialogMessageContentComponent
+* DialogInlineComponent (ocx-dialog-inline)
+* DialogFooterComponent (ocx-dialog-footer)
+* DialogContentComponent (ocx-dialog-content )
+* GlobalErrorComponent (ocx-error)
+* LoadingIndicatorComponent (ocx-loading-indicator)
+* LoadingIndicatorDirective (ocxLoadingIndicator)
+* BasicDirective (ocxBasic)
+* RelativeDatePipe (relativeDate)
+* AdvancedDirective (ocxAdvanced)
+* OcxContentContainerDirective (ocxContentContainer)
+* OcxContentDirective (ocxContent)
+* IfBreakpointDirective (ocxIfBreakpoint)
+* IfPermissionDirective (ocxIfPermission, ocxIfNotPermission)
+* SrcDirective (ocxSrc)
+* TooltipOnOverflowDirective (ocxTooltipOnOverflow)
+* ExportDataService 
+* PortalDialogService
+* ImageLogoUrlUtils
+* DialogContentHarness
+* DialogFooterHarness
+* DialogInlineHarness
+* DialogMessageContentHarness +
+=> *These components are now in @onecx/angular-accelerator*
+
+* PortalPageComponent (ocx-portal-page) + 
+
+=> *These components are now in @onecx/angular-utils*
+
+* PortalFooterComponent (portal-footer )
+* PortalHeaderComponent (portal-header)
+* PortalViewportComponent (portal-viewport) + 
 => *These components are now in @onecx/shell-core* 
 
-* portal-menu
-* portal-menu-horizontal 
-* inline-profile +
+* PortalMenuComponent (portal-menu)
+* PortalMenuHorizontalComponent (portal-menu-horizontal)
+* AppInlineProfileComponent (inline-profile) +
 => *They are now remote components in onecx-workspace-ui*
 
-* core/initializer/standalone.initializer.ts + 
-=>  *Please use standalone mode instead xref:angular:cookbook/migrations/enable-standalone/index.adoc[Documentation]*
+* AnnouncementBannerComponent (ocx-announcement-banner)
+* AnnouncementsApiService +
+=> *Now remote components in onecx-announcement-ui*
 
-* services/app.menu.service.ts +
+* HelpItemEditorComponent (ocx-help-item-editor)
+* NoHelpItemComponent (ocx-no-help-item)
+* HelpPageAPIService +
+=> *Now remote components in onecx-help-ui*
+
+* UserAvatarComponent (ocx-user-avatar)
+* UserProfileAPIService +
+=> *Now remote components in onecx-user-profile-ui*
+
+* DataViewControlsComponent (ocx-data-view-controls) +
+=> *Consider using the InteractiveDataViewComponent (ocx-interactive-data-view) from @onecx/angular-accelerator*
+
+* PageContentComponent (ocx-page-content) +
+=> *Consider using the OcxContentComponent (ocx-content) or OcxContentContainerComponent (ocx-content-container) from @onecx/angular-accelerator*
+
+* SearchCriteriaComponent (ocx-search-criteria)
+* CriteriaTemplateComponent (ocx-criteria-template) +
+=> *Consider using the SearchHeaderComponent (ocx-search-header) from @onecx/angular-accelerator*
+
+* standaloneInitializer + 
+=>  *Use standalone mode instead xref:angular:cookbook/migrations/enable-standalone/index.adoc[Documentation]*
+
+* ButtonDialogComponent(ocx-button-dialog) +
+=> *This component should be replaced by ocx-dialog-inline in @onecx/angular-accelerator*
+
+* MenuService +
 => *If someone wants to load menu item they should create an endpoint in the BFF of the own app and create their own function.*
+
+Every other feature that is not mentioned was removed and is no longer supported.
 
 [#removed-from-ngrx-accelerator]
 ==== Removed from @onecx/ngrx-accelerator
@@ -146,7 +229,7 @@ Some components will be removed. Please check if you are using following compone
 [#removed-from-shell-core]
 ==== Removed from @onecx/shell-core
 
-* ocx-shell-footer +
+* PortalFooterComponent (ocx-shell-footer) +
 => *Now remote component in onecx-workspace-ui*
 
 [#standalone-mode]
