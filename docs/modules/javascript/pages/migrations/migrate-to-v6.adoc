@@ -79,7 +79,7 @@ In case if  your application needs to share styles between components you should
 ...
 ```
 
-The above snippet assumes that the exposed style sheet is in *src/styles.scss*. Setting the *inject* property to *true* might lead to hashing meaning the exposed file would be called *styles.HASH.css*, where *HASH* is generated hash value during project building. If this applies to your application, make sure to adjust the exposal so hash is not included.
+The snippet above assumes that the exposed style sheet is in *src/styles.scss*. Setting the *inject* property to *true* might lead to hashing, meaning the exposed file would be called *styles.HASH.css*, where *HASH* is a generated hash value during the project building. If this applies to your application, make sure to adjust the exposal so the hash is not included.
 
 [#replace-portal-core-module]
 === Replace PortalCoreModule
