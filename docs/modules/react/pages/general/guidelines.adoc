@@ -1,0 +1,39 @@
+= Guidelines
+
+:idprefix:
+:idseparator: -
+
+This chapter gives guidance which guidelines should be followed during the development.
+
+
+[#Nextjs]
+== Nextjs
+* Module Federation support only Page Router from Next.js
+* Module Federation https://github.com/module-federation/core/issues/3153[Deprecation Notice for nextjs-mf]
+
+
+
+[#testing]
+== Testing
+
+* Write Unit Tests and Component Tests.
+**   Prefer Unit Tests over Component Tests.
+*	Manually test with shell and in the standalone mode.
+*	Tests should run in the build pipeline.
+
+
+[#code-quality]
+== Code quality
+Committed code must have a certain quality. The following guidelines must be considered:
+
+*	Do not commit commented out code.
+**	Comments should only be used to:
+***	Document the *Why of the code* and *not* the *What*.
+***	Create documentation for the autocompletion mechanism.
+*	Do not commit debug outputs.
+**	`console.log()` message should be used to inform about error or problem and to give some information of the application state e.g., "Configuration loaded with values xyz"
+*	Remove unused imports
+*	Format the code
+**	Run `npm run format`
+**	If you need to format a specific file, you can use:
+***	`nx format:write –files  *_filepath_*`
