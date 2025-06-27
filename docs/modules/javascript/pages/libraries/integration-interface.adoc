@@ -348,12 +348,11 @@ Data::
 |organization? |`string` | Name of the User's organization.
 |tenantId? |`string` | Id of the User's tenant.
 |[.line-through]#avatar?# |[.line-through]#`AvatarInfo`# | Deprecated.
-|[.line-through]#id?# |[.line-through]#`string`# | Deprecated.
+|[.line-through]#id?# |[.line-through]#`string`# | Deprecated. Use `userId` instead.
 |[.line-through]#identityProvider?# |[.line-through]#`string`# | Deprecated.
 |[.line-through]#identityProviderId?# |[.line-through]#`string`# | Deprecated.
 |[.line-through]#memberships?# |[.line-through]#`Array<Membership>`# | Deprecated.
-|[.line-through]#tenantId?# |[.line-through]#`string`# | Deprecated.
-|[.line-through]#tenantName?# |[.line-through]#`string`# | Deprecated.
+|[.line-through]#tenantName?# |[.line-through]#`string`# | Deprecated. Use tenantId to determine user's tenant.
 |===
 +
 [[UserPerson-object]]
