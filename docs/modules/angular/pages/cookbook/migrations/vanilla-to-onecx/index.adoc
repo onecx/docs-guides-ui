@@ -244,7 +244,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
 . After creating the translation files, a few imports have to be added at the beginning of the remote module file.
 
     import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
-    import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-utils'
+    import { createTranslateLoader, provideTranslationPathFromMeta } from '@onecx/angular-utils'
 
 . The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard`. This ensures correct translation loading for each route.
 
@@ -269,17 +269,11 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-. The path to the applications translations has to be provided using an injection token and `translationPathFactory`.
+. The path to the applications translations has to be provided using provideTranslationPathFromMeta(import.meta.url,...).
 
   providers: [
     ...
-    {
-      provide: TRANSLATION_PATH,
-      // TODO: Replace the path passed to translationPathFactory with the location of the applications i18n files (e.g. de.json)
-      useFactory: (appStateService: AppStateService) => translationPathFactory('assets/i18n/')(appStateService),
-      multi: true,
-      deps: [AppStateService]
-    },
+    provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
     ...
   ]
 

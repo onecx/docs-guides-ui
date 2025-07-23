@@ -65,7 +65,7 @@ In your remote module file, import the following:
 [source,typescript]
 ----
 import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
-import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-utils';
+import { createTranslateLoader, provideTranslationPathFromMeta } from '@onecx/angular-utils';
 ----
 
 [#wrap-routes]
@@ -105,20 +105,14 @@ imports: [
 
 [#provide-translation-path]
 === Step 7: Provide Translation Path
-Use the TRANSLATION_PATH injection token to specify the location of your translation files:
+Use provideTranslationPathFromMeta(import.meta.url, ...) to specify the location of your translation files:
 
 .remote.module.ts
 [source,typescript]
 ----
 providers: [
   ...
-  {
-    provide: TRANSLATION_PATH,
-    useFactory: (appStateService: AppStateService) =>
-      translationPathFactory('assets/i18n/')(appStateService),
-    multi: true,
-    deps: [AppStateService]
-  },
+  provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
   ...
 ]
 ----
