@@ -65,7 +65,7 @@ In your remote module file, import the following:
 [source,typescript]
 ----
 import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
-import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-utils';
+import { createTranslateLoader, provideTranslationPathFromMeta } from '@onecx/angular-utils';
 ----
 
 [#wrap-routes]
@@ -105,26 +105,40 @@ imports: [
 
 [#provide-translation-path]
 === Step 7: Provide Translation Path
-Use the TRANSLATION_PATH injection token to specify the location of your translation files:
+Use provideTranslationPathFromMeta(import.meta.url, ...) to specify the location of your translation files:
 
 .remote.module.ts
 [source,typescript]
 ----
 providers: [
   ...
-  {
-    provide: TRANSLATION_PATH,
-    useFactory: (appStateService: AppStateService) =>
-      translationPathFactory('assets/i18n/')(appStateService),
-    multi: true,
-    deps: [AppStateService]
-  },
+  provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
   ...
 ]
 ----
 
-⚠️ Note: Replace 'assets/i18n/' with the actual path to your translation files if different.
+NOTE: Replace 'assets/i18n/' with the actual path to your translation files if different.
 
+[NOTE]
+====
+If the error 
+"Cannot construct translation path from local file path. Please check whether the webpack configuration for importMeta is correct: https://webpack.js.org/configuration/module/#moduleparserjavascriptimportmeta" 
+appears, it means either
+
+* the provider is used in the application and import.meta.url incorrectly resolves to a local file:// path.
+* or the application does not use provideTranslationPathFromMeta, but is likely using a newer Angular version than the shell or preloader. In this case, modules are loaded from the app's context, which also leads to a local file:// prefix. 
+
+To fix this, this line has to be added to module.exports in the webpack.config.js:
+
+.webpack.config.ts
+[source,typescript]
+----
+module.exports = {
+ ...
+  module: { parser: { javascript: { importMeta: false } } },
+}
+----
+====
 [#feature-modules]
 === Step 8: Support in Feature Modules
 If any feature modules use ngx-translate features (e.g., translate pipe), ensure TranslateModule is also imported in those modules:
