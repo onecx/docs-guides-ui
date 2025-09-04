@@ -1,0 +1,18 @@
+= OneCX Toast Messages
+
+:idprefix:
+:idseparator: -
+:portal_message_service: xref:cookbook/service/portal-message-service/index.adoc
+
+[#overview]
+== Overview
+In OneCX toast messages display is handled via {portal_message_service}[PortalMessageService].
+
+OneCX compatible application:
+
+* should use {portal_message_service}[PortalMessageService] to display toast messages
+* should not contain any toast component (in OneCX shell is in charge of displaying toast messages)
+
+[#display-toast-message]
+== Display Toast Message
+Details about the usage can be found in the {portal_message_service}[PortalMessageService documentation].

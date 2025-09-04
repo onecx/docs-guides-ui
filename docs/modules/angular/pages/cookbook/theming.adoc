@@ -1,0 +1,182 @@
+= OneCX Theming
+
+:idprefix:
+:idseparator: -
+
+[#overview]
+== Overview
+In an OneCX application theming is handled by the OneCX shell in collaboration with the OneCX Theme Management application.
+
+OneCX compatible application:
+
+* should use theme variables to theme its content.
+
+[#theme-appliance]
+== Theme Appliance
+In OneCX each workspace can use different theme for its pages. Each theme defines a set of the same CSS variables that are available on each pages with different values. The availability of those CSS variables is handled by the OneCX shell based on the accessed workspace. It means that *OneCX compatible application does not have to do anything to apply the theme*. The only responsibility is to use theme variables.
+
+[#theme-variables]
+== Theme Variables
+Theme variables are CSS variables available on the page for any application.
+
+Below, is a list of all theme variables available on the page:
+
+[#basic-variables]
+Basic Variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--primary-color`
+|Primary color of non-text content.
+|`--secondary-color`
+|Secondary color of non-text content.
+|`--content-bg-color`
+|Default background color of non-text content.
+|`--hover-bg-color`
+|Default background color on hover of non-text content.
+|===
+====
+
+[#text-variables]
+Text-related Variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--font-family`
+|Default font family for text content.
+|`--font-size`
+|Default font size for text content.
+|`--text-color`
+|Primary font text color.
+|`--text-secondary-color`
+|Secondary font text color for elements in lower design hierarchy, usually less prominent.
+|===
+====
+
+[#button-variables]
+Button-related Variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--button-hover-bg`
+|Background color of a button in hover state.
+|`--button-active-bg`
+|Background color of a button in active state.
+|`--danger-button-bg`
+|Background color of a button with danger severity.
+|===
+====
+
+[#message-variables]
+Message-related Variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--info-message-bg`
+|Background color of a message with info severity.
+|`--success-message-bg`
+|Background color of a message with success severity.
+|`--warning-message-bg`
+|Background color of a message with warning severity.
+|`--error-message-bg`
+|Background color of a message with error severity.
+|===
+====
+
+[#misc-variables]
+Misc Variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--divider-color`
+|Color of divider HTML elements, such as `<hr>` or component borders.
+|`--body-bg-color`
+|Background color of the document's body, used for the content pane's background color.
+|`--overlay-content-bg-color`
+|Background color of the overlays,
+// Unclear usage
+// |`--solid-surface-text-color`
+// |
+// Unclear usage
+// |`--content-alt-bg-color`
+// |
+|===
+====
+
+[#topbar-variables]
+Topbar Variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--topbar-bg-color`
+|Background color of the topbar.
+|`--topbar-left-bg-color`
+|Background color of the topbar's left side.
+|`--topbar-text-color`
+|Color of the text in the topbar.
+|`--topbar-item-text-color`
+|Color of the text of the items located in the topbar.
+|`--topbar-item-text-hover-bg-color`
+|Background color for the items located in the topbar on hover state.
+|`--topbar-menu-button-bg-color`
+|Background color of the vertical menu hiding toggle.
+|`--logo-color`
+|Color of the topbar's logo.
+|===
+====
+
+[#sidebar-variables]
+Sidebar Variables::
+====
+[cols="1,3"]
+|===
+|CSS variable
+|Description
+|`--menu-bg-color`
+|Background color of the sidebar (left side of the shell).
+|`--menu-text-color`
+|Text color of the menu, located in the sidebar (left side of the shell).
+|`--menu-item-text-color`
+|Text color of the menu item, located in the sidebar (left side of the shell).
+|`--menu-item-bg-color`
+|Background color of the menu item, located in the sidebar (left side of the shell).
+|`--menu-item-hover-bg-color`
+|Background color of the menu item in hover state, located in the sidebar (left side of the shell).
+|`--menu-active-item-text-color`
+|Text color of the menu item in active state, located in the sidebar (left side of the shell).
+|`--menu-active-item-bg-color`
+|Background color of the menu item in active state, located in the sidebar (left side of the shell).
+// Unclear usage
+// |`--menu-inline-border-color`
+// |
+
+|===
+====
+
+
+[#utilizing-theme-variables]
+== Utilizing Theme Variables
+
+When creating styles for UI components it's important to consider whether a style should be theme-aware. Example of a stylesheet using a theme variable:
+
+.styles.css
+[.source,css]
+----
+button {
+    background-color: var(--primary-color);
+}
+----
+
+The example above will set background color for each button element to the value corresponding to the `--primary-color` theme variable value.

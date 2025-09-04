@@ -1,0 +1,55 @@
+= OneCX Permissions
+
+:idprefix:
+:idseparator: -
+:user_service: xref:libraries/angular-integration-interface.adoc#user-service
+:permission_management: xref:latest@onecx-permission:general:index.adoc
+
+[#overview]
+== Overview
+In {permission_management}[OneCX permission management] and validation is done by core applications of the platform. The Permission Management application is in charge of managing permissions. For Angular applications {user_service}[User Service] is available for permission checking.
+
+OneCX compatible application:
+
+* can use the {user_service}[User Service] to check permissions.
+
+[#permissions-overview]
+== Permissions Overview
+In OneCX, there are 3 key concepts: permission, role and user. Each application can define many permissions that allow or deny an action on a specific resource (e.g., USER#DELETE) and then can validate if the permissions is met. Every user registered has set of roles assigned to them (e.g., admin) where each role is assigned with different permissions. With combination of those 3 concepts, application can be displayed differently based on the current user permissions.
+
+[#permission-setup]
+== Permission Setup
+To set up permissions for the application, OneCX core applications should be used to add or modify existing permissions and assignments for roles.
+
+[#permission-validation]
+== Permission Validation
+To perform permission validation in Angular applications, {user_service}[User Service] should be used. Depending on the requirements different methods and properties should be used
+
+[#check-for-permissions]
+=== Check For Permission
+To check if the currently logged in user has specific permission(s), use the `hasPermission` method of {user_service}[User Service].
+
+.example.ts
+[source,typescript]
+----
+const userService = inject(UserService)
+// Check for single permission
+userService.hasPermission('USER#DELETE')
+
+// Check for multiple permissions
+userService.hasPermission(['USER#EDIT', 'USER#EXPORT'])
+----
+
+[#get-all-application-permissions]
+=== Get All Application Permissions
+To get a list of all permissions for the current user in the context of the application, use the `getPermissions` method of {user_service}[User Service].
+
+.example.ts
+[source,typescript]
+----
+const userService = inject(UserService)
+// Get all application permissions
+userService.getPermissions().pipe((
+    // Pipe the permission list
+))
+----
