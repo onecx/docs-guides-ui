@@ -4,12 +4,13 @@
 :idseparator: -
 :user_service: xref:libraries/angular-integration-interface.adoc#user-service
 :permission_management: xref:latest@onecx-permission:general:index.adoc
+:onecx_compatible_application: xref:/cookbook/migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview
 In {permission_management}[OneCX permission management] and validation is done by core applications of the platform. The Permission Management application is in charge of managing permissions. For Angular applications {user_service}[User Service] is available for permission checking.
 
-OneCX compatible application:
+{onecx_compatible_application}[OneCX compatible application]:
 
 * can use the {user_service}[User Service] to check permissions.
 

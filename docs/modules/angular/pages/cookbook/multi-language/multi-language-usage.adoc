@@ -1,0 +1,71 @@
+= OneCX Multi-language Translations Usage
+
+:idprefix:
+:idseparator: -
+:user_service: xref:libraries/angular-integration-interface.adoc#user-service
+:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
+:multi_language_setup: xref:cookbook/multi-language/multi-language-setup.adoc
+
+[#overview]
+== Overview
+
+This document provides guidance on how to use multi-language translations in a {onecx_compatible_application}[*OneCX compatible*] application after setting it up using the {multi_language_setup}[multi-language setup document].
+
+[#prerequisites]
+== Prerequisites
+Before proceeding, ensure that the multi-language setup is complete.
+
+[#usage]
+== Usage
+Its possible to use functionalities from `@ngx-translate` library to implement translations in the application.
+
+[#templates-usage]
+=== Templates Usage
+Use translations via *translate* pipe.
+
+.component.html
+[source,html]
+----
+<p>{{ 'HELLO' | translate }}</p>
+----
+
+[#translate-service-usage]
+=== TranslateService Usage
+Use translations via *TranslateService*.
+
+.component.ts
+[source,typescript]
+----
+import { TranslateService } from '@ngx-translate/core';
+
+this.translate.get('WELCOME').subscribe((translated: string) => {
+    console.log('Translated message:', translated);
+});
+----
+
+[#with-parameters]
+=== With Parameters
+Use translations with parameters. Example:
+
+.en.json
+[source,json]
+----
+{
+  "GREETING": "Hello, {{name}}! Welcome back."
+}
+----
+
+.component.html
+[source,html]
+----
+<p>{{ 'GREETING' | translate:{ name: 'Alice' } }}</p>
+----
+
+.component.ts
+[source,typescript]
+----
+import { TranslateService } from '@ngx-translate/core';
+this.translate.get('GREETING', params).subscribe((translated: string) => {
+    console.log('Translated with params:', translated);
+});
+----

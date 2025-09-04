@@ -3,12 +3,13 @@
 :idprefix:
 :idseparator: -
 :workspace_service: xref:cookbook/service/workspace-service/index.adoc
+:onecx_compatible_application: xref:/cookbook/migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview
 In OneCX, routing to application-specific or endpoint-specific URLs should be handled through the centralized workspace context. This ensures that all navigation is consistent with the current workspace configuration and dynamically adapts to the environment.
 
-OneCX compatible application:
+{onecx_compatible_application}[OneCX compatible application]:
 
 * should use the {workspace_service}[WorkspaceService] to construct URLs for navigation.
 * should not hardcode URLs or rely on static routing logic.
