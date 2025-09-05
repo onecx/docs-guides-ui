@@ -11,9 +11,7 @@
 == Overview
 In OneCX multi-language support is available via translations using `@ngx-translate` library.
 
-{onecx_compatible_application}[OneCX compatible application]:
-
-* can setup multi-language translation to support more than 1 language for the application.
+A {onecx_compatible_application}[OneCX compatible application] can be set up for multi-language translation to support multiple languages in the application.
 
 [#setup]
 == Setup
