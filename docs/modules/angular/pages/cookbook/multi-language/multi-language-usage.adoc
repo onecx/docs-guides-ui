@@ -17,7 +17,7 @@ Before proceeding, ensure that the multi-language setup is complete.
 
 [#usage]
 == Usage
-Its possible to use functionalities from `@ngx-translate` library to implement translations in the application.
+It is possible to use functionalities from `@ngx-translate` library to implement translations in the application.
 
 [#templates-usage]
 === Templates Usage
