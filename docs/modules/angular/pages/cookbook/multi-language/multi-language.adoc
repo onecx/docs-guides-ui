@@ -17,7 +17,7 @@ In OneCX multi-language support is available via translations using `@ngx-transl
 
 [#setup]
 == Setup
-To setup the multi-language translations support follow the guidelines in the {multi_language_setup}[multi-language setup document].
+To set up the multi-language translations support follow the guidelines in the {multi_language_setup}[multi-language setup document].
 
 [#usage]
 == Usage
