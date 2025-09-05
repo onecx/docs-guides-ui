@@ -3,12 +3,13 @@
 :idprefix:
 :idseparator: -
 :portal_message_service: xref:cookbook/service/portal-message-service/index.adoc
+:onecx_compatible_application: xref:/cookbook/migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview
 In OneCX toast messages display is handled via {portal_message_service}[PortalMessageService].
 
-OneCX compatible application:
+{onecx_compatible_application}[OneCX compatible application]:
 
 * should use {portal_message_service}[PortalMessageService] to display toast messages
 * should not contain any toast component (in OneCX shell is in charge of displaying toast messages)

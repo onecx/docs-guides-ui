@@ -2,12 +2,13 @@
 
 :idprefix:
 :idseparator: -
+:onecx_compatible_application: xref:/cookbook/migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview
 In OneCX PrimeNG theming is handled by the OneCX shell in collaboration with the OneCX Theme Management application.
 
-OneCX compatible application:
+{onecx_compatible_application}[OneCX compatible application]:
 
 * can influence PrimeNG design token values for itself.
 

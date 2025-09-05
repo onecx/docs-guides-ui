@@ -13,9 +13,11 @@
 *** xref:angular:cookbook/components/page-header/index.adoc[PageHeader]
 *** xref:angular:cookbook/components/group-by-count-diagram/index.adoc[GroupByCountDiagram]
 *** xref:angular:cookbook/components/search-header/index.adoc[SearchHeader]
+** xref:angular:cookbook/multi-language/multi-language.adoc[Multi-language translations]
+*** xref:angular:cookbook/multi-language/multi-language-setup.adoc[Multi-language translations setup]
+*** xref:angular:cookbook/multi-language/multi-language-usage.adoc[Multi-language translations usage]
 ** xref:angular:cookbook/toast-messages.adoc[Toast messages]
 ** xref:angular:cookbook/theming.adoc[Theming]
-** xref:angular:cookbook/multi-language.adoc[Multi-language translations]
 ** xref:angular:cookbook/permissions.adoc[Permissions]
 ** xref:angular:cookbook/routing/index.adoc[Routing]
 ** PrimeNG
