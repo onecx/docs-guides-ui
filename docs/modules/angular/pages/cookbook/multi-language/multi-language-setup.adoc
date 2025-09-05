@@ -107,7 +107,7 @@ imports: [
 ]
 ----
 
-Optionally, if you intend to support multiple locales at once in case of missing translations for the current locale, you can utilize the `MultiLanguageMissingTranslationHandler` available via `@onecx/angular-utils`:
+Optionally, if you intend to support multiple locales at the same time in case of missing translations for the current locale, you can utilize the `MultiLanguageMissingTranslationHandler` available via `@onecx/angular-utils`:
 
 .remote.module.ts
 [source,typescript]
