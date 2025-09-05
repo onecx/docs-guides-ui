@@ -36,7 +36,7 @@ What is important to note is that the workspace identifier and application path 
 === OneCX Shell Routing
 OneCX shell handles the routing to the correct application based on the workspace configuration. It handles that on every navigation that changes the active workspace or application.
 
-As en example, if any application navigates to `https://shell_deployment_path/employees-workspace/client-management/client/123`, the OneCX shell will ensure that the `employees-workspace` is activated and the `client-management` application is loaded with the correct context. The url parts that OneCX shell handles are:
+As an example, if any application navigates to `https://shell_deployment_path/employees-workspace/client-management/client/123`, the OneCX shell will ensure that the `employees-workspace` is activated and the `client-management` application is loaded with the correct context. The url parts that OneCX shell handles are:
 
 * `https://shell_deployment_path/` - the deployment path of the OneCX shell
 * `employees-workspace` - the workspace used to determine which workspace data to load
