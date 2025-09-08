@@ -2,19 +2,21 @@
 
 :idprefix:
 :idseparator: -
-:user_service: xref:libraries/angular-integration-interface.adoc#user-service
+:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
+:multi_language_usage: xref:cookbook/multi-language/multi-language-usage.adoc
 
 [#overview]
 == Overview
-In OneCX multi-language support is available via translations using `@ngx-translate` library.
 
-OneCX compatible application:
+This document contains instructions on how to set up multi-language translations in a {onecx_compatible_application}[*OneCX compatible*] application using the `@ngx-translate` library.
 
-* can setup multi-language translation to support more than 1 language for the application.
+[#prerequisites]
+== Prerequisites
+Before proceeding, ensure that your application meets the compatibility requirements.
 
 [#setup]
 == Setup
-To setup the multi-language translations support follow the steps listed below. Please, make sure that the application is *OneCX compatible*.
+To set up the multi-language translations support follow the steps listed below.
 
 
 [#install-ngx-translate]
@@ -25,6 +27,8 @@ The `@ngx-translate/core` package has to be installed in the project.
 ----
 npm i @ngx-translate/core
 ----
+
+IMPORTANT: Make sure to add a `^` sign in the `package.json` file of the project for `@ngx-translate/core` library.
 
 [#share-ngx-translate]
 === Step 2: Share ngx-translate In Webpack Configuration
@@ -103,6 +107,33 @@ imports: [
 ]
 ----
 
+Optionally, if you intend to support multiple locales at the same time in case of missing translations for the current locale, you can utilize the `MultiLanguageMissingTranslationHandler` available via `@onecx/angular-utils`:
+
+.remote.module.ts
+[source,typescript]
+----
+import {
+  MultiLanguageMissingTranslationHandler
+} from '@onecx/angular-utils'
+
+imports: [
+  ...
+  TranslateModule.forRoot({
+    isolate: false,
+    loader: {
+      provide: TranslateLoader,
+      useFactory: createTranslateLoader,
+      deps: [HttpClient]
+    },
+    missingTranslationHandler: {
+      provide: MissingTranslationHandler,
+      useClass: MultiLanguageMissingTranslationHandler
+    }
+  }),
+  ...
+]
+----
+
 [#provide-translation-path]
 === Step 7: Provide Translation Path
 Use provideTranslationPathFromMeta(import.meta.url, ...) to specify the location of your translation files:
@@ -139,6 +170,7 @@ module.exports = {
 }
 ----
 ====
+
 [#feature-modules]
 === Step 8: Support in Feature Modules
 If any feature modules use ngx-translate features (e.g., translate pipe), ensure TranslateModule is also imported in those modules:
@@ -156,61 +188,19 @@ If any feature modules use ngx-translate features (e.g., translate pipe), ensure
 export class FeatureModule {}
 ----
 
-[#usage]
-== Usage
-Once the setup is complete, you can use the TranslateService in your components or templates.
+[#completion-checklist]
+== Completion Checklist
+To verify that the setup is complete, ensure the following:
 
-[#templates-usage]
-=== Templates Usage
-Use translations via *translate* pipe.
+* `@ngx-translate/core` is installed and listed in `package.json` with a `^` sign.
+* Webpack configuration includes `@ngx-translate/core` as a shared package.
+* Translation files are created and accessible.
+* Application routes are wrapped with `addInitializeModuleGuard`.
+* `TranslateModule.forRoot()` is configured in the remote module.
+** (Optional) `MultiLanguageMissingTranslationHandler` is set up for full multi-language support.
+* `provideTranslationPathFromMeta` is used to specify the translation files' path.
+* `TranslateModule` is imported in any feature modules using translation features.
 
-.component.html
-[source,html]
-----
-<p>{{ 'HELLO' | translate }}</p>
-----
-
-[#translate-service-usage]
-=== TranslateService Usage
-Use translations via *TranslateService*.
-
-.component.ts
-[source,typescript]
-----
-import { TranslateService } from '@ngx-translate/core';
-
-this.translate.get('WELCOME').subscribe((translated: string) => {
-    console.log('Translated message:', translated);
-});
-----
-
-[#with-parameters]
-=== With Parameters
-Use translations with parameters. Example:
-
-.en.json
-[source,json]
-----
-{
-  "GREETING": "Hello, {{name}}! Welcome back."
-}
-----
-
-.component.html
-[source,html]
-----
-<p>{{ 'GREETING' | translate:{ name: 'Alice' } }}</p>
-----
-
-.component.ts
-[source,typescript]
-----
-import { TranslateService } from '@ngx-translate/core';
-this.translate.get('GREETING', params).subscribe((translated: string) => {
-    console.log('Translated with params:', translated);
-});
-----
-
-[#language-information]
-== Language Information
-The currently used language can be accessed via {user_service}[UserService].
+[#next-steps]
+== Next Steps
+After completing the setup, you can start using translations in your components and templates. For usage instructions, refer to the {multi_language_usage}[multi-language usage document].
