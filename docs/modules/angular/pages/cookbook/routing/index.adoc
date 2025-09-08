@@ -46,7 +46,7 @@ The rest of the URL path should be handled by the application itself. In this ca
 
 [IMPORTANT]
 ====
-Application's router *will not be aware of the used parts of the URL that OneCX shell handles*. Therefore, it is required to appropriate routing mechanisms in order to ensure that the application can handle routing correctly regardless of the workspace configuration.
+Application's router *will not be aware of the used parts of the URL that OneCX shell handles*. Therefore, it is required to have appropriate routing mechanisms in order to ensure that the application can handle routing correctly regardless of the workspace configuration.
 ====
 
 [#general-routing-guidelines]
