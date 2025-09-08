@@ -1,0 +1,117 @@
+= OneCX Routing
+
+:idprefix:
+:idseparator: -
+:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
+:app_state_service: xref:libraries/angular-integration-interface.adoc#app-state-service
+:workspace_service: xref:cookbook/service/workspace-service/index.adoc
+
+[#overview]
+== Overview
+In OneCX, there are requirements for routing inside the application as well as routing to other applications or endpoints. It is important to follow these guidelines to ensure that routing is handled correctly within the OneCX ecosystem.
+
+[#prerequisites]
+== Prerequisites
+Before implementing routing in your OneCX application, ensure your application is {onecx_compatible_application}[OneCX compatible].
+
+[#reasons-for-restrictions]
+== Reasons for restrictions
+
+[#why-routing-restrictions]
+=== Why Routing Restrictions?
+In OneCX, each application can be accessed via different base paths depending on the workspace configuration. Below are some examples of how *the same application* might be accessed:
+
+* `https://shell_deployment_path/my-workspace/my-application`
+* `https://shell_deployment_path/employees-workspace/client-management/base`
+
+When an application is accessed via OneCX shell, the base path can vary, but every time the common parts are:
+
+* `https://shell_deployment_path/` - the deployment path of the OneCX shell
+* `my-workspace` or `employees-workspace` - the workspace identifier
+* `my-application` or `client-management/base` - the application path
+
+What is important to note is that the workspace identifier and application path are not fixed and can be different depending on the workspace that the app is accessed from and the workspace configuration.
+
+[#onecx-shell-routing]
+=== OneCX Shell Routing
+OneCX shell handles the routing to the correct application based on the workspace configuration. It handles that on every navigation that changes the active workspace or application.
+
+As an example, if any application navigates to `https://shell_deployment_path/employees-workspace/client-management/client/123`, the OneCX shell will ensure that the `employees-workspace` is activated and the `client-management` application is loaded with the correct context. The url parts that OneCX shell handles are:
+
+* `https://shell_deployment_path/` - the deployment path of the OneCX shell
+* `employees-workspace` - the workspace used to determine which workspace data to load
+* `client-management` - the application path to determine which application to load
+
+The rest of the URL path should be handled by the application itself. In this case, the `client/123` part should be handled by the `client-management` application.
+
+[IMPORTANT]
+====
+Application's router *will not be aware of the used parts of the URL that OneCX shell handles*. Therefore, it is required to have appropriate routing mechanisms in order to ensure that the application can handle routing correctly regardless of the workspace configuration.
+====
+
+[#general-routing-guidelines]
+== General Routing Guidelines
+
+[#routing-inside-application]
+=== Routing Inside the Application
+When routing inside the application, it is important to use *relative paths* instead of *absolute paths*. This ensures that the application can handle routing correctly regardless of the workspace configuration.
+
+
+[#routing-inside-application-examples]
+==== Examples
+
+[#navigate-to-details-page]
+===== Navigate to details page
+Application is currently at `https://shell_deployment_path/employees-workspace/client-management` and needs to navigate to a client with ID 123, it should use a relative path.
+
+[source,javascript]
+----
+this.router.navigate(['client', 123]);
+----
+
+[#navigate-back]
+===== Navigate back
+Application is currently at `https://shell_deployment_path/employees-workspace/client-management/client/123` and needs to navigate back to the client list, it should use a relative path.
+
+[source,javascript]
+----
+this.router.navigate(['../'], { relativeTo: this.route });
+----
+
+[#routing-using-absolute-paths]
+=== Routing Using Absolute Paths
+Sometimes, it might be necessary to use absolute paths for routing. In such cases, it is crucial to construct the absolute path dynamically based on the current workspace configuration. This can be achieved by using the {app_state_service}[AppStateService] to get the currentMfe$, which contains the current workspace and application information.
+
+[#routing-using-absolute-paths-examples]
+==== Examples
+
+[#navigate-to-details-page-absolute]
+===== Navigate to details page using absolute path
+Application is currently at `https://shell_deployment_path/employees-workspace/client-management` and needs to navigate to a client with ID 123 using an absolute path. It should construct the absolute path dynamically.
+
+[source,javascript]
+----
+import { firstValueFrom } from 'rxjs';
+...
+
+appStateService: AppStateService; // Injected via constructor
+
+async routeOnClick() {
+    const mfeInfo = await firstValueFrom(this.appStateService.currentMfe$);
+    this.router.navigateByUrl(`/${mfeInfo.baseUrl}/client/123`);
+}
+----
+
+NOTE: If you are using ngrx, you can use the {app_state_service}[AppStateService] directly in your effects to construct the absolute path dynamically.
+
+[#routing-between-applications]
+=== Routing Between Applications
+If it is necessary to route between different applications or to specific endpoints, it is recommended to use the {workspace_service}[WorkspaceService].
+
+The {workspace_service}[WorkspaceService] provides methods to:
+
+- Dynamically construct URLs for applications and endpoints based on the current workspace.
+- Validate whether a route or endpoint exists before navigating.
+- Resolve endpoint aliases and inject parameters into endpoint paths.
+
+This approach ensures that applications remain decoupled from static configurations and are fully integrated into the OneCX workspace model.
