@@ -12,7 +12,7 @@ In OneCX, there are requirements for routing inside the application as well as r
 
 [#prerequisites]
 == Prerequisites
-Before implementing routing in your OneCX application, ensure your appliaction is {onecx_compatible_application}[OneCX compatible].
+Before implementing routing in your OneCX application, ensure your application is {onecx_compatible_application}[OneCX compatible].
 
 [#reasons-for-restrictions]
 == Reasons for restrictions
