@@ -12,3 +12,6 @@ This document aims to showcase how to manage InteractiveDataView Component.
 
 // TODO: Overview of properties
 // TODO: Overview of interfaces related
+
+== Related Interfaces
+* xref:angular:cookbook/components/interactive-data-view/data-table-column.adoc[DataTableColumn]
