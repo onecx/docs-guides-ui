@@ -130,6 +130,28 @@ Impact: Translation issues
 * Ensure your webpack configuration includes the correct importMeta configuration.
 * For the correct configuration, please refer to the xref:angular:cookbook/multi-language/multi-language-setup.adoc#provide-translation-path[OneCX Multi-language Translations Guide] and other information on multi-language in OneCX.
 
+[#package-compatibility]
+=== Ensure package compatibility
+Impact: Broken application
+
+* Verify that all packages used in your App are compatible with OneCX.
+
+.Compatible package versions for Angular 18 (libs version 5.x)
+|===
+| Package                        | Compatible Versions
+| @ngx-translate/core   | ^15.0.0
+| ngx-build-plus        | ^18.0.0
+| primeng               | ^17.18.0
+|===
+
+.Compatible package versions for Angular 19 (libs version 6.x)
+|===
+| Package                        | Compatible Versions
+| @ngx-translate/core   | ^16.0.0
+| ngx-build-plus        | ^19.0.0
+| primeng               | ^19.0.0
+|===
+
 [#should-have-requirements]
 == Should-have Requirements
 
