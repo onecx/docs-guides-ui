@@ -12,6 +12,7 @@
 ** [ ] <<removed-packages, Remove @onecx/keycloak-auth>>
 ** [ ] <<removed-packages, Remove @onecx/portal-layout-styles>>
 ** [ ] <<removed-packages, Remove @onecx/portal-integration-interface>>
+** [ ] <<update-packages, Update required packages>>
 ** [ ] <<styles-update, Update application styles>>
 ** [ ] <<replace-portal-core-module, Replace PortalCoreModule>>
 ** [ ] <<deleted-components, Check deleted components>>
@@ -49,6 +50,16 @@ Since version 6 of OneCX `@onecx/portal-layout-styles` library is no longer avai
 [#portal-integration-angular]
 ==== Portal Integration Angular Removal
 Since version 6 of OneCX, the `@onecx/portal-integration-angular` library is no longer available. The list of features that are still supported in other libraries and alternative solutions can be found in the <<removed-from-integration-angular, removed from @onecx/portal-integration-interface>> section. It is important to <<replace-portal-core-module, replace PortalCoreModule>> if used in the application to preserve existing functionality.
+
+[#update-packages]
+=== Update required packages
+Please, alongside @angular and @onecx package upgrades, make sure to update the following packages to avoid potential issues:
+|===
+| Package | Required version
+| @ngx-translate/core | ^16.0.0
+| @ngx-translate/http-loader | ^8.0.0
+| ngx-build-plus | ^19.0.0
+|===
 
 [#styles-update]
 === Update application styles
