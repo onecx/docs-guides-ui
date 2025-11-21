@@ -1,10 +1,10 @@
-* Javascript
-** xref:general/index.adoc[General]
-*** Libraries
-**** xref:libraries/integration-interface.adoc[@onecx/integration-interface]
+* Libs
 ** Migrations
 *** xref:migrations/migrate-to-v6.adoc[Migrate to OneCX version 6]
-** Angular
+** xref:libraries/integration-interface.adoc[@onecx/integration-interface]
+** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
+
+* xref:angular:general/index.adoc[Angular] 
 +
 --
 include::angular:partial$nav.adoc[]

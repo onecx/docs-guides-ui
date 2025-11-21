@@ -1,4 +1,4 @@
-= Guidelines
+= Angular Guidelines
 
 :idprefix:
 :idseparator: -
