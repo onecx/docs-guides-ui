@@ -121,7 +121,7 @@ Impact: Might lead to unwanted side effects for your App and also other Apps in 
 Impact: Incorrect routing results
 
 * Use relative paths in Angular router configuration to avoid navigation issues.
-* Please refer to the xref:angular/cookbook/routing/index.adoc#general-routing-guidelines[OneCX General Routing Guide] for using relative paths and other information on routing in OneCX.
+* Please refer to the xref:angular:cookbook/routing/index.adoc#general-routing-guidelines[OneCX General Routing Guide] for using relative paths and other information on routing in OneCX.
 
 [#webpack-importmeta]
 === Webpack configuration for importMeta
