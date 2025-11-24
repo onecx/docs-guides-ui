@@ -1,0 +1,26 @@
+= OneCX Multi-language Translations
+
+:idprefix:
+:idseparator: -
+:user_service: xref:libraries/angular-integration-interface.adoc#user-service
+:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
+:multi_language_setup: xref:cookbook/multi-language/multi-language-setup.adoc
+:multi_language_usage: xref:cookbook/multi-language/multi-language-usage.adoc
+
+[#overview]
+== Overview
+In OneCX multi-language support is available via translations using `@ngx-translate` library.
+
+A {onecx_compatible_application}[OneCX compatible application] can be set up for multi-language translation to support multiple languages in the application.
+
+[#setup]
+== Setup
+To set up the multi-language translations support follow the guidelines in the {multi_language_setup}[multi-language setup document].
+
+[#usage]
+== Usage
+After setting up the multi-language translations, functionalities from `@ngx-translate` library can be used to use application translations. For more guidance, please refer to {multi_language_usage}[multi-language usage document].
+
+[#language-information]
+== Language Information
+The currently used language can be accessed via {user_service}[UserService].

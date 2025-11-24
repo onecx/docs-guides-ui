@@ -1,0 +1,20 @@
+= OneCX version 7 changelog
+
+:idprefix:
+:idseparator: -
+
+[#changelog]
+== Changelog
+* General changes
+** <<guards-synchronization, Guards synchronization>>
+
+[#general-changes]
+== General changes
+
+[#guards-synchronization]
+=== Guards synchronization
+The navigation guards are now synchronized between all microfrontends. This means that during navigation, all microfrontends will have their guards executed in a coordinated manner, ensuring consistent behavior across the entire application. Navigation will only proceed if all microfrontends approve the transition. In case of a rejection by any microfrontend, the navigation will be aborted, maintaining the integrity of the application's state.
+
+[#initial-microfrontend-load]
+==== Initial microfrontend load
+During the initial load of the application, it is likely that there are existing microfrontends that already approved the navigation that led to the current route. There is a scenario where the microfrontend that is being loaded initially has a guard that rejects the current navigation. In this case, the navigation will be aborted, and the application will revert to the previous state before the initial load.

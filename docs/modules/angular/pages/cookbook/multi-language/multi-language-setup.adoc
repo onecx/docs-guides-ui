@@ -1,0 +1,206 @@
+= OneCX Multi-language Translations
+
+:idprefix:
+:idseparator: -
+:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
+:multi_language_usage: xref:cookbook/multi-language/multi-language-usage.adoc
+
+[#overview]
+== Overview
+
+This document contains instructions on how to set up multi-language translations in a {onecx_compatible_application}[*OneCX compatible*] application using the `@ngx-translate` library.
+
+[#prerequisites]
+== Prerequisites
+Before proceeding, ensure that your application meets the compatibility requirements.
+
+[#setup]
+== Setup
+To set up the multi-language translations support follow the steps listed below.
+
+
+[#install-ngx-translate]
+=== Step 1: Install ngx-translate Library
+The `@ngx-translate/core` package has to be installed in the project.
+
+[source,bash]
+----
+npm i @ngx-translate/core
+----
+
+IMPORTANT: Make sure to add a `^` sign in the `package.json` file of the project for `@ngx-translate/core` library.
+
+[#share-ngx-translate]
+=== Step 2: Share ngx-translate In Webpack Configuration
+The `@ngx-translate/core` package has to be added as a shared package in webpack configuration.
+
+[source,typescript]
+----
+const config = withModuleFederationPlugin({
+  ...
+  shared: share({
+    ...
+    '@ngx-translate/core': { requiredVersion: 'auto' },
+    ...
+  }),
+});
+----
+
+This ensures the package is shared between the app and OneCX.
+
+[#create-translation-files]
+=== Step 3: Create Translation Files
+Create translation files (e.g., en.json, de.json) in a directory such as assets/i18n/. These files will contain key-value pairs for each language.
+
+.en.json
+[source,json]
+----
+{
+  "HELLO": "Hello",
+  "WELCOME": "Welcome"
+}
+----
+
+[#import-utilities]
+=== Step 4: Import Required Utilities
+In your remote module file, import the following:
+
+.remote.module.ts
+[source,typescript]
+----
+import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
+import { createTranslateLoader, provideTranslationPathFromMeta } from '@onecx/angular-utils';
+----
+
+[#wrap-routes]
+=== Step 5: Wrap Routes with Initialization Guard
+Wrap your routes with addInitializeModuleGuard to ensure translations are loaded correctly:
+
+.remote.module.ts
+[source,typescript]
+----
+imports: [
+  ...
+  RouterModule.forRoot(addInitializeModuleGuard(routes)),
+  ...
+]
+----
+
+[#configure-translate-module]
+=== Step 6: Configure TranslateModule
+Add TranslateModule.forRoot() to your module's imports array (or commonImports if shared):
+
+.remote.module.ts
+[source,typescript]
+----
+imports: [
+  ...
+  TranslateModule.forRoot({
+    isolate: false,
+    loader: {
+      provide: TranslateLoader,
+      useFactory: createTranslateLoader,
+      deps: [HttpClient]
+    }
+  }),
+  ...
+]
+----
+
+Optionally, if you intend to support multiple locales at the same time in case of missing translations for the current locale, you can utilize the `MultiLanguageMissingTranslationHandler` available via `@onecx/angular-utils`:
+
+.remote.module.ts
+[source,typescript]
+----
+import {
+  MultiLanguageMissingTranslationHandler
+} from '@onecx/angular-utils'
+
+imports: [
+  ...
+  TranslateModule.forRoot({
+    isolate: false,
+    loader: {
+      provide: TranslateLoader,
+      useFactory: createTranslateLoader,
+      deps: [HttpClient]
+    },
+    missingTranslationHandler: {
+      provide: MissingTranslationHandler,
+      useClass: MultiLanguageMissingTranslationHandler
+    }
+  }),
+  ...
+]
+----
+
+[#provide-translation-path]
+=== Step 7: Provide Translation Path
+Use provideTranslationPathFromMeta(import.meta.url, ...) to specify the location of your translation files:
+
+.remote.module.ts
+[source,typescript]
+----
+providers: [
+  ...
+  provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
+  ...
+]
+----
+
+NOTE: Replace 'assets/i18n/' with the actual path to your translation files if different.
+
+[NOTE]
+====
+If the error 
+"Cannot construct translation path from local file path. Please check whether the webpack configuration for importMeta is correct: https://webpack.js.org/configuration/module/#moduleparserjavascriptimportmeta" 
+appears, it means either
+
+* the provider is used in the application and import.meta.url incorrectly resolves to a local file:// path.
+* or the application does not use provideTranslationPathFromMeta, but is likely using a newer Angular version than the shell or preloader. In this case, modules are loaded from the app's context, which also leads to a local file:// prefix. 
+
+To fix this, this line has to be added to module.exports in the webpack.config.js:
+
+.webpack.config.ts
+[source,typescript]
+----
+module.exports = {
+ ...
+  module: { parser: { javascript: { importMeta: false } } },
+}
+----
+====
+
+[#feature-modules]
+=== Step 8: Support in Feature Modules
+If any feature modules use ngx-translate features (e.g., translate pipe), ensure TranslateModule is also imported in those modules:
+
+.feature.module.ts
+[source,typescript]
+----
+@NgModule({
+  imports: [
+    ...
+    TranslateModule,
+    ...
+  ]
+})
+export class FeatureModule {}
+----
+
+[#completion-checklist]
+== Completion Checklist
+To verify that the setup is complete, ensure the following:
+
+* `@ngx-translate/core` is installed and listed in `package.json` with a `^` sign.
+* Webpack configuration includes `@ngx-translate/core` as a shared package.
+* Translation files are created and accessible.
+* Application routes are wrapped with `addInitializeModuleGuard`.
+* `TranslateModule.forRoot()` is configured in the remote module.
+** (Optional) `MultiLanguageMissingTranslationHandler` is set up for full multi-language support.
+* `provideTranslationPathFromMeta` is used to specify the translation files' path.
+* `TranslateModule` is imported in any feature modules using translation features.
+
+[#next-steps]
+== Next Steps
+After completing the setup, you can start using translations in your components and templates. For usage instructions, refer to the {multi_language_usage}[multi-language usage document].

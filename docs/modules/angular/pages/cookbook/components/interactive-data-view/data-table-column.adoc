@@ -18,7 +18,7 @@
 | `filterable?` | `boolean` | Indicates if the column is filterable.
 | `filterType?` | `FilterType` | Defines which type of filter is used.
 | `predefinedGroupKeys?` | `string[]` | Defines the group set in which the following column is available. Additionally, the `predefinedGroups` can be selected from a dropdown menu at the top of the search results table. If you want your search column to belong only to the default column group, then only add `+FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT+`.
-| `dateFormat?` | `string` | Configuration object allowing for customization of the dialog behavior and visual aspects.
+| `dateFormat?` | `string` | Allows customization of the date format. Uses Angular DatePipe format.
 |===
 
 include::partial$column-type.adoc[]

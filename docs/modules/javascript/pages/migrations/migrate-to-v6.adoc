@@ -12,6 +12,7 @@
 ** [ ] <<removed-packages, Remove @onecx/keycloak-auth>>
 ** [ ] <<removed-packages, Remove @onecx/portal-layout-styles>>
 ** [ ] <<removed-packages, Remove @onecx/portal-integration-interface>>
+** [ ] <<update-packages, Update required packages>>
 ** [ ] <<styles-update, Update application styles>>
 ** [ ] <<replace-portal-core-module, Replace PortalCoreModule>>
 ** [ ] <<deleted-components, Check deleted components>>
@@ -49,6 +50,16 @@ Since version 6 of OneCX `@onecx/portal-layout-styles` library is no longer avai
 [#portal-integration-angular]
 ==== Portal Integration Angular Removal
 Since version 6 of OneCX, the `@onecx/portal-integration-angular` library is no longer available. The list of features that are still supported in other libraries and alternative solutions can be found in the <<removed-from-integration-angular, removed from @onecx/portal-integration-interface>> section. It is important to <<replace-portal-core-module, replace PortalCoreModule>> if used in the application to preserve existing functionality.
+
+[#update-packages]
+=== Update required packages
+Please, alongside @angular and @onecx package upgrades, make sure to update the following packages to avoid potential issues:
+|===
+| Package | Required version
+| @ngx-translate/core | ^16.0.0
+| @ngx-translate/http-loader | ^8.0.0
+| ngx-build-plus | ^19.0.0
+|===
 
 [#styles-update]
 === Update application styles
@@ -294,7 +305,7 @@ import {
 } from '@onecx/angular-remote-components'
 import { TranslateLoader } from '@ngx-translate/core'
 import { ReplaySubject } from 'rxjs'
-import { TRANSLATION_PATH, createTranslateLoader, remoteComponentTranslationPathFactory } from '@onecx/angular-utils'
+import { createTranslateLoader, remoteComponentTranslationPathFactory, provideTranslationPathFromMeta } from '@onecx/angular-utils'
 
 bootstrapRemoteComponent(RemoteComponent, 'ocx-my-remote-component', environment.production, [
   ...
@@ -307,15 +318,29 @@ bootstrapRemoteComponent(RemoteComponent, 'ocx-my-remote-component', environment
       deps: [HttpClient]
     }
   }),
-  {
-    provide: TRANSLATION_PATH,
-    useFactory: (remoteComponentConfig: ReplaySubject<RemoteComponentConfig>) =>
-      remoteComponentTranslationPathFactory('assets/i18n/')(remoteComponentConfig),
-    multi: true,
-    deps: [REMOTE_COMPONENT_CONFIG]
-  }
+  provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/')
 ])
 ```
+[NOTE]
+====
+If the error 
+"Cannot construct translation path from local file path. Please check whether the webpack configuration for importMeta is correct: https://webpack.js.org/configuration/module/#moduleparserjavascriptimportmeta" 
+appears, it means either
+
+* the provider is used in the application and import.meta.url incorrectly resolves to a local file:// path.
+* or the application does not use provideTranslationPathFromMeta, but is likely using a newer Angular version than the shell or preloader. In this case, modules are loaded from the app's context, which also leads to a local file:// prefix. 
+
+To fix this, this line has to be added to module.exports in the webpack.config.js:
+
+.webpack.config.ts
+[source,typescript]
+----
+module.exports = {
+ ...
+  module: { parser: { javascript: { importMeta: false } } },
+}
+----
+====
 
 [#removed-add-initialize-guard]
 === Remove addInitializeModuleGuard()

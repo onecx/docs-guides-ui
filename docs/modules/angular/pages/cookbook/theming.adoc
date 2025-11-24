@@ -2,18 +2,19 @@
 
 :idprefix:
 :idseparator: -
+:onecx_compatible_application: xref:/cookbook/migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview
 In an OneCX application theming is handled by the OneCX shell in collaboration with the OneCX Theme Management application.
 
-OneCX compatible application:
+{onecx_compatible_application}[OneCX compatible application]:
 
 * should use theme variables to theme its content.
 
 [#theme-appliance]
 == Theme Appliance
-In OneCX each workspace can use different theme for its pages. Each theme defines a set of the same CSS variables that are available on each pages with different values. The availability of those CSS variables is handled by the OneCX shell based on the accessed workspace. It means that *OneCX compatible application does not have to do anything to apply the theme*. The only responsibility is to use theme variables.
+In OneCX each workspace can use different theme for its pages. Each theme defines a set of the same CSS variables that are available on each pages with different values. The availability of those CSS variables is handled by the OneCX shell based on the accessed workspace. It means that *{onecx_compatible_application}[OneCX compatible] application does not have to do anything to apply the theme*. The only responsibility is to use theme variables.
 
 [#theme-variables]
 == Theme Variables

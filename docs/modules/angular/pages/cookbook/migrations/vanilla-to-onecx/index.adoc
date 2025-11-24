@@ -244,7 +244,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
 . After creating the translation files, a few imports have to be added at the beginning of the remote module file.
 
     import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
-    import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-utils'
+    import { createTranslateLoader, provideTranslationPathFromMeta } from '@onecx/angular-utils'
 
 . The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard`. This ensures correct translation loading for each route.
 
@@ -269,19 +269,34 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-. The path to the applications translations has to be provided using an injection token and `translationPathFactory`.
+. The path to the applications translations has to be provided using provideTranslationPathFromMeta(import.meta.url,...).
 
   providers: [
     ...
-    {
-      provide: TRANSLATION_PATH,
-      // TODO: Replace the path passed to translationPathFactory with the location of the applications i18n files (e.g. de.json)
-      useFactory: (appStateService: AppStateService) => translationPathFactory('assets/i18n/')(appStateService),
-      multi: true,
-      deps: [AppStateService]
-    },
+    provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
     ...
   ]
+
+[NOTE]
+====
+If the error 
+"Cannot construct translation path from local file path. Please check whether the webpack configuration for importMeta is correct: https://webpack.js.org/configuration/module/#moduleparserjavascriptimportmeta" 
+appears, it means either
+
+* the provider is used in the application and import.meta.url incorrectly resolves to a local file:// path.
+* or the application does not use provideTranslationPathFromMeta, but is likely using a newer Angular version than the shell or preloader. In this case, modules are loaded from the app's context, which also leads to a local file:// prefix. 
+
+To fix this, this line has to be added to module.exports in the webpack.config.js:
+
+.webpack.config.ts
+[source,typescript]
+----
+module.exports = {
+ ...
+  module: { parser: { javascript: { importMeta: false } } },
+}
+----
+====
 
 Disclaimer: If any of the applications feature modules use ngx-translate features, such as the `translate` pipe, `TranslateModule` might have to be added to the feature modules imports array.
 
