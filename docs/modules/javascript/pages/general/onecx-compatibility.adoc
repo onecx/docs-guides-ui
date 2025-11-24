@@ -103,7 +103,7 @@ Impact: We should share as much as possible
 * Refer to the {troubleshooting_installed_packages}[Troubleshooting Guide installed packages section] for correct range and examples.
 
 [#shared-packages]
-=== Angular, PrimeNG and OneCX packages are shared
+=== Angular, PrimeNG, NGRX and OneCX packages are shared
 Impact: Broken application
 
 * In webpack.config.js, share all required packages
