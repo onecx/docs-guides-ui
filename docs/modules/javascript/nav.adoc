@@ -4,8 +4,9 @@
 ** xref:libraries/integration-interface.adoc[@onecx/integration-interface]
 ** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
 
+* xref:general/onecx-compatibility.adoc[OneCX Compatibility]
+
 * xref:implementation-details:index.adoc[Implementation Details]
-** xref:implementation-details:onecx-compatibility.adoc[OneCX Compatibility]
 ** xref:implementation-details:microfrontend-content-loading.adoc[Microfrontend Content Loading]
 *** xref:implementation-details:webcomponents.adoc[Web Components]
 ** xref:implementation-details:bootstrapping.adoc[Microfrontend Bootstrapping]
