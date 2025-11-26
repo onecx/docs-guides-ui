@@ -38,6 +38,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
         <p-dropdown
               id="exampleEnum"
               formControlName="exampleEnum"
+              appendTo="body"
               [options]="(exampleEnum$ | async) ?? []"
               optionLabel="label"
               optionValue="value"
