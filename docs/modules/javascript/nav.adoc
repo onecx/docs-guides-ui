@@ -1,13 +1,18 @@
-* Javascript
-** xref:general/index.adoc[General]
-*** xref:general/onecx-compatibility.adoc[OneCX Compatibility ]
-*** Libraries
-**** xref:libraries/integration-interface.adoc[@onecx/integration-interface]
+* Libs
 ** Migrations
 *** xref:migrations/migrate-to-v6.adoc[Migrate to OneCX version 6]
-** Changelogs
-*** xref:changelogs/v7-changelog.adoc[OneCX version 7 changelog]
-** Angular
+** xref:libraries/integration-interface.adoc[@onecx/integration-interface]
+** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
+
+* xref:general/onecx-compatibility.adoc[OneCX Compatibility]
+
+* xref:implementation-details:index.adoc[Implementation Details]
+** xref:implementation-details:microfrontend-content-loading.adoc[Microfrontend Content Loading]
+*** xref:implementation-details:webcomponents.adoc[Web Components]
+** xref:implementation-details:bootstrapping.adoc[Microfrontend Bootstrapping]
+** xref:implementation-details:webpack.adoc[Microfrontend Webpack Configuration]
+
+* xref:angular:general/index.adoc[Angular] 
 +
 --
 include::angular:partial$nav.adoc[]

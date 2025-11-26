@@ -1,6 +1,4 @@
 
-* xref:angular:general/index.adoc[General]
-** xref:angular:general/guidelines.adoc[Guidelines]
 * Cookbooks
 ** Migrations
 *** xref:angular:cookbook/migrations/vanilla-to-onecx/index.adoc[Migrate vanilla Angular apps to OneCX]
@@ -25,7 +23,7 @@
 ** PrimeNG
 *** xref:angular:cookbook/primeng/theming.adoc[Theming with PrimeNG]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
-** Cookbook
+** Cookbooks
 *** xref:angular:ngrx/cookbook/adding-search-criteria/general.adoc[Adding Search Criteria]
 **** xref:angular:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete]
 ***** xref:angular:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-string.adoc[AutoComplete with array of type string]
@@ -35,7 +33,3 @@
 **** xref:angular:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown]
 **** xref:angular:ngrx/cookbook/adding-search-criteria/multiselect.adoc[Multiselect]
 *** xref:angular:ngrx/cookbook/tabs/lazy-loading.adoc[Lazy Loading Tabs]
-* Libraries
-** xref:angular:libraries/symlink.adoc[How to create a SymLink]
-** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
-** xref:angular:libraries/working-with-shared-libraries.adoc[]
