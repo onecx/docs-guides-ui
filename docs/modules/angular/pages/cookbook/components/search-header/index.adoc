@@ -38,14 +38,14 @@ The SearchHeader component allows for content customization:
 
 To find out how to work with the SearchHeader component, please visit the {search_header_storybook}[storybook page] and interact with the examples to find out the required features. For more in-depth information on the SearchHeader component interface, please read the further documentation.
 
-[#ocx-advanced-directive]
-=== ocxAdvanced Directive
+[#ocx-basic-and-advanced-directives]
+=== ocxBasic and ocxAdvanced Directives
 
-The `*ocxAdvanced` directive is a structural directive that provides advanced search field visibility control within the SearchHeader component. This directive enables the creation of a two-tier search interface where fields can be categorized as either basic or advanced.
+The `*ocxBasic` and `*ocxAdvanced` directives are https://angular.dev/guide/directives/structural-directives[structural directives] that provide advanced search field visibility control within the SearchHeader component. These directives enable the creation of a two-tier search interface where fields can be categorized as either basic or advanced.
 
-* **Basic Mode**: Fields marked with `*ocxAdvanced` are hidden by default
-* **Advanced Mode**: All fields (basic and advanced) are visible
-* **Toggle Button**: The Basic|Advanced toggle button appears automatically when at least one field uses the `*ocxAdvanced` directive
+* **Basic Mode**: Fields marked with `*ocxAdvanced` are hidden by default and only basic fields are visible.
+* **Advanced Mode**: All fields without an directive or with `*ocxAdvanced` are visible.
+* **Toggle Button**: The Basic|Advanced toggle button appears automatically when at least one field uses either the `*ocxBasic` or `*ocxAdvanced` directive
 
 [#inputs]
 == Inputs
