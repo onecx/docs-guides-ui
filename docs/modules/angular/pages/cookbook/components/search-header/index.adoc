@@ -38,6 +38,49 @@ The SearchHeader component allows for content customization:
 
 To find out how to work with the SearchHeader component, please visit the {search_header_storybook}[storybook page] and interact with the examples to find out the required features. For more in-depth information on the SearchHeader component interface, please read the further documentation.
 
+[#ocx-basic-and-advanced-directives]
+=== ocxBasic and ocxAdvanced Directives
+
+The `*ocxBasic` and `*ocxAdvanced` directives are https://angular.dev/guide/directives/structural-directives[structural directives] that provide advanced search field visibility control within the SearchHeader component. These directives enable the creation of a two-tier search interface where fields can be categorized as either basic or advanced.
+
+Here's a simple example showing how to use the directives:
+
+[source, html]
+----
+<ocx-search-header
+  ...>
+  <form [formGroup]="criteriaForm" class="flex flex-wrap gap-3">
+    <span class="p-float-label">
+      <input
+        id="title"
+        ...>
+      <label for="title">Title</label>
+    </span>
+    
+    <span *ocxBasic class="p-float-label">
+      <p-multiSelect
+        id="status"
+        ...>
+      </p-multiSelect>
+      <label for="status">Status</label>
+    </span>
+
+    <span *ocxAdvanced class="p-float-label">
+      <p-multiSelect
+        id="priority"
+        ...>
+      </p-multiSelect>
+      <label for="priority">Priority</label>
+    </span>
+  </form>
+</ocx-search-header>
+----
+
+* **Basic Mode**: Fields marked with `*ocxAdvanced` are hidden by default and only basic fields and fields without directive are visible. (Here: only Title and Status visible)
+* **Advanced Mode**: All fields without an directive or with `*ocxAdvanced` are visible. (Here: Title and Priority visible)
+* **Toggle Button**: The Basic|Advanced toggle button appears automatically when at least one field uses either the `*ocxBasic` or `*ocxAdvanced` directive
+
+
 [#inputs]
 == Inputs
 
