@@ -220,7 +220,7 @@ export class RemoteModule implements DoBootstrap {
 
 In this example the `remote.module.ts` file provides a remote entrypoint component, called ocx-test-component, connects the remote app's router to the OneCX router and defines two routes that each route to a different feature module.
 
-NOTE: Depending on the application this file will vary heavily and contain different providers, imports etc.. To ensure correct routing using the Angular router, instead of specifying a path for each route, a matcher should be specified using the `startsWith` function from the xref:latest@docs:general:implementation-details/mfe-content-loading/webcomponents.adoc#onecx-angular-webcomponents[`@onecx/angular-webcomponents`] package.
+NOTE: Depending on the application this file will vary heavily and contain different providers, imports etc.. To ensure correct routing using the Angular router, instead of specifying a path for each route, a matcher should be specified using the `startsWith` function from the xref:latest@documentation:implementation-details:webcomponents.adoc#onecx-angular-webcomponents[`@onecx/angular-webcomponents`] package.
 
 [#configure-remote-module-translation-loading]
 ==== Optional: Set up `@ngx-translate` translation loading in the remote module
@@ -384,7 +384,7 @@ After completing all steps mentioned in this document, a previously existing "va
 
 [#further-reading]
 == Further Reading
-For more information on how OneCX loads microfrontends and utilizes web components for content rendering, refer to the xref:latest@docs:general:implementation-details/mfe-content-loading/index.adoc[Microfrontend Content Loading in OneCX] and xref:latest@docs:general:implementation-details/mfe-content-loading/webcomponents.adoc[Web Components in OneCX] pages of the OneCX Docs.
+For more information on how OneCX loads microfrontends and utilizes web components for content rendering, refer to the xref:implementation-details:microfrontend-content-loading.adoc[Microfrontend Content Loading in OneCX] and xref:implementation-details:webcomponents.adoc[Web Components in OneCX] pages of the OneCX Docs.
 
 [#troubleshooting]
 == Troubleshooting
