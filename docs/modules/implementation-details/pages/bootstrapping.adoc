@@ -11,9 +11,9 @@
 :startsWith_url: xref:webcomponents.adoc#starts-with
 :bootstrapRemoteComponent_url: xref:webcomponents.adoc#bootstrap-remote-component
 :initializeRouter_url: xref:webcomponents.adoc#initialize-router
-:events_topic_url: xref:latest@guides:javascript:libraries/integration-interface.adoc#events-topic
-:current_mfe_topic_url: xref:latest@guides:javascript:libraries/integration-interface.adoc#current-mfe-topic
-:user_service_url: xref:latest@guides:angular:libraries/angular-integration-interface.adoc#user-service
+:events_topic_url: xref:latest@documentation:javascript:libraries/integration-interface.adoc#events-topic
+:current_mfe_topic_url: xref:latest@documentation:javascript:libraries/integration-interface.adoc#current-mfe-topic
+:user_service_url: xref:latest@documentation:angular:libraries/angular-integration-interface.adoc#user-service
 
 [#overview]
 == Overview

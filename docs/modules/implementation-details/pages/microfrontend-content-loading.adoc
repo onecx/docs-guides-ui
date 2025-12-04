@@ -27,7 +27,7 @@ In the context of content loading, content type **determines which mechanism wil
 
 [#shell-ui-router-mechanism]
 ==== Shell UI Router Mechanism (Module)
-When dealing with modules, Shell UI is responsible for loading them. As explained in the xref:latest@general-information:general:architecture-overview/shell.adoc[Shell overview], Shell UI first constructs workspace and then handles routing and loading of remotes. Workspace configuration contains all valid routes to Applications registered for a given workspace, each route associated with a Microfrontend's module.
+When dealing with modules, Shell UI is responsible for loading them. As explained in the xref:latest@documentation:general:architecture-overview/shell.adoc[Shell overview], Shell UI first constructs workspace and then handles routing and loading of remotes. Workspace configuration contains all valid routes to Applications registered for a given workspace, each route associated with a Microfrontend's module.
 
 Prior to any routing events, the Shell UI initializes the router to reflect workspace configuration. Based on the data from backend services about the current workspace, Shell UI creates routing rules to use during the runtime.
 
@@ -39,7 +39,7 @@ The **loadChildren method is responsible for loading the remote module into the 
 
 [#slot-component-mechanism]
 ==== Slot Component Mechanism (Remote Component)
-Remote Component loading is handled by the  Slot Component. The overall mechanism of Remote Component loading was explained in the xref:latest@general-information:general:architecture-overview/remote-components.adoc[Remote Components documentation]. In the context of content loading, it's important to note the following aspects:
+Remote Component loading is handled by the  Slot Component. The overall mechanism of Remote Component loading was explained in the xref:latest@documentation:general:architecture-overview/remote-components.adoc[Remote Components documentation]. In the context of content loading, it's important to note the following aspects:
 
 * The Remote Component **loading process starts when a Slot Component is rendered** on a page.
 * Remote Component **exposed content is loaded via https://www.npmjs.com/package/@angular-architects/module-federation[@angular-architects/module-federation]** (similar to module content type). Then, once it's loaded successfully, it is **rendered onto a page within the Slot Component via a dynamic content creation mechanism dependent on the chosen expose method**.
@@ -69,7 +69,7 @@ Those files should contain code that takes care of all the setup required to dis
 
 [#useful-resources]
 == Useful Resources
-* xref:latest@general-information:general:architecture-overview/shell.adoc[Shell overview]
-* xref:latest@general-information:general:architecture-overview/mfe.adoc[OneCX Microfrontend]
-* xref:latest@general-information:general:architecture-overview/remote-components.adoc[OneCX Remote Components]
+* xref:latest@documentation:general:architecture-overview/shell.adoc[Shell overview]
+* xref:latest@documentation:general:architecture-overview/mfe.adoc[OneCX Microfrontend]
+* xref:latest@documentation:general:architecture-overview/remote-components.adoc[OneCX Remote Components]
 * xref:./webcomponents.adoc[Web Components]

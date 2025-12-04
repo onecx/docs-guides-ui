@@ -6,7 +6,7 @@
 
 [#overview]
 == Overview
-Web Components is a suite of different technologies used to create reusable custom elements with encapsulated functionality. In the OneCX context, they are useful for dynamic content creation for both modules and the display of Remote Components in Microfrontends. Prior to reading this document, it is recommended to read the documentation of * xref:microfrontend-content-loading.adoc[microfrontend content loading] to get familiar with the content loading mechanisms available within the OneCX platform. 
+Web Components is a suite of different technologies used to create reusable custom elements with encapsulated functionality. In the OneCX context, they are useful for dynamic content creation for both modules and the display of Remote Components in Microfrontends. Prior to reading this document, it is recommended to read the documentation of xref:microfrontend-content-loading.adoc[microfrontend content loading] to get familiar with the content loading mechanisms available within the OneCX platform. 
 
 IMPORTANT: Webcomponent expose method enables the OneCX platform to use UI Apps developed with different frameworks and versions. It is the **recommended method for all Applications**.
 
@@ -48,7 +48,7 @@ IMPORTANT: To ensure Microfrontend compliance with Web Components for Angular mo
 
 [#expose-microfrontends-content-as-web-components]
 == Expose Microfrontend's Content as Web Components
-OneCX platform offers different ways of xref:latest@general-information:general:architecture-overview/mfe.adoc[exposing Microfrontend's content]. One of them is **Webcomponent method**.
+OneCX platform offers different ways of xref:latest@documentation:general:architecture-overview/mfe.adoc[exposing Microfrontend's content]. One of them is **Webcomponent method**.
 
 // TODO: Link to guide of Webcomponent expose method
 When exposing content with Webcomponent method, it is required to ensure the correct setup. For exposing Angular content, there are functionalities provided via the <<onecx/angular-webcomponents, @onecx/angular-webcomponents>> library. For a detailed guide on how to expose Microfrontend's content via Webcomponent method, please refer here.
