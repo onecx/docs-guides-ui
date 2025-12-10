@@ -8,7 +8,7 @@ This document aims to showcase how to manage dialogs using OneCX libraries.
 
 [#importing-portal-dialog-service]
 == Importing PortalDialogService
-To properly use PortalDialogService, please import it via the `providePortalDialogService`.
+To properly use PortalDialogService, please import it via the `providePortalDialogService` in your **remote module definition**.
 
 .Provide PortalDialogService via the providers array
 [source,javascript]
@@ -24,7 +24,7 @@ providers: [
 ...
 ----
 
-NOTE: PortalDialogService should be provided in the *module's providers array* or in *component's providers array* in case of standalone components usage.
+NOTE: Please, make sure that providePortalDialogService is used in in the *remote module's providers array* or in *remote component's providers array* (in case of standalone components usage). That way it will be accessible for all feature modules of the application.
 
 .Inject PortalDialogService via constructor
 [source,javascript]
