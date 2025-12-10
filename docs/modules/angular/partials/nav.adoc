@@ -22,7 +22,7 @@
 **** xref:angular:cookbook/routing/index.adoc[Routing]
 **** PrimeNG
 ****** xref:angular:cookbook/primeng/theming.adoc[Theming with PrimeNG]
-** xref:angular:ngrx/ngrx.adoc[NgRx]
+** NgRx
 **** Cookbooks
 ****** xref:angular:ngrx/cookbook/adding-search-criteria/general.adoc[Adding Search Criteria]
 ******** xref:angular:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete]

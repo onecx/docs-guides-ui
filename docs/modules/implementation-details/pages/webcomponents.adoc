@@ -48,7 +48,7 @@ IMPORTANT: To ensure Microfrontend compliance with Web Components for Angular mo
 
 [#expose-microfrontends-content-as-web-components]
 == Expose Microfrontend's Content as Web Components
-OneCX platform offers different ways of xref:latest@documentation:general:architecture-overview/mfe.adoc[exposing Microfrontend's content]. One of them is **Webcomponent method**.
+OneCX platform offers different ways of xref:latest@documentation:onecx-docs-overview:architecture-overview/mfe.adoc[exposing Microfrontend's content]. One of them is **Webcomponent method**.
 
 // TODO: Link to guide of Webcomponent expose method
 When exposing content with Webcomponent method, it is required to ensure the correct setup. For exposing Angular content, there are functionalities provided via the <<onecx/angular-webcomponents, @onecx/angular-webcomponents>> library. For a detailed guide on how to expose Microfrontend's content via Webcomponent method, please refer here.
