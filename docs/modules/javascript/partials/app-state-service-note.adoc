@@ -1,1 +1,0 @@
-NOTE: For Angular based applications xref:angular:libraries/angular-integration-interface.adoc#app-state-service[`@onecx/angular-integration-interface` offers an Injectable AppStateService service] exposing functions usefull when dealing with application state management.
