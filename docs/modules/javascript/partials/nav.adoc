@@ -1,9 +1,3 @@
-* Libs
-** Migrations
-*** xref:javascript:migrations/migrate-to-v6.adoc[Migrate to OneCX version 6]
-** xref:javascript:libraries/integration-interface.adoc[@onecx/integration-interface]
-** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
-
 * xref:javascript:general/onecx-compatibility.adoc[OneCX Compatibility]
 
 * xref:implementation-details:index.adoc[Implementation Details]
