@@ -1,5 +1,3 @@
-* xref:javascript:general/onecx-compatibility.adoc[OneCX Compatibility]
-
 * xref:implementation-details:index.adoc[Implementation Details]
 ** xref:implementation-details:microfrontend-content-loading.adoc[Microfrontend Content Loading]
 *** xref:implementation-details:webcomponents.adoc[Web Components]
