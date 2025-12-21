@@ -2,8 +2,10 @@
 
 :idprefix:
 :idseparator: -
-:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
-:multi_language_usage: xref:cookbook/multi-language/multi-language-usage.adoc
+:imagesdir: ../../../images
+
+:onecx_compatible_application: xref:../migrations/vanilla-to-onecx/index.adoc
+:multi_language_usage: xref:./multi-language-usage.adoc
 
 [#overview]
 == Overview

@@ -2,9 +2,11 @@
 
 :idprefix:
 :idseparator: -
+:imagesdir: ../../../images
+
 :user_service: xref:libraries/angular-integration-interface.adoc#user-service
-:permission_management: xref:latest@onecx-permission:general:index.adoc
-:onecx_compatible_application: xref:/cookbook/migrations/vanilla-to-onecx/index.adoc
+:permission_management: xref:documentation:onecx-permission:general:index.adoc
+:onecx_compatible_application: xref:./migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview
