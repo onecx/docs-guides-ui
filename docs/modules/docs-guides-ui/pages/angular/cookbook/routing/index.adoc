@@ -2,9 +2,9 @@
 
 :idprefix:
 :idseparator: -
-:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
+:onecx_compatible_application: xref:../migrations/vanilla-to-onecx/index.adoc
 :app_state_service: xref:libraries/angular-integration-interface.adoc#app-state-service
-:workspace_service: xref:cookbook/service/workspace-service/index.adoc
+:workspace_service: xref:../service/workspace-service/index.adoc
 
 [#overview]
 == Overview

@@ -2,7 +2,9 @@
 
 :idprefix:
 :idseparator: -
-:onecx_compatible_application: xref:/cookbook/migrations/vanilla-to-onecx/index.adoc
+:imagesdir: ../../../images
+
+:onecx_compatible_application: xref:./migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview

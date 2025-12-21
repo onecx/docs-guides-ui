@@ -2,10 +2,12 @@
 
 :idprefix:
 :idseparator: -
+:imagesdir: ../../../images
+
 :user_service: xref:libraries/angular-integration-interface.adoc#user-service
-:onecx_compatible_application: xref:cookbook/migrations/vanilla-to-onecx/index.adoc
-:multi_language_setup: xref:cookbook/multi-language/multi-language-setup.adoc
-:multi_language_usage: xref:cookbook/multi-language/multi-language-usage.adoc
+:onecx_compatible_application: xref:../migrations/vanilla-to-onecx/index.adoc
+:multi_language_setup: xref:./multi-language-setup.adoc
+:multi_language_usage: xref:./multi-language-usage.adoc
 
 [#overview]
 == Overview
