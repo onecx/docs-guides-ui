@@ -4,7 +4,7 @@
 :idseparator: -
 :imagesdir: ../../../images
 
-:onecx_compatible_application: xref:../migrations/vanilla-to-onecx/index.adoc
+:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/cookbook/migrations/vanilla-to-onecx/index.adoc
 :multi_language_usage: xref:./multi-language-usage.adoc
 
 [#overview]

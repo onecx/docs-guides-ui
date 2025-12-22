@@ -4,8 +4,8 @@
 :idseparator: -
 :imagesdir: ../../../images
 
-:portal_message_service: xref:./service/portal-message-service/index.adoc
-:onecx_compatible_application: xref:./migrations/vanilla-to-onecx/index.adoc
+:portal_message_service: xref:documentation:onecx-portal-ui-libs:service/portal-message-service.adoc
+:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/cookbook/migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview

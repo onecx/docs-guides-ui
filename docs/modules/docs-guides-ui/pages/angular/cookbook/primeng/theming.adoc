@@ -1,8 +1,9 @@
-= OneCX PrimeNG Theming
-
 :idprefix:
 :idseparator: -
-:onecx_compatible_application: xref:../migrations/vanilla-to-onecx/index.adoc
+
+= OneCX PrimeNG Theming
+
+:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/cookbook/migrations/vanilla-to-onecx/index.adoc
 
 [#overview]
 == Overview
