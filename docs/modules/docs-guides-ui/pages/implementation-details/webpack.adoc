@@ -103,5 +103,5 @@ The name of the remote entry file (usually `remoteEntry.js`).
 [#related-resources]
 === Related Resources
 
-* xref:bootstrapping.adoc[Content bootstrapping] - based on the content type and expose method bootstrap mechanism needs to be adjusted.
+* xref:./bootstrapping.adoc[Content bootstrapping] - based on the content type and expose method bootstrap mechanism needs to be adjusted.
 * https://www.angulararchitects.io/en/blog/getting-out-of-version-mismatch-hell-with-module-federation/[Package sharing] - based on the content of the Microfrontend different packages are required or should be considered for sharing.

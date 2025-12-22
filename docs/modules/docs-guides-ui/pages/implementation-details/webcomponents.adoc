@@ -6,7 +6,7 @@
 
 [#overview]
 == Overview
-Web Components is a suite of different technologies used to create reusable custom elements with encapsulated functionality. In the OneCX context, they are useful for dynamic content creation for both modules and the display of Remote Components in Microfrontends. Prior to reading this document, it is recommended to read the documentation of xref:microfrontend-content-loading.adoc[microfrontend content loading] to get familiar with the content loading mechanisms available within the OneCX platform. 
+Web Components is a suite of different technologies used to create reusable custom elements with encapsulated functionality. In the OneCX context, they are useful for dynamic content creation for both modules and the display of Remote Components in Microfrontends. Prior to reading this document, it is recommended to read the documentation of xref:./microfrontend-content-loading.adoc[microfrontend content loading] to get familiar with the content loading mechanisms available within the OneCX platform. 
 
 IMPORTANT: Webcomponent expose method enables the OneCX platform to use UI Apps developed with different frameworks and versions. It is the **recommended method for all Applications**.
 
@@ -27,7 +27,7 @@ Custom Elements are part of the Web Components technology. It is a set of tools 
 . Load exposed content via Module Federation into memory.
 . Create an HTML element on a page to which exposed content should be bound.
 
-In the xref:microfrontend-content-loading.adoc#module-federation-loading-explained[Microfrontend content loading], it was mentioned that when exposing Microfrontend content, files specified per content should take care of all setup needed to display it. With Webcomponent method, those files need to contain source code, which will register the Custom Element in the Custom Elements Registry. Without getting into the details of Web Components, a file used for content loading needs to use Web Components to assign some component to the HTML element that OneCX platform will render. This way, when OneCX platform creates this HTML element on a page, the Custom Elements Registry will use the assigned component and display it on a page.
+In the xref:./microfrontend-content-loading.adoc#module-federation-loading-explained[Microfrontend content loading], it was mentioned that when exposing Microfrontend content, files specified per content should take care of all setup needed to display it. With Webcomponent method, those files need to contain source code, which will register the Custom Element in the Custom Elements Registry. Without getting into the details of Web Components, a file used for content loading needs to use Web Components to assign some component to the HTML element that OneCX platform will render. This way, when OneCX platform creates this HTML element on a page, the Custom Elements Registry will use the assigned component and display it on a page.
 
 [#webcomponent-expose-method-requirements]
 === Webcomponent Expose Method Requirements
@@ -50,7 +50,7 @@ IMPORTANT: To ensure Microfrontend compliance with Web Components for Angular mo
 
 [#expose-microfrontends-content-as-web-components]
 == Expose Microfrontend's Content as Web Components
-OneCX platform offers different ways of xref:latest@documentation:onecx-docs-overview:architecture-overview/mfe.adoc[exposing Microfrontend's content]. One of them is **Webcomponent method**.
+OneCX platform offers different ways of xref:documentation:onecx-docs-overview:architecture/mfe.adoc[exposing Microfrontend's content]. One of them is **Webcomponent method**.
 
 // TODO: Link to guide of Webcomponent expose method
 When exposing content with Webcomponent method, it is required to ensure the correct setup. For exposing Angular content, there are functionalities provided via the <<onecx/angular-webcomponents, @onecx/angular-webcomponents>> library. For a detailed guide on how to expose Microfrontend's content via Webcomponent method, please refer here.
@@ -70,7 +70,7 @@ In-depth explanations for those issues can be found in the https://www.angularar
 
 [#onecx-adaptation-to-webcomponent-method]
 ==  OneCX Adaptation to Webcomponent Method
-As stated in xref:microfrontend-content-loading.adoc[Microfrontend content loading documentation], every method of Microfrontend's content exposal has an impact on the OneCX platform behavior for both module and Remote Component loading. The adaptations made by OneCX to work with Web Components were briefly mentioned in the Web Components preview, however depending on the content type, the behavior varies.
+As stated in xref:./microfrontend-content-loading.adoc[Microfrontend content loading documentation], every method of Microfrontend's content exposal has an impact on the OneCX platform behavior for both module and Remote Component loading. The adaptations made by OneCX to work with Web Components were briefly mentioned in the Web Components preview, however depending on the content type, the behavior varies.
 
 // TODO: Link to guide of Webcomponent expose method 
 [#module-loading-behavior]
@@ -219,6 +219,6 @@ Use **startsWith** function when constructing Routes for Microfrontend's module.
 // TODO: Link resources
 [#useful-resources]
 == Useful Resources
-* xref:microfrontend-content-loading.adoc[Microfrontend content loading]
+* xref:./microfrontend-content-loading.adoc[Microfrontend content loading]
 * Remote Component with Webcomponent method integration
 * Module with Webcomponent method integration
