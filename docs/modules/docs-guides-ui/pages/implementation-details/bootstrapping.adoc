@@ -10,7 +10,7 @@
 :createAppEntrypoint_url: xref:./webcomponents.adoc#create-app-entrypoint
 :startsWith_url: xref:./webcomponents.adoc#starts-with
 :bootstrapRemoteComponent_url: xref:./webcomponents.adoc#bootstrap-remote-component
-:initializeRouter_url: xref:webcomponents.adoc#initialize-router
+:initializeRouter_url: xref:./webcomponents.adoc#initialize-router
 :events_topic_url: xref:documentation:onecx-portal-ui-libs:libraries/integration-interface.adoc#events-topic
 :current_mfe_topic_url: xref:documentation:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-mfe-topic
 :user_service_url: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service

@@ -1,10 +1,11 @@
-= OneCX Routing
-
 :idprefix:
 :idseparator: -
+
+= OneCX Routing
+
 :onecx_compatible_application: xref:../migrations/vanilla-to-onecx/index.adoc
-:app_state_service: xref:libraries/angular-integration-interface.adoc#app-state-service
-:workspace_service: xref:../service/workspace-service/index.adoc
+:app_state_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-state-service
+:workspace_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#workspace-service
 
 [#overview]
 == Overview
