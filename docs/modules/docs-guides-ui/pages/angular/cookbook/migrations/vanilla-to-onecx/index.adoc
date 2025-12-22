@@ -220,7 +220,7 @@ export class RemoteModule implements DoBootstrap {
 
 In this example the `remote.module.ts` file provides a remote entrypoint component, called ocx-test-component, connects the remote app's router to the OneCX router and defines two routes that each route to a different feature module.
 
-NOTE: Depending on the application this file will vary heavily and contain different providers, imports etc.. To ensure correct routing using the Angular router, instead of specifying a path for each route, a matcher should be specified using the `startsWith` function from the xref:latest@documentation:implementation-details:webcomponents.adoc#onecx-angular-webcomponents[`@onecx/angular-webcomponents`] package.
+NOTE: Depending on the application this file will vary heavily and contain different providers, imports etc.. To ensure correct routing using the Angular router, instead of specifying a path for each route, a matcher should be specified using the `startsWith` function from the xref:documentation:docs-guides-ui:implementation-details:webcomponents.adoc#onecx-angular-webcomponents[`@onecx/angular-webcomponents`] package.
 
 [#configure-remote-module-translation-loading]
 ==== Optional: Set up `@ngx-translate` translation loading in the remote module
@@ -380,11 +380,11 @@ After completing all steps listed above, the application should be ready to be u
 
 [#standalone-mode]
 == Standalone Mode
-After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:angular:cookbook/migrations/enable-standalone/index.adoc[Enable OneCX app to run in standalone] cookbook.
+After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:documentation:docs-guides-ui:angular/cookbook/migrations/enable-standalone/index.adoc[Enable OneCX app to run in standalone] cookbook.
 
 [#further-reading]
 == Further Reading
-For more information on how OneCX loads microfrontends and utilizes web components for content rendering, refer to the xref:../..implementation-details:microfrontend-content-loading.adoc[Microfrontend Content Loading in OneCX] and xref:../../implementation-details:webcomponents.adoc[Web Components in OneCX] pages of the OneCX Docs.
+For more information on how OneCX loads microfrontends and utilizes web components for content rendering, refer to the xref:documentation:docs-guides-ui:implementation-details/microfrontend-content-loading.adoc[Microfrontend Content Loading in OneCX] and xref:documentation:docs-guides-ui:implementation-details/webcomponents.adoc[Web Components in OneCX] pages of the OneCX Docs.
 
 [#troubleshooting]
 == Troubleshooting
