@@ -1,8 +1,8 @@
-= Web Components in OneCX
-
 :idprefix:
 :idseparator: -
 :imagesdir: ../../../images
+
+= Web Components in OneCX
 
 [#overview]
 == Overview
@@ -12,11 +12,13 @@ IMPORTANT: Webcomponent expose method enables the OneCX platform to use UI Apps 
 
 NOTE: Web Components technologies are used within OneCX platform. However, OneCX offers its own functionalities that should be used to expose Microfrontend's content using the Webcomponent expose method. Those functionalities are based on Web Components technologies, so there is no need to get familiar with them. Nevertheless, more resources about Web Components can be found https://developer.mozilla.org/en-US/docs/Web/API/Web_components[here]
 
+
 [#web-components-preview]
 == Web Components Preview
 Web Components are used in OneCX context for dynamic content creation. OneCX platform uses Web Components technologies to bound UI components to HTML elements. OneCX platform will use information from the Application Store to determine what HTML elements have to be rendered to allow certain modules and Remote Components to be bound to page content.
 
 With Webcomponent expose method, the OneCX platform is only loading the code required for Microfrontend's content into the Shell UI memory and creating a "host" element for Remote Components or modules to attach to using Web Components. The Microfrontend's exposed content is partially responsible for the content creation. Microfrontends have to adapt exposed modules and components, so they are using Web Components Custom Elements.
+
 
 [#custom-elements]
 === Custom Elements

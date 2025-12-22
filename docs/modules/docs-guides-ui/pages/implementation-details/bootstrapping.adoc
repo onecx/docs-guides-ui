@@ -1,8 +1,8 @@
-:imagesdir: ../../images
-= OneCX Microfrontend Content Bootstrapping
-
 :idprefix:
 :idseparator: -
+:imagesdir: ../../images
+
+= OneCX Microfrontend Content Bootstrapping
 
 :mfe-loading_url: xref:./microfrontend-content-loading.adoc
 :angular-webcomponents_url: xref:./webcomponents.adoc#onecx-angular-webcomponents
@@ -15,17 +15,20 @@
 :current_mfe_topic_url: xref:documentation:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-mfe-topic
 :user_service_url: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
 
+
 [#overview]
 == Overview
 Bootstrapping a Microfrontend involves setting up the initial structure and configuration for a Microfrontend application. This process typically includes creating the necessary directories, installing dependencies, and configuring the build tools to ensure that the Microfrontend can run independently and integrate with other Microfrontends or a shell application.
 
 This document aims to explain the details related to Microfrontend's content bootstrapping. Depending on the content's type and expose method, there are different requirements needed to be fulfilled to ensure the content is loaded correctly by OneCX platform elements. This topic is highly related to {mfe-loading_url}[Microfrontend content loading] and xref:./webpack.adoc[Microfrontend configuration with Webpack]. It is recommended to be familiar with those before reading this document.
 
+
 [#microfrontend-content-bootstrapping-explained]
 == Microfrontend Content Bootstrapping Explained
 {mfe-loading_url}[Microfrontend content loading] is an action triggered by the route change (Shell Application's responsibility of loading modules) or by the Slot Component display (Slot Component's responsibility of loading Remote Components). During this action, Microfrontend's content, exposed via remote entry file, is loaded and bootstrapped using the provided file in xref:./webpack.adoc[Webpack configuration].
 
 Depending on the content type and chosen expose method, different adjustments have to be made to ensure correct content bootstrapping. 
+
 
 [#content-exposed-using-angular-method]
 === Content Exposed Using Angular Method

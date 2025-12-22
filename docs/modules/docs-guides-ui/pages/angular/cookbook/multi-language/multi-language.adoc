@@ -1,11 +1,11 @@
-= OneCX Multi-language Translations
-
 :idprefix:
 :idseparator: -
 :imagesdir: ../../../images
 
-:user_service: xref:libraries/angular-integration-interface.adoc#user-service
-:onecx_compatible_application: xref:angular/cookbook/migrations/vanilla-to-onecx/index.adoc
+= OneCX Multi-language Translations
+
+:user_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
+:onecx_compatible_application: xref:../migrations/vanilla-to-onecx/index.adoc
 :multi_language_setup: xref:./multi-language-setup.adoc
 :multi_language_usage: xref:./multi-language-usage.adoc
 
