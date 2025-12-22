@@ -384,7 +384,7 @@ After completing all steps mentioned in this document, a previously existing "va
 
 [#further-reading]
 == Further Reading
-For more information on how OneCX loads microfrontends and utilizes web components for content rendering, refer to the xref:implementation-details:microfrontend-content-loading.adoc[Microfrontend Content Loading in OneCX] and xref:implementation-details:webcomponents.adoc[Web Components in OneCX] pages of the OneCX Docs.
+For more information on how OneCX loads microfrontends and utilizes web components for content rendering, refer to the xref:../..implementation-details:microfrontend-content-loading.adoc[Microfrontend Content Loading in OneCX] and xref:../../implementation-details:webcomponents.adoc[Web Components in OneCX] pages of the OneCX Docs.
 
 [#troubleshooting]
 == Troubleshooting

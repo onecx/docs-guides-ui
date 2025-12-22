@@ -1,8 +1,8 @@
-:imagesdir: ../../../images
 = Web Components in OneCX
 
 :idprefix:
 :idseparator: -
+:imagesdir: ../../../images
 
 [#overview]
 == Overview
