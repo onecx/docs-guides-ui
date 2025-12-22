@@ -119,7 +119,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     }}</label>
 ----
 
-* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar input field]
-* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown input field]
-* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect input field]
-* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]
+* xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar input field]
+* xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown input field]
+* xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect input field]
+* xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]
