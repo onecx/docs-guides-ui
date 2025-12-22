@@ -1,37 +1,33 @@
-= Angular
-
 :idprefix:
 :idseparator: -
 
+= Angular
 Angular is a TypeScript-based, free and open-source single-page web application framework
 
-https://angular.io/[Angular homepage] 
+* https://angular.io/[Angular Homepage] 
 
-https://angular.io/guide/developer-guide-overview[Guides]
+* https://angular.io/guide/developer-guide-overview[Guides]
 
-https://github.com/angular/angular[Source code]
+* https://github.com/angular/angular[Source code]
 
-https://angular.io/start[Angular quick starts]
+* https://angular.io/start[Angular Quick Start]
 
-https://ngrx.io/[NgRx]
+* https://ngrx.io/[NgRx]
 
-https://github.com/onecx-apps/ping-angular-app-ui[Ping angular app ui]
+* https://github.com/onecx-apps/ping-angular-app-ui[Ping Angular App UI]
 
 NgRx Store provides reactive state management for Angular apps inspired by Redux.
 
 [#requirements]
 == Requirements
-
 For the developing the Quarkus application we need to install these tools:
 
 [#developer-ide]
 === Developer IDE
-
-    * https://code.visualstudio.com/[Visual Studio Code]
-
+* https://code.visualstudio.com/[Visual Studio Code]
 
 [#vs-code-extensions]
-=== VS Code extensions
+=== VS Code Extensions
 * https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode[SonarLint]
 
 * https://marketplace.visualstudio.com/items?itemName=Angular.ng-template[Angular Language Service]
@@ -52,7 +48,7 @@ For the developing the Quarkus application we need to install these tools:
 
 * https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode[Prettier - Code formatter]
 
-* https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint[Pretiier ESLint]
+* https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint[Prettier ESLint]
 
 * https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client[ThunderClient]
 
