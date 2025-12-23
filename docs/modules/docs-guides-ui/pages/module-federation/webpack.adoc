@@ -1,5 +1,5 @@
 :imagesdir: ../../images
-= OneCX Microfrontend Configuration with Webpack
+= Microfrontend Configuration with Webpack
 
 :idprefix:
 :idseparator: -
