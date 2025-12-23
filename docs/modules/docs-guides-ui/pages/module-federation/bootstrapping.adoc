@@ -2,7 +2,7 @@
 :idseparator: -
 :imagesdir: ../../images
 
-= OneCX Microfrontend Content Bootstrapping
+= Microfrontend Bootstrapping
 
 :mfe-loading_url: xref:./microfrontend-content-loading.adoc
 :angular-webcomponents_url: xref:./webcomponents.adoc#onecx-angular-webcomponents
