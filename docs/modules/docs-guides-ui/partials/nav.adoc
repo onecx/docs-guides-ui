@@ -1,3 +1,10 @@
+* xref:documentation:docs-guides-ui:module-federation/index.adoc[Module Federation]
+** xref:documentation:docs-guides-ui:module-federation/webcomponents.adoc[Web Components]
+** xref:documentation:docs-guides-ui:module-federation/webpack.adoc[Webpack Configuration]
+** xref:documentation:docs-guides-ui:module-federation/microfrontend-content-loading.adoc[Microfrontend Loading]
+** xref:documentation:docs-guides-ui:module-federation/bootstrapping.adoc[Microfrontend Bootstrapping]
+** xref:latest@documentation:onecx-docs-overview:architecture/remote-components.adoc[Remote Components]
+
 * xref:documentation:docs-guides-ui:angular/general/index.adoc[Angular] 
 ** Cookbooks
 **** Migrations
@@ -23,10 +30,3 @@
 ******** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown]
 ******** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/multiselect.adoc[Multiselect]
 ****** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/tabs/lazy-loading.adoc[Lazy Loading Tabs]
-
-* xref:documentation:docs-guides-ui:module-federation/index.adoc[Module Federation]
-** xref:documentation:docs-guides-ui:module-federation/webcomponents.adoc[Web Components]
-** xref:documentation:docs-guides-ui:module-federation/webpack.adoc[Webpack Configuration]
-** xref:documentation:docs-guides-ui:module-federation/microfrontend-content-loading.adoc[Microfrontend Loading]
-** xref:documentation:docs-guides-ui:module-federation/bootstrapping.adoc[Microfrontend Bootstrapping]
-** xref:latest@documentation:onecx-docs-overview:architecture/remote-components.adoc[Remote Components]
