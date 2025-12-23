@@ -24,9 +24,9 @@
 ******** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/multiselect.adoc[Multiselect]
 ****** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/tabs/lazy-loading.adoc[Lazy Loading Tabs]
 
-* xref:documentation:docs-guides-ui:implementation-details/index.adoc[Implementation Details]
-** xref:documentation:docs-guides-ui:implementation-details/microfrontend-content-loading.adoc[Microfrontend Content Loading]
-*** xref:documentation:docs-guides-ui:implementation-details/webcomponents.adoc[Web Components]
-** xref:documentation:docs-guides-ui:implementation-details/bootstrapping.adoc[Microfrontend Bootstrapping]
-** xref:documentation:docs-guides-ui:implementation-details/webpack.adoc[Microfrontend Webpack Configuration]
-
+* xref:documentation:docs-guides-ui:module-federation/index.adoc[Module Federation]
+** xref:documentation:docs-guides-ui:module-federation/webcomponents.adoc[Web Components]
+** xref:documentation:docs-guides-ui:module-federation/webpack.adoc[Webpack Configuration]
+** xref:documentation:docs-guides-ui:module-federation/microfrontend-content-loading.adoc[Microfrontend Loading]
+** xref:documentation:docs-guides-ui:module-federation/bootstrapping.adoc[Microfrontend Bootstrapping]
+** xref:latest@documentation:onecx-docs-overview:architecture/remote-components.adoc[Remote Components]

@@ -219,6 +219,6 @@ Use **startsWith** function when constructing Routes for Microfrontend's module.
 // TODO: Link resources
 [#useful-resources]
 == Useful Resources
-* xref:./microfrontend-content-loading.adoc[Microfrontend content loading]
+* xref:./microfrontend-content-loading.adoc[Microfrontend Content Loading]
 * Remote Component with Webcomponent method integration
 * Module with Webcomponent method integration
