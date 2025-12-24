@@ -1,0 +1,26 @@
+:idprefix:
+:idseparator: -
+
+= PrimeNG
+PrimeNG is a popular open-source UI component library for Angular applications. It provides a wide range of pre-built, customizable UI components that help developers create modern and responsive user interfaces quickly and efficiently.
+
+
+== Overview
+PrimeNG offers a comprehensive set of UI components, including buttons, forms, data tables, charts, dialogs, and more. These components are designed to be easy to use and integrate seamlessly with Angular applications. PrimeNG also provides features like theming, accessibility support, and responsive design, making it a versatile choice for building web applications.
+
+
+== Theming with PrimeNG
+PrimeNG supports theming, allowing developers to customize the look and feel of their applications. It provides a variety of pre-defined themes, and developers can also create their own custom themes using CSS or Sass. The theming system in PrimeNG enables consistent styling across all components, ensuring a cohesive user experience.
+
+
+== Useful Links
+* Official website: https://www.primefaces.org/primeng/[PrimeNG]
+* Documentation: https://www.primefaces.org/primeng/showcase/[PrimeNG Showcase]
+* GitHub Repository: https://github.com/primefaces/primeng[PrimeNG GitHub]
+* Theme Designer: https://www.primefaces.org/designer/primeng/[PrimeNG Theme Designer]
+* OneCX PrimeNG Integration Guide: xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]
+
+
+== OneCX Integration
+PrimeNG is integrated into the OneCX platform to provide a consistent and efficient way to build user interfaces. The OneCX team has created guidelines and best practices for using PrimeNG components within OneCX applications. This includes recommendations on theming, component usage, and performance optimization to ensure that applications built with PrimeNG meet the high standards of the OneCX platform.
+For more information on how to use PrimeNG within OneCX, refer to the {OneCX PrimeNG Integration Guide}[Theming with PrimeNG].

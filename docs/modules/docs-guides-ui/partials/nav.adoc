@@ -20,11 +20,12 @@
 ** xref:documentation:docs-guides-ui:angular/permissions.adoc[Permissions]
 ** xref:documentation:docs-guides-ui:angular/routing/index.adoc[Routing]
 
-** PrimeNG
+** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
 *** xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]
 
-** NgRx
-*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/general.adoc[Adding Search Criteria]
+** xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx]
+*** xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[Guidelines]
+*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/search-criteria.adoc[Adding Search Criteria]
 *** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete]
 **** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete-string.adoc[Array of Strings]
 **** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete-number.adoc[Array of Numbers]
@@ -36,10 +37,11 @@
 *** xref:documentation:docs-guides-ui:angular/ngrx/lazy-loading.adoc[Lazy Loading]
 
 
-* xref:react/index.adoc[React]
-** xref:react/guidelines.adoc[Guidelines]
+* xref:documentation:docs-guides-ui:react/react.adoc[React]
+* xref:documentation:docs-guides-ui:react/index.adoc[index?]
+** xref:documentation:docs-guides-ui:react/guidelines.adoc[Guidelines]
 ** OneCX Libraries
-*** xref:react/libraries/react-integration-interface.adoc[react-integration-interface]
-*** xref:react/libraries/react-auth.adoc[react-auth]
-*** xref:react/libraries/react-remote-components.adoc[react-remote-components]
-*** xref:react/libraries/react-webcomponents.adoc[react-webcomponents]
+*** xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[react-integration-interface]
+*** xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[react-auth]
+*** xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc[react-remote-components]
+*** xref:documentation:docs-guides-ui:react/libraries/react-webcomponents.adoc[react-webcomponents]
