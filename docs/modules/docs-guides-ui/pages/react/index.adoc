@@ -3,35 +3,27 @@
 :idprefix:
 :idseparator: -
 
-React is a JavaScript-based, free and open-source front-end library for building user interfaces or UI components.
+React is a popular JavaScript library for building user interfaces, particularly single-page applications. It allows developers to create reusable UI components and manage the state of their applications efficiently.
 
-https://reactjs.org/[React homepage]
+* https://reactjs.org/[React homepage]
+* https://reactjs.org/docs/getting-started.html[React documentation]
+* https://github.com/facebook/react[Source code]
+* https://reactjs.org/tutorial/tutorial.html[React tutorial]
+* https://vite.dev/[Vite]
+* https://nextjs.org/[Nextjs]
+* https://redux.js.org/[Redux] - Redux provides predictable state management
+* https://github.com/facebook/create-react-app[Create React App]
 
-https://reactjs.org/docs/getting-started.html[React documentation]
-
-https://github.com/facebook/react[Source code]
-
-https://reactjs.org/tutorial/tutorial.html[React tutorial]
-
-https://vite.dev/[Vite]
-
-https://nextjs.org/[Nextjs]
-
-https://redux.js.org/[Redux]
-
-https://github.com/facebook/create-react-app[Create React App]
-
-Redux provides predictable state management for React apps.
 
 [#requirements]
 == Requirements
-
 For developing React applications, we need to install these tools:
+
 
 [#developer-ide]
 === Developer IDE
+* https://code.visualstudio.com/[Visual Studio Code]
 
-    * https://code.visualstudio.com/[Visual Studio Code]
 
 [#vs-code-extensions]
 === VS Code extensions
@@ -59,18 +51,30 @@ For developing React applications, we need to install these tools:
 
 * https://plugins.jetbrains.com/plugin/7973-sonarlint[SonarLint]
 
+
 [#useful-browser-plugins]
 === Useful browser plugins
 * https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi[React Developer Tools]
-
 * https://developer.chrome.com/docs/lighthouse/overview/[Lighthouse]
-
 * https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd[Redux DevTools]
+
 
 [#useful-links]
 === Useful links
-* https://storybook.js.org/[Storybook]
-
+* https://reactjs.org/[React - Official website]
 * https://reactrouter.com/[React Router]
-
+* https://reactjs.org/docs/getting-started.html[Getting Started with React] 
+* xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[OneCX React Libraries]
 * https://styled-components.com/[Styled Components]
+
+
+== OneCX Libraries
+The OneCX platform provides several libraries to assist in React application development:
+
+* **react-integration-interface**: A library that provides interfaces and utilities for integrating React applications with the OneCX platform.
+
+* **react-auth**: A library that handles authentication and authorization within  React applications.
+
+* **react-remote-components**: A library that enables the use of remote components in React applications, facilitating microfrontend architectures.
+
+* **react-webcomponents**: A library that allows the creation and use of web components within React applications.

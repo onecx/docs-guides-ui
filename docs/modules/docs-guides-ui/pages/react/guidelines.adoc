@@ -1,23 +1,58 @@
-= Guidelines
-
 :idprefix:
 :idseparator: -
 
-This chapter gives guidance which guidelines should be followed during the development.
+= React Guidelines
+When developing React applications within the OneCX platform, it's essential to follow specific guidelines to ensure consistency, maintainability, and compatibility with the overall architecture. Here are some key guidelines to consider:
+
+* **Component Structure**: Organize your components in a modular fashion, separating presentational and container components. Use functional components with hooks for state management and side effects.
+
+* **State Management**: Utilize state management libraries like Redux or Context API to manage global state. Ensure that state changes are predictable and traceable.
+
+* **Styling**: Follow the OneCX theming guidelines to maintain a consistent look and feel across applications. Use CSS-in-JS libraries or CSS modules for component-specific styles.
+
+* **Routing**: Implement routing using libraries like React Router. Ensure that routes are defined clearly and support lazy loading for performance optimization.
+
+* **Testing**: Write unit tests for components and integration tests for application flows using testing libraries like Jest and React Testing Library.
+
+* **Performance Optimization**: Use techniques like code splitting, memoization, and lazy loading to enhance application performance.
+
+* **Accessibility**: Ensure that your application adheres to accessibility standards (WCAG) to provide an inclusive experience for all users.
+
+* **Documentation**: Maintain comprehensive documentation for your components and application architecture to facilitate collaboration and future maintenance.
+
+* **Version Control**: Follow best practices for version control, including meaningful commit messages and branching strategies.
+
+* **Code Quality**: Adhere to coding standards and use linters like ESLint to maintain code quality and consistency across the codebase.
+
 
 
 [#Nextjs]
 == Nextjs
+Next.js is a React framework for building full-stack web applications. You use React Components to build user interfaces, and Next.js for additional features and optimizations.
+
+=== When to use Next.js
+* You need server-side rendering (SSR) or static site generation (SSG) for better SEO and performance.
+* You want built-in routing based on the file system.
+* You need API routes to create backend endpoints within the same project.
+* You want automatic code splitting and optimized performance out of the box.
+* You want to leverage the React ecosystem while benefiting from Next.js features.
+
+=== When not to use Next.js
+* Your application is a simple static site without dynamic content.
+* You require a highly customized build process that deviates significantly from Next.js conventions.
+* You need to use a different frontend framework (e.g., Angular, Vue).  
+* You want to avoid the additional complexity that comes with server-side rendering.
+
+=== Module Federation
 * Module Federation support only Page Router from Next.js
 * Module Federation https://github.com/module-federation/core/issues/3153[Deprecation Notice for nextjs-mf]
-
 
 
 [#testing]
 == Testing
 
 * Write Unit Tests and Component Tests.
-**   Prefer Unit Tests over Component Tests.
+** Prefer Unit Tests over Component Tests.
 *	Manually test with shell and in the standalone mode.
 *	Tests should run in the build pipeline.
 
