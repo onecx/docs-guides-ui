@@ -1,0 +1,76 @@
+= React
+
+:idprefix:
+:idseparator: -
+
+React is a JavaScript-based, free and open-source front-end library for building user interfaces or UI components.
+
+https://reactjs.org/[React homepage]
+
+https://reactjs.org/docs/getting-started.html[React documentation]
+
+https://github.com/facebook/react[Source code]
+
+https://reactjs.org/tutorial/tutorial.html[React tutorial]
+
+https://vite.dev/[Vite]
+
+https://nextjs.org/[Nextjs]
+
+https://redux.js.org/[Redux]
+
+https://github.com/facebook/create-react-app[Create React App]
+
+Redux provides predictable state management for React apps.
+
+[#requirements]
+== Requirements
+
+For developing React applications, we need to install these tools:
+
+[#developer-ide]
+=== Developer IDE
+
+    * https://code.visualstudio.com/[Visual Studio Code]
+
+[#vs-code-extensions]
+=== VS Code extensions
+* https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode[SonarLint]
+
+* https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint[EsLint]
+
+* https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens[GitLens]
+
+* https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost[Import Cost]
+
+* https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode[IntelliCode]
+
+* https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.intellicode-api-usage-examples[IntelliCode API Usage Examples]
+
+* https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion[IntelliSense for CSS class names in HTML]
+
+* https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css[HTML CSS Support]
+
+* https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode[Prettier - Code formatter]
+
+* https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint[Prettier ESLint]
+
+* https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client[ThunderClient]
+
+* https://plugins.jetbrains.com/plugin/7973-sonarlint[SonarLint]
+
+[#useful-browser-plugins]
+=== Useful browser plugins
+* https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi[React Developer Tools]
+
+* https://developer.chrome.com/docs/lighthouse/overview/[Lighthouse]
+
+* https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd[Redux DevTools]
+
+[#useful-links]
+=== Useful links
+* https://storybook.js.org/[Storybook]
+
+* https://reactrouter.com/[React Router]
+
+* https://styled-components.com/[Styled Components]
