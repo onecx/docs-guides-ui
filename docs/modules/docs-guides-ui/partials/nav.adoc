@@ -7,15 +7,16 @@
 
 
 * xref:documentation:docs-guides-ui:angular/index.adoc[Angular] 
+** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 ** Migrations
-*** xref:documentation:docs-guides-ui:angular/migrations/vanilla-to-onecx/index.adoc[Migrate Angular apps to OneCX]
-*** xref:documentation:docs-guides-ui:angular/migrations/enable-standalone/index.adoc[Enable standalone mode for OneCX apps]
+*** xref:documentation:docs-guides-ui:angular/migrations/vanilla-to-onecx/index.adoc[Migrate Angular App to OneCX]
+*** xref:documentation:docs-guides-ui:angular/migrations/enable-standalone/index.adoc[Standalone Mode]
 
 ** xref:documentation:docs-guides-ui:angular/multi-language/multi-language.adoc[Translations]
 *** xref:documentation:docs-guides-ui:angular/multi-language/multi-language-setup.adoc[Setup]
 *** xref:documentation:docs-guides-ui:angular/multi-language/multi-language-usage.adoc[Usage]
 
-** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast messages]
+** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
 ** xref:documentation:docs-guides-ui:angular/theming.adoc[Theming]
 ** xref:documentation:docs-guides-ui:angular/permissions.adoc[Permissions]
 ** xref:documentation:docs-guides-ui:angular/routing/index.adoc[Routing]
@@ -25,7 +26,7 @@
 
 ** xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx]
 *** xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[Guidelines]
-*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/search-criteria.adoc[Adding Search Criteria]
+*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/search-criteria.adoc[Search Criteria]
 *** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete]
 **** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete-string.adoc[Array of Strings]
 **** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete-number.adoc[Array of Numbers]
