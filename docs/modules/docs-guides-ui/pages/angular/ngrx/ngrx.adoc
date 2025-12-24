@@ -49,11 +49,11 @@ High-level steps:
 == OneCX Guides and Examples
 * xref:./ngrx/lazy-loading.adoc[Lazy Loading Tabs with NgRx]
 * Adding Search Criteria:
-** xref:./ngrx/adding-search-criteria/search-criteria.adoc[General]
-** xref:./ngrx/adding-search-criteria/autocomplete/index.adoc[Autocomplete]
-** xref:./ngrx/adding-search-criteria/calendar.adoc[Calendar]
-** xref:./ngrx/adding-search-criteria/dropdown.adoc[Dropdown]
-** xref:./ngrx/adding-search-criteria/multiselect.adoc[MultiSelect]
+** xref:./ngrx/search-criteria/search-criteria.adoc[General]
+** xref:./ngrx/search-criteria/autocomplete/index.adoc[Autocomplete]
+** xref:./ngrx/search-criteria/calendar.adoc[Calendar]
+** xref:./ngrx/search-criteria/dropdown.adoc[Dropdown]
+** xref:./ngrx/search-criteria/multiselect.adoc[MultiSelect]
 
 == Useful Links
 * Official website: https://ngrx.io/[NgRx]

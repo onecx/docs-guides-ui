@@ -6,7 +6,7 @@
 
 :user_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
 :permission_management: xref:documentation:onecx-permission:index.adoc
-:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/migrations/vanilla-to-onecx/index.adoc
+:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc
 
 [#overview]
 == Overview
