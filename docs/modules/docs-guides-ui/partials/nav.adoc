@@ -5,28 +5,41 @@
 ** xref:documentation:docs-guides-ui:module-federation/bootstrapping.adoc[Microfrontend Bootstrapping]
 ** xref:latest@documentation:onecx-docs-overview:architecture/remote-components.adoc[Remote Components]
 
-* xref:documentation:docs-guides-ui:angular/general/index.adoc[Angular] 
-** Cookbooks
-**** Migrations
-****** xref:documentation:docs-guides-ui:angular/cookbook/migrations/vanilla-to-onecx/index.adoc[Migrate vanilla Angular apps to OneCX]
-****** xref:documentation:docs-guides-ui:angular/cookbook/migrations/enable-standalone/index.adoc[Enable standalone mode for OneCX apps]
-**** xref:documentation:docs-guides-ui:angular/cookbook/multi-language/multi-language.adoc[Multi-language translations]
-****** xref:documentation:docs-guides-ui:angular/cookbook/multi-language/multi-language-setup.adoc[Multi-language translations setup]
-****** xref:documentation:docs-guides-ui:angular/cookbook/multi-language/multi-language-usage.adoc[Multi-language translations usage]
-**** xref:documentation:docs-guides-ui:angular/cookbook/toast-messages.adoc[Toast messages]
-**** xref:documentation:docs-guides-ui:angular/cookbook/theming.adoc[Theming]
-**** xref:documentation:docs-guides-ui:angular/cookbook/permissions.adoc[Permissions]
-**** xref:documentation:docs-guides-ui:angular/cookbook/routing/index.adoc[Routing]
-**** PrimeNG
-****** xref:documentation:docs-guides-ui:angular/cookbook/primeng/theming.adoc[Theming with PrimeNG]
+
+* xref:documentation:docs-guides-ui:angular/index.adoc[Angular] 
+** Migrations
+*** xref:documentation:docs-guides-ui:angular/migrations/vanilla-to-onecx/index.adoc[Migrate Angular apps to OneCX]
+*** xref:documentation:docs-guides-ui:angular/migrations/enable-standalone/index.adoc[Enable standalone mode for OneCX apps]
+
+** xref:documentation:docs-guides-ui:angular/multi-language/multi-language.adoc[Translations]
+*** xref:documentation:docs-guides-ui:angular/multi-language/multi-language-setup.adoc[Setup]
+*** xref:documentation:docs-guides-ui:angular/multi-language/multi-language-usage.adoc[Usage]
+
+** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast messages]
+** xref:documentation:docs-guides-ui:angular/theming.adoc[Theming]
+** xref:documentation:docs-guides-ui:angular/permissions.adoc[Permissions]
+** xref:documentation:docs-guides-ui:angular/routing/index.adoc[Routing]
+
+** PrimeNG
+*** xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]
+
 ** NgRx
-**** Cookbooks
-****** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc[Adding Search Criteria]
-******** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete]
-********** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-string.adoc[AutoComplete with array of type string]
-********** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-number.adoc[AutoComplete with array of type number]
-********** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete-object.adoc[AutoComplete with array of type object]
-******** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar]
-******** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown]
-******** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/multiselect.adoc[Multiselect]
-****** xref:documentation:docs-guides-ui:angular/ngrx/cookbook/tabs/lazy-loading.adoc[Lazy Loading Tabs]
+*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/general.adoc[Adding Search Criteria]
+*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete]
+**** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete-string.adoc[Array of Strings]
+**** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete-number.adoc[Array of Numbers]
+**** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/autocomplete/autocomplete-object.adoc[Array of Objects]
+
+*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/calendar.adoc[Calendar]
+*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/dropdown.adoc[Dropdown]
+*** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/multiselect.adoc[Multiselect]
+*** xref:documentation:docs-guides-ui:angular/ngrx/lazy-loading.adoc[Lazy Loading]
+
+
+* xref:react/index.adoc[React]
+** xref:react/guidelines.adoc[Guidelines]
+** OneCX Libraries
+*** xref:react/libraries/react-integration-interface.adoc[react-integration-interface]
+*** xref:react/libraries/react-auth.adoc[react-auth]
+*** xref:react/libraries/react-remote-components.adoc[react-remote-components]
+*** xref:react/libraries/react-webcomponents.adoc[react-webcomponents]
