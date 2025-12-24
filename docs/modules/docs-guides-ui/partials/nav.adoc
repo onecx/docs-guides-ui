@@ -11,9 +11,9 @@
 ** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
 ** xref:documentation:docs-guides-ui:angular/standalone.adoc[Standalone Mode]
 
-** xref:documentation:docs-guides-ui:angular/trasnlation/multi-language.adoc[Translations]
-*** xref:documentation:docs-guides-ui:angular/trasnlation/multi-language-setup.adoc[Setup]
-*** xref:documentation:docs-guides-ui:angular/trasnlation/multi-language-usage.adoc[Usage]
+** xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Translations]
+*** xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Setup]
+*** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
 
 ** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
 ** xref:documentation:docs-guides-ui:angular/theming.adoc[Theming]
