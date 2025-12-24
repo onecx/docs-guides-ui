@@ -9,7 +9,7 @@
 * xref:documentation:docs-guides-ui:angular/index.adoc[Angular] 
 ** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 ** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
-** xref:documentation:docs-guides-ui:angular/standalone-mode.adoc[Standalone Mode]
+** xref:documentation:docs-guides-ui:angular/standalone.adoc[Standalone Mode]
 
 ** xref:documentation:docs-guides-ui:angular/trasnlation/multi-language.adoc[Translations]
 *** xref:documentation:docs-guides-ui:angular/trasnlation/multi-language-setup.adoc[Setup]
