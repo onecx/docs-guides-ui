@@ -5,6 +5,7 @@
 ** xref:documentation:docs-guides-ui:module-federation/bootstrapping.adoc[Microfrontend Bootstrapping]
 ** xref:latest@documentation:onecx-docs-overview:architecture/remote-components.adoc[Remote Components]
 
+
 * xref:documentation:docs-guides-ui:angular/index.adoc[Angular] 
 ** Migrations
 *** xref:documentation:docs-guides-ui:angular/migrations/vanilla-to-onecx/index.adoc[Migrate Angular apps to OneCX]
@@ -33,3 +34,12 @@
 *** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/dropdown.adoc[Dropdown]
 *** xref:documentation:docs-guides-ui:angular/ngrx/adding-search-criteria/multiselect.adoc[Multiselect]
 *** xref:documentation:docs-guides-ui:angular/ngrx/lazy-loading.adoc[Lazy Loading]
+
+
+* xref:react/index.adoc[React]
+** xref:react/guidelines.adoc[Guidelines]
+** OneCX Libraries
+*** xref:react/libraries/react-integration-interface.adoc[react-integration-interface]
+*** xref:react/libraries/react-auth.adoc[react-auth]
+*** xref:react/libraries/react-remote-components.adoc[react-remote-components]
+*** xref:react/libraries/react-webcomponents.adoc[react-webcomponents]

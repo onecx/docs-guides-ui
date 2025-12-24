@@ -1,8 +1,0 @@
-
-* xref:react:general/index.adoc[General]
-** xref:react:general/guidelines.adoc[Guidelines]
-* Libraries
-** xref:react:libraries/react-integration-interface.adoc[@onecx/react-integration-interface]
-** xref:react:libraries/react-auth.adoc[@onecx/react-auth]
-** xref:react:libraries/react-remote-components.adoc[@onecx/react-remote-components]
-** xref:react:libraries/react-webcomponents.adoc[@onecx/react-webcomponents]
