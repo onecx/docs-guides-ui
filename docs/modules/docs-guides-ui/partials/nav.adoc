@@ -38,7 +38,7 @@
 
 
 * xref:documentation:docs-guides-ui:react/react.adoc[React]
-* xref:documentation:docs-guides-ui:react/index.adoc[index?]
+** xref:documentation:docs-guides-ui:react/index.adoc[index?]
 ** xref:documentation:docs-guides-ui:react/guidelines.adoc[Guidelines]
 ** OneCX Libraries
 *** xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[react-integration-interface]
