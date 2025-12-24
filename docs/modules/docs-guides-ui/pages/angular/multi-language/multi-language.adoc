@@ -5,7 +5,7 @@
 = OneCX Multi-language Translations
 
 :user_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
-:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/cookbook/migrations/vanilla-to-onecx/index.adoc
+:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/migrations/vanilla-to-onecx/index.adoc
 :multi_language_setup: xref:./multi-language-setup.adoc
 :multi_language_usage: xref:./multi-language-usage.adoc
 
