@@ -380,7 +380,7 @@ After completing all steps listed above, the application should be ready to be u
 
 [#standalone-mode]
 == Standalone Mode
-After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:documentation:docs-guides-ui:angular/migrations/enable-standalone/index.adoc[Enable OneCX app to run in standalone] cookbook.
+After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:./standalone.adoc[Enable OneCX app to run in standalone] cookbook.
 
 [#further-reading]
 == Further Reading

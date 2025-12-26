@@ -121,7 +121,7 @@ Topics used::
 Dependencies::
 
 * HttpClient
-* xref:libraries/react-integration-interface.adoc#configuration-provider[ConfigurationProvider]
+* xref:./react-integration-interface.adoc#configuration-provider[ConfigurationProvider]
 
 API::
 *Theme Provider* properties enable access to topic instances:
@@ -183,6 +183,7 @@ API::
 |`hasPermission(permissionKey: string | string[])` | `boolean` | Checks if user has specified permission/permissions using PermissionTopic's latest value.
 |===
 
+
 [#workspace-hook]
 === Workspace Hook
 Usage::
@@ -196,7 +197,7 @@ None.
 Dependencies::
 
 * HttpClient
-* xref:libraries/react-integration-interface.adoc#app-state-provider[AppStateProvider]
+* xref:./react-integration-interface.adoc#app-state-provider[AppStateProvider]
 
 API::
 *Workspace Hook* - *useWorkspace* can be used for constructing routes to Applications:
