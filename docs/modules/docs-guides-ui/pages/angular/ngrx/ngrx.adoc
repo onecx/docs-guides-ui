@@ -50,7 +50,7 @@ High-level steps:
 * xref:./lazy-loading.adoc[Lazy Loading Tabs with NgRx]
 * Adding Search Criteria:
 ** xref:./search-criteria/search-criteria.adoc[Search Criteria]
-** xref:./search-criteria/autocomplete/index.adoc[Autocomplete]
+** xref:./search-criteria/autocomplete/autocomplete.adoc[Autocomplete]
 ** xref:./search-criteria/calendar.adoc[Calendar]
 ** xref:./search-criteria/dropdown.adoc[Dropdown]
 ** xref:./search-criteria/multiselect.adoc[MultiSelect]
