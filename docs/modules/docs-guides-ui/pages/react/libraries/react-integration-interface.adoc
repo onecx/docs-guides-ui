@@ -3,22 +3,22 @@
 :idprefix:
 :idseparator: -
 
-:integration-interface_url: xref:javascript:libraries/integration-interface.adoc
-:global_error_topic_url: xref:javascript:libraries/integration-interface.adoc#global-error-topic
-:global_loading_topic_url: xref:javascript:libraries/integration-interface.adoc#global-loading-topic
-:current_mfe_topic_url: xref:javascript:libraries/integration-interface.adoc#current-mfe-topic
-:current_page_topic_url: xref:javascript:libraries/integration-interface.adoc#current-page-topic
-:current_workspace_topic_url: xref:javascript:libraries/integration-interface.adoc#current-workspace-topic
-:is_authenticated_topic_url: xref:javascript:libraries/integration-interface.adoc#is-authenticated-topic
-:configuration_topic_url: xref:javascript:libraries/integration-interface.adoc#configuration-topic
-:message_topic_url: xref:javascript:libraries/integration-interface.adoc#message-topic
-:remote_components_topic_url: xref:javascript:libraries/integration-interface.adoc#remote-components-topic
-:current_theme_topic_url: xref:javascript:libraries/integration-interface.adoc#current-theme-topic
-:user_profile_topic_url: xref:javascript:libraries/integration-interface.adoc#user-profile-topic
-:permissions_topic_url: xref:javascript:libraries/integration-interface.adoc#permissions-topic
-:config_object_url: xref:javascript:libraries/integration-interface.adoc#config-object
-:theme_object_url: xref:javascript:libraries/integration-interface.adoc#theme-object
-:route_object_url: xref:javascript:libraries/integration-interface.adoc#Route-object
+:integration-interface_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc
+:global_error_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#global-error-topic
+:global_loading_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#global-loading-topic
+:current_mfe_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-mfe-topic
+:current_page_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-page-topic
+:current_workspace_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-workspace-topic
+:is_authenticated_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#is-authenticated-topic
+:configuration_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#configuration-topic
+:message_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#message-topic
+:remote_components_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#remote-components-topic
+:current_theme_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-theme-topic
+:user_profile_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#user-profile-topic
+:permissions_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#permissions-topic
+:config_object_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#config-object
+:theme_object_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#theme-object
+:route_object_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#Route-object
 
 
 [#overview]

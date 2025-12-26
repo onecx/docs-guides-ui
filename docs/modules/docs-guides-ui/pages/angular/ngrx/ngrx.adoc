@@ -47,13 +47,13 @@ High-level steps:
 6. Use the Redux DevTools for debugging (`StoreDevtoolsModule` or `provideStoreDevtools`).
 
 == OneCX Guides and Examples
-* xref:./ngrx/lazy-loading.adoc[Lazy Loading Tabs with NgRx]
+* xref:./lazy-loading.adoc[Lazy Loading Tabs with NgRx]
 * Adding Search Criteria:
-** xref:./ngrx/search-criteria/search-criteria.adoc[General]
-** xref:./ngrx/search-criteria/autocomplete/index.adoc[Autocomplete]
-** xref:./ngrx/search-criteria/calendar.adoc[Calendar]
-** xref:./ngrx/search-criteria/dropdown.adoc[Dropdown]
-** xref:./ngrx/search-criteria/multiselect.adoc[MultiSelect]
+** xref:./search-criteria/search-criteria.adoc[Search Criteria]
+** xref:./search-criteria/autocomplete/index.adoc[Autocomplete]
+** xref:./search-criteria/calendar.adoc[Calendar]
+** xref:./search-criteria/dropdown.adoc[Dropdown]
+** xref:./search-criteria/multiselect.adoc[MultiSelect]
 
 == Useful Links
 * Official website: https://ngrx.io/[NgRx]
