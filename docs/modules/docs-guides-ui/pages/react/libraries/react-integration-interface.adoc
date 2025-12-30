@@ -1,25 +1,8 @@
-= OneCX react-integration-interface Library
+ifdef::env-site[]
+include::partial$attributes.adoc[]
+endif::[]
 
-:idprefix:
-:idseparator: -
-
-:integration-interface_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc
-:global_error_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#global-error-topic
-:global_loading_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#global-loading-topic
-:current_mfe_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-mfe-topic
-:current_page_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-page-topic
-:current_workspace_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-workspace-topic
-:is_authenticated_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#is-authenticated-topic
-:configuration_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#configuration-topic
-:message_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#message-topic
-:remote_components_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#remote-components-topic
-:current_theme_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#current-theme-topic
-:user_profile_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#user-profile-topic
-:permissions_topic_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#permissions-topic
-:config_object_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#config-object
-:theme_object_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#theme-object
-:route_object_url: xref:onecx-portal-ui-libs:libraries/integration-interface.adoc#Route-object
-
+= @onecx/react-integration-interface
 
 [#overview]
 == Overview
@@ -165,12 +148,12 @@ API::
 .User Provider properties
 [cols="1,1,2"]
 |===
-|Property name |Type | Description
+| Property | Type | Description
 
-|`profile$` | `{user_profile_topic_url}[UserProfileTopic]` | {user_profile_topic_url}[UserProfileTopic] instance.
-|`lang$` | `BehaviorSubject<string>` | User's language. For every new message in the {user_profile_topic_url}[UserProfileTopic], the language will be updated based on the user's locale information.
-|`isInitialized` | `Promise<void>` | Promise resolved when User Service is initialized.
-|`permissions$` | `BehaviorSubject<string[]>` | Permission.
+| `profile$` | `{user_profile_topic_url}[UserProfileTopic]` | {user_profile_topic_url}[UserProfileTopic] instance.
+| `lang$` | `BehaviorSubject<string>` | User's language. For every new message in the {user_profile_topic_url}[UserProfileTopic], the language will be updated based on the user's locale information.
+| `isInitialized` | `Promise<void>` | Promise resolved when User Service is initialized.
+| `permissions$` | `BehaviorSubject<string[]>` | Permission.
 |===
 +
 *User Provider* methods:
@@ -178,9 +161,11 @@ API::
 .User Provider methods
 [cols="1,1,2"]
 |===
-|Method signature |Return type | Description
+| Method Signature |Return Type | Description
 
-|`hasPermission(permissionKey: string | string[])` | `boolean` | Checks if user has specified permission/permissions using PermissionTopic's latest value.
+| hasPermission(permissionKey: string \| string[])
+| boolean 
+| Checks if user has specified permission/permissions using PermissionTopic's latest value.
 |===
 
 

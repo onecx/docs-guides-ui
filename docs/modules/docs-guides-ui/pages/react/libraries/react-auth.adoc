@@ -1,4 +1,8 @@
-= OneCX @onecx/react-auth Library
+ifdef::env-site[]
+include::partial$attributes.adoc[]
+endif::[]
+
+= @onecx/react-auth
 
 [#overview]
 == Overview
