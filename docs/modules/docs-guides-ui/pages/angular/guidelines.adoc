@@ -70,7 +70,7 @@ Committed code must have a certain quality. The following guidelines must be con
 ***	Document the *Why of the code* and *not* the *What*.
 ***	Create documentation for the autocompletion mechanism.
 *	Do not commit debug outputs.
-**	`console.log()` message should be used to inform about error or problem and to give some information of the application state e.g., "Configuration loaded with values xyz"
+**	`console.log()` message should be used to inform about error or problem and to give some information of the application state e.g. "Configuration loaded with values xyz"
 *	Remove unused imports
 *	Format the code
 **	Run `npm run format`

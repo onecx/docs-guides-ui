@@ -52,7 +52,7 @@ This ensures the package is shared between the app and OneCX.
 
 [#create-translation-files]
 === Step 3: Create Translation Files
-Create translation files (e.g., en.json, de.json) in a directory such as assets/i18n/. These files will contain key-value pairs for each language.
+Create translation files (e.g. en.json, de.json) in a directory such as assets/i18n/. These files will contain key-value pairs for each language.
 
 .en.json
 [source,json]
@@ -175,7 +175,7 @@ module.exports = {
 
 [#feature-modules]
 === Step 8: Support in Feature Modules
-If any feature modules use ngx-translate features (e.g., translate pipe), ensure TranslateModule is also imported in those modules:
+If any feature modules use ngx-translate features (e.g. translate pipe), ensure TranslateModule is also imported in those modules:
 
 .feature.module.ts
 [source,typescript]

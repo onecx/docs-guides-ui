@@ -76,7 +76,7 @@ const createNextjsAppWebComponent = (
 
 * CustomPage: A Next.js custom page component.
 * routes: A record of route paths and their corresponding Next.js components.
-* elementName: The name of the custom element to be registered (e.g., my-nextjs-app).
+* elementName: The name of the custom element to be registered (e.g. my-nextjs-app).
 
 [NOTE]
 ====
@@ -106,7 +106,7 @@ createNextjsAppWebComponent(CustomPage, routes, 'my-nextjs-app');
 
 ==== Future Improvements
 * Add Dynamic Segment Parsing:
-** Implement logic to extract dynamic parameters (e.g., :id) from the URL.
+** Implement logic to extract dynamic parameters (e.g. :id) from the URL.
 ** Example:
 +
 [source,js]
@@ -117,7 +117,7 @@ const routes = {
 ----
 
 * Support Wildcard Routes
-** Add support for wildcard paths (e.g., /posts/*).
+** Add support for wildcard paths (e.g. /posts/*).
 ** Example:
 +
 [source,js]
@@ -149,7 +149,7 @@ const createViteAppWebComponent = (
 ----
 
 * app: A React component to be converted into a web component.
-* elementName: The name of the custom element to be registered (e.g., my-custom-element).
+* elementName: The name of the custom element to be registered (e.g. my-custom-element).
 
 .Example for React component
 [source,js]

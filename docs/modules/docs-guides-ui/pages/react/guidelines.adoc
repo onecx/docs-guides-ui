@@ -40,7 +40,7 @@ Next.js is a React framework for building full-stack web applications. You use R
 === When not to use Next.js
 * Your application is a simple static site without dynamic content.
 * You require a highly customized build process that deviates significantly from Next.js conventions.
-* You need to use a different frontend framework (e.g., Angular, Vue).  
+* You need to use a different frontend framework (e.g. Angular, Vue).  
 * You want to avoid the additional complexity that comes with server-side rendering.
 
 === Module Federation
@@ -66,7 +66,7 @@ Committed code must have a certain quality. The following guidelines must be con
 ***	Document the *Why of the code* and *not* the *What*.
 ***	Create documentation for the autocompletion mechanism.
 *	Do not commit debug outputs.
-**	`console.log()` message should be used to inform about error or problem and to give some information of the application state e.g., "Configuration loaded with values xyz"
+**	`console.log()` message should be used to inform about error or problem and to give some information of the application state e.g. "Configuration loaded with values xyz"
 *	Remove unused imports
 *	Format the code
 **	Run `npm run format`
