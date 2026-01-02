@@ -4,7 +4,7 @@
 :idseparator: -
 :imagesdir: ../../../images
 
-:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc
+:onecx_compatible_application: xref:./app-to-onecx.adoc
 
 [#overview]
 == Overview
