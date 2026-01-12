@@ -1,11 +1,3 @@
-* xref:documentation:docs-guides-ui:module-federation/index.adoc[Module Federation]
-** xref:documentation:docs-guides-ui:module-federation/webcomponents.adoc[Web Components]
-** xref:documentation:docs-guides-ui:module-federation/webpack.adoc[Webpack Configuration]
-** xref:documentation:docs-guides-ui:module-federation/microfrontend-content-loading.adoc[Microfrontend Loading]
-** xref:documentation:docs-guides-ui:module-federation/bootstrapping.adoc[Microfrontend Bootstrapping]
-** xref:latest@documentation:onecx-docs-overview:architecture/remote-components.adoc[Remote Components]
-
-
 * xref:documentation:docs-guides-ui:angular/index.adoc[Angular] 
 ** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 ** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
