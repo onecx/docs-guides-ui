@@ -464,7 +464,7 @@ Do a clean install and build of the App:
 | Application Store
 
 |
-[source,json]
+[source,javascript]
 ----
 ...
 const config = withModuleFederationPlugin({
