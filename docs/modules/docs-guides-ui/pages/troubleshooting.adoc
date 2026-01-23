@@ -9,22 +9,26 @@
 This page provides assistance in resolving common UI problems in OneCX.
 
 
-[#general-troubleshooting-steps]
-== General Troubleshooting Steps
-When you encounter an issue like an injection error, application is not loading, blank page, etc., please do the following steps first which should resolve most of the common issues:
+Possible Issues::
+* Injection error
+* application is not loading
+* Blank page
 
 
-[#onecx-compatibility]
-== OneCX Compatibility
-Make sure that the App is xref:documentation:onecx-portal-ui-libs:onecx-compatibility.adoc[OneCX compatible and you followed the guidelines].
+== Preparation
 
+=== UI Compatibility
+Make sure that the App is compatible as documented in xref:documentation:onecx-portal-ui-libs:onecx-compatibility.adoc[OneCX UI Compatibility].
 
 [#disable-minified-build]
-== Disable minified build
+=== Disable minified Build
 * To better debug your App, you need to disable the minified build.
 * In your project.json or angular.json file, set "optimization" to false in the build options which will disable minification of the build files for all configurations (production, development).:
 
 .Example for all builds
+[%collapsible]
+====
+[source,json]
 ----
 {
 ...
@@ -43,10 +47,14 @@ Make sure that the App is xref:documentation:onecx-portal-ui-libs:onecx-compatib
 }
 ...
 ----
+====
 
 * If you want to disable minification only for a specific build, set "optimization" to false in the respective configuration:
 
 .Example for production build
+[%collapsible]
+====
+[source,json]
 ----
 {
 ...
@@ -68,12 +76,16 @@ Make sure that the App is xref:documentation:onecx-portal-ui-libs:onecx-compatib
 }
 ...
 ----
+====
 
 
 * If you get an error like this: `Error: bundle initial exceeded maximum budget. Budget 1.05 MB was not met by 267.90 kB with a total of 1.32 MB.`
 * Increase the budget in the budgets section of your project.json or angular.json file.
 
 .Example budgets section
+[%collapsible]
+====
+[source,json]
 ----
 {
 ...
@@ -102,32 +114,36 @@ Make sure that the App is xref:documentation:onecx-portal-ui-libs:onecx-compatib
 }
 ...
 ----
+====
+
 
 * In this example you can see the difference between a minified and a non-minified code snippet in the DevTool's Sources tab.
 
 .Example code snippet in DevTool's Sources tab
+[%collapsible]
+====
 [cols="1a,1a",options="header"]
 |===
 | minified
 | non-minified
 
 |
+[source,javascript]
 ----
 ...
- ), (0,
-        x.on)(k.searchButtonClicked, (t, {searchCriteria: s}) => ({
-            ...t,
-            criteria: s
-        })), (0,
-        x.on)(k.resetButtonClicked, t => ({
-            ...t,
-            criteria: {}
-        })), (0,
-        x.on)(k.tenantSearchResultsReceived, (t, {results: s}) => ({
-            ...t,
-            results: s
-        })), (0,
-
+  ), (0,
+    x.on)(k.searchButtonClicked, (t, {searchCriteria: s}) => ({
+        ...t,
+        criteria: s
+    })), (0,
+    x.on)(k.resetButtonClicked, t => ({
+        ...t,
+        criteria: {}
+    })), (0,
+    x.on)(k.tenantSearchResultsReceived, (t, {results: s}) => ({
+        ...t,
+        results: s
+    })), (0,
 ...
 ----
 
@@ -159,6 +175,8 @@ search(formValue) {
 ...
 ----
 |===
+====
+
 
 * In this example you can see the difference between a minified and a non-minified NullInjectorError message in the console.
 
@@ -195,11 +213,13 @@ ERROR NullInjectorError: R3InjectorError[i -> i -> i -> i]:
 | App + Shell non-minified
 
 |
+[source,javascript]
 ----
 ERROR NullInjectorError: R3InjectorError[PortalDialogService -> i -> i -> i]: 
   NullInjectorError: No provider for i!
 ----
 |
+[source,javascript]
 ----
 ERROR NullInjectorError: R3InjectorError[PortalDialogService -> DialogService -> DialogService -> DialogService]: 
   NullInjectorError: No provider for DialogService!
@@ -221,6 +241,9 @@ ERROR NullInjectorError: R3InjectorError[PortalDialogService -> DialogService ->
 * Check in your package.json which of the mentioned packages are installed:
 
 .Example package.json
+[%collapsible]
+====
+[source,json]
 ----
 ...
 "dependencies": {
@@ -238,10 +261,13 @@ ERROR NullInjectorError: R3InjectorError[PortalDialogService -> DialogService ->
   },
 ...
 ----
+====
 
 * Check your webpack.config.json if those packages are shared and add them if they are missing:
 
 .Example webpack.config.js
+[%collapsible]
+====
 [cols="1a,1a",options="header"]
 |===
 | Correct (✓)
@@ -249,6 +275,7 @@ ERROR NullInjectorError: R3InjectorError[PortalDialogService -> DialogService ->
 
 |
 .webpack.config.js
+[source,javascript]
 ----
 ...
   shared: share({
@@ -282,6 +309,7 @@ ERROR NullInjectorError: R3InjectorError[PortalDialogService -> DialogService ->
 
 |
 .webpack.config.js
+[source,javascript]
 ----
 ...
 shared: share({
@@ -310,6 +338,7 @@ shared: share({
 ...
 ----
 |===
+====
 
 [#installed-packages]
 == Installed Packages
@@ -318,6 +347,9 @@ shared: share({
 * For that, first check your webpack.config.js which packages are being shared:
 
 .Example webpack.config.js
+[%collapsible]
+====
+[source,javascript]
 ----
 ...
     shared: share({
@@ -343,10 +375,13 @@ shared: share({
   }),
 ...
 ----
+====
 
 * Then check if the correct range (caret '^' or tilde '~' for rxjs) is present for the shared packages in your package.json:
 
 .Example package.json
+[%collapsible]
+====
 [cols="1a,1a",options="header"]
 |===
 | Correct (✓)
@@ -354,6 +389,7 @@ shared: share({
 
 |
 .package.json
+[source,json]
 ----
 ...
 "dependencies": {
@@ -375,6 +411,7 @@ shared: share({
 
 |
 .package.json
+[source,json]
 ----
 ...
 "dependencies": {
@@ -394,6 +431,7 @@ shared: share({
 ...
 ----
 |===
+====
 
 [#clean-install-build]
 == Clean Install and Build
@@ -411,19 +449,22 @@ Do a clean install and build of the App:
 ----
 * Build the App
 
-[#application-setup-settings]
-== Application Setup/Settings
+[#application-setup]
+== Application Setup
 * Verify if the Remote Module name in the webpack.config.js is the same as the Remote Module setting in the Application Store.
 
 * Navigate to the Application Store → open the App → click on the 'Components' tab → open the 'Module' UI Component → check App ID:
 
 .Example webpack.config.js and Application Store setting (remote module name)
+[%collapsible]
+====
 [cols="1a,1a",options="header"]
 |===
 | webpack.config.js
 | Application Store
 
 |
+[source,json]
 ----
 ...
 const config = withModuleFederationPlugin({
@@ -439,10 +480,13 @@ const config = withModuleFederationPlugin({
 |
 image::application_store_remote_module_name.png[]
 |===
+====
 
 * Verify if the tag name for the component is the same as the tag name set in the Application Store:
 
 .Example values.yaml and Application Store setting (tag name)
+[%collapsible]
+====
 [cols="1a,1a",options="header"]
 |===
 | values.yaml
@@ -450,6 +494,7 @@ image::application_store_remote_module_name.png[]
 
 |
 .values.yaml
+[source,yaml]
 ----
 ...
 microfrontend:
@@ -471,9 +516,11 @@ microfrontend:
 |
 image::application_store_remote_module_tag-name.png[]
 |===
+====
+
 
 [#shell-related]
-== Shell related
+== Shell related Issues
 * Make sure you are using the latest version of the Shell.
 
 * Verify if the Angular version of the App is lower than the Shell's.
@@ -481,6 +528,7 @@ image::application_store_remote_module_tag-name.png[]
 * Go to the browser's DevTools and run in the console following command:
 
 .DevTools Console
+[source,javascript]
 ----
 window['onecxWebpackContainer']
 ----
@@ -492,15 +540,20 @@ window['onecxWebpackContainer']
 image::devtools_webpack_shared_packages.png[]
 
 [#compilation-must-be-instance-of-compilation]
-== TypeError: The 'compilation' argument must be an instance of Compilation
-The error typically occurs when there's more than 1 version of webpack used by the packages. It is a common issue if the `@angular-devkit/build-angular` library is used. To resolve the issue check the webpack versions requested by the packages and adjust so only one version remains. In order to check webpack versions execute `npm ls webpack` command. This command is going to show the exact package version used per dependency.
+== Type Errors
+
+TypeError: The 'compilation' argument must be an instance of Compilation::
+
+The error typically occurs when there's more than 1 version of webpack used by the packages. It is a common issue if the `@angular-devkit/build-angular` library is used.
+
+To resolve the issue check the webpack versions requested by the packages and adjust so only one version remains. In order to check webpack versions execute `npm ls webpack` command. This command is going to show the exact package version used per dependency.
 
 
 [#specific-issues]
-== Specific issues
+== Specific Issues
 
 [#webpack-compilation]
-=== The 'compilation' argument must be an instance of Compilation
+The 'compilation' argument must be an instance of Compilation::
 Errors indicating issues with webpack compilation are related to multiple versions used in the project. In order to fix the issue:
 
 * run `npm ls webpack`
@@ -510,7 +563,7 @@ Errors indicating issues with webpack compilation are related to multiple versio
 To use only 1 version of webpack, you should adjust the versions of the packages that depend on webpack to use the same version. You can do this by updating the package.json file to specify compatible versions or by using npm overrides feature.
 
 [#angular-compilation]
-=== Application is not showing up and "t is not a function" error is in console
+Application is not showing up and "t is not a function" error is in console::
 If the application is not showing up and errors like `t is not a function` are in the console, then most likely the builder and the Angular packages used in the project are not compatible. To resolve the issue:
 
 * make sure that the builder used in the project is compatible with the Angular version used
