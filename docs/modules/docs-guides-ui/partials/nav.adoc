@@ -1,3 +1,5 @@
+* xref:documentation:docs-guides-ui:troubleshooting.adoc[UI Troubleshooting]
+
 * xref:documentation:docs-guides-ui:angular/index.adoc[Angular] 
 ** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 ** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
