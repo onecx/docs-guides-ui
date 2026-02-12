@@ -1,6 +1,4 @@
 [#module-federation-prerequisites]
-== Prerequisites
-
 Before visiting this guide, let's visit following concepts:
 
 .Concepts
