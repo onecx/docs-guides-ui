@@ -1,5 +1,6 @@
 :idprefix:
 :idseparator: -
+:page-partial:
 
 include::./introduction.adoc[]
 include::./prerequisite.adoc[]
