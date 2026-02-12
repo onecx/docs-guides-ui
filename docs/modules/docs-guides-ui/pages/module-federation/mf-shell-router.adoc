@@ -1,0 +1,125 @@
+[#shell-ui-dynamic-content-loading]
+
+= Use of Module Federation in Shell router
+
+*Shell Router* is the center for dynamic micro frontend loading. *Module federation* is used in *Shell Router* to:
+
+    * Configure routes to use Module Federation
+    * Load modules from angular route configuration
+
+This document only focuses on the areas where *Module Federation* is used in *Shell router*. For more details on routing in *Shell UI*, refer to xref:./routing-in-onecx.adoc[Routing in Shell UI].    
+
+== Configure routes to use Module Federation
+
+**Steps performed on Application startup**
+
+* *Shell router* gets route configuration from *Workspace BFF*
+
+.Example - Route configuration from *Workspace BFF*
+
+[source,json]
+{
+  "routes": [
+    {
+      "name": "dashboard",
+      "url": "dashboard",
+      "remoteEntryUrl": "https://cdn.example.com/dashboard/remoteEntry.js",
+      "remoteBaseUrl": "/report/dashboard",
+      "exposedModule": "./DashboardModule",
+      "baseHref": "/portal/dashboard",
+      "appId": "dashboard-app",
+      "displayName": "Dashboard",
+      "technology": "WEBCOMPONENTMODULE",
+      "apiUrl": "https://api.example.com",
+      "productName": "report"
+    }
+  ]
+}
+
+ * *Shell router* converts this configuration into angular routes configuration:
+        - Convert BFF configuration into angular route configuration
+        - Attach a callback that will load configured modules using `loadRemoteModule` from `@angular-architects/module-federation`
+        - Arrange route configuration with static and dynamic routes
+
+.Example - Angular route configuration in Shell router
+[source,json]
+[
+    ...existing static routes,
+  {
+    path: 'dashboard',
+    loadChildren: () => this.loadChildren(dashboardRoute),
+    canActivateChild: [this.routeGuard],
+    data: { 
+      title: 'Dashboard',
+      remoteEntryUrl: 'https://cdn.example.com/dashboard/remoteEntry.js'
+    }
+  }
+];
+
+== Decision making for loading mechanism
+
+=== loadChildren linking
+When technology is `WebComponent`, `WebComponentScript`, or `WebComponentModule`, then link `WebcomponentLoaderModule` in the `loadChildren` callback.
+
+=== Configure remote entry
+[.stripes-even,cols="20,~"]
+|===
+| Technology | Configuration
+| WebComponentModule | type = *module*
+| WebComponentScript | type = *script* and set *remoteName* from *Workspace configuration*
+| WebComponent | type = *script* and set *remoteName* from *Workspace configuration*
+|===
+
+
+== Runtime loading of remote content
+
+**Steps performed at runtime on route activation**
+
+* When a route is activated, dynamic loading of route is triggered
+* `loadChildren` callback uses `loadRemoteModule` from `@angular-architects/module-federation` package to load exposed modules
+* *Module federation* works in following way - 
+    - Receives request for `LoadRemoteModuleOptions`
+    - Fetch `remoteEntry.js` from dashboard-host
+    - Parse & evaluate `remoteEntry.js`
+    - Initialize remote container
+    - Negotiate versions with `window.onecxWebpackContainer`    
+* MFE for requested route is loaded & rendered
+
+.How Module Federation loads remote content at runtime
+[mermaid]
+----
+%%{init: {'flowchart': {'useMaxWidth': true, 'htmlLabels': true, 'nodeSpacing': 50, 'rankSpacing': 100}, 'theme': 'default'}}%%
+graph LR
+    A["Fetch<br/>remoteEntry.js"] --> B["Parse & Execute<br/>remoteEntry.js"]
+    B --> C["Initialize<br/>Remote Container"]
+    C --> D["Negotiate<br/>Shared Scope"]
+    D --> E["Fetch Exposed<br/>Module Code"]
+    E --> F["Return Loaded<br/>Module"]
+----
+
+.Example - Parameter sent to `loadRemoteModule` for loading MFE at runtime
+[source,json]
+{
+  type: 'module',
+  remoteEntry: 'https://dashboard-host/remoteEntry.js',
+  exposedModule: './DashboardModule'
+}
+
+.Example - Dashboard MFE - should have same exposed module
+[source,typescript]
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'dashboard',
+      exposes: {
+        './DashboardModule': './src/app/dashboard/dashboard.module.ts'
+        // The exposed module matches exposedModule in BFF config
+      },
+    })
+  ]
+}
+
+[IMPORTANT]
+====
+The exposed module mentioned in MFE's webpack configuration should be the same as the one mentioned in the route configuration.
+====

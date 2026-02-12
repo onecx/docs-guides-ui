@@ -1,0 +1,37 @@
+[#mf-authentication-service]
+== Authentication Service
+The AuthService is an *authentication provider* which configures authentication type, loads authService and initializes tokens & session.
+
+*Module Federation* is used to load custom authentication service from remote application and to use dependancy mechanism of *Shell*.
+
+=== Execution flow
+* When authentication type is set as `custom` in the  `configurationService`, it calls new factory function to load *remote authentication service*.
+* Module federation loads *custom authentication service factory*. It has to be exported as *AuthServiceFactory* from remote application.
+* *AuthServiceWrapper* stores the service and *custom authentication mechanism* is ready to use.
+
+[mermaid]
+----
+graph LR
+  configurationService[Configuration Service] --> authServiceFactory[AuthService Factory]
+  authServiceFactory --> loadRemoteModule[loadRemoteModule - Module Federation] --> authServiceWrapper[Saved in AuthService Wrapper]  
+----
+
+.Example - Factory function for custom authentication service
+[source,typescript]
+----
+async getAuthServiceFactory(): Promise<AuthServiceFactory> { // todo 2
+    if (await !this.configService.getProperty(CONFIG_KEY.AUTH_SERVICE_CUSTOM_URL)) {
+      throw new Error('URL of the custom auth service is not defined')
+    }
+    const module = await loadRemoteModule({
+      type: 'module',
+      remoteEntry: (await this.configService.getProperty(CONFIG_KEY.AUTH_SERVICE_CUSTOM_URL)) ?? '',
+      exposedModule:
+        (await this.configService.getProperty(CONFIG_KEY.AUTH_SERVICE_CUSTOM_MODULE_NAME)) ?? './CustomAuth',
+    })
+    return module.default as AuthServiceFactory
+  }
+----
+
+=== Notes
+ * `loadRemoteModule` calls type as `module` and exposed module as `./CustomAuth` or exposed module by MFE and `remoteEntry` loads implemnentation of custom authentication service from remote application.

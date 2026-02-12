@@ -1,0 +1,52 @@
+[#mf-preloaders]
+== Module Federation and Preloaders
+
+*Preloaders* helps to register *Module Federation* at runtime and register shared scopes to avoid race condition.
+
+=== Execution Flow
+* main entry file of angular declares preloaders and global *window.onecxPreloaders* object.
+* *preloader bundle* is loaded and injected
+* Each preloader imports *@angular-architects/module-federation*, loads related preloader module
+* When all preloaders are ready then *bootstrap* of the application starts
+
+[mermaid]
+----
+graph LR
+  appEntry[Main Entry File] --> preloaders[Declare Preloaders & window.onecxPreloaders]
+  preloaders --> preloaderBundle[Load Preloader Bundle]
+  preloaderBundle --> mfInit[MF Registers Shared Scopes]
+  mfInit --> bootstrap[Application Bootstrap]
+----
+
+.Example
+[source,typescript]
+----
+export async function loadPreloaderModule(preloader: Preloader) {
+  const moduleFederation = await import('@angular-architects/module-federation') // Module dynamic import
+  return moduleFederation
+    .loadRemoteModule({ // Module Federation API
+      type: 'module',
+      remoteEntry: `${getLocation().deploymentPath}${preloader.relativeRemoteEntryUrl}`,
+      exposedModule: preloader.exposedModule
+    })
+    .catch(() => {
+      console.warn(`Could not load preloader module: ${preloader.windowKey}. Applications might not work as expected.`)
+      window['onecxPreloaders'][preloader.windowKey] = true
+    })
+}
+----
+
+=== Notes
+
+*Module Federation usage*
+
+ * `import('@angular-architects/module-federation')` - dynamic import of the module federation library, to avoid loading it before preloaders are ready
+ * `loadRemoteModule` - loads configured `remoteEntry` and `exposedModule` and returns the preloader modules.
+
+=== Runtime checks
+
+*In Browser console*
+
+- `Object.keys(window.onecxPreloaders || {})` - lists preloaders and readiness
+- `typeof __webpack_init_sharing__ === 'function'`  - module federation runtime is available
+- `!!window.__webpack_share_scopes__`  - is true after preloaders have registered shared scopes

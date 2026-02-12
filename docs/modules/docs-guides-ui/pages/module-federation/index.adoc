@@ -1,0 +1,6 @@
+:idprefix:
+:idseparator: -
+
+include::./introduction.adoc[]
+include::./prerequisite.adoc[]
+include::./usage-of-module-federation.adoc[]
