@@ -2,7 +2,8 @@
 :idprefix:
 :idseparator: -
 
-include::partial$introduction.adoc[]
-include::partial$prerequisite.adoc[]
+include::introduction.adoc[]
+include::prerequisite.adoc[]
 
 include::partial$usage-of-module-federation.adoc[]
+
