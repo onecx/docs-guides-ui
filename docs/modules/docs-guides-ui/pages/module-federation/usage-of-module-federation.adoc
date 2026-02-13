@@ -1,9 +1,9 @@
 [#usage-of-module-federation]
 == Usage of Module Federation in OneCX
 
-In OneCX, *Module federation* is used to load dynamic content, expose reusable component and for dependancy sharing.
+In OneCX, *Module federation* is used to load microfrontends, expose reusable components and for dependancy sharing.
 
-Following are places where module federation is used:
+Following are important concepts where module federation is involved:
 
 .Features
 [.stripes-even,cols="20,~"]

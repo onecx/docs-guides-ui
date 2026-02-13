@@ -10,11 +10,11 @@ Before visiting this guide, let's visit following concepts:
 |===
 | Name  | Description
 
-| https://webpack.js.org/concepts/[Webpack] | Static module bundler for *JavaScript applications*
-| https://webpack.js.org/concepts/module-federation/[Module Federation] | Enables scalable, independently deployable frontend architecture with *runtime integration*
-| https://developer.mozilla.org/en-US/docs/Web/API/Web_components[Webcomponents] | Helps to create reusable custom elements
+| https://webpack.js.org/concepts/[Webpack] | Static module bundler for *JavaScript applications* that supports module federation
+| https://module-federation.io/[Module Federation] | Enables scalable, independently deployable frontend architecture with *runtime integration*
+| https://developer.mozilla.org/en-US/docs/Web/API/Web_components[Webcomponents] | Technology used to render applications in OneCX shell
 | https://micro-frontends.org/[Microfrontends] | Extends the concepts of micro services to the frontend world
-| https://onecx.github.io/docs/onecx-local-env/current/general/getting-started.html[OneCX] | a *Smart Factory Platform* is an innovative open-source solution designed to build and personalize digital workspace solutions for enterprises.
+| https://onecx.github.io/docs/documentation/current/index.html[OneCX] | An *innovative open-source platform* solution enabling seamless *microfrontends integration*
 | xref:./how-application-loads-microfrontend.adoc[Microfrontend Loading in OneCX] | Application loading sequence
 | xref:./types-of-microfrontends.adoc[Types of Microfrontends in OneCX] | WebComponent script and WebComponent module 
 |===
