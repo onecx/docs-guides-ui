@@ -1,4 +1,6 @@
 [#usage-of-module-federation]
+== Usage of Module Federation in OneCX
+
 In OneCX, *Module federation* is used to load dynamic content, expose reusable component and for dependancy sharing.
 
 Following are places where module federation is used:
@@ -10,6 +12,6 @@ Following are places where module federation is used:
 | xref:./mf-preloaders.adoc[Preloaders] | Preloaders register Module Federation share scopes
 | xref:./mf-shell-router.adoc[Shell router] | Shell router - dynamic content loading
 | xref:./mf-dependancy-sharing.adoc[Dependancy sharing] | Build time and runtime negotiation of shared packages
-| xref:./mf-slot-components.adoc[Slot components] | Slot components
-| xref:./mf-authentication-service.adoc[Authentication service] | Authentication service
+| xref:./mf-slot-components.adoc[Slot components] | Load remote modules or components in slots
+| xref:./mf-authentication-service.adoc[Authentication service] | To implementation of custom authentication service
 |===

@@ -19,7 +19,7 @@ graph LR
 .Example - Factory function for custom authentication service
 [source,typescript]
 ----
-async getAuthServiceFactory(): Promise<AuthServiceFactory> { // todo 2
+async getAuthServiceFactory(): Promise<AuthServiceFactory> {
     if (await !this.configService.getProperty(CONFIG_KEY.AUTH_SERVICE_CUSTOM_URL)) {
       throw new Error('URL of the custom auth service is not defined')
     }
@@ -34,4 +34,5 @@ async getAuthServiceFactory(): Promise<AuthServiceFactory> { // todo 2
 ----
 
 === Notes
- * `loadRemoteModule` calls type as `module` and exposed module as `./CustomAuth` or exposed module by MFE and `remoteEntry` loads implemnentation of custom authentication service from remote application.
+ * `loadRemoteModule` calls type as `module` and exposed module as `./CustomAuth` or exposed module by MFE and `remoteEntry` loads implementation of custom authentication service from remote application.
+ * type is set as `module` because remote module is loaded as *ES module*

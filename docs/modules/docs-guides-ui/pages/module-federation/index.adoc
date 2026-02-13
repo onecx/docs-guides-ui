@@ -2,14 +2,10 @@
 :idprefix:
 :idseparator: -
 
-= Module Federation in OneCX
-
 include::./introduction.adoc[]
-
-== Prerequisites
 
 include::./prerequisite.adoc[]
 
-== Usage of Module Federation in OneCX
-
 include::./usage-of-module-federation.adoc[]
+
+include::./onecx-recommandations.adoc[]

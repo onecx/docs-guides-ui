@@ -1,0 +1,10 @@
+[#onecx-recommandations]
+
+== OneCX Recommandations
+Below document will give an idea about how to configure and use module federation in OneCX.
+[.stripes-even,cols="20,~"]
+|===
+| Name  | Description
+| xref:./module-federation-config.adoc[Module federation configuration] | Module federation configuration
+| xref:./application-bootstrapping.adoc[Application bootstrapping] | Application bootstrapping
+|===
