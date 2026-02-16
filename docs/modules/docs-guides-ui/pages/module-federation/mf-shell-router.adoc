@@ -7,9 +7,9 @@
     * Configure routes to use *Module federation*
     * Load application modules via *Module federation*
 
-== BFF Routes to Angular Routes Transformation
+== Route definitions to application Routes Transformation
 
-The workspace configuration contains BFF (Backend For Frontend) route definitions. The Shell Router transforms these backend route configurations into Angular application routes:
+The workspace configuration contains route definitions for applications. The shell router transforms these backend route configurations into Angular application routes:
 
 * Receives route configuration from *workspace configuration* (backend definition)
 * Converts each BFF route into an Angular lazy-loaded route
@@ -17,7 +17,7 @@ The workspace configuration contains BFF (Backend For Frontend) route definition
 * Merges routes with static Shell routes
 
 == Overview
-=== Build time
+=== On route configuration
 [mermaid]
 ----
 graph LR
@@ -28,7 +28,7 @@ graph LR
   mergeStatic --> allRoutes[All Routes]
 ----
 
-=== Runtime
+=== On route activation
 [mermaid]
 ----
 graph LR
@@ -50,19 +50,7 @@ Shell has following static routes:
 * Error pages
 * About Shell page
 
-These routes are merged with application routes to create final list of application routes
-
-=== Application Routes
-
-Dynamically configured routes based on workspace configuration:
-
-* Each application route is a lazy-loaded route
-* Route activation triggers *Module Federation* to load the remote micro frontend
-* The route definition includes:
-    - Path matcher
-    - Module Federation configuration - *remote name and export path*
-    - Micro frontend type - *WebComponent or Angular module*
-    - Loading mechanism callback
+These routes are merged with application routes to create final list of routes
 
 == How *Shell Router* works with *Module Federation*?
 
@@ -74,48 +62,17 @@ Following steps are performed in *Shell Router* to achieve dynamic loading of mi
 
 * Parse workspace router configuration
 * For each route, configure:
-    - Path and routing rules
-    - MFE module federation details (remote, exposed module)
-    - Loading mechanism (WebComponent or Angular module)
-    - Callback to handle dynamic loading via *Module federation*
+    - Path matcher
+    - Micro frontend type
+    - Lazy-loading callback using *module federation* to load the app on match
 * Merge static Shell routes with application routes
 
-=== Runtime Loading Phase
+=== Router Activation Phase
 
 When a route is activated, dynamic loading of micro frontend is triggered:
 
 * *Route activation* triggers lazy loading of the configured MFE
 * *Module Federation* loads the remote micro frontend
-* Module federation supports *script* and *module* type of loading. Detailed information can be found here- https://www.angulararchitects.io/en/blog/dynamic-module-federation-with-angular/[Dynamic module federation with angular]
 * *Negotiate versions* based on current state of federation instance and shared dependencies
 * *Decide MFE rendering method* based on MFE type configuration (see xref:./types-of-microfrontends.adoc[Types of Microfrontends])
-* *Render* the loaded MFE using the appropriate method
-
-== Rendering methods
-
-[.stripes-even,cols="20,~"]
-|===
-| *Method* | *Implementation Details*
-
-| WebComponent 
-a|
-*How it works:* Display the MFE as a designated HTML custom element tag
-
-*Steps:*
-
-. Shell Router identifies the custom element tag name from MFE configuration
-. Loads the MFE module via Module Federation
-. Appends the custom element tag to a loader component
-. The web component manages its own initialization, state and lifecycle
-
-| Angular Module 
-a|
-*How it works:* Lazy load and bootstrap the exposed Angular module using module federation
-
-*Steps:*
-
-. Shell Router loads the MFE via Module Federation
-. Retrieves the exposed Angular module from the remote entry
-. Bootstraps the module within the Shell's Angular injector context
-. Renders the module's root component inside the Shell Router outlet
-|===
+* *Render* the loaded Microfrontend using the appropriate method
