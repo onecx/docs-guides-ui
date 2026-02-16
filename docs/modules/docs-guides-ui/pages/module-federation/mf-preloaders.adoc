@@ -4,15 +4,16 @@
 *Preloaders* are lightweight applications that load before the shell application. They define and provide packages for *Module Federation sharing*.
 
 === Execution Flow
+Before *shell initialization*, shell is:
+
+  * gathering list of preloaders to load
+  * scheduling load of all preloaders by using *module federation* and waits on the completion
+  * once all complete, starts *bootstrapping the app*
+
 [mermaid]
 ----
 graph LR
-  gatherPreloader[Gather Preloaders] --> loadPreloader[Load Preloaders with Module Federation]
-  loadPreloader --> getSharedPackages[Get shared packages]
-  getSharedPackages --> waitForCompletion[Bootstrap Application]
+  gatherPreloader[Gather Preloaders] --> scheduleLoad[Schedule Load of Preloaders]
+  scheduleLoad --> loadPreloaders[Load Preloaders via Module Federation]
+  loadPreloaders --> bootstrap[Bootstrap Application]
 ----
-
-* Gather the list of preloaders before starting the application
-* Schedule the load of all preloaders with *Module Federation*
-* Wait for completion
-* Once all are complete, start bootstrapping the application

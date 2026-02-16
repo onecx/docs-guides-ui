@@ -1,5 +1,4 @@
 [#module-federation-introduction]
-= Module Federation in OneCX
 
 *Module Federation* is a Webpack feature that enables the dynamic loading of separately built and deployed *JavaScript applications*.
 

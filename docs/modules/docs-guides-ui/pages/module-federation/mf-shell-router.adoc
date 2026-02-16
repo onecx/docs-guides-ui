@@ -4,122 +4,118 @@
 
 *Shell Router* is the center for dynamic micro frontend loading. *Module federation* is used in *Shell Router* to:
 
-    * Configure routes to use Module Federation
-    * Load modules from angular route configuration
+    * Configure routes to use *Module federation*
+    * Loads application modules via *Module federation*
 
-This document only focuses on the areas where *Module Federation* is used in *Shell router*. For more details on routing in *Shell UI*, refer to xref:./routing-in-onecx.adoc[Routing in Shell UI].    
+== BFF Routes to Angular Routes Transformation
 
-== Configure routes to use Module Federation
+The workspace configuration contains BFF (Backend For Frontend) route definitions. The Shell Router transforms these backend route configurations into Angular application routes:
 
-**Steps performed on Application startup**
+* Receives route configuration from *workspace configuration* (backend definition)
+* Converts each BFF route into an Angular lazy-loaded route
+* Configures the loading mechanism using *Module Federation* and path resolution
+* Merges routes with static Shell routes
 
-* *Shell router* gets route configuration from *Workspace BFF*
-
-.Example - Route configuration from *Workspace BFF*
-
-[source,json]
-{
-  "routes": [
-    {
-      "name": "dashboard",
-      "url": "dashboard",
-      "remoteEntryUrl": "https://cdn.example.com/dashboard/remoteEntry.js",
-      "remoteBaseUrl": "/report/dashboard",
-      "exposedModule": "./DashboardModule",
-      "baseHref": "/portal/dashboard",
-      "appId": "dashboard-app",
-      "displayName": "Dashboard",
-      "technology": "WEBCOMPONENTMODULE",
-      "apiUrl": "https://api.example.com",
-      "productName": "report"
-    }
-  ]
-}
-
- * *Shell router* converts this configuration into angular routes configuration:
-        - Convert BFF configuration into angular route configuration
-        - Attach a callback that will load configured modules using `loadRemoteModule` from `@angular-architects/module-federation`
-        - Arrange route configuration with static and dynamic routes
-
-.Example - Angular route configuration in Shell router
-[source,json]
-[
-    ...existing static routes,
-  {
-    path: 'dashboard',
-    loadChildren: () => this.loadChildren(dashboardRoute),
-    canActivateChild: [this.routeGuard],
-    data: { 
-      title: 'Dashboard',
-      remoteEntryUrl: 'https://cdn.example.com/dashboard/remoteEntry.js'
-    }
-  }
-];
-
-== Decision making for loading mechanism
-
-=== loadChildren linking
-When technology is `WebComponent`, `WebComponentScript`, or `WebComponentModule`, then link `WebcomponentLoaderModule` in the `loadChildren` callback.
-
-=== Configure remote entry
-[.stripes-even,cols="20,~"]
-|===
-| Technology | Configuration
-| WebComponentModule | type = *module*
-| WebComponentScript | type = *script* and set *remoteName* from *Workspace configuration*
-| WebComponent | type = *script* and set *remoteName* from *Workspace configuration*
-|===
-
-
-== Runtime loading of remote content
-
-**Steps performed at runtime on route activation**
-
-* When a route is activated, dynamic loading of route is triggered
-* `loadChildren` callback uses `loadRemoteModule` from `@angular-architects/module-federation` package to load exposed modules
-* *Module federation* works in following way - 
-    - Receives request for `LoadRemoteModuleOptions`
-    - Fetch `remoteEntry.js` from dashboard-host
-    - Parse & evaluate `remoteEntry.js`
-    - Initialize remote container
-    - Negotiate versions with `window.onecxWebpackContainer`    
-* MFE for requested route is loaded & rendered
-
-.How Module Federation loads remote content at runtime
+== Overview
+=== Build time
 [mermaid]
 ----
-%%{init: {'flowchart': {'useMaxWidth': true, 'htmlLabels': true, 'nodeSpacing': 50, 'rankSpacing': 100}, 'theme': 'default'}}%%
 graph LR
-    A["Fetch<br/>remoteEntry.js"] --> B["Parse & Execute<br/>remoteEntry.js"]
-    B --> C["Initialize<br/>Remote Container"]
-    C --> D["Negotiate<br/>Shared Scope"]
-    D --> E["Fetch Exposed<br/>Module Code"]
-    E --> F["Return Loaded<br/>Module"]
+  bffConfig[BFF Route Configuration] --> routeConfiguration[Convert to Route Config]
+  routeConfiguration --> configureMfePath[Configure MFE path and loading mechanism]
+  configureMfePath --> applicationRoutes[Application Routes]
+  applicationRoutes --> mergeStatic[Merge with Static Routes]
+  mergeStatic --> allRoutes[All Routes]
 ----
 
-.Example - Parameter sent to `loadRemoteModule` for loading MFE at runtime
-[source,json]
-{
-  type: 'module',
-  remoteEntry: 'https://dashboard-host/remoteEntry.js',
-  exposedModule: './DashboardModule'
-}
+=== Runtime
+[mermaid]
+----
+graph LR
+  routeActivation[Route Activated] --> lazyLoading[Lazy loading triggered]
+  lazyLoading --> triggerRemote[Load MFE via Module Federation]
+  triggerRemote --> decideMfeType[Decide MFE Type]
+  decideMfeType --> negotiate[Negotiate versions]
+  negotiate --> render[Render MFE]
+----
 
-.Example - Dashboard MFE - should have same exposed module
-[source,typescript]
-module.exports = {
-  plugins: [
-    new ModuleFederationPlugin({
-      name: 'dashboard',
-      exposes: {
-        './DashboardModule': './src/app/dashboard/dashboard.module.ts'
-        // The exposed module matches exposedModule in BFF config
-      },
-    })
-  ]
-}
+== Shell Routes After Transformation
 
-[IMPORTANT]
-====
-The exposed module mentioned in MFE's webpack configuration should be the same as the one mentioned in the route configuration.
-====
+After transformation, the Shell Router contains two types of routes:
+
+=== Static Routes
+
+Shell has following static routes:
+
+* Error pages
+* About Shell page
+
+These routes are merged with application routes to create final list of application routes
+
+=== Application Routes
+
+Dynamically configured routes based on workspace configuration:
+
+* Each application route is a lazy-loaded route
+* Route activation triggers *Module Federation* to load the remote micro frontend
+* The route definition includes:
+    - Path matcher
+    - Module Federation configuration - *remote name and export path*
+    - Micro frontend type - *WebComponent or Angular module*
+    - Loading mechanism callback
+
+== How *Shell Router* works with *Module Federation*?
+
+Following steps are performed in *Shell Router* to achieve dynamic loading of micro frontends using *Module Federation*:
+
+=== Router Configuration Phase
+
+*Shell router* converts router configuration received from *workspace configuration* into *application route configuration*:
+
+* Parse workspace router configuration
+* For each route, configure:
+    - Path and routing rules
+    - MFE module federation details (remote, exposed module)
+    - Loading mechanism (WebComponent or Angular module)
+    - Callback to handle dynamic loading via *Module federation*
+* Merge static Shell routes with application routes
+
+=== Runtime Loading Phase
+
+When a route is activated, dynamic loading of micro frontend is triggered:
+
+* *Route activation* triggers lazy loading of the configured MFE
+* *Module Federation* loads the remote micro frontend
+* Module federation supports *script* and *module* type of loading. Detailed information can be found here- https://www.angulararchitects.io/en/blog/dynamic-module-federation-with-angular/[Dynamic module federation with angular]
+* *Negotiate versions* based on current state of federation instance and shared dependencies
+* *Decide MFE rendering method* based on MFE type configuration (see xref:./types-of-microfrontends.adoc[Types of Microfrontends])
+* *Render* the loaded MFE using the appropriate method
+
+== Rendering methods
+
+[.stripes-even,cols="20,~"]
+|===
+| *Method* | *Implementation Details*
+
+| WebComponent 
+a|
+*How it works:* Display the MFE as a designated HTML custom element tag
+
+*Steps:*
+
+. Shell Router identifies the custom element tag name from MFE configuration
+. Loads the MFE module via Module Federation
+. Appends the custom element tag to a loader component
+. The web component manages its own initialization, state and lifecycle
+
+| Angular Module 
+a|
+*How it works:* Lazy load and bootstrap the exposed Angular module using module federation
+
+*Steps:*
+
+. Shell Router loads the MFE via Module Federation
+. Retrieves the exposed Angular module from the remote entry
+. Bootstraps the module within the Shell's Angular injector context
+. Renders the module's root component inside the Shell Router outlet
+|===
