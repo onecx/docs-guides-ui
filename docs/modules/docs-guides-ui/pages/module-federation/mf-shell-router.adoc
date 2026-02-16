@@ -5,7 +5,7 @@
 *Shell Router* is the center for dynamic micro frontend loading. *Module federation* is used in *Shell Router* to:
 
     * Configure routes to use *Module federation*
-    * Loads application modules via *Module federation*
+    * Load application modules via *Module federation*
 
 == BFF Routes to Angular Routes Transformation
 
