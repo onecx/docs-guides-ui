@@ -1,42 +1,37 @@
 [#mf-slot-components]
-== Slot components and Module Federation
+== Slots and Module Federation
 
-In OneCX, *Module federation* is used in *slot components* to load dynamic content either as module or as a script.
+*Slots* are a mechanism in OneCX to dynamically render *remote components* in *designated locations* on a page using *Module Federation*. *Slots* are configurable at *runtime*.
 
-While loading content dynamically, slot has -
+=== Slot rendering process
 
-* *Slot component* - host for dynamic content
-* *Slot service* - configures and loads dynamic content in slot component using module federation
+Example flow:
 
-It also uses *Remote Component Topic* to communicate between host and remote component.
+* *App1* owns the page and defines the *slot location*
+* *App2* provides *remote components with metadata* that can be placed into that slot
+* *App1* and *App2* are added in workspace
+* *App1* slots are *activated* in the workspace
+* *App2* remote component is assigned to *App1* slot
+* When *App1*'s slot is displayed, it will dynamically load the *App2*'s component and render it in the slot location
 
-=== Execution Flow
-* *SlotComponents* check *Remote Component Topic* by using *SlotService*
-* *SlotService* extract remote component information from *Remote Component Topic*
-* *SlotService* finds matching slot definition and extracts component names
-* *SlotService* takes decision based on following parameters -
-
-* Exposed module is take from *Remote Component Topic*
-* When technology is `WebComponent`, `WebComponentScript`, or `WebComponentModule`, then link `WebcomponentLoaderModule` in the `loadChildren` callback.
-
-.Technology 
+=== Slot rendering based on technology
 [.stripes-even,cols="20,~"]
 |===
-| Technology | Configuration
-| WebComponentModule | type = *module*
-| WebComponentScript | type = *script* and set *remoteName* from *Workspace configuration*
-| WebComponent | type = *script* and set *remoteName* from *Workspace configuration*
-|===
+| Technology | Description
 
-* Based on component Type slotService create component-
-    * If *componentType* is present the create *Angular component*
-    * Component creation is done by following criteria
+| Angular
+a|
+*Steps:*
 
-.Component creation criteria 
-[.stripes-even,cols="20,~"]
-|===
-| Created Component | Configuration
-| Angular Components | when *componentType* is present in configuration, Create angular component, adds styles, production information and ocxInitRemoteComponent lifecycle hook 
-| WebComponent | When technology is `WebComponentModule` or `WebComponent` then create webcomponent with styles, and adds production information
-| WebComponentScript | Loads script via *module federation* and creates custom element and appends to DOM
+* Create component dynamically
+* Initialize component with metadata and permissions
+* Add component to the DOM
+
+| WebComponents
+a|
+*Steps:*
+
+* Creates a native HTML element
+* Sets metadata and permissions
+* Add the HTML element to the DOM
 |===
