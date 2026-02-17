@@ -1,97 +1,46 @@
 [#types-of-microfrontends-in-onecx]
 = Types of microfrontends in OneCX
 
-In OneCX, we have two types of microfrontends, based on how it loads remote module:
+In OneCX, there are four types of microfrontends for bootstrapping different technologies:
 
- * *WebComponent script*
- * *WebComponent module*
+[mermaid]
+....
+graph TD
+    MF["Microfrontends in OneCX"]
+    MF --> WCM["WebComponentModule"]
+    MF --> WCS["WebComponentScript"]
+    MF --> WC["WebComponent"]
+    MF --> AT["Angular (not recommended)"]
+....
 
-== WebComponent script
+*WebComponent* technology is used for microfrontends bootstrapping webcomponents, with different loading options:
 
-When loading content as *WebComponent script*, the remote's JavaScript executed and the custom element `<demo-mfe-app>` is registered globally on `window['demoMfeApp']` namespace 
+* *WebComponentModule* - loads microfrontend as type 'module'
+* *WebComponentScript* - loads microfrontend as type 'script'
+* *WebComponent* - generic webcomponent type
 
-=== Execution sequence
+*Angular* technology is used for microfrontends bootstrapping angular module/component (not recommended).
 
-* When Remote entry option is set as `type` script
-    - loadRemoteModule method of module federation is called with `xref:#toLoadRemoteEntryOptionsScript[toLoadRemoteEntryOptions]`
-    - Module federation fetches `remoteEntry.js` file from `remoteEntry` URL
-    - Registers custom element globally by attaching it to `window` object with the name provided in `remoteName` property
-    - Loads shared package by negotiating the version with the host application
-    - When technology is `WebComponentScript`, then WebcomponentLoaderModule's component initializes
-    - Angular renders `web-component-loader`
-    - On `WebcomponentLoaderComponent` initialization, it dynamically creates a custom element node
-    - Add app, product and route information to the new element
-    - Appends custom element to WebcomponentLoaderComponent
+== WebComponentModule
+Technology-based option for bootstrapping webcomponents loaded as type `module`.
 
+ - Exposed content is loaded as `ES module`
+ - Registers the defined HTML element tag in the *CustomContainersRegistry*
+ - Utilities take care of rendering the WebComponent
+ - Remote content is rendered as *WebComponent* in the application
 
-[#toLoadRemoteEntryOptionsScript]
-.Example - toLoadRemoteEntryOptions
-[source, typescript]
-{
-    type: 'script'
-    remoteName: 'dashboard',
-    remoteEntry: 'https://dashboard-host/remoteEntry.js',
-    exposedModule: './DashboardComponent'
-}
+== WebComponentScript / WebComponent
+Technology-based option for bootstrapping webcomponents loaded as type `script`.
 
-.Example - result in DOM
-[source, html]
-<app-root>
-<router-outlet></router-outlet>
-  <web-component-loader> // Angular component
-    <dashboard-app> // Custom element
-      [Dashboard's HTML]
-    </dashboard-app>                               
-  </web-component-loader>                          
-</router-outlet>
-</app-root>
+ - Exposed content is loaded as `script`
+ - Remote content is added as global variable once exposed content name matches with global variable name
+ - Utilities take care of rendering the WebComponent
+ - Remote content is rendered as *WebComponent* in the application
 
-=== WebComponent module
+== Angular (not recommended)
+Used for microfrontends bootstrapping Angular module/component.
 
-When loading content as *WebComponent module*, exposed content is loaded as *ES module*.
+ - Exposed content which is *angular module* is loaded as `ES module` 
+ - This exposed module is loaded and rendered as Angular module in the application
 
-=== Execution sequence:
-
-    - loadRemoteModule method of module federation is called with `xref:#toLoadRemoteEntryOptionsModule[toLoadRemoteEntryOptions]`
-    - Module federation fetches `remoteEntry.js` file from `remoteEntry` URL
-    - load element as Load as ES module
-    - Parse remoteEntry.js and check what is exposed and required and what version are loaded?
-    - Extract metadata about shared dependencies and negotiate for the same
-    - loads exposed module as javascript
-    - When technology is `WebComponentModule`, then WebcomponentLoaderModule's component initializes
-    - Angular renders `web-component-loader`
-    - On `WebcomponentLoaderComponent` initialization, it dynamically creates a custom element node
-    - Add app, product and route information to the new element
-    - Appends custom element to WebcomponentLoaderComponent
-
-
-[#toLoadRemoteEntryOptionsModule]
-.Example - toLoadRemoteEntryOptions
-[source, typescript]
-{
-    type: 'module'
-    remoteEntry: 'https://dashboard-host/remoteEntry.js',
-    exposedModule: './DashboardModule'
-}
-
-
-.Example - result in DOM
-[source, html]
-<app-root>
-  <!-- Shell app -->  
-  <router-outlet>
-    <!-- This is where the route loads -->    
-    <web-component-loader>
-      <!-- This is WebcomponentLoaderComponent -->      
-      <dashboard-app 
-        x-app-id="dashboard-app"
-        x-product-name="report"
-        x-base-url="/portal/dashboard">
-        <div class="dashboard-container">
-          <h1>Dashboard</h1>
-          <p>Welcome to Dashboard MFE</p>
-        </div>        
-      </dashboard-app>      
-    </web-component-loader>    
-  </router-outlet>  
-</app-root>
+IMPORTANT: It is *NOT recommended* to use the Angular expose method. Doing so restrains the platform from using many frameworks with different versions, which means that all Microfrontends would need to use the same technology and version.
