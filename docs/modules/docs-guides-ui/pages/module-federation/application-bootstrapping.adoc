@@ -89,7 +89,7 @@ import { ExampleModule } from './app/module'
 bootstrapModule(ExampleModule, 'microfrontend', environment.production)
 ....
 
-The **bootstrap.ts** file uses `@onecx/angular-webcomponents` to bootstrap the module and handle Angular ngZone and platform sharing.
+The **bootstrap.ts** file uses `@onecx/angular-webcomponents` to bootstrap the module and handle common angular issues with module federation.
 
 .src/app/module.ts
 [%collapsible]
