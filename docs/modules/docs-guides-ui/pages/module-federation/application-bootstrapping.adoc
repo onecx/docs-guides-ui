@@ -32,7 +32,7 @@ Example **bootstrap.ts**:
 import { AppModule } from './app/app.module';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';
-import { environmen 7 GHJ,ṄṬ000XCt } from './environments/environment';
+import { environment } from './environments/environment';
 
 if (environment.production) {
   enableProdMode();
@@ -89,36 +89,50 @@ import { ExampleModule } from './app/module'
 bootstrapModule(ExampleModule, 'microfrontend', environment.production)
 ....
 
-The **bootstrap.ts** file uses `@onecx/angular-webcomponents` to bootstrap the module and handle common angular issues with module federation.
+The **bootstrap.ts** file uses `@onecx/angular-webcomponents` to bootstrap the module and handle common Angular issues with module federation.
+
+==== Create a Module with DoBootstrap and CreateAppEntrypoint
+`createAppEntrypoint` registers `AppEntrypointComponent` as `<example-webcomponent>`.
 
 .src/app/module.ts
-[%collapsible]
-====
 [source, typescript]
 ....
-import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
-import { APP_INITIALIZER, DoBootstrap, Injector, NgModule } from '@angular/core'
-import { Router, RouterModule, Routes } from '@angular/router'
-import { BrowserModule } from '@angular/platform-browser'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
-import {
-  AppStateService,
-  ConfigurationService,
-  createTranslateLoader,
-  PortalCoreModule,
-  PortalApiConfiguration,
-} from '@onecx/portal-integration-angular'
-import { AngularAuthModule } from '@onecx/angular-auth'
-import { createAppEntrypoint, initializeRouter, startsWith } from '@onecx/angular-webcomponents'
-import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
+import { createAppEntrypoint } from '@onecx/angular-webcomponents'
+export class ExampleModule implements DoBootstrap {
+    constructor(private readonly injector: Injector) {}
 
-@Component({
-  selector: 'app-root',
-  template: `<router-outlet></router-outlet>`
+    ngDoBootstrap(): void {
+        createAppEntrypoint(AppEntrypointComponent, 'example-webcomponent', this.injector)
+    }
+}
+....
+
+==== Adding initializeRouter Provider
+
+The `initializeRouter` function is configured in the providers.
+
+[source, typescript]
+....
+// In Module
+import { initializeRouter, startsWith } from '@onecx/angular-webcomponents'
+@NgModule({
+providers: [
+        // other providers
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeRouter,
+            multi: true,
+            deps: [Router, AppStateService]
+        }
+    ]
 })
-export class AppEntrypointComponent {}
+....
 
+==== Routes are defined using matcher and startsWith
+Router configuration contains `startsWith` and `matcher` to ensure correct routing context.
+[source, typescript]
+....
+// Routes configuration
 export const routes: Routes = [
   {
     matcher: startsWith(''),
@@ -129,58 +143,12 @@ export const routes: Routes = [
     loadChildren: () => import('./tracking/tracking.module').then((mod) => mod.TrackingModule)
   }
 ]
-
-@NgModule({
-    declarations: [AppEntrypointComponent],
-    imports: [
-        PortalCoreModule.forMicroFrontend(),
-        RouterModule.forRoot(addInitializeModuleGuard(routes)),
-        TranslateModule.forRoot({
-            extend: true,
-            isolate: false,
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient, AppStateService]
-            }
-        }),
-        BrowserModule,
-        AngularAuthModule,
-        BrowserAnimationsModule,
-    ],
-    providers: [
-        {
-            provide: Configuration,
-            useFactory: (configService: ConfigurationService, appStateService: AppStateService) =>
-                new PortalApiConfiguration(Configuration, environment.apiPrefix, configService, appStateService),
-            deps: [ConfigurationService, AppStateService]
-        },
-        {
-            provide: APP_INITIALIZER,
-            useFactory: initializeRouter,
-            multi: true,
-            deps: [Router, AppStateService]
-        },
-        provideHttpClient(withInterceptorsFromDi())
-    ]
-})
-export class ExampleModule implements DoBootstrap {
-    constructor(private readonly injector: Injector) {}
-
-    ngDoBootstrap(): void {
-        createAppEntrypoint(AppEntrypointComponent, 'example-webcomponent', this.injector)
-    }
-}
 ....
+
+[NOTE]
 ====
-
-**Key Module Features:**
-
-Entrypoint Component:: 
-createAppEntrypoint registers `AppEntrypointComponent` as `<example-webcomponent>`. The injector provides module dependencies to component instances. It also connects the module's router to the Shell router via EventsTopic.
-
-Route Matching::
-Routes use *startsWith* to match only relevant URL parts. The *initializeRouter* provider adds Microfrontend info to routes and handles redirects correctly.
+When *startsWith* is used with *initializeRouter*, it removes already used parts from the URL, allowing the app to route only within its context instead of the shell's context.
+====
 
 Configuration::
 Services use `PortalApiConfiguration` to construct correct URLs based on *CurrentMfeTopic*, ensuring calls go to the right resources (e.g., `deployment_url/mfe/example/bff/search`).
@@ -189,6 +157,7 @@ Services use `PortalApiConfiguration` to construct correct URLs based on *Curren
 ==== Remote Component Bootstrapping
 
 **Requirements:**
+
 . Webpack exposes **main.ts**
 . **main.ts** bootstraps asynchronously
 . Bootstrap handles *Angular issues* (Angular only) and registers Custom Element
