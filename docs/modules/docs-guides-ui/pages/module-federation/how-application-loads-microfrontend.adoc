@@ -26,7 +26,7 @@ Goal indicates the purpose of each phase, steps describe the key actions taken, 
 
 * Load the preloader bundles that register shared scopes and Module Federation runtime helpers
 * Wait for each preloader to confirm that the runtime is ready
-* Only then import and bootstrap the Angular application
+* Only then import and bootstrap the shell application
 
 *Verify*
 
