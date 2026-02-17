@@ -8,10 +8,10 @@
 Example flow:
 
 * *App1* owns the page and defines the *slot location*
-* *App2* exposes *remote components* (via module federation as remote module) that can be placed into that slot
-* Both *App1* and *App2* applications are used workspace
+* *App2* exposes *remote components* (via module federation as a remote module) that can be placed into that slot
+* Both *App1* and *App2* applications are used in the workspace
 * *App1* slot is *activated* in the workspace
-* *App2* remote component is assigned to *App1* slot
-* When *App1*'s slot is displayed, it will dynamically load the *App2*'s component using module federation and render it in the slot location using appropriate technology defined in remote component configuration
+* *App2* remote component is assigned to the *App1* slot
+* When the *App1* slot is displayed, it will dynamically load the *App2* component using module federation and render it in the slot location using the appropriate technology defined in the remote component configuration
 
 Detailed information about microfrontend loading can be found xref:./types-of-microfrontends.adoc[here].
