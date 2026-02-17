@@ -53,7 +53,7 @@ This method uses Web Components *Custom Elements* to register content, allowing 
 
 . Webpack exposes **main.ts**
 . **main.ts** bootstraps asynchronously
-. Module handles Angular issues (Angular only)
+. Module handles common angular issues with module federation
 . Module must:
    * Register an entry point as a Custom Element
    * Adapt routing for Shell integration
