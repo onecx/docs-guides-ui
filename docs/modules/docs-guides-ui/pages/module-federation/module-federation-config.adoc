@@ -1,36 +1,67 @@
 :imagesdir: ../../images
-Module Federation.
 :idprefix:
 :idseparator: -
 
-== Module Federation Configuration
-This section focuses on the configuration of Microfrontends integrated with OneCX using Webpack's Module Federation.
+== Configure Microfrontend to use Module Federation
+This section describes how to configure a microfrontend to use *Module Federation* for loading and dependency sharing in OneCX.
 
-== Module Federation with Webpack Explained
-Each Microfrontend integrated with OneCX needs to have a configuration file for Webpack (usually called `webpack.config.js`), utilizing Module Federation to expose remote modules. For both module and Remote Components, a remote module needs to be exposed.
+This guide uses *webpack* for the examples, but you can use any other tool that supports *Module Federation*.
 
-=== Important Elements of Webpack Configuration
-Webpack configuration is going to contain important configuration describing the Microfrontend. This configuration is used by Webpack to create and expose a remote entry file containing the whole code required to load remote modules in other Applications using Module Federation.
+Following are the *checkpoints* to set up a microfrontend with *Module Federation*:
 
-Below, a Webpack configuration example of an Angular based Microfrontend is presented.
-[source,typescript]
-....
-const { ModifyEntryPlugin } = require('@angular-architects/module-federation/src/utils/modify-entry-plugin')
-const { share, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack')
+=== Exposed content
+
+Each Microfrontend can expose multiple modules and Remote Components. Every separate module and Remote Component needs to be defined as a separate, unique entry representing a remote module. Each entry is a Key-Value Pair:
+
+ - *Key* - Name of the exposed module.
+ - *Value* - File to be used for module bootstrap.
+
+.Example - Expose *Module* or *Remote Component*
+
+[source, javascript]
+----
+const { withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack')
 const config = withModuleFederationPlugin({
-  name: 'example-ui',
-  filename: 'remoteEntry.js',
+  // other configuration
   exposes: {
     './ExampleModule': './src/main.ts',
     './ExampleComponent': './src/remotes/example/example.component.main.ts'
-  },
+  }
+  // other configuration
+})
+----
+
+=== Shared dependencies
+
+In OneCX, we recommend sharing all dependencies to take full advantage of *Module Federation* capabilities.
+
+  - share all *@onecx* packages
+  - share *rxjs*
+
+For *Angular Applications*:
+
+  - share all *@angular* packages (make sure to not share as *singleton*)
+  - share *primeng*
+  - share *@ngx-translate/core*
+
+.Example - Share relevant dependencies
+[%collapsible]
+====
+[source, javascript]
+----
+const { withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack')
+const config = withModuleFederationPlugin({
+  // other configuration
   shared: share({
+    /*All Angular packages */
     '@angular/core': { requiredVersion: 'auto', includeSecondaries: true },
     '@angular/forms': { requiredVersion: 'auto', includeSecondaries: true },
     '@angular/common': { requiredVersion: 'auto', includeSecondaries: { skip: ['@angular/common/http/testing'] } },
     '@angular/common/http': { requiredVersion: 'auto', includeSecondaries: true },
     '@angular/platform-browser': { requiredVersion: 'auto', includeSecondaries: true },
     '@angular/router': { requiredVersion: 'auto', includeSecondaries: true },
+    
+    /*All @OneCX, primeNg, rxjs and translation packages */
     '@ngx-translate/core': { requiredVersion: 'auto' },
     primeng: { requiredVersion: 'auto', includeSecondaries: true },
     rxjs: { requiredVersion: 'auto', includeSecondaries: true },
@@ -47,49 +78,39 @@ const config = withModuleFederationPlugin({
     '@onecx/portal-integration-angular': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/portal-layout-styles': { requiredVersion: 'auto', includeSecondaries: true }
   }),
-
-  sharedMappings: []
+  // other configuration
 })
+----
+====
 
-module.exports = config
+=== Shared Mapping Property
+The shared mapping should be empty.
 
-const plugins = config.plugins.filter((plugin) => !(plugin instanceof ModifyEntryPlugin))
+.Example - Empty Shared Mapping
+[source, javascript]
+----
+const { withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack')
+const config = withModuleFederationPlugin({
+  // other configuration
+  sharedMappings: []
+  // other configuration
+})
+----
 
-module.exports = {
-  ...config,
-  plugins,
-  output: { uniqueName: 'example-ui', publicPath: 'auto' },
-  experiments: { ...config.experiments, topLevelAwait: true },
-  optimization: { runtimeChunk: false, splitChunks: false }
-}
-....
+=== Remote entry file name and Remote name
 
-The most important elements of Webpack configurations are:
+* *Remote File* - The name of the remote entry file (usually `remoteEntry.js`)
+* *Remote Name* - The unique name of the Microfrontend
 
-Exposed content::
-Each Microfrontend can expose multiple modules and Remote Components. Every separate module and Remote Component needs to be defined as a separate, unique entry representing a remote module. Each entry is a Key-Value Pair: 
-+
-Key::::
-Name of the exposed module.
-+
-Value::::
-File to be used for module bootstrap.
+.Example - Remote file and name
 
-+
-In the Angular example, there are two remote modules defined:
-
-* **ExampleModule** - Microfrontend's remote module pointing to Microfrontend's main.ts file.
-* **ExampleComponent** - Remote Component's remote module pointing to component's main.ts file.
-
-IMPORTANT: https://webpack.js.org/concepts/module-federation/[Module Federation] considers any exposed content as a **remote module**. In the OneCX context, Microfrontends expose two types of content, being modules and Remote Components.
-
-Shared resources::
-Each Microfrontend can define packages that can be shared with others. Every Microfrontend can specify what packages and with what versions are allowed to be shared. In the OneCX context, it is important to ensure the correct package sharing configuration dependent on the used packages used functionalities within the Microfrontend's exposed content.
-
-In the Angular example, there are multiple packages shared. All of them are related to OneCX.
-
-Remote name::
-The unique name of the Microfrontend.
-
-Remote entry file name::
-The name of the remote entry file (usually `remoteEntry.js`).
+[source, javascript]
+----
+const { withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack')
+const config = withModuleFederationPlugin({
+  // other configuration
+  name: 'example-ui',
+  filename: 'remoteEntry.js',
+  // other configuration
+})
+----
