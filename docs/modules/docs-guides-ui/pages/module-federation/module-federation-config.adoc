@@ -16,6 +16,8 @@ Each Microfrontend can expose multiple modules and Remote Components. Every sepa
  - *Key* - Name of the exposed module.
  - *Value* - File to be used for module bootstrap.
 
+As we use webpack for *Module Federation* configuration, the following changes are made in the `webpack.config.js` file of the microfrontend:
+
 .Example - Expose *Module* or *Remote Component*
 
 [source, javascript]
