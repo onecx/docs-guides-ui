@@ -1,80 +1,200 @@
-= React
-
-:idprefix:
-:idseparator: -
-
-React is a popular JavaScript library for building user interfaces, particularly single-page applications. It allows developers to create reusable UI components and manage the state of their applications efficiently.
-
-* https://reactjs.org/[React homepage]
-* https://reactjs.org/docs/getting-started.html[React documentation]
-* https://github.com/facebook/react[Source code]
-* https://reactjs.org/tutorial/tutorial.html[React tutorial]
-* https://vite.dev/[Vite]
-* https://nextjs.org/[Nextjs]
-* https://redux.js.org/[Redux] - Redux provides predictable state management
-* https://github.com/facebook/create-react-app[Create React App]
+= VITE - Project Architecture and Implementation Overview
+:toc:
+:toclevels: 2
+:sectnums:
 
 
-[#requirements]
-== Requirements
-For developing React applications, we need to install these tools:
+== Technology Stack
+
+This project is built using *React* and *Vite*, providing a modern, fast, and modular development environment. The combination of *React's component-based architecture* and *Vite's rapid build tooling* ensures both developer productivity and high application performance.
+
+* **React** – Core UI library for building component-based user interfaces
+* **Vite** – Fast build tool and development server
+* **PrimeReact** – UI component library with theming and preset support
+* **Styled-Components** – UI styling library
+* **Module Federation** – For micro-frontend integration and remote module loading
+* **TypeScript** – Static typing for JavaScript
+* **Jest** & **Vitest** – Testing frameworks
+* **Sass (SCSS)** – CSS preprocessor for advanced styling
+* **ESLint** – Linting and code quality
+* **Nx** – Monorepo management and tooling
+* **Helm** – Kubernetes package manager for deployment
+* **MutationObserver** – DOM API for dynamic style scoping
+
+== Micro-Frontend (MFE) Approach
+
+=== Module Federation
+
+*Module Federation* is a key enabler of our micro-frontend architecture. It allows this application to both expose and consume remote modules at runtime, facilitating seamless integration between independently developed frontend modules. By sharing dependencies and loading code dynamically, module federation reduces duplication, improves maintainability, and enables true runtime composition of features across teams and domains.
+
+The configuration ensures that shared dependencies are loaded only once, optimizing resource usage and startup times. This approach provides a robust foundation for scalable, modular enterprise applications.
+
+The following sections provide concrete *code snippets and configuration examples* that demonstrate how module federation is set up and used in this project, including how modules are exposed and consumed.
+
+=== Web Component Integration
+
+This application is also turned into a *Web Component* using the `@onecx/react-webcomponents` library. This allows the React application to be embedded as a custom element in any host environment, providing true encapsulation and reusability across different platforms.
+
+The main entry point for the web component is created as follows:
+
+----
+import { init } from '@module-federation/runtime/.';
+import { createViteAppWebComponent } from '@onecx/react-webcomponents';
+import App from './app';
+import { APP_NAME } from '../../utils/globals';
+
+init({
+	name: APP_NAME,
+	remotes: [],
+	shared: {
+		react: {},
+		'react-dom': {},
+		'react-router-dom': {},
+		rxjs: {},
+		'@module-federation/vite': {},
+		'@module-federation/enhanced': {},
+		'@module-federation/runtime': {},
+		'@module-federation/runtime-core': {},
+		'@onecx/accelerator': {},
+		'@onecx/integration-interface': {},
+	},
+});
+
+createViteAppWebComponent(App, `${APP_NAME}-entrypoint`);
+----
+
+This code initializes module federation and registers the main React app as a web component, making it available as a custom element.
+
+=== Exposed Components
+
+The application exposes key components for consumption by other micro-frontends or host shells via module federation. The configuration in `vite.config.ts` looks like this:
+
+----
+const mfConfig = {
+	name: APP_NAME,
+	filename: 'remoteEntry.js',
+	exposes: {
+		'./ViteWebcomponent': './src/app/bootstrap.ts',
+		'./ViteRemote': './src/remotes/vite-remote/bootstrap.ts',
+	},
+};
+----
+
+**Exposed modules:**
+
+- `./ViteWebcomponent`: The main application entrypoint, registered as a web component.
+- `./ViteRemote`: A remote component, also registered as a web component for remote consumption.
+
+Example of exposing a remote component:
+
+----
+import { createViteAppWebComponent } from '@onecx/react-webcomponents';
+import ViteRemote from './main';
+
+createViteAppWebComponent(ViteRemote, 'vite-remote');
+----
+
+This pattern allows both the main app and individual components to be loaded and used independently in other environments.
+
+The configuration ensures that shared dependencies are loaded only once, optimizing resource usage and startup times. This approach provides a robust foundation for scalable, modular enterprise applications.
+
+This pattern allows both the main app and individual components to be loaded and used independently in other environments.
 
 
-[#developer-ide]
-=== Developer IDE
-* https://code.visualstudio.com/[Visual Studio Code]
+== Style Scoping and Management
 
 
-[#vs-code-extensions]
-=== VS Code extensions
-* https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode[SonarLint]
+To prevent style leakage and ensure visual consistency, the application employs a robust *style scoping strategy*. The *shell application* is responsible for providing the *primary style scope*, encapsulating styles for each micro-frontend. However, some third-party libraries may inject styles dynamically at runtime, which can bypass the shell's scoping mechanisms.
 
-* https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint[EsLint]
+To address this, a *Mutation Observer* is implemented within the application. This observer monitors the DOM for dynamically added style elements and ensures that they are *appropriately scoped*, maintaining isolation and preventing unintended style overrides across micro-frontends.
 
-* https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens[GitLens]
+The following snippet shows the core logic of the Mutation Observer used for style scoping:
 
-* https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost[Import Cost]
+----
+const callback: MutationCallback = (mutationsRecords) => {
+	for (const record of mutationsRecords) {
+		for (let i = 0; i < record.addedNodes.length; i++) {
+			const node = record.addedNodes[i];
+			if (
+				node.nodeType === Node.ELEMENT_NODE &&
+				node instanceof HTMLStyleElement
+			) {
+				// Only scope PrimeReact styles
+				const isPrimeReactStyle =
+					node.id?.startsWith('primereact_') ||
+					node
+						.getAttributeNames()
+						.some((attr) => attr.startsWith('data-primereact'));
 
-* https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode[IntelliCode]
+				if (!isPrimeReactStyle) continue;
 
-* https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.intellicode-api-usage-examples[IntelliCode API Usage Examples]
+				node.setAttribute('data-shell-scope', PRODUCT_NAME);
+				node.setAttribute('type', 'text/css');
 
-* https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion[IntelliSense for CSS class names in HTML]
+				const originalCss = node.textContent || '';
+				const scopedCss = scopeCss(originalCss);
+				node.textContent = scopedCss;
+			}
+		}
+	}
+};
 
-* https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css[HTML CSS Support]
+const mutationObserver = new MutationObserver(callback);
+mutationObserver.observe(document.head, {
+	childList: true,
+	subtree: true,
+});
+----
 
-* https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode[Prettier - Code formatter]
+The `scopeCss` function rewrites the CSS to ensure it is only applied within the correct scope, using selectors and attributes specific to the shell and micro-frontend context.
 
-* https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint[Prettier ESLint]
-
-* https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client[ThunderClient]
-
-* https://plugins.jetbrains.com/plugin/7973-sonarlint[SonarLint]
-
-
-[#useful-browser-plugins]
-=== Useful browser plugins
-* https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi[React Developer Tools]
-* https://developer.chrome.com/docs/lighthouse/overview/[Lighthouse]
-* https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd[Redux DevTools]
-
-
-[#useful-links]
-=== Useful links
-* https://reactjs.org/[React - Official website]
-* https://reactrouter.com/[React Router]
-* https://reactjs.org/docs/getting-started.html[Getting Started with React] 
-* xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[OneCX React Libraries]
-* https://styled-components.com/[Styled Components]
+== Theming Strategy
 
 
-== OneCX Libraries
-The OneCX platform provides several libraries to assist in React application development:
+The application's *theming system* is designed for *flexibility and consistency*. *Theme information is sourced from the current topic*, allowing for *dynamic theme switching* based on user or contextual preferences. The theming implementation utilizes *PrimeReact's preset functionality*, enabling the application to *apply and manage theme variables efficiently*. This approach ensures a *cohesive look and feel* across all components, while also supporting customization and extensibility as required.
 
-* **react-integration-interface**: A library that provides interfaces and utilities for integrating React applications with the OneCX platform.
+The following snippet demonstrates how the theme is dynamically applied using PrimeReact and topic-based presets:
 
-* **react-auth**: A library that handles authentication and authorization within  React applications.
+----
+import { useEffect, useState } from 'react';
+import { CurrentThemeTopic } from '@onecx/integration-interface';
+import { PrimeReactProvider } from '@primereact/core';
+import { PrimeReactStyleSheet } from '@primereact/core/stylesheet';
+import appConfig from '../../themes/app.config';
+import { createAPresetBasedOnTheme } from '../../themes/theme-config';
+import { merge } from 'lodash';
 
-* **react-remote-components**: A library that enables the use of remote components in React applications, facilitating microfrontend architectures.
+const styledStyleSheet = new PrimeReactStyleSheet();
 
-* **react-webcomponents**: A library that allows the creation and use of web components within React applications.
+export default function StyleRegistry({ children }) {
+	const [currentPreset, setCurrentPreset] = useState(appConfig.primereact);
+
+	useEffect(() => {
+		const ThemeTopic = new CurrentThemeTopic().subscribe((crrTheme) => {
+			const preset = createAPresetBasedOnTheme(crrTheme.properties);
+			setCurrentPreset((oldValue) => ({
+				...oldValue,
+				theme: {
+					...oldValue.theme,
+					preset: merge(oldValue.theme?.preset ?? {}, preset),
+				},
+			}));
+			return crrTheme;
+		});
+		return () => ThemeTopic.unsubscribe();
+	}, []);
+
+	useEffect(() => {
+		styledStyleSheet.reset?.();
+		styledStyleSheet.apply?.(currentPreset.theme?.preset);
+	}, [currentPreset]);
+
+	return (
+		<PrimeReactProvider {...currentPreset} stylesheet={styledStyleSheet}>
+			{children}
+		</PrimeReactProvider>
+	);
+}
+----
+
+This code listens for theme changes from the topic, generates a new preset, and applies it to PrimeReact, ensuring the UI updates dynamically according to the selected theme.
