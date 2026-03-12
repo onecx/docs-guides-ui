@@ -1,0 +1,109 @@
+ifdef::env-site[]
+include::partial$attributes.adoc[]
+endif::[]
+
+= @onecx/react-integration-functionalities
+
+[#overview]
+== Overview
+`@onecx/react-integration-functionalities` provides runtime helpers used by React micro-frontends inside OneCX. It focuses on style scoping, dynamic theme variable injection, and portal-aware wiring needed for PrimeReact and remote component isolation.
+
+[#exports]
+== Public Exports
+The package exports the following public API from `libs/react-integration-functionalities/src/lib/index.ts`:
+
+* `withApp`, `withRemote` (HOCs for wiring providers and style isolation)
+* `PortalPage`
+* `primeBaseTheme.scss` (PrimeReact theme base styles)
+
+[#style-scoping]
+== Style Scoping
+The library includes a PrimeReact style scoper that captures PrimeReact-generated styles, wraps them with `@scope`, and writes them to a dedicated `<style data-*-primereact-style>` tag.
+
+[source,ts]
+----
+import { attachPrimeReactScoper } from '@onecx/react-integration-functionalities';
+
+attachPrimeReactScoper({
+  id: 'example-ui',
+  scopeRootSelector: '[data-style-id="example-ui"]',
+  productName: 'example',
+  themeStyleId: 'example|example-ui'
+});
+----
+
+[#theme-variables]
+== Theme Variable Injection
+Theme variables can be injected at runtime by calling `applyThemeVariables`, which updates the `@layer tokens` block inside scoped style tags.
+
+[source,ts]
+----
+import applyThemeVariables from '@onecx/react-integration-functionalities/src/lib/styling/theme/applyThemeVariables';
+
+applyThemeVariables(theme, 'example|example-ui');
+----
+
+[#dynamic-scoping]
+== Dynamic Scoping (Portals)
+To ensure styles remain scoped for portal-rendered PrimeReact components, the package intercepts portal creation and appends intermediate style data for isolation.
+
+[#portal-page]
+== PortalPage
+`PortalPage` is a layout helper that publishes page metadata to the shell (via `CurrentPageTopic`) and optionally guards content based on permissions. It also exposes a standard container (`.portal-page`) and prints translated unauthorized messages when access is denied.
+
+[source,tsx]
+----
+import { PortalPage } from '@onecx/react-integration-functionalities';
+
+export const Detail = () => (
+  <PortalPage
+    pageName="Detail"
+    helpArticleId="detail-page"
+    permission="TEST#DETAIL"
+  >
+    <DetailContent />
+  </PortalPage>
+);
+----
+
+[#translation-bridge]
+== TranslationBridge
+`TranslationBridge` syncs the OneCX user language (from `UserService.lang$`) with `react-i18next` by calling `i18n.changeLanguage`. It is automatically mounted by `withApp` and `withRemote` through `withBaseProviders`.
+
+[#with-app-remote]
+== withApp / withRemote
+`withApp` is used for main app shells, while `withRemote` is used for remote micro-frontends. Both:
+
+* wire base providers (app state, configuration, user)
+* attach translation syncing via `TranslationBridge`
+* set up PrimeReact style scoping and theme registry
+
+Use them as follows:
+
+[source,tsx]
+----
+import { withApp, withRemote } from '@onecx/react-integration-functionalities';
+
+export default withApp(AppRouter, {
+  PRODUCT_NAME: 'example',
+  REMOTES_NAME: 'example-remotes'
+});
+
+export default withRemote(RemoteWidget, {
+  PRODUCT_NAME: 'example',
+  REMOTES_NAME: 'example-remotes'
+});
+----
+
+[#primereact-theme-import]
+== PrimeReact Theme Base Import
+To apply PrimeReact theming consistently, you must import the base theme stylesheet from this package in your app styles:
+
+[source,css]
+----
+@import "../../libs/react-integration-functionalities/src/lib/primeBaseTheme.scss";
+----
+
+[#with-app]
+== Application Wiring
+The `withApp` HOC composes common providers (app state, configuration, user, theme) and sets up the style scoping helpers for micro-frontends.

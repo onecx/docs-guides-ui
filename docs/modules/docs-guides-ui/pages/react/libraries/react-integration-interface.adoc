@@ -23,6 +23,7 @@ Topics used::
 * {global_error_topic_url}[GlobalErrorTopic]
 * {global_loading_topic_url}[GlobalLoadingTopic]
 * {current_mfe_topic_url}[CurrentMfeTopic]
+* {current_location_topic_url}[CurrentLocationTopic]
 * {current_page_topic_url}[CurrentPageTopic]
 * {current_workspace_topic_url}[CurrentWorkspaceTopic]
 * {is_authenticated_topic_url}[IsAuthenticatedTopic]
@@ -41,7 +42,8 @@ API::
 |`globalError$` | `{global_error_topic_url}[GlobalErrorTopic]` | {global_error_topic_url}[GlobalErrorTopic] instance.
 |`globalLoading$` | `{global_loading_topic_url}[GlobalLoadingTopic]` | {global_loading_topic_url}[GlobalLoadingTopic] instance.
 |`currentMfe$` | `{current_mfe_topic_url}[CurrentMfeTopic]` | {current_mfe_topic_url}[CurrentMfeTopic] instance.
-|`currentPage$` | `{current_page_topic_url}[CurrentPageTopic]` | {current_page_topic_url}[CurrentPageTopic] instance.
+|`currentLocation$` | `{current_location_topic_url}[CurrentLocationTopic]` | {current_location_topic_url}[CurrentLocationTopic] instance.
+|`currentPage$` | `{current_page_topic_url}[CurrentPageTopic]` | {current_page_topic_url}[CurrentPageTopic] instance. Emits only when page path matches document location.
 |`currentWorkspace$` | `{current_workspace_topic_url}[CurrentWorkspaceTopic]` | {current_workspace_topic_url}[CurrentWorkspaceTopic] instance.
 |`isAuthenticated$` | `{is_authenticated_topic_url}[IsAuthenticatedTopic]` | {is_authenticated_topic_url}[IsAuthenticatedTopic] instance.
 |`[.line-through]#currentPortal$#` | [.line-through]`{current_workspace_topic_url}[CurrentWorkspaceTopic]` | Deprecated. Use currentWorkspace$ instead.
@@ -52,7 +54,7 @@ API::
 Usage::
 *Initialize and access configuration variables for a platform*.
 +
-This provider is initialized by, and contains configuration variables, for the Shell Application that could be used in any place on the platform.
+This provider loads configuration variables for the application and exposes them via the ConfigurationTopic.
 +
 
 
@@ -74,6 +76,7 @@ API::
 
 |`config$` | `{configuration_topic_url}[ConfigurationTopic]` | {configuration_topic_url}[ConfigurationTopic] instance.
 |`isInitialized` | `Promise<void>` | Promise resolved when Configuration Provider is initialized.
+|`config` | `Config \| null` | Current config snapshot.
 |===
 +
 *Configuration Provider* methods can be used for platform configuration variable management:
@@ -83,10 +86,10 @@ API::
 |===
 |Method signature |Return type | Description
 
-|`init()` | `Promise<boolean>` | Initializes Configuration Service by loading Shell configuration variables and publishes them via ConfigurationTopic. Should not be used in Microfrontends.
-|`getProperty(key: CONFIG_KEY)` | `string`| Gets value set for a key from topic.
-|`async setProperty(key: string, val:string)` | `void` | Updates the value for a key in the configuration. Publishes new message via ConfigurationTopic.
-|`getConfig()` |`{config_object_url}[Config]` |Gets all configuration variables defined for the app from the topic.
+|`init()` | `Promise<boolean>` | Initializes Configuration Service by loading configuration variables and publishes them via ConfigurationTopic.
+|`getProperty(key: CONFIG_KEY)` | `Promise<string \| undefined>` | Gets value set for a key from topic.
+|`async setProperty(key: string, val:string)` | `Promise<void>` | Updates the value for a key in the configuration. Publishes new message via ConfigurationTopic.
+|`getConfig()` |`Promise<{config_object_url}[Config] \| undefined>` |Gets all configuration variables defined for the app from the topic.
 |===
 
 
@@ -95,16 +98,11 @@ API::
 Usage::
 *Change the page display style by applying Themes*.
 +
-This service allows changing the currently used Theme by applying it to the document and informs about it via a new message in the {current_theme_topic_url}[CurrentThemeTopic].
+This provider exposes the current theme topic and keeps its lifecycle scoped to the React tree.
 
 Topics used::
 
 * {current_theme_topic_url}[CurrentThemeTopic]
-
-Dependencies::
-
-* HttpClient
-* xref:./react-integration-interface.adoc#configuration-provider[ConfigurationProvider]
 
 API::
 *Theme Provider* properties enable access to topic instances:
@@ -117,19 +115,6 @@ API::
 |`currentTheme$` | `{current_theme_topic_url}[CurrentThemeTopic]` | {current_theme_topic_url}[CurrentThemeTopic] instance.
 |===
 +
-*Theme Provider* methods:
-+
-.Theme Provider methods
-[cols="1,1,2"]
-|===
-|Method signature |Return type | Description
-
-|`apply(theme: {theme_object_url}[Theme])` | `Promise<void>` | Applies {theme_object_url}[Theme] via document style manipulation (styles will be lost on page exit). Publishes a new message via {current_theme_topic_url}[CurrentThemeTopic].
-|`getThemeHref(themeId: string)` | `string` | Get theme href
-|`loadAndApplyTheme(themeName: string)` | `void` | Load and apply theme
-
-|===
-
 [#user-provider]
 === User Provider
 Usage::
@@ -153,7 +138,7 @@ API::
 | `profile$` | `{user_profile_topic_url}[UserProfileTopic]` | {user_profile_topic_url}[UserProfileTopic] instance.
 | `lang$` | `BehaviorSubject<string>` | User's language. For every new message in the {user_profile_topic_url}[UserProfileTopic], the language will be updated based on the user's locale information.
 | `isInitialized` | `Promise<void>` | Promise resolved when User Service is initialized.
-| `permissions$` | `BehaviorSubject<string[]>` | Permission.
+| `permissionsTopic$` | `{permissions_topic_url}[PermissionsTopic]` | {permissions_topic_url}[PermissionsTopic] instance.
 |===
 +
 *User Provider* methods:
@@ -163,9 +148,125 @@ API::
 |===
 | Method Signature |Return Type | Description
 
+| getPermissions()
+| `Observable<string[]>`
+| Returns the permissions stream from PermissionsTopic.
+
 | hasPermission(permissionKey: string \| string[])
-| boolean 
+| `Promise<boolean>`
 | Checks if user has specified permission/permissions using PermissionTopic's latest value.
+|===
+
+[#parameters-provider]
+=== Parameters Provider
+Usage::
+*Access application parameters published by the shell.*
++
+Topics used::
+* {parameters_topic_url}[ParametersTopic]
+
+API::
+*Parameters Provider* properties:
++
+.Parameters Provider properties
+[cols="1,1,2"]
+|===
+|Property name |Type | Description
+
+| `parameters$` | `{parameters_topic_url}[ParametersTopic]` | {parameters_topic_url}[ParametersTopic] instance.
+|===
++
+*Parameters Provider* methods:
++
+.Parameters Provider methods
+[cols="1,1,2"]
+|===
+|Method signature |Return type | Description
+
+| `get(key: string, defaultValue: T, productName?: string, appId?: string)`
+| `Promise<T>`
+| Resolves a parameter value for the current MFE (falls back to default).
+|===
+
+[#portal-message-provider]
+=== Portal Message Provider
+Usage::
+*Publish translated toast messages through the shell.*
++
+Topics used::
+* {message_topic_url}[MessageTopic]
+
+API::
+*Portal Message Provider* methods:
++
+.Portal Message Provider methods
+[cols="1,1,2"]
+|===
+|Method signature |Return type | Description
+
+| `success(msg)` / `info(msg)` / `warning(msg)` / `error(msg)`
+| `Promise<void>`
+| Publishes a message with translated summary/detail keys.
+|===
+
+[#remote-components-provider]
+=== Remote Components Provider
+Usage::
+*Access the list of remote components published by the shell.*
++
+Topics used::
+* {remote_components_topic_url}[RemoteComponentsTopic]
+
+API::
+*Remote Components Provider* properties:
++
+.Remote Components Provider properties
+[cols="1,1,2"]
+|===
+|Property name |Type | Description
+
+| `remoteComponents$` | `{remote_components_topic_url}[RemoteComponentsTopic]` | {remote_components_topic_url}[RemoteComponentsTopic] instance.
+|===
+
+[#shell-capability]
+=== Shell Capability
+Usage::
+*Check shell capabilities before using optional topics.*
++
+API::
+*Shell capability* methods:
++
+.Shell capability methods
+[cols="1,1,2"]
+|===
+|Method signature |Return type | Description
+
+| `setCapabilities(capabilities: Capability[])`
+| `void`
+| Sets the list of shell capabilities on `globalThis`.
+
+| `hasCapability(capability: Capability)`
+| `boolean`
+| Checks if a capability is present.
+|===
+
+[#image-repository-provider]
+=== Image Repository Provider
+Usage::
+*Expose an image repository service from the integration interface.*
++
+Note::
+The current implementation is commented out in the library source and not active. This section documents the intended API if it is re-enabled.
+
+API::
+*Image Repository Provider* properties:
++
+.Image Repository Provider properties
+[cols="1,1,2"]
+|===
+|Property name |Type | Description
+
+| `imageRepositoryService` | `{image_repository_service_url}[ImageRepositoryService]` | Image repository service instance.
 |===
 
 

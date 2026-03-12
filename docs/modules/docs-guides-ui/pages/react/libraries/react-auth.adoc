@@ -7,9 +7,7 @@ endif::[]
 [#overview]
 == Overview
 
-This document provides an overview of the `axiosFactory` function, which creates an `axios` instance with additional features such as automatically adding authorization headers to HTTP requests.
-
-* axios: The main library for making HTTP requests.
+This document provides an overview of the `axiosFactory` helper that creates an `axios` instance which auto-injects authorization headers from `window.onecxAuth`.
 
 [#axios-factory]
 == axiosFactory Function
@@ -24,14 +22,14 @@ export const axiosFactory: (baseURL?: string) => AuthenticatedAxiosInstance = (
 };
 ```
 * baseURL: An optional parameter specifying the base URL for HTTP requests.
-* The axios instance is extended with a tokens property.
-* An interceptor is added to automatically include authorization headers in HTTP requests, except for those in the WHITELIST.
+* The axios instance is extended with a `tokens` property (`sessionExpired` flag).
+* An interceptor calls `window.onecxAuth.authServiceProxy.v1.updateTokenIfNeeded()` and injects headers from `getHeaderValues()`.
+* Requests matching the `WHITELIST` (currently `assets`) are skipped.
 
 [#example-usage]
 == Example Usage
 
 ```javascript
-
 // Create an axios instance with a base URL
 const apiClient = axiosFactory('https://api.example.com');
 

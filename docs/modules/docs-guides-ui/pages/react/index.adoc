@@ -1,4 +1,4 @@
-= VITE - Project Architecture and Implementation Overview
+= Vite - Project Architecture and Implementation Overview
 :toc:
 :toclevels: 2
 :sectnums:
@@ -11,7 +11,6 @@ This project is built using *React* and *Vite*, providing a modern, fast, and mo
 * **React** – Core UI library for building component-based user interfaces
 * **Vite** – Fast build tool and development server
 * **PrimeReact** – UI component library with theming and preset support
-* **Styled-Components** – UI styling library
 * **Module Federation** – For micro-frontend integration and remote module loading
 * **TypeScript** – Static typing for JavaScript
 * **Jest** & **Vitest** – Testing frameworks
@@ -38,9 +37,9 @@ This application is also turned into a *Web Component* using the `@onecx/react-w
 The main entry point for the web component is created as follows:
 
 ----
-import { init } from '@module-federation/runtime/.';
-import { createViteAppWebComponent } from '@onecx/react-webcomponents';
-import App from './app';
+import { init } from '@module-federation/runtime';
+import { createViteAppWebComponent } from '../libs/react-webcomponents/src/lib/webcomponent-bootstrap-vite.utils';
+import App from './App';
 import { APP_NAME } from '../../utils/globals';
 
 init({
@@ -60,7 +59,7 @@ init({
 	},
 });
 
-createViteAppWebComponent(App, `${APP_NAME}-entrypoint`);
+createViteAppWebComponent(App, 'onecx-react-module-test-ui-entrypoint');
 ----
 
 This code initializes module federation and registers the main React app as a web component, making it available as a custom element.
@@ -88,17 +87,15 @@ const mfConfig = {
 Example of exposing a remote component:
 
 ----
-import { createViteAppWebComponent } from '@onecx/react-webcomponents';
+import { createViteAppWebComponent } from '../libs/react-webcomponents/src/lib/webcomponent-bootstrap-vite.utils';
 import ViteRemote from './main';
 
-createViteAppWebComponent(ViteRemote, 'vite-remote');
+createViteAppWebComponent(ViteRemote, 'onecx-react-module-test-ui-entrypoint');
 ----
 
 This pattern allows both the main app and individual components to be loaded and used independently in other environments.
 
 The configuration ensures that shared dependencies are loaded only once, optimizing resource usage and startup times. This approach provides a robust foundation for scalable, modular enterprise applications.
-
-This pattern allows both the main app and individual components to be loaded and used independently in other environments.
 
 
 == Style Scoping and Management
@@ -107,6 +104,8 @@ This pattern allows both the main app and individual components to be loaded and
 To prevent style leakage and ensure visual consistency, the application employs a robust *style scoping strategy*. The *shell application* is responsible for providing the *primary style scope*, encapsulating styles for each micro-frontend. However, some third-party libraries may inject styles dynamically at runtime, which can bypass the shell's scoping mechanisms.
 
 To address this, a *Mutation Observer* is implemented within the application. This observer monitors the DOM for dynamically added style elements and ensures that they are *appropriately scoped*, maintaining isolation and preventing unintended style overrides across micro-frontends.
+
+The implementation details live in the `@onecx/react-integration-functionalities` package (see xref:libraries/react-integration-functionalities.adoc[react-integration-functionalities]).
 
 The following snippet shows the core logic of the Mutation Observer used for style scoping:
 

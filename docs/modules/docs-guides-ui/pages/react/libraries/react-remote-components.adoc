@@ -6,7 +6,16 @@ endif::[]
 
 [#overview]
 == Overview
-`@onecx/react-remote-components` library is a set of tools aimed at simplifying the development of Angular applications integrated with OneCX by using and extending the functionality of {integration-interface_url}. This library focuses on connecting applications to already existing Angular-based environment, which is useful for integrating microfrontends with OneCX without directly using Topics.
+`@onecx/react-remote-components` provides helpers for rendering remote portal components inside React apps. It connects to the `RemoteComponentsTopic`, loads remote entries via Module Federation, and renders components inside named slots.
+
+[#exports]
+== Public Exports
+The package exports:
+
+* `SlotComponent`
+* `SlotProvider`, `useSlot`
+* `PermissionProvider`, `usePermission`
+* `withSlot`
 
 
 The functionality of this library is based on module-federation. To provide a connection between applications running on different frameworks, we use module-federation 2.0, which focuses on runtime functionality. But it works just as well with a more static/webpack approach. We basically use a mix of both worlds. To expose the component we use static approach as it fits our case:
@@ -122,7 +131,7 @@ export default withSlot(Testing);
 [#SlotComponent]
 === SlotComponent
 
-This component is just a container with a name property that you use to specify which shared component you want to use. What the component does is, based on the name property, it checks if there even is such a slot and if it has any components, and if it does, it creates an empty slot container with a tag name of those components. 
+This component is a container with a `name` property. It resolves slot mappings from `RemoteComponentsTopic`, loads the remote module using Module Federation, and mounts the remote web component into the slot container. Each mounted element receives `data-style-id` and `data-style-isolation` attributes for styling isolation.
 
 .For example
 [source,html]
@@ -130,7 +139,7 @@ This component is just a container with a name property that you use to specify 
 <ocx-user-siderbar-menu-component></ocx-user-siderbar-menu-component>
 ----
 
-Then it just fetches the actual webcomponents(remoteEntry's) using information from the `RemoteComponents` topic. After that, the fetched components are registered in the window, and this is the moment when you can see components inside created containers.
+It fetches web components using information from the `RemoteComponentsTopic`, registers them, and renders them inside the slot.
 
 [source,js]
 ----
