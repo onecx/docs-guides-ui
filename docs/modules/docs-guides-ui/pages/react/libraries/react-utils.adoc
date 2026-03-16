@@ -2,15 +2,15 @@ ifdef::env-site[]
 include::partial$attributes.adoc[]
 endif::[]
 
-= @onecx/react-integration-functionalities
+= @onecx/react-utils
 
 [#overview]
 == Overview
-`@onecx/react-integration-functionalities` provides runtime helpers used by React micro-frontends inside OneCX. It focuses on style scoping, dynamic theme variable injection, and portal-aware wiring needed for PrimeReact and remote component isolation.
+`@onecx/react-utils` provides runtime helpers used by React micro-frontends inside OneCX. It focuses on style scoping, dynamic theme variable injection, and portal-aware wiring needed for PrimeReact and remote component isolation.
 
 [#exports]
 == Public Exports
-The package exports the following public API from `libs/react-integration-functionalities/src/lib/index.ts`:
+The package exports the following public API from `libs/react-utils/src/lib/index.ts`:
 
 * `withApp`, `withRemote` (HOCs for wiring providers and style isolation)
 * `PortalPage`
@@ -22,7 +22,7 @@ The library includes a PrimeReact style scoper that captures PrimeReact-generate
 
 [source,ts]
 ----
-import { attachPrimeReactScoper } from '@onecx/react-integration-functionalities';
+import { attachPrimeReactScoper } from '@onecx/react-utils';
 
 attachPrimeReactScoper({
   id: 'example-ui',
@@ -38,7 +38,7 @@ Theme variables can be injected at runtime by calling `applyThemeVariables`, whi
 
 [source,ts]
 ----
-import applyThemeVariables from '@onecx/react-integration-functionalities/src/lib/styling/theme/applyThemeVariables';
+import applyThemeVariables from '@onecx/react-utils/src/lib/styling/theme/applyThemeVariables';
 
 applyThemeVariables(theme, 'example|example-ui');
 ----
@@ -53,7 +53,7 @@ To ensure styles remain scoped for portal-rendered PrimeReact components, the pa
 
 [source,tsx]
 ----
-import { PortalPage } from '@onecx/react-integration-functionalities';
+import { PortalPage } from '@onecx/react-utils';
 
 export const Detail = () => (
   <PortalPage
@@ -82,7 +82,7 @@ Use them as follows:
 
 [source,tsx]
 ----
-import { withApp, withRemote } from '@onecx/react-integration-functionalities';
+import { withApp, withRemote } from '@onecx/react-utils';
 
 export default withApp(AppRouter, {
   PRODUCT_NAME: 'example',
@@ -101,7 +101,7 @@ To apply PrimeReact theming consistently, you must import the base theme stylesh
 
 [source,css]
 ----
-@import "../../libs/react-integration-functionalities/src/lib/primeBaseTheme.scss";
+@import "../../libs/react-utils/src/lib/primeBaseTheme.scss";
 ----
 
 [#with-app]
