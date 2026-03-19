@@ -1,4 +1,4 @@
-ifdef::env-site[]
+ifndef::integration-interface_url[]
 include::partial$attributes.adoc[]
 endif::[]
 

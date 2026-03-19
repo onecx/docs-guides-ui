@@ -1,6 +1,6 @@
 * xref:documentation:docs-guides-ui:troubleshooting.adoc[UI Troubleshooting]
 
-* xref:documentation:docs-guides-ui:angular/index.adoc[Angular] 
+* xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 ** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 ** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
 ** xref:documentation:docs-guides-ui:angular/standalone.adoc[Standalone Mode]
@@ -36,5 +36,6 @@
 ** OneCX Libraries
 *** xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[react-integration-interface]
 *** xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[react-auth]
+*** xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[react-utils]
 *** xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc[react-remote-components]
 *** xref:documentation:docs-guides-ui:react/libraries/react-webcomponents.adoc[react-webcomponents]
