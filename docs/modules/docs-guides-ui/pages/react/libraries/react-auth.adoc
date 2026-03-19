@@ -22,7 +22,6 @@ export const axiosFactory: (baseURL?: string) => AuthenticatedAxiosInstance = (
 };
 ```
 * baseURL: An optional parameter specifying the base URL for HTTP requests.
-* The axios instance is extended with a `tokens` property (`sessionExpired` flag).
 * An interceptor calls `window.onecxAuth.authServiceProxy.v1.updateTokenIfNeeded()` and injects headers from `getHeaderValues()`.
 * Requests matching the `WHITELIST` (currently `assets`) are not attached with tokens.
 
