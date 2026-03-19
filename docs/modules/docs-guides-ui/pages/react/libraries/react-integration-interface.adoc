@@ -18,6 +18,26 @@ Usage::
 +
 This context creates new instances of several Topics that contain information about the current state of the platform and makes sure they are cleaned up correctly on destruction.
 
+Example::
+*Wrap your app with the provider and read topics with `useAppState`.*
++
+[source,tsx]
+----
+import { AppStateProvider, useAppState } from "@onecx/react-integration-interface";
+
+const Status = () => {
+  const { currentWorkspace$ } = useAppState();
+  // currentWorkspace$.subscribe((ws) => console.log(ws));
+  return null;
+};
+
+export const App = () => (
+  <AppStateProvider>
+    <Status />
+  </AppStateProvider>
+);
+----
+
 Topics used::
 
 * {global_error_topic_url}[GlobalErrorTopic]
@@ -56,6 +76,28 @@ Usage::
 +
 This provider loads configuration variables for the application and exposes them via the ConfigurationTopic.
 +
+
+Example::
+*Provide defaults and read configuration via `useConfiguration`.*
++
+[source,tsx]
+----
+import {
+  ConfigurationProvider,
+  useConfiguration,
+} from "@onecx/react-integration-interface";
+
+const ConfigInfo = () => {
+  const { config } = useConfiguration();
+  return <pre>{JSON.stringify(config, null, 2)}</pre>;
+};
+
+export const App = () => (
+  <ConfigurationProvider defaultConfig={{ appId: "my-app", portalId: "portal" }}>
+    <ConfigInfo />
+  </ConfigurationProvider>
+);
+----
 
 
 Topics used::
@@ -100,6 +142,26 @@ Usage::
 +
 This provider exposes the current theme topic and keeps its lifecycle scoped to the React tree.
 
+Example::
+*Wrap the tree and read the current theme topic.*
++
+[source,tsx]
+----
+import { ThemeProvider, useTheme } from "@onecx/react-integration-interface";
+
+const ThemeStatus = () => {
+  const { currentTheme$ } = useTheme();
+  // currentTheme$.subscribe((theme) => console.log(theme));
+  return null;
+};
+
+export const App = () => (
+  <ThemeProvider>
+    <ThemeStatus />
+  </ThemeProvider>
+);
+----
+
 Topics used::
 
 * {current_theme_topic_url}[CurrentThemeTopic]
@@ -121,6 +183,26 @@ Usage::
 *Access the user's data, settings and permissions*.
 +
 This service contains user-related information and allows checking user permissions by utilizing Topics.
+
+Example::
+*Provide user context and check permissions.*
++
+[source,tsx]
+----
+import { UserProvider, useUserService } from "@onecx/react-integration-interface";
+
+const Permissions = () => {
+  const { hasPermission } = useUserService();
+  // hasPermission("MY_PERMISSION").then(console.log);
+  return null;
+};
+
+export const App = () => (
+  <UserProvider>
+    <Permissions />
+  </UserProvider>
+);
+----
 
 Topics used::
 
@@ -165,6 +247,26 @@ Usage::
 Topics used::
 * {parameters_topic_url}[ParametersTopic]
 
+Example::
+*Read a parameter inside the provider.*
++
+[source,tsx]
+----
+import { ParametersProvider, useParameters } from "@onecx/react-integration-interface";
+
+const Params = () => {
+  const { get } = useParameters();
+  // get("feature.flag", false).then(console.log);
+  return null;
+};
+
+export const App = () => (
+  <ParametersProvider>
+    <Params />
+  </ParametersProvider>
+);
+----
+
 API::
 *Parameters Provider* properties:
 +
@@ -196,6 +298,29 @@ Usage::
 Topics used::
 * {message_topic_url}[MessageTopic]
 
+Example::
+*Publish a success message from a component.*
++
+[source,tsx]
+----
+import {
+  PortalMessageProvider,
+  usePortalMessage,
+} from "@onecx/react-integration-interface";
+
+const Notify = () => {
+  const { success } = usePortalMessage();
+  // success({ summaryKey: "saved", detailKey: "saved.detail" });
+  return null;
+};
+
+export const App = () => (
+  <PortalMessageProvider>
+    <Notify />
+  </PortalMessageProvider>
+);
+----
+
 API::
 *Portal Message Provider* methods:
 +
@@ -217,6 +342,29 @@ Usage::
 Topics used::
 * {remote_components_topic_url}[RemoteComponentsTopic]
 
+Example::
+*Read remote components from the context.*
++
+[source,tsx]
+----
+import {
+  RemoteComponentsProvider,
+  useRemoteComponents,
+} from "@onecx/react-integration-interface";
+
+const Remotes = () => {
+  const { remoteComponents$ } = useRemoteComponents();
+  // remoteComponents$.subscribe((list) => console.log(list));
+  return null;
+};
+
+export const App = () => (
+  <RemoteComponentsProvider>
+    <Remotes />
+  </RemoteComponentsProvider>
+);
+----
+
 API::
 *Remote Components Provider* properties:
 +
@@ -233,6 +381,16 @@ API::
 Usage::
 *Check shell capabilities before using optional topics.*
 +
+Example::
+*Set and check capabilities once during bootstrapping.*
++
+[source,ts]
+----
+import { setCapabilities, hasCapability } from "@onecx/react-integration-interface";
+
+setCapabilities(["PORTAL_SEARCH"]);
+const canSearch = hasCapability("PORTAL_SEARCH");
+----
 API::
 *Shell capability* methods:
 +
@@ -258,6 +416,29 @@ Usage::
 Note::
 The current implementation is commented out in the library source and not active. This section documents the intended API if it is re-enabled.
 
+Example::
+*Provide the image repository service (when enabled).*
++
+[source,tsx]
+----
+import {
+  ImageRepositoryProvider,
+  useImageRepository,
+} from "@onecx/react-integration-interface";
+
+const Images = () => {
+  const { imageRepositoryService } = useImageRepository();
+  // imageRepositoryService.getImage("logo");
+  return null;
+};
+
+export const App = () => (
+  <ImageRepositoryProvider>
+    <Images />
+  </ImageRepositoryProvider>
+);
+----
+
 API::
 *Image Repository Provider* properties:
 +
@@ -277,6 +458,32 @@ Usage::
 +
 This hook offers set of methods useful when developing Microfrontends referencing other Applications via routing.
 
+Example::
+*Wrap your app with the required providers and use the hook in a component.*
++
+[source,tsx]
+----
+import {
+  AppStateProvider,
+  useWorkspace,
+} from "@onecx/react-integration-interface";
+
+const WorkspaceLinks = () => {
+  const { getUrl } = useWorkspace();
+
+  // Example: subscribe to the Observable to get the URL
+  // getUrl("product", "app").subscribe((url) => console.log(url));
+
+  return null;
+};
+
+export const App = () => (
+  <AppStateProvider>
+    <WorkspaceLinks />
+  </AppStateProvider>
+);
+----
+
 Topics used::
 None.
 
@@ -284,6 +491,12 @@ Dependencies::
 
 * HttpClient
 * xref:./react-integration-interface.adoc#app-state-provider[AppStateProvider]
+
+react-utils::
+* xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils]
+  includes `withApp`, which wraps your component with the base providers and styling helpers
+  (globals, PrimeReact isolation, app styles, base providers). Use it to bootstrap
+  an application with the expected OneCX context.
 
 API::
 *Workspace Hook* - *useWorkspace* can be used for constructing routes to Applications:
