@@ -50,3 +50,39 @@ apiClient.post('/submit', { name: 'John Doe' })
     console.error('Error submitting data:', error);
   });
 ```
+
+[#auth-proxy-service]
+== Auth Proxy Service
+The library exposes the OneCX auth proxy that lives under `window.onecxAuth.authServiceProxy`. It lets you query auth state, user info, and trigger token refresh when needed.
+
+Note that the auth proxy is only available after the shell has been initialized. To safely access the auth proxy, you should check if it is available before using it.
+
+[source,ts]
+----
+if (!window.onecxAuth?.authServiceProxy) {
+  // handle missing auth proxy (e.g., show fallback or defer logic)
+  return;
+}
+----
+
+[source,ts]
+----
+const { authServiceProxy } = window.onecxAuth;
+
+// Ensure token is still valid before a guarded action
+await authServiceProxy.v1.updateTokenIfNeeded();
+
+// Read user / permissions (depending on shell implementation)
+const user = await authServiceProxy.v1.getUser();
+const permissions = await authServiceProxy.v1.getPermissions();
+----
+
+Example usage with axiosFactory:
+
+[source,ts]
+----
+const apiClient = axiosFactory('/api');
+
+await window.onecxAuth.authServiceProxy.v1.updateTokenIfNeeded();
+const response = await apiClient.get('/profile');
+----

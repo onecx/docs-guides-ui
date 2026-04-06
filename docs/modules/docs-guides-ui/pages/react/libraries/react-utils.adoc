@@ -19,6 +19,15 @@ The package exports the following public API:
 * `TranslationBridge`, `withBaseProviders`, `withAppGlobals`, `composeProviders`, `styleAttributes` from `@onecx/react-utils/utils`
 * `primeBaseTheme.scss` from `@onecx/react-utils/primeBaseTheme.scss` (PrimeReact theme base styles)
 
+Public entrypoints:
+
+* `@onecx/react-utils`
+* `@onecx/react-utils/guards`
+* `@onecx/react-utils/styling`
+* `@onecx/react-utils/theme`
+* `@onecx/react-utils/utils`
+* `@onecx/react-utils/primeBaseTheme.scss`
+
 [#style-scoping]
 == Style Scoping
 The style scoping and PrimeReact isolation are wired automatically by `withApp` and `withRemote`. Use the HOCs to ensure the scoper is attached and scoped containers are provided for your microfrontend.
@@ -145,6 +154,47 @@ To apply PrimeReact theming consistently, you must import the base theme stylesh
 ----
 @import "@onecx/react-utils/primeBaseTheme.scss";
 ----
+
+[#guards]
+== Guards
+The guards utilities help you execute `canActivate`, `canDeactivate`, `canMatch`, and `canActivateChild` checks in React Router flows (React Router v6/v7). They are exported from the dedicated entry point:
+
+[source,ts]
+----
+import {
+  useGuardCheck,
+  useGuardDeactivation,
+  useGuardsGatherer,
+  useWrappedGuards,
+} from '@onecx/react-utils/guards';
+----
+
+Example usage (simplified):
+
+[source,tsx]
+----
+const Guards = () => {
+  const { guardCheck } = useGuardCheck();
+
+  const runGuards = async () => {
+    const result = await guardCheck('/orders', {
+      canActivate: [() => true],
+      canMatch: [() => true],
+    });
+
+    if (!result) {
+      // handle blocked navigation
+    }
+  };
+
+  return <button onClick={runGuards}>Check guards</button>;
+};
+----
+
+For coordinated navigation flows across multiple remotes, you can wire the lower-level helpers:
+
+* `GuardsNavigationStateController` to track guard state modes
+* `GuardsGatherer` to collect guard results before committing navigation
 
 [#with-app]
 == Application Wiring
