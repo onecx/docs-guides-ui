@@ -16,6 +16,7 @@ The package exports the following public API:
 * `applyThemeVariables` from `@onecx/react-utils/theme`
 * `PortalPage` from `@onecx/react-utils`
 * `registerPortalPageTranslations`, `getTranslationPathFromMeta` from `@onecx/react-utils` (translation helpers)
+* guards hooks (`useGuardCheck`, `useGuardDeactivation`, `useGuardsGatherer`, `useWrappedGuards`) from `@onecx/react-utils/guards`
 * `TranslationBridge`, `withBaseProviders`, `withAppGlobals`, `composeProviders`, `styleAttributes` from `@onecx/react-utils/utils`
 * `primeBaseTheme.scss` from `@onecx/react-utils/primeBaseTheme.scss` (PrimeReact theme base styles)
 
