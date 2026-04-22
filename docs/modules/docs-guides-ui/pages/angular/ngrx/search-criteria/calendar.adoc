@@ -58,7 +58,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 
 [IMPORTANT]
 ====
-Make sure to include the `appendTo="body"` property in the p-calendar component, otherwise the calendar will be rendered differently and will cause layout issues.
+Make sure to include the `appendTo="body"` property in the p-calendar component, otherwise the calendar could be rendered incorrectly and cause layout issues.
 ====
 
 [#selectors]
