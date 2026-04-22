@@ -56,3 +56,112 @@ userService.getPermissions().pipe((
     // Pipe the permission list
 ))
 ----
+
+[#show-content-based-on-user-permissions]
+== Content Visibility Based on Permissions
+
+The `*ocxIfPermission` and `*ocxIfNotPermission` directives control whether a template is rendered based on the current user's permissions. 
+
+They are intended for:
+
+* conditionally showing/hiding buttons, links, menu entries, and sections
+* providing an alternative UI via an `elseTemplate`
+* keeping the UI visible but disabled when a permission is missing (`onMissingPermission: 'disable'`)
+
+[#ifpermission]
+=== `*ocxIfPermission`
+
+Shows the host template only if the user has the required permission(s).
+
+Supported input shapes:
+
+* **Single permission** (string)
+* **Multiple permissions** (`string[]`) — all permissions are required (logical AND)
+
+.example.html
+[source,html]
+----
+<button pButton pRipple *ocxIfPermission="'USER#EDIT'">
+  {{ 'ACCESS_PAGE_KEY.EDIT' | translate }}
+</button>
+
+<button pButton pRipple *ocxIfPermission="['USER#VIEW', 'USER#EXPORT']">
+  {{ 'ACCESS_PAGE_KEY.EXPORT' | translate }}
+</button>
+----
+
+[#ifnotpermission]
+=== `*ocxIfNotPermission`
+
+Shows the host template only if the user does *not* have the required permission(s).
+This is useful for displaying fallback UI (e.g., a hint or upgrade message) to users without access.
+
+.example.html
+[source,html]
+----
+<div class="text-muted" *ocxIfNotPermission="'USER#VIEW'">
+  {{ 'ACCESS_PAGE_KEY.NO_ACCESS_HINT' | translate }}
+</div>
+----
+
+[#options]
+=== Microsyntax Options
+
+Both directives support the same microsyntax options:
+
+[cols="1,1,2", options="header"]
+|===
+| Option | Type | Meaning
+
+| `elseTemplate` | `TemplateRef` | Template to render when the permission condition is not met.
+
+| `onMissingPermission` | `'hide' \| 'disable'` | Default is `'hide'`. If set to `'disable'`, the original template is rendered and its root element gets a `disabled="disabled"` attribute.
+
+| `permissions` | `string[]` | Optional override list of permissions to use for the check (bypasses the injected checker/service).
+|===
+
+[#else]
+=== `elseTemplate`
+
+.example.html
+[source,html]
+----
+<button
+  pButton
+  pRipple
+  *ocxIfPermission="'USER#EDIT'; elseTemplate: noEditPermission"
+>
+  {{ 'ORDER.EDIT' | translate }}
+</button>
+
+<ng-template #noEditPermission>
+  <p class="text-muted">{{ 'ACCESS_PAGE_KEY.READ_ONLY' | translate }}</p>
+</ng-template>
+----
+
+For `*ocxIfNotPermission`, the semantics are inverted:
+
+* `elseTemplate` is rendered when the user *does have* the permission(s)
+
+[#disable]
+=== `onMissingPermission:'disable'`
+
+This is useful when you want the UI to remain visible for discoverability, but prevent interaction.
+
+.example.html
+[source,html]
+----
+<button
+  pButton
+  pRipple
+  *ocxIfPermission="'USER#DELETE'; onMissingPermission: 'disable'"
+>
+  {{ 'ORDER.DELETE' | translate }}
+</button>
+----
+
+[NOTE] 
+====
+The directive adds/removes a `disabled` attribute on the *root node* of the rendered template.
+Make sure your template's root element supports being disabled (e.g., `<button>`, `<input>`, some PrimeNG host elements).
+====
