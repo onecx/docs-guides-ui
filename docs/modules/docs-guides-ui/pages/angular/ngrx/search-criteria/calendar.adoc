@@ -56,6 +56,11 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     </span>
 ----
 
+[IMPORTANT]
+====
+Make sure to include the `appendTo="body"` property in the p-calendar component, otherwise the calendar could be rendered incorrectly and cause layout issues.
+====
+
 [#selectors]
 == Selectors
 Furthermore, the following needs to be done to correctly create date strings out of a p-calendar selector:
