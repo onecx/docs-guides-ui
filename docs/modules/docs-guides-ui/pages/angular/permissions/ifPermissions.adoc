@@ -1,66 +1,13 @@
 :idprefix:
 :idseparator: -
-:imagesdir: ../../../images
-
-= OneCX Permissions
+:imagesdir: ../../../../images
 
 :user_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
-:permission_management: xref:documentation:onecx-permission:index.adoc
-:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc
-
-[#overview]
-== Overview
-In {permission_management}[OneCX permission management] and validation is done by core applications of the platform. The Permission Management application is in charge of managing permissions. For Angular applications {user_service}[User Service] is available for permission checking.
-
-{onecx_compatible_application}[OneCX compatible application]:
-
-* can use the {user_service}[User Service] to check permissions.
-
-[#permissions-overview]
-== Permissions Overview
-In OneCX, there are 3 key concepts: permission, role and user. Each application can define many permissions that allow or deny an action on a specific resource (e.g. USER#DELETE) and then can validate if the permissions is met. Every user registered has set of roles assigned to them (e.g. admin) where each role is assigned with different permissions. With combination of those 3 concepts, application can be displayed differently based on the current user permissions.
-
-[#permission-setup]
-== Permission Setup
-To set up permissions for the application, OneCX core applications should be used to add or modify existing permissions and assignments for roles.
-
-[#permission-validation]
-== Permission Validation
-To perform permission validation in Angular applications, {user_service}[User Service] should be used. Depending on the requirements different methods and properties should be used
-
-[#check-for-permissions]
-=== Check For Permission
-To check if the currently logged in user has specific permission(s), use the `hasPermission` method of {user_service}[User Service].
-
-.example.ts
-[source,typescript]
-----
-const userService = inject(UserService)
-// Check for single permission
-userService.hasPermission('USER#DELETE')
-
-// Check for multiple permissions
-userService.hasPermission(['USER#EDIT', 'USER#EXPORT'])
-----
-
-[#get-all-application-permissions]
-=== Get All Application Permissions
-To get a list of all permissions for the current user in the context of the application, use the `getPermissions` method of {user_service}[User Service].
-
-.example.ts
-[source,typescript]
-----
-const userService = inject(UserService)
-// Get all application permissions
-userService.getPermissions().pipe((
-    // Pipe the permission list
-))
-----
 
 [#show-content-based-on-user-permissions]
-== Content Visibility Based on Permissions
+= Content Visibility Based on Permissions
 
-The `*ocxIfPermission` and `*ocxIfNotPermission` directives control whether a template is rendered based on the current user's permissions. 
+The `*ocxIfPermission` and `*ocxIfNotPermission` directives control whether a template is rendered based on the current user's permissions.
 
 They are intended for:
 
@@ -68,8 +15,13 @@ They are intended for:
 * providing an alternative UI via an `elseTemplate`
 * keeping the UI visible but disabled when a permission is missing (`onMissingPermission: 'disable'`)
 
+[NOTE]
+====
+ifPermission directive requires {user_service}[User Service] to work correctly.
+====
+
 [#ifpermission]
-=== `*ocxIfPermission`
+== `*ocxIfPermission`
 
 Shows the host template only if the user has the required permission(s).
 
@@ -91,7 +43,7 @@ Supported input shapes:
 ----
 
 [#ifnotpermission]
-=== `*ocxIfNotPermission`
+== `*ocxIfNotPermission`
 
 Shows the host template only if the user does *not* have the required permission(s).
 This is useful for displaying fallback UI (e.g., a hint or upgrade message) to users without access.
@@ -105,7 +57,7 @@ This is useful for displaying fallback UI (e.g., a hint or upgrade message) to u
 ----
 
 [#options]
-=== Microsyntax Options
+== Microsyntax Options
 
 Both directives support the same microsyntax options:
 
@@ -121,7 +73,7 @@ Both directives support the same microsyntax options:
 |===
 
 [#else]
-=== `elseTemplate`
+== `elseTemplate`
 
 .example.html
 [source,html]
@@ -144,7 +96,7 @@ For `*ocxIfNotPermission`, the semantics are inverted:
 * `elseTemplate` is rendered when the user *does have* the permission(s)
 
 [#disable]
-=== `onMissingPermission:'disable'`
+== `onMissingPermission:'disable'`
 
 This is useful when you want the UI to remain visible for discoverability, but prevent interaction.
 

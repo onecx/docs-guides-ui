@@ -11,7 +11,8 @@
 
 ** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
 ** xref:documentation:docs-guides-ui:angular/theming.adoc[Theming]
-** xref:documentation:docs-guides-ui:angular/permissions.adoc[Permissions]
+** xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc[Permissions]
+*** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
 ** xref:documentation:docs-guides-ui:angular/routing/index.adoc[Routing]
 
 ** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
