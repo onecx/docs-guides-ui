@@ -1,6 +1,6 @@
 :idprefix:
 :idseparator: -
-:imagesdir: ../../../images
+:imagesdir: ../../../../images
 
 = OneCX Permissions
 
