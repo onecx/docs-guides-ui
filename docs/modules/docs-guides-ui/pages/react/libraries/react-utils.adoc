@@ -1,0 +1,202 @@
+ifdef::env-site[]
+include::partial$attributes.adoc[]
+endif::[]
+
+= @onecx/react-utils
+
+[#overview]
+== Overview
+`@onecx/react-utils` provides runtime helpers used by React micro-frontends inside OneCX. It focuses on style scoping, dynamic theme variable injection, and portal-aware wiring needed for PrimeReact and remote component isolation.
+
+[#exports]
+== Public Exports
+The package exports the following public API:
+
+* `withApp`, `withRemote` from `@onecx/react-utils/styling` (HOCs for wiring providers and style isolation)
+* `applyThemeVariables` from `@onecx/react-utils/theme`
+* `PortalPage` from `@onecx/react-utils`
+* `registerPortalPageTranslations`, `getTranslationPathFromMeta` from `@onecx/react-utils` (translation helpers)
+* guards hooks (`useGuardCheck`, `useGuardDeactivation`, `useGuardsGatherer`, `useWrappedGuards`) from `@onecx/react-utils/guards`
+* `TranslationBridge`, `withBaseProviders`, `withAppGlobals`, `composeProviders`, `styleAttributes` from `@onecx/react-utils/utils`
+* `primeBaseTheme.scss` from `@onecx/react-utils/primeBaseTheme.scss` (PrimeReact theme base styles)
+
+Public entrypoints:
+
+* `@onecx/react-utils`
+* `@onecx/react-utils/guards`
+* `@onecx/react-utils/styling`
+* `@onecx/react-utils/theme`
+* `@onecx/react-utils/utils`
+* `@onecx/react-utils/primeBaseTheme.scss`
+
+[#style-scoping]
+== Style Scoping
+The style scoping and PrimeReact isolation are wired automatically by `withApp` and `withRemote`. Use the HOCs to ensure the scoper is attached and scoped containers are provided for your microfrontend.
+
+[#theme-variables]
+== Theme Variable Injection
+Theme variables can be injected at runtime by calling `applyThemeVariables`, which updates the `@layer tokens` block inside scoped style tags.
+
+[source,ts]
+----
+import { applyThemeVariables } from '@onecx/react-utils/theme';
+
+applyThemeVariables(theme, 'example|example-ui');
+----
+
+[#dynamic-scoping]
+== Dynamic Scoping (Portals)
+To ensure styles remain scoped for portal-rendered PrimeReact components, the package intercepts portal creation and appends intermediate style data for isolation (enabled automatically by the HOCs).
+
+[#portal-page]
+== PortalPage
+`PortalPage` is a layout helper that publishes page metadata to the shell (via `CurrentPageTopic`) and optionally guards content based on permissions. It also exposes a standard container (`.portal-page`) and prints translated unauthorized messages when access is denied.
+
+[source,tsx]
+----
+import { PortalPage } from '@onecx/react-utils';
+
+export const Detail = () => (
+  <PortalPage
+    pageName="Detail"
+    helpArticleId="detail-page"
+    permission="TEST#DETAIL"
+  >
+    <DetailContent />
+  </PortalPage>
+);
+----
+
+[#translation-bridge]
+== TranslationBridge
+`TranslationBridge` syncs the OneCX user language (from `UserService.lang$`) with `react-i18next` by calling `i18n.changeLanguage`. It is automatically mounted by `withApp` and `withRemote` through `withBaseProviders`.
+
+[source,tsx]
+----
+import { TranslationBridge } from '@onecx/react-utils/utils';
+----
+
+[#translation-resources]
+== Translation Resource Registration
+Use the helpers below to wire portal translations into your i18next backend configuration (for example inside an i18n setup file):
+
+[source,ts]
+----
+import i18n from 'i18next';
+import { registerPortalPageTranslations } from '@onecx/react-utils';
+
+registerPortalPageTranslations(i18n, import.meta.url);
+----
+
+If you need to resolve a different base path, use `getTranslationPathFromMeta` directly:
+
+[source,ts]
+----
+import { getTranslationPathFromMeta } from '@onecx/react-utils';
+
+const basePath = getTranslationPathFromMeta(import.meta.url, 'assets/i18n/');
+----
+
+[#style-attributes]
+== Style Attributes
+The `styleAttributes` exports provide the standard data-attributes used for style scoping. Use them when you need to render custom containers or dynamic content outside the default HOCs:
+
+[source,tsx]
+----
+import {
+  dataStyleIdAttribute,
+  dataStyleIsolationAttribute,
+  dataNoPortalLayoutStylesAttribute,
+} from '@onecx/react-utils/utils';
+
+export const ScopedContainer = ({ scopeId, children }) => (
+  <div
+    {...{
+      [dataStyleIdAttribute]: scopeId,
+      [dataStyleIsolationAttribute]: '',
+      [dataNoPortalLayoutStylesAttribute]: '',
+    }}
+  >
+    {children}
+  </div>
+);
+----
+
+[#with-app-remote]
+== withApp / withRemote
+`withApp` is used for main app shells, while `withRemote` is used for remote micro-frontends. Both:
+
+* wire base providers (app state, configuration, user)
+* attach translation syncing via `TranslationBridge`
+* set up PrimeReact style scoping and theme registry
+
+Use them as follows:
+
+[source,tsx]
+----
+import { withApp, withRemote } from '@onecx/react-utils';
+
+export default withApp(AppRouter, {
+  PRODUCT_NAME: 'example',
+  REMOTES_NAME: 'example-remotes'
+});
+
+export default withRemote(RemoteWidget, {
+  PRODUCT_NAME: 'example',
+  REMOTES_NAME: 'example-remotes'
+});
+----
+
+[#primereact-theme-import]
+== PrimeReact Theme Base Import
+To apply PrimeReact theming consistently, you must import the base theme stylesheet from this package in your app styles:
+
+[source,css]
+----
+@import "@onecx/react-utils/primeBaseTheme.scss";
+----
+
+[#guards]
+== Guards
+The guards utilities help you execute `canActivate`, `canDeactivate`, `canMatch`, and `canActivateChild` checks in React Router flows (React Router v6/v7). They are exported from the dedicated entry point:
+
+[source,ts]
+----
+import {
+  useGuardCheck,
+  useGuardDeactivation,
+  useGuardsGatherer,
+  useWrappedGuards,
+} from '@onecx/react-utils/guards';
+----
+
+Example usage (simplified):
+
+[source,tsx]
+----
+const Guards = () => {
+  const { guardCheck } = useGuardCheck();
+
+  const runGuards = async () => {
+    const result = await guardCheck('/orders', {
+      canActivate: [() => true],
+      canMatch: [() => true],
+    });
+
+    if (!result) {
+      // handle blocked navigation
+    }
+  };
+
+  return <button onClick={runGuards}>Check guards</button>;
+};
+----
+
+For coordinated navigation flows across multiple remotes, you can wire the lower-level helpers:
+
+* `GuardsNavigationStateController` to track guard state modes
+* `GuardsGatherer` to collect guard results before committing navigation
+
+[#with-app]
+== Application Wiring
+The `withApp` HOC composes common providers (app state, configuration, user, theme) and sets up the style scoping helpers for micro-frontends.
