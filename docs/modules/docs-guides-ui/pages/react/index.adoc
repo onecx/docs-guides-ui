@@ -4,6 +4,8 @@
 :sectnums:
 
 
+NOTE: The current React approach for OneCX integration is experimental.
+
 == Technology Stack
 
 This project is built using *React* and *Vite*, providing a modern, fast, and modular development environment. The combination of *React's component-based architecture* and *Vite's rapid build tooling* ensures both developer productivity and high application performance.
