@@ -24,29 +24,131 @@ When developing React applications within the OneCX platform, it's essential to 
 
 * **Code Quality**: Adhere to coding standards and use linters like ESLint to maintain code quality and consistency across the codebase.
 
+[#onecx-libraries]
+== OneCX libraries
+Use the libraries depending on how much control you need:
 
+* **Selective usage**: If you want only specific OneCX functionality, use contexts/hooks from `@onecx/react-integration-interface` and compose just what you need.
+* **All-in-one wiring**: If you want the full OneCX setup, use `@onecx/react-utils` and its HOCs (`withApp`, `withRemote`). They wire the standard providers and helpers for you.
 
-[#Nextjs]
-== Nextjs
-Next.js is a React framework for building full-stack web applications. You use React Components to build user interfaces, and Next.js for additional features and optimizations.
+`withApp`/`withRemote` include:
 
-=== When to use Next.js
-* You need server-side rendering (SSR) or static site generation (SSG) for better SEO and performance.
-* You want built-in routing based on the file system.
-* You need API routes to create backend endpoints within the same project.
-* You want automatic code splitting and optimized performance out of the box.
-* You want to leverage the React ecosystem while benefiting from Next.js features.
+* `AppStateProvider`
+* `ConfigurationProvider`
+* `UserProvider`
+* routing provider (`SyncedRouterProvider`)
+* translation sync (`TranslationBridge`)
 
-=== When not to use Next.js
-* Your application is a simple static site without dynamic content.
-* You require a highly customized build process that deviates significantly from Next.js conventions.
-* You need to use a different frontend framework (e.g. Angular, Vue).  
-* You want to avoid the additional complexity that comes with server-side rendering.
+[#getting-started]
+== Getting started with a React app
 
-=== Module Federation
-* Module Federation support only Page Router from Next.js
-* Module Federation https://github.com/module-federation/core/issues/3153[Deprecation Notice for nextjs-mf]
+1. Generate a Vite app (React + TS).
+2. Configure Module Federation and static asset copying in `vite.config.ts`.
+3. Add `bootstrap.ts` as the webcomponent entrypoint.
+4. Configure `App.tsx` with `withApp` and load styles in `styles.css`.
 
+Vite configuration (key elements):
+
+* `@module-federation/vite` with `exposes` pointing to `./src/bootstrap.ts`.
+* `base` set to the MFE path (e.g. `/mfe/<app-name>/`).
+* `viteStaticCopy` copying `src/assets/styles.css` and `src/assets/env.json`.
+* `react()` as the React plugin.
+
+[source,ts]
+----
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { federation } from "@module-federation/vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+import path from "path";
+
+export default defineConfig(({ mode }) => ({
+  base: mode === "production" ? "/mfe/<app-name>/" : "/",
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        { src: path.resolve(__dirname, "./src/assets/styles.css"), dest: "" },
+        { src: path.resolve(__dirname, "./src/assets/env.json"), dest: "assets" },
+      ],
+    }),
+    federation({
+      name: "<app-name>-ui",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./<RemoteModule>": "./src/bootstrap.ts",
+      },
+    }),
+    react(),
+  ],
+}));
+----
+
+`bootstrap.ts`:
+
+* should call `createViteAppWebComponent(App, "<entrypoint-name>")`.
+* is the entrypoint exported by Module Federation.
+
+[source,ts]
+----
+import { createViteAppWebComponent } from "@onecx/react-webcomponents";
+import App from "./App";
+
+createViteAppWebComponent(App, "<app-name>-ui-entrypoint");
+----
+
+`App.tsx`:
+
+* uses `withApp(AppRouter, { PRODUCT_NAME, REMOTES_NAME })`.
+* initializes the OneCX configuration and standard providers.
+
+[source,tsx]
+----
+import { withApp } from "@onecx/react-utils";
+import AppRouter from "./router";
+
+export default withApp(AppRouter, {
+  PRODUCT_NAME: "<app-name>",
+  REMOTES_NAME: "<app-name>-ui",
+});
+----
+
+Routing with `useAppHref`:
+
+Use `useAppHref` to resolve the base URL for your MFE so routes stay aligned with the host shell. It avoids hardcoding the base path and keeps navigation working when the shell mounts the app under a different prefix. The best practice is to guard rendering until `href` is available and then prefix all routes with it.
+
+[source,tsx]
+----
+import { Route, Routes } from "react-router";
+import { useAppHref } from "@onecx/react-webcomponents";
+
+const AppRoutes = () => {
+  const { href } = useAppHref();
+
+  if (!href) {
+    return null;
+  }
+
+  return (
+    <Routes>
+      <Route path={`${href}/`} element={<Overview />} />
+      <Route path={`${href}/detail/:id`} element={<Detail />} />
+    </Routes>
+  );
+};
+----
+
+`styles.css` (in `src/assets/styles.css`):
+
+* imports PrimeReact and PrimeIcons.
+* imports `primeBaseTheme.scss` from `@onecx/react-utils` to keep PrimeReact styles aligned with OneCX theming.
+* ensure the app uses `ThemeProvider` (from `@onecx/react-integration-interface`) or the full provider set via `withApp`/`withRemote` so theme updates are synchronized.
+
+[source,css]
+----
+@import "primereact/resources/primereact.min.css";
+@import "primeicons/primeicons.css";
+@import "@onecx/react-utils/src/lib/primeBaseTheme.scss";
+----
 
 [#testing]
 == Testing
