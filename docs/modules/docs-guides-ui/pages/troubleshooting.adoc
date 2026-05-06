@@ -568,3 +568,29 @@ If the application is not showing up and errors like `t is not a function` are i
 
 * make sure that the builder used in the project is compatible with the Angular version used
 ** e.g. for Angular 18 and ngx-build-plus package use version `^18.0.0`
+
+[#tsconfig-path-mapping]
+== Tsconfig Path Alias Mapping Errors
+
+For more information on how to configure tsconfig paths, refer to xref:documentation:onecx-nx-plugins:generator/configure-tsconfig-paths.adoc[Configure tsconfig paths documentation].
+
+=== Error: Cannot find module (build error)
+**Problem**:
+If Webpack cannot resolve an import such as `@custom-path/...`, errors like `Cannot find module '@custom-path'` may occur.
+
+**Solution**:
+To fix this, you need to configure Webpack to understand TypeScript path aliases. See xref:documentation:onecx-nx-plugins:generator/configure-tsconfig-paths.adoc#tsconfig-paths-plugin[Webpack path aliases configuration].
+
+=== Error: Cannot find module or type errors (for imports that worked before paths configuration)
+**Problem**:
+Conflicts can show up as `Module not found: Error: Can't resolve ...` or as TypeScript resolving to the wrong file. 
+
+**Solution**:
+Use unique, descriptive aliases that do not overlap with existing package names.
+
+=== Cannot find module or its corresponding type declarations (editor error on import)
+**Problem**:
+Imports must match the alias pattern (wildcard vs specific). If they don't, TypeScript reports `Cannot find module ...` (for example `@custom-path` vs `@custom-path/custom.component`).
+
+**Solution**:
+Use the correct alias type. See xref:documentation:onecx-nx-plugins:generator/configure-tsconfig-paths.adoc#tsconfig-paths-types[Types of tsconfig paths].
