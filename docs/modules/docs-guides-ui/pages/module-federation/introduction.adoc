@@ -1,7 +1,0 @@
-[#module-federation-introduction]
-
-*Module Federation* is a Webpack feature that enables the dynamic loading of separately built and deployed *JavaScript applications*.
-
-In *OneCX*, it enables different applications *microfrontends* to be developed, built and deployed independently while still sharing code and dependencies at *runtime*.
-
-This guide introduces module federation in *OneCX*, explains how to use and configure it in your applications.
