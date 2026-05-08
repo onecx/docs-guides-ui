@@ -2,9 +2,6 @@
   "name": "docs-guides-ui",
   "version": "1.0.0",
   "description": "Documentation and guides for oneCx UI",
-  "dependencies": {
-    "mermaid": "^10.6.1"
-  },
   "devDependencies": {},
   "scripts": {
     "build": "antora antora-playbook.yml"
