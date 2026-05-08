@@ -10,7 +10,7 @@ Before *shell initialization*, shell is:
   * scheduling load of all preloaders by using *module federation* and waits on the completion
   * once all complete, starts *bootstrapping the app*
 
-[mermaid]
+[source,mermaid]
 ----
 graph LR
   gatherPreloader[Gather Preloaders] --> scheduleLoad[Schedule Load of Preloaders]

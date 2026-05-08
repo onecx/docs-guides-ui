@@ -3,7 +3,7 @@
 
 In OneCX, there are four types of microfrontends for bootstrapping different technologies:
 
-[mermaid]
+[source,mermaid]
 ....
 graph TD
     MF["Microfrontends in OneCX"]
