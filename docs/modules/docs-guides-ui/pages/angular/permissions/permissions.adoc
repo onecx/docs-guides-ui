@@ -2,34 +2,31 @@
 :idseparator: -
 :imagesdir: ../../../../images
 
-= OneCX Permissions
+= Permissions in Angular
 
-:user_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
-:permission_management: xref:documentation:onecx-permission:index.adoc
+:user_service:                 xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
+:permission_management:        xref:documentation:onecx-permission:index.adoc[OneCX permission management]
 :onecx_compatible_application: xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc
 
-[#overview]
-== Overview
-In {permission_management}[OneCX permission management] and validation is done by core applications of the platform. The Permission Management application is in charge of managing permissions. For Angular applications {user_service}[User Service] is available for permission checking.
+The {permission_management} is responsible for managing permissions in OneCX. Permissions are used to control access to certain features or actions within an application based on the user's roles and permissions. +
+In Angular applications, the {user_service}[User Service] from the Angular Integration Interface can be used to check for permissions and implement conditional rendering or access control based on the user's permissions.
 
-{onecx_compatible_application}[OneCX compatible application]:
+This guide provides an overview of how to work with permissions in Angular applications within the OneCX ecosystem, including how to check for permissions and retrieve the list of permissions for the current user. +
 
-* can use the {user_service}[User Service] to check permissions.
-
-[#permissions-overview]
-== Permissions Overview
+[#permissions-basics]
+== Permission Basics
 In OneCX, there are 3 key concepts: permission, role and user. Each application can define many permissions that allow or deny an action on a specific resource (e.g. USER#DELETE) and then can validate if the permissions is met. Every user registered has set of roles assigned to them (e.g. admin) where each role is assigned with different permissions. With combination of those 3 concepts, application can be displayed differently based on the current user permissions.
 
 [#permission-setup]
-== Permission Setup
+=== Permission Setup
 To set up permissions for the application, OneCX core applications should be used to add or modify existing permissions and assignments for roles.
 
 [#permission-validation]
-== Permission Validation
+=== Permission Validation
 To perform permission validation in Angular applications, {user_service}[User Service] should be used. Depending on the requirements different methods and properties should be used
 
 [#check-for-permissions]
-=== Check For Permission
+=== Check For Permission in Angular
 To check if the currently logged in user has specific permission(s), use the `hasPermission` method of {user_service}[User Service].
 
 .example.ts
