@@ -1,0 +1,115 @@
+:idprefix:
+:idseparator: -
+
+= Configure TypeScript Path Aliases (tsconfig paths)
+
+TypeScript path aliases ("tsconfig paths") are defined in the root `tsconfig.json` of a OneCX compatible UI App. Aliases shorten imports and improve readability.
+
+== Why configure tsconfig paths?
+
+Aliases replace long relative imports (for example, `../../../shared/components`) with stable names (for example, `@shared/components`). This improves readability and reduces refactoring when files move.
+
+== Types of tsconfig paths [[tsconfig-paths-types]]
+Two common patterns are used:
+
+=== Wildcard paths
+Wildcard paths map an alias prefix to a folder. Use this pattern for importing multiple modules from the mapped folder.
+
+[source,json]
+----
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@custom-path/*": ["src/app/custom-folder/*"]
+        }
+    }
+}
+----
+
+=== Specific paths
+Specific paths map one exact import to a single file (often a barrel file). Only the exact import `@custom-path` is mapped; `@custom-path/custom.component` does not match.
+
+[source,json]
+----
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@custom-path": ["src/app/custom-folder/index.ts"]
+        }
+    }
+}
+----
+
+== Potential issues in OneCX-compatible apps
+
+=== Webpack module resolution
+OneCX-compatible UI Apps use Webpack (module federation). TypeScript path aliases are defined in `tsconfig.json`, but Webpack does not read them unless configured.
+
+==== Error: Cannot find module
+If Webpack cannot resolve an import such as `@custom-path/...`, errors like `Cannot find module '@custom-path'` may occur. See <<tsconfig-paths-plugin,TsconfigPathsPlugin>>.
+
+=== Alias conflicts
+Alias names that overlap with existing imports used by a OneCX-compatible UI App (or its dependencies) can cause unexpected resolution and type errors.
+
+==== Error: Cannot find module (or type errors)
+Conflicts can show up as `Module not found: Error: Can't resolve ...` or as TypeScript resolving to the wrong file. Use unique, descriptive aliases that do not overlap with existing package names.
+
+=== Usage of incorrect alias type
+Using specific paths when wildcard paths are needed (or vice versa) can lead to resolution errors in imports.
+
+==== Cannot find module or its corresponding type declarations
+Imports must match the alias pattern (wildcard vs specific). If they don't, TypeScript reports `Cannot find module ...` (for example `@custom-path` vs `@custom-path/custom.component`). Use the correct alias type. See <<tsconfig-paths-types,Types of tsconfig paths>>.
+
+== Angular CLI / Nx App Configuration
+
+Angular CLI's Webpack-based build integrates TypeScript path mapping into module resolution. In most cases, path aliases work without duplicating them in a custom Webpack configuration.
+
+== React App Configuration (and other non-Angular apps)
+
+For React apps (and other non-Angular setups), the bundler may not apply `tsconfig.json` path aliases automatically. Webpack configuration is typically required.
+
+=== Recommended Approach: Use TsconfigPathsPlugin [[tsconfig-paths-plugin]]
+
+. Install the plugin:
++
+[source,bash]
+----
+npm install --save-dev tsconfig-paths-webpack-plugin
+----
+
+. In `webpack.config.js`, import the plugin:
++
+[source,js]
+----
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+----
+
+. Register the plugin in `resolve.plugins`:
++
+[source,js]
+----
+module.exports = {
+    // ... other webpack configuration options ...
+    resolve: {
+        // ... other resolve options ...
+        plugins: [
+            new TsconfigPathsPlugin({
+                configFile: './tsconfig.json'
+            })
+        ]
+    }
+};
+----
+
+Alternatively, aliases can be duplicated in Webpack via `resolve.alias` (see link:https://webpack.js.org/configuration/resolve/#resolvealias[Webpack documentation]). This is less maintainable because manual synchronization with `tsconfig.json` is required.
+
+== Best Practices
+
+Recommended practices:
+
+* Use unique, descriptive aliases to avoid conflicts with packages used in OneCX-compatible apps.
+* Use an `@` prefix to make custom aliases explicit.
+* Group related aliases and remove unused entries periodically.
+* Avoid aliases for shared libraries consumed across multiple microfrontends. Module federation and bundlers can resolve them differently.
