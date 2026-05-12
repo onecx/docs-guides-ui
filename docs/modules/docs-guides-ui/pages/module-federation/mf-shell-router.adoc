@@ -18,7 +18,7 @@ The workspace configuration contains route definitions for applications. The she
 
 == Overview
 === On route configuration
-[mermaid]
+[source,mermaid]
 ----
 graph LR
   bffConfig[BFF Route Configuration] --> routeConfiguration[Convert to Route Config]
@@ -29,7 +29,7 @@ graph LR
 ----
 
 === On route activation
-[mermaid]
+[source,mermaid]
 ----
 graph LR
   routeActivation[Route Activated] --> lazyLoading[Lazy loading triggered]
