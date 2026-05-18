@@ -1,0 +1,85 @@
+:idprefix:
+:idseparator: -
+
+= Configure OneCX Environment Variables (Runtime Configuration)
+
+In OneCX UI applications, "environment variables" are *runtime configuration values* loaded by the application at startup.
+They are typically provided via a public JSON file named `env.json` and *not* via OS-level process environment variables.
+
+These values are intentionally loaded at runtime so that you can adjust endpoints, feature flags, etc. *without rebuilding* the application bundle.
+
+Onecx environment variables allow to configure Auth settings, Keycloak integration and feature flags. All available keys can be found here: https://github.com/onecx/onecx-portal-ui-libs/blob/v8/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v8], https://github.com/onecx/onecx-portal-ui-libs/blob/v7/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v7], https://github.com/onecx/onecx-portal-ui-libs/blob/v6/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v6], https://github.com/onecx/onecx-portal-ui-libs/blob/v5/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v5]
+
+[IMPORTANT]
+====
+The `env.json` file is downloaded by the browser and is therefore *public*.
+Do not store secrets (passwords, private keys, client secrets, tokens) in `env.json`.
+====
+
+== What is `env.json`?
+
+`env.json` is a JSON object containing key/value pairs.
+
+* Requirements:
+** The payload must be a JSON *object*.
+** Keys are strings.
+** Values are expected to be *strings* (see `Config` in `@onecx/integration-interface`).
+** The file must be reachable via HTTP from the running application.
+
+* How to create:
+** Create `src/assets/env.json` in your application (Shell or MFE).
+** The file is served as `assets/env.json` after build.
+
+[TIP]
+====
+`src/assets/env.json` can be treated as a *deployment-time template*.
+It may contain placeholders like `$\{KEYCLOAK_URL}` that get replaced when the app is deployed (for example by a container entrypoint).
+====
+
+== How OneCX loads configuration
+
+OneCX UI libs provide two different loaders/scopes:
+
+- *MFE scope* (per microfrontend): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-config-service[AppConfigService]
+- *Shell scope* (shared across multiple microfrontends): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService]
+
+== Files you configure (Angular)
+
+Shell application:
+
+- `src/assets/env.json` (runtime config served to the browser)
+- `src/environments/environment.ts` (build-time defaults and loader flags)
+- `src/app/app.module.ts` (wires `APP_CONFIG` + initializes `ConfigurationService`)
+
+Microfrontend (MFE):
+
+- `src/assets/env.json` (runtime config for that MFE)
+- `src/environments/environment.ts` (build-time defaults)
+- `src/app/app.module.ts` (commonly provides `APP_CONFIG`; `AppConfigService` is initialized only where a `baseUrl` is known)
+
+== Microfrontend runtime config (AppConfigService)
+
+`AppConfigService` is intended for microfrontends. If sharing the configuration variable with multiple Microfrontends is desired, please use ConfigurationService and provide variables via Shell Application.
+
+See xref:./appConfigService.adoc[AppConfigService in remote components (baseUrl-driven config)] for setup and usage in remote components.
+
+== Shell runtime config (ConfigurationService)
+
+`ConfigurationService` is intended for the Shell application and publishes config via a `ConfigurationTopic` (so MFEs can read shared values).
+
+See xref:./configurationService.adoc[ConfigurationService] for setup and usage in the Shell.
+
+== Troubleshooting
+
+=== `GET .../assets/env.json` returns 404
+  - Ensure `src/assets/env.json` exists and is included in the build output.
+  - Ensure the file is deployed alongside your app (Shell) or alongside your MFE base URL (MFE).
+
+=== Config is not applied
+  - Verify `ConfigurationService.init()` (Shell) / `AppConfigService.init(baseUrl)` (MFE) is called during bootstrap.
+
+=== Remote load unexpectedly disabled
+  - Check for `skipRemoteConfigLoad` being set (or set as a string).
+
+=== CORS errors
+  - If `remoteConfigURL` points to another origin, configure CORS on the hosting server.

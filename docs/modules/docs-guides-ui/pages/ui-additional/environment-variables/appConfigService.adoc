@@ -1,0 +1,190 @@
+:idprefix:
+:idseparator: -
+
+= Configure AppConfigService and Environment Variables (Runtime Configuration)
+
+== Key facts
+
+- Loads configuration from `\{baseUrl}/assets/env.json`.
+- Stores values in `config$` (`BehaviorSubject`).
+- `getProperty()` is synchronous (reads current subject value).
+- The service is declared with `@Injectable()` (no `providedIn`), so *your MFE must provide it*.
+- Requires Angular `HttpClient` to be available (e.g. via `provideHttpClient()` in standalone apps).
+
+== Provide and initialize
+
+In the MFEs you provided, runtime config is typically handled in two layers:
+
+- `APP_CONFIG` is provided from `src/environments/environment.ts` in `src/app/app.module.ts`.
+- `AppConfigService.init(baseUrl)` is called only where a `baseUrl` is available (for example, in remote components via `RemoteComponentConfig.baseUrl`).
+
+This means: *`src/assets/env.json` is not automatically loaded for the whole MFE unless you explicitly call `AppConfigService.init(baseUrl)`.*
+
+1) Create the MFE runtime config file at `src/assets/env.json`.
+
+.Example `src/assets/env.json` (MFE)
+[source,json]
+----
+{
+  "API_URL": "${API_URL}",
+  "FEATURE_ENABLED": "${FEATURE_ENABLED}"
+}
+----
+
+[NOTE]
+====
+`AppConfigService` is for *MFE-specific* config.
+If a value should be shared across MFEs (Keycloak settings, portal-wide flags, etc.), prefer providing it via the Shell `ConfigurationService`.
+====
+
+=== Setup recipes
+
+[%collapsible]
+.MFE baseline (common NgModule setup) - Provide `APP_CONFIG` in `src/app/app.module.ts`
+====
+[source,ts]
+----
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
+
+import { APP_CONFIG, UserService } from '@onecx/angular-integration-interface';
+import { translateServiceInitializer } from '@onecx/portal-integration-angular';
+
+import { environment } from 'src/environments/environment';
+
+@NgModule({
+  providers: [
+    { provide: APP_CONFIG, useValue: environment },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: translateServiceInitializer,
+      multi: true,
+      deps: [UserService, TranslateService],
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
+})
+export class AppModule {}
+----
+
+[NOTE]
+=====
+Providing `APP_CONFIG` supplies build-time defaults/flags to libraries that inject it.
+It does *not* load `src/assets/env.json` by itself.
+=====
+====
+
+[%collapsible]
+.Optional (v8 recommended) - Load MFE `src/assets/env.json` at bootstrap via `provideAppInitializer` (requires known `baseUrl`)
+====
+[source,ts]
+----
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
+import { AppConfigService } from '@onecx/angular-integration-interface';
+
+export function provideMfeEnvConfig() {
+  return [
+    AppConfigService,
+    provideAppInitializer(async () => {
+      const appConfig = inject(AppConfigService);
+
+      // baseUrl must be the MFE deployment root.
+      // Example: '.' when the MFE is served from its own root.
+      await appConfig.init('.');
+    }),
+  ];
+}
+
+@NgModule({
+  providers: [...provideMfeEnvConfig()],
+})
+export class AppModule {}
+----
+
+[TIP]
+=====
+Choosing the correct `baseUrl`:
+
+- If the MFE is served from its own root (dev server, or deployed standalone), `baseUrl` is often `'.'` and config loads from `./assets/env.json`.
+- If the MFE is hosted under a sub-path, `baseUrl` must point to that deployment root so `\{baseUrl}/assets/env.json` exists.
+- For remote components, prefer `RemoteComponentConfig.baseUrl` (see below) instead of guessing.
+
+=====
+
+[TIP]
+=====
+Standalone MFEs can use the same pattern in `src/main.ts` by adding `provideAppInitializer(...)` to the `providers` passed to `bootstrapApplication()`.
+=====
+====
+
+[%collapsible]
+.Optional (v5 / v6 / v7) - Load MFE `src/assets/env.json` at bootstrap via `APP_INITIALIZER` (requires known `baseUrl`)
+====
+[source,ts]
+----
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { AppConfigService } from '@onecx/angular-integration-interface';
+
+export function initMfeEnv(appConfig: AppConfigService) {
+  return async () => {
+    await appConfig.init('.');
+  };
+}
+
+@NgModule({
+  providers: [
+    AppConfigService,
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: initMfeEnv,
+    },
+  ],
+})
+export class AppModule {}
+----
+====
+
+== AppConfigService in remote components (baseUrl-driven config)
+
+Remote components (loaded into slots) typically receive a `baseUrl` at runtime via `RemoteComponentConfig`.
+Use this `baseUrl` to load the remote component’s runtime config:
+
+- `GET \{baseUrl}/assets/env.json`
+
+.Example (remote component) initialize config from `RemoteComponentConfig.baseUrl`
+[source,ts]
+----
+import { Component, Input } from '@angular/core';
+import { AppConfigService } from '@onecx/angular-integration-interface';
+import { RemoteComponentConfig } from '@onecx/angular-remote-components';
+
+@Component({
+  selector: 'my-remote',
+  template: `...`,
+  providers: [AppConfigService],
+})
+export class MyRemoteComponent {
+  constructor(private readonly appConfig: AppConfigService) {}
+
+  @Input() set ocxRemoteComponentConfig(config: RemoteComponentConfig) {
+    // Loads {config.baseUrl}/assets/env.json
+    this.appConfig.init(config.baseUrl).then(() => {
+      const anchor = this.appConfig.getProperty('USER_AVATAR_MENU_ANCHOR_POSITION');
+      // ...apply config
+    });
+  }
+}
+----
+
+If your application already knows the base URL by other means, you can call `init()` with that value.
+
+== Using the variables
+
+`AppConfigService` offers these common access patterns:
+
+- `appConfigService.getProperty('SOME_KEY')`
+- `appConfigService.getConfig()`
+- `appConfigService.config$.subscribe(...)`
