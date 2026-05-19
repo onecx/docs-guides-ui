@@ -1,24 +1,24 @@
 :idprefix:
 :idseparator: -
 
-= Configure AppConfigService and Environment Variables (Runtime Configuration)
+= AppConfigService and environment variables (runtime configuration)
 
 == Key facts
 
 - Loads configuration from `\{baseUrl}/assets/env.json`.
 - Stores values in `config$` (`BehaviorSubject`).
 - `getProperty()` is synchronous (reads current subject value).
-- The service is declared with `@Injectable()` (no `providedIn`), so *your MFE must provide it*.
+- The service is declared with `@Injectable()` (no `providedIn`), so each MFE provides it.
 - Requires Angular `HttpClient` to be available (e.g. via `provideHttpClient()` in standalone apps).
 
 == Provide and initialize
 
-In the MFEs you provided, runtime config is typically handled in two layers:
+In typical MFEs, runtime config is handled in two layers:
 
 - `APP_CONFIG` is provided from `src/environments/environment.ts` in `src/app/app.module.ts`.
-- `AppConfigService.init(baseUrl)` is called only where a `baseUrl` is available (for example, in remote components via `RemoteComponentConfig.baseUrl`).
+- `AppConfigService.init(baseUrl)` runs only where a `baseUrl` is available (for example, in remote components via `RemoteComponentConfig.baseUrl`).
 
-This means: *`src/assets/env.json` is not automatically loaded for the whole MFE unless you explicitly call `AppConfigService.init(baseUrl)`.*
+Remote loading of `src/assets/env.json` occurs only after `AppConfigService.init(baseUrl)` runs.
 
 1) Create the MFE runtime config file at `src/assets/env.json`.
 
@@ -104,17 +104,17 @@ export class AppModule {}
 
 [TIP]
 =====
-Choosing the correct `baseUrl`:
+The correct `baseUrl` depends on deployment:
 
-- If the MFE is served from its own root (dev server, or deployed standalone), `baseUrl` is often `'.'` and config loads from `./assets/env.json`.
-- If the MFE is hosted under a sub-path, `baseUrl` must point to that deployment root so `\{baseUrl}/assets/env.json` exists.
-- For remote components, prefer `RemoteComponentConfig.baseUrl` (see below) instead of guessing.
+- When the MFE is served from its own root (dev server, or deployed standalone), `baseUrl` is often `'.'` and config loads from `./assets/env.json`.
+- When the MFE is hosted under a sub-path, `baseUrl` points to that deployment root so `\{baseUrl}/assets/env.json` exists.
+- Remote components typically use `RemoteComponentConfig.baseUrl` (see below).
 
 =====
 
 [TIP]
 =====
-Standalone MFEs can use the same pattern in `src/main.ts` by adding `provideAppInitializer(...)` to the `providers` passed to `bootstrapApplication()`.
+Standalone MFEs use the same pattern in `src/main.ts` by adding `provideAppInitializer(...)` to the `providers` passed to `bootstrapApplication()`.
 =====
 ====
 
@@ -150,7 +150,7 @@ export class AppModule {}
 == AppConfigService in remote components (baseUrl-driven config)
 
 Remote components (loaded into slots) typically receive a `baseUrl` at runtime via `RemoteComponentConfig`.
-Use this `baseUrl` to load the remote component’s runtime config:
+The runtime config request uses this `baseUrl`:
 
 - `GET \{baseUrl}/assets/env.json`
 
@@ -179,7 +179,7 @@ export class MyRemoteComponent {
 }
 ----
 
-If your application already knows the base URL by other means, you can call `init()` with that value.
+Applications that already know the base URL call `init()` with that value.
 
 == Using the variables
 

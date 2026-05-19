@@ -1,14 +1,14 @@
 :idprefix:
 :idseparator: -
 
-= Configure OneCX Environment Variables (Runtime Configuration)
+= OneCX environment variables (runtime configuration)
 
 In OneCX UI applications, "environment variables" are *runtime configuration values* loaded by the application at startup.
 They are typically provided via a public JSON file named `env.json` and *not* via OS-level process environment variables.
 
-These values are intentionally loaded at runtime so that you can adjust endpoints, feature flags, etc. *without rebuilding* the application bundle.
+These values are intentionally loaded at runtime so that endpoints, feature flags, and similar settings change *without rebuilding* the application bundle.
 
-Onecx environment variables allow to configure Auth settings, Keycloak integration and feature flags. All available keys can be found here: https://github.com/onecx/onecx-portal-ui-libs/blob/v8/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v8], https://github.com/onecx/onecx-portal-ui-libs/blob/v7/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v7], https://github.com/onecx/onecx-portal-ui-libs/blob/v6/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v6], https://github.com/onecx/onecx-portal-ui-libs/blob/v5/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v5]
+OneCX environment variables configure auth settings, Keycloak integration, and feature flags. The available keys are defined here: https://github.com/onecx/onecx-portal-ui-libs/blob/v8/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v8], https://github.com/onecx/onecx-portal-ui-libs/blob/v7/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v7], https://github.com/onecx/onecx-portal-ui-libs/blob/v6/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v6], https://github.com/onecx/onecx-portal-ui-libs/blob/v5/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v5]
 
 [IMPORTANT]
 ====
@@ -27,8 +27,8 @@ Do not store secrets (passwords, private keys, client secrets, tokens) in `env.j
 ** The file must be reachable via HTTP from the running application.
 
 * How to create:
-** Create `src/assets/env.json` in your application (Shell or MFE).
-** The file is served as `assets/env.json` after build.
+** Create `src/assets/env.json` in the application (Shell or MFE).
+** The build serves the file as `assets/env.json`.
 
 [TIP]
 ====
@@ -43,7 +43,7 @@ OneCX UI libs provide two different loaders/scopes:
 - *MFE scope* (per microfrontend): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-config-service[AppConfigService]
 - *Shell scope* (shared across multiple microfrontends): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService]
 
-== Files you configure (Angular)
+== Files configured (Angular)
 
 Shell application:
 
@@ -59,7 +59,7 @@ Microfrontend (MFE):
 
 == Microfrontend runtime config (AppConfigService)
 
-`AppConfigService` is intended for microfrontends. If sharing the configuration variable with multiple Microfrontends is desired, please use ConfigurationService and provide variables via Shell Application.
+`AppConfigService` is intended for microfrontends. Shared configuration values (for multiple microfrontends) are typically provided by `ConfigurationService` in the Shell.
 
 See xref:./appConfigService.adoc[AppConfigService in remote components (baseUrl-driven config)] for setup and usage in remote components.
 
@@ -72,14 +72,14 @@ See xref:./configurationService.adoc[ConfigurationService] for setup and usage i
 == Troubleshooting
 
 === `GET .../assets/env.json` returns 404
-  - Ensure `src/assets/env.json` exists and is included in the build output.
-  - Ensure the file is deployed alongside your app (Shell) or alongside your MFE base URL (MFE).
+  - Make sure `src/assets/env.json` exists and is included in the build output.
+  - Make sure the deployment places the file alongside the Shell (Shell) or alongside the MFE base URL (MFE).
 
 === Config is not applied
-  - Verify `ConfigurationService.init()` (Shell) / `AppConfigService.init(baseUrl)` (MFE) is called during bootstrap.
+  - Make sure `ConfigurationService.init()` (Shell) / `AppConfigService.init(baseUrl)` (MFE) runs during bootstrap.
 
 === Remote load unexpectedly disabled
-  - Check for `skipRemoteConfigLoad` being set (or set as a string).
+  - Make sure `skipRemoteConfigLoad` is set correctly (including string values).
 
 === CORS errors
-  - If `remoteConfigURL` points to another origin, configure CORS on the hosting server.
+  - When `remoteConfigURL` points to another origin, the hosting server must return CORS headers.
