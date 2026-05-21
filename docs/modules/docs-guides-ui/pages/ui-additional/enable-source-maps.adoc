@@ -1,0 +1,55 @@
+:imagesdir: ../images
+
+:idprefix:
+:idseparator: -
+
+[#what-are-source-maps]
+== What are source maps
+Source maps are additional files generated during the build process that map the compiled JavaScript code back to the original source files, such as TypeScript, SCSS, or templates.
+
+They help developers debug applications more effectively because browser developer tools can show the original source code instead of only the transformed build output.
+This makes it easier to understand stack traces, inspect application behavior, and identify the root cause of issues.
+
+[#recommendation-for-source-map-usage]
+== Recommendation for source map usage
+For consuming applications, source maps should usually be:
+
+* enabled in development
+* optionally enabled in test or staging environments
+* disabled in production, unless there is a specific need for them and the security implications have been carefully considered
+
+[#how-to-enable-source-maps]
+== How to enable source maps
+The exact configuration depends on how each application is built.
+
+For Angular applications, see the official Angular documentation:
+
+* https://angular.dev/reference/configs/workspace-config#source-map-configuration[Angular source map configuration]
+
+For Nx-based applications, see the official Nx documentation:
+
+* https://nx.dev/technologies/angular/api/executors/webpack-browser#options[sourceMap option for Nx webpack browser executor]
+
+[#enabling-source-maps-in-the-shell]
+== Enabling source maps in the shell
+It is recommended to also enable source maps in the shell during development, as this allows to debug both the shell and the integrated application together more effectively.
+
+Since packages are shared at runtime between the shell and applications, having source maps enabled in the shell can provide better insights into the shared dependencies and their interactions.
+
+That way its possible to avoid potential minification issues that can arise when the shell is built without source maps while the application is built with source maps.
+
+For more information on how to enable source maps in the shell, see xref:documentation:onecx-shell:enable-shell-source-maps.adoc[Enable shell source maps] guide.
+
+[#security-and-operations-note]
+== Security and operations note
+
+[CAUTION]
+====
+Source maps may expose implementation details.
+Do not enable public production access without explicit review.
+====
+
+[#related-pages]
+== Related pages
+
+* xref:documentation:onecx-shell:enable-shell-source-maps.adoc[Enable shell source maps]

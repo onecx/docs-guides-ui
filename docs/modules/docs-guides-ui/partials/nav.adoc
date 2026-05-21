@@ -2,6 +2,8 @@
 
 * xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
 ** xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases (tsconfig paths)]
+** xref:documentation:docs-guides-ui:ui-additional/share-scopes.adoc[Share Scopes]
+** xref:documentation:docs-guides-ui:ui-additional/enable-source-maps.adoc[Enable Source Maps]
 
 * xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 ** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
