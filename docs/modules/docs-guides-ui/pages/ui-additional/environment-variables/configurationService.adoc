@@ -1,45 +1,17 @@
 :idprefix:
 :idseparator: -
 
+[#configuration-service-runtime-configuration]
 = ConfigurationService and environment variables (runtime configuration)
 
-== Key facts
+[#configuration-service-configure-env-json]
+== Configure `env.json`
 
-- v8: Loads config using `resolveConfigPayload()` from `@onecx/integration-interface`.
-- v5–v7: Uses equivalent resolution logic directly (inlined `window.APP_CONFIG` → defaults when `skipRemoteConfigLoad` → otherwise `assets/env.json` / `remoteConfigURL`).
-- Resolution order:
-  . Inlined config from `globalThis.APP_CONFIG` (if present)
-  . Otherwise, if `skipRemoteConfigLoad` is truthy, use defaults only
-  . Otherwise, load remote config from `remoteConfigURL` or the default `assets/env.json`
-- After loading, it publishes `{...defaultConfig, ...loadedConfig}`.
-- Requires Angular `HttpClient` to be available (e.g. via `provideHttpClient()` in standalone apps).
+`ConfigurationService` loads runtime configuration from `assets/env.json`.
+If `remoteConfigURL` is set, that URL is used instead.
 
-== Alternative: inline config (no `assets/env.json` request)
-
-When hosting a separate `assets/env.json` is not possible or not desired, configuration can be inlined into the page before Angular starts.
-`ConfigurationService` checks for `APP_CONFIG` on the global scope first.
-
-.Example `src/index.html`
-[source,html]
-----
-<script>
-  window.APP_CONFIG = {
-    KEYCLOAK_URL: 'https://sso.example.com',
-    KEYCLOAK_REALM: 'onecx',
-    KEYCLOAK_CLIENT_ID: 'portal'
-  };
-</script>
-----
-
-== Provide defaults and remote loading options
-
-The Shell can optionally provide default values and loader flags via the `APP_CONFIG` injection token.
-
-.Shell best practice (as used in OneCX Shell)
-
-1) Place the runtime configuration template at `src/assets/env.json`.
-
-It is common to keep placeholders and replace them during deployment (for example by a container entrypoint):
+`src/assets/env.json` is created in the Shell application.
+The file must contain a JSON object with string key/value pairs.
 
 .Example `src/assets/env.json`
 [source,json]
@@ -67,132 +39,38 @@ It is common to keep placeholders and replace them during deployment (for exampl
 }
 ----
 
-[TIP]
-====
-Even though JSON supports booleans, most OneCX consumers treat values as strings.
-Most OneCX consumers treat values as strings, even though JSON supports booleans.
-This makes string values like `'true'` / `'false'` the safest default for feature flags.
-====
+Placeholders may be replaced during deployment.
 
-2) Provide build-time defaults and loader flags in `src/environments/environment.ts`.
+[#configuration-service-access-variables]
+== Access variables
 
-.Example `src/environments/environment.ts`
+Values are available after `ConfigurationService.init()` completes.
+
 [source,ts]
 ----
-export const environment = {
-  production: false,
-  KEYCLOAK_CLIENT_ID: 'client-id',
-  KEYCLOAK_URL: 'http://keycloak-app.localhost/',
-  KEYCLOAK_REALM: 'onecx',
+import { Component, inject } from '@angular/core';
+import { CONFIG_KEY, ConfigurationService } from '@onecx/angular-integration-interface';
 
-  // Local/dev pattern: disable remote env.json loading
-  skipRemoteConfigLoad: true,
-
-  // Optional app defaults
-  APP_VERSION: 'Local Shell Version',
-};
-----
-
-[TIP]
-====
-`remoteConfigURL` is optional. When omitted, `ConfigurationService` loads `assets/env.json` by default.
-====
-
-[TIP]
-====
-Common pattern:
-
-- `environment.ts` (local/dev) sets `skipRemoteConfigLoad: true` and provides local defaults.
-- `environment.prod.ts` omits `skipRemoteConfigLoad` so the deployed app loads `assets/env.json`.
-====
-
-3) Wire `APP_CONFIG` and initialize `ConfigurationService` in `src/app/app.module.ts`.
-
-=== Foldable setup recipes (v5 / v6 / v7 / v8)
-
-[%collapsible]
-.v8 (recommended) - Provide `APP_CONFIG` + init `ConfigurationService` via `provideAppInitializer` in `src/app/app.module.ts`
-====
-[source,ts]
-----
-import { NgModule, inject, provideAppInitializer } from '@angular/core';
-import { APP_CONFIG, ConfigurationService } from '@onecx/angular-integration-interface';
-import { environment } from 'src/environments/environment';
-
-export function configurationServiceInitializer(configurationService: ConfigurationService) {
-  return configurationService.init();
-}
-
-@NgModule({
-  providers: [
-    { provide: APP_CONFIG, useValue: environment },
-    provideAppInitializer(() => configurationServiceInitializer(inject(ConfigurationService))),
-  ],
+@Component({
+  selector: 'my-shell-component',
+  template: `...`,
 })
-export class AppModule {}
-----
-====
+export class MyShellComponent {
+  private readonly configurationService = inject(ConfigurationService);
 
-[%collapsible]
-.v7 - Same bootstrap recipe as v8
-====
-The v8 recipe above applies.
+  async ngOnInit() {
+    const keycloakUrl = await this.configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL);
+    const allValues = await this.configurationService.getConfig();
 
-Note: v7 `ConfigurationService` resolves inlined config from `window.APP_CONFIG` and otherwise loads `assets/env.json` (or `remoteConfigURL`) and publishes the merged result.
-====
-
-[%collapsible]
-.v5 / v6 - Provide `APP_CONFIG` + init `ConfigurationService` via `APP_INITIALIZER` in `src/app/app.module.ts`
-====
-[source,ts]
-----
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { APP_CONFIG, ConfigurationService } from '@onecx/angular-integration-interface';
-import { environment } from 'src/environments/environment';
-
-export function initShellEnv(configurationService: ConfigurationService) {
-  return () => configurationService.init();
+    this.configurationService.config$.subscribe((currentConfig) => {
+      console.log(keycloakUrl, allValues, currentConfig);
+    });
+  }
 }
-
-@NgModule({
-  providers: [
-    { provide: APP_CONFIG, useValue: environment },
-    {
-      provide: APP_INITIALIZER,
-      multi: true,
-      deps: [ConfigurationService],
-      useFactory: initShellEnv,
-    },
-  ],
-})
-export class AppModule {}
 ----
-====
 
-[IMPORTANT]
-====
-In `ConfigurationService`, `skipRemoteConfigLoad` is evaluated by truthiness (`!!value`).
-That means the string value `"false"` would still be treated as *true*.
-A real boolean `false` (or omitting the key) keeps remote loading enabled.
-====
+Common access patterns:
 
-== Initialize once during Shell bootstrap
-
-The Shell must call `ConfigurationService.init()` once at startup.
-Microfrontends should *not* call `init()` on the shared `ConfigurationService`.
-
-== Using the variables
-
-[TIP]
-====
-Version difference:
-
-- v8/v7/v6: `getProperty(...)` and `getConfig()` are async (`Promise`).
-- v5: `getProperty(...)` and `getConfig()` are synchronous.
-====
-
-- v8/v7/v6: Read a single value: `await configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL)`
-- v8/v7/v6: Read the full config: `await configurationService.getConfig()`
-- v5: Read a single value: `configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL)`
-- v5: Read the full config: `configurationService.getConfig()`
-- All versions: Update and broadcast: `await configurationService.setProperty('SOME_KEY', 'value')`
+- `await configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL)`
+- `await configurationService.getConfig()`
+- `configurationService.config$.subscribe(...)`

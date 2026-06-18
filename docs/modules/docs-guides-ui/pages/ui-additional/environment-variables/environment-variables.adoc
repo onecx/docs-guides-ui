@@ -1,21 +1,22 @@
 :idprefix:
 :idseparator: -
 
+[#environment-variables-runtime-configuration]
 = OneCX environment variables (runtime configuration)
 
-In OneCX UI applications, "environment variables" are *runtime configuration values* loaded by the application at startup.
-They are typically provided via a public JSON file named `env.json` and *not* via OS-level process environment variables.
+In OneCX UI applications, "environment variables" are *runtime configuration values*.
+They are loaded at startup.
+They have to be provided through a public `env.json` file, not through OS process environment variables.
 
-These values are intentionally loaded at runtime so that endpoints, feature flags, and similar settings change *without rebuilding* the application bundle.
-
-OneCX environment variables configure auth settings, Keycloak integration, and feature flags. The available keys are defined here: https://github.com/onecx/onecx-portal-ui-libs/blob/v8/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v8], https://github.com/onecx/onecx-portal-ui-libs/blob/v7/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v7], https://github.com/onecx/onecx-portal-ui-libs/blob/v6/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v6], https://github.com/onecx/onecx-portal-ui-libs/blob/v5/libs/angular-integration-interface/src/lib/model/config-key.model.ts[v5]
+They are intended for values that may change after build, such as endpoints, auth settings, or feature flags.
 
 [IMPORTANT]
 ====
 The `env.json` file is downloaded by the browser and is therefore *public*.
-Do not store secrets (passwords, private keys, client secrets, tokens) in `env.json`.
+Secrets (passwords, private keys, client secrets, tokens) must not be stored in `env.json`.
 ====
 
+[#environment-variables-what-is-env-json]
 == What is `env.json`?
 
 `env.json` is a JSON object containing key/value pairs.
@@ -27,7 +28,7 @@ Do not store secrets (passwords, private keys, client secrets, tokens) in `env.j
 ** The file must be reachable via HTTP from the running application.
 
 * How to create:
-** Create `src/assets/env.json` in the application (Shell or MFE).
+** `src/assets/env.json` is created in the application (MFE).
 ** The build serves the file as `assets/env.json`.
 
 [TIP]
@@ -36,13 +37,54 @@ Do not store secrets (passwords, private keys, client secrets, tokens) in `env.j
 It may contain placeholders like `$\{KEYCLOAK_URL}` that get replaced when the app is deployed (for example by a container entrypoint).
 ====
 
-== How OneCX loads configuration
+[#environment-variables-config-scopes]
+== Config scopes
 
-OneCX UI libs provide two different loaders/scopes:
+OneCX UI applications use two runtime config scopes:
 
 - *MFE scope* (per microfrontend): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-config-service[AppConfigService]
 - *Shell scope* (shared across multiple microfrontends): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService]
 
+Global values are shared across apps.
+Per-app values belong to one app only.
+
+[#environment-variables-how-to-influence-values]
+== How to influence values
+
+[#environment-variables-app-values]
+=== App values (`AppConfigService`)
+
+`AppConfigService` loads app-specific values from `\{baseUrl}/assets/env.json`.
+
+These values can be influenced by:
+
+- changing the app's `src/assets/env.json`
+- replacing placeholders in that file during deployment
+- changing the `baseUrl` used for `AppConfigService.init(baseUrl)`
+- providing different values per deployed app
+
+Further details are available in xref:./appConfigService.adoc[AppConfigService].
+
+[#environment-variables-shell-values]
+=== Shell values (`ConfigurationService`)
+
+`ConfigurationService` exposes values loaded by the Shell.
+These values are shared with other apps.
+
+These values can be influenced by:
+
+- setting `remoteConfigURL`
+- setting `skipRemoteConfigLoad`
+- changing the Shell `src/assets/env.json`
+- replacing placeholders in that file during deployment
+- setting `globalThis.APP_CONFIG` before the Shell starts
+- using Shell defaults in `src/environments/environment.ts`
+
+Further details are available in xref:./configurationService.adoc[ConfigurationService].
+
+
+
+[#environment-variables-files-configured]
 == Files configured (Angular)
 
 Shell application:
@@ -57,29 +99,22 @@ Microfrontend (MFE):
 - `src/environments/environment.ts` (build-time defaults)
 - `src/app/app.module.ts` (commonly provides `APP_CONFIG`; `AppConfigService` is initialized only where a `baseUrl` is known)
 
-== Microfrontend runtime config (AppConfigService)
-
-`AppConfigService` is intended for microfrontends. Shared configuration values (for multiple microfrontends) are typically provided by `ConfigurationService` in the Shell.
-
-See xref:./appConfigService.adoc[AppConfigService in remote components (baseUrl-driven config)] for setup and usage in remote components.
-
-== Shell runtime config (ConfigurationService)
-
-`ConfigurationService` is intended for the Shell application and publishes config via a `ConfigurationTopic` (so MFEs can read shared values).
-
-See xref:./configurationService.adoc[ConfigurationService] for setup and usage in the Shell.
-
+[#environment-variables-troubleshooting]
 == Troubleshooting
 
+[#environment-variables-troubleshooting-env-json-404]
 === `GET .../assets/env.json` returns 404
-  - Make sure `src/assets/env.json` exists and is included in the build output.
-  - Make sure the deployment places the file alongside the Shell (Shell) or alongside the MFE base URL (MFE).
+  - `src/assets/env.json` must exist and be included in the build output.
+  - The deployment must place the file alongside the Shell (Shell) or alongside the MFE base URL (MFE).
 
+[#environment-variables-troubleshooting-config-not-applied]
 === Config is not applied
-  - Make sure `ConfigurationService.init()` (Shell) / `AppConfigService.init(baseUrl)` (MFE) runs during bootstrap.
+  - `AppConfigService.init(baseUrl)` (MFE) must run during bootstrap.
 
+[#environment-variables-troubleshooting-remote-load-disabled]
 === Remote load unexpectedly disabled
-  - Make sure `skipRemoteConfigLoad` is set correctly (including string values).
+  - `skipRemoteConfigLoad` must be set correctly, including string values.
 
+[#environment-variables-troubleshooting-cors-errors]
 === CORS errors
   - When `remoteConfigURL` points to another origin, the hosting server must return CORS headers.
