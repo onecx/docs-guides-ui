@@ -8,6 +8,7 @@
 == Configure `env.json`
 
 `AppConfigService` loads runtime configuration from `\{baseUrl}/assets/env.json`.
+`env.json` must be served exactly from that path relative to the MFE `baseUrl`, or runtime configuration cannot be loaded.
 
 `src/assets/env.json` is created in the application.
 The file must contain a JSON object with string key/value pairs.
@@ -30,27 +31,44 @@ Values are available after `AppConfigService.init(baseUrl)` completes.
 
 [source,ts]
 ----
-import { Component, Input } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppConfigService } from '@onecx/angular-integration-interface';
-import { RemoteComponentConfig } from '@onecx/angular-remote-components';
+
+export function initializeAppConfig(appConfig: AppConfigService) {
+  return () => appConfig.init('/my-app');
+}
+
+@NgModule({
+  providers: [
+    AppConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAppConfig,
+      multi: true,
+      deps: [AppConfigService],
+    },
+  ],
+})
+export class AppModule {}
+----
+
+After initialization, components can read config values directly.
+
+[source,ts]
+----
+import { Component } from '@angular/core';
+import { AppConfigService } from '@onecx/angular-integration-interface';
 
 @Component({
   selector: 'my-remote',
   template: `...`,
-  providers: [AppConfigService],
 })
 export class MyRemoteComponent {
   constructor(private readonly appConfig: AppConfigService) {}
 
-  @Input() set ocxRemoteComponentConfig(config: RemoteComponentConfig) {
-    this.appConfig.init(config.baseUrl).then(() => {
-      const apiUrl = this.appConfig.getProperty('API_URL');
-      const allValues = this.appConfig.getConfig();
-
-      this.appConfig.config$.subscribe((currentConfig) => {
-        console.log(apiUrl, allValues, currentConfig);
-      });
-    });
+  ngOnInit() {
+    const apiUrl = this.appConfig.getProperty('API_URL');
+    const allValues = this.appConfig.getConfig();
   }
 }
 ----
@@ -59,4 +77,3 @@ Common access patterns:
 
 - `appConfigService.getProperty('SOME_KEY')`
 - `appConfigService.getConfig()`
-- `appConfigService.config$.subscribe(...)`

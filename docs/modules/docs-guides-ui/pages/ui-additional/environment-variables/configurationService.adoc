@@ -7,39 +7,23 @@
 [#configuration-service-configure-env-json]
 == Configure `env.json`
 
-`ConfigurationService` loads runtime configuration from `assets/env.json`.
-If `remoteConfigURL` is set, that URL is used instead.
+The Shell has its own `assets/env.json` file.
+`ConfigurationService` loads its runtime configuration from that file.
 
-`src/assets/env.json` is created in the Shell application.
-The file must contain a JSON object with string key/value pairs.
+Configure these values only by setting regular environment variables for the Shell deployment.
+The Shell UI container injects those values into `assets/env.json`.
 
-.Example `src/assets/env.json`
-[source,json]
+.Example Shell environment variables
+[source,dockerfile]
 ----
-{
-  "APP_BASE_HREF": "${APP_BASE_HREF}",
-  "KEYCLOAK_REALM": "${KEYCLOAK_REALM}",
-  "KEYCLOAK_URL": "${KEYCLOAK_URL}",
-  "KEYCLOAK_CLIENT_ID": "${KEYCLOAK_CLIENT_ID}",
-  "KEYCLOAK_TIME_SKEW": "${KEYCLOAK_TIME_SKEW}",
-  "KEYCLOAK_UPDATE_TOKEN_MIN_VALIDITY": "${KEYCLOAK_UPDATE_TOKEN_MIN_VALIDITY}",
-  "KEYCLOAK_ON_TOKEN_EXPIRED_ENABLED": "${KEYCLOAK_ON_TOKEN_EXPIRED_ENABLED}",
-  "KEYCLOAK_ON_AUTH_REFRESH_ERROR_ENABLED": "${KEYCLOAK_ON_AUTH_REFRESH_ERROR_ENABLED}",
-  "APP_VERSION": "${APP_VERSION}",
-
-  "IS_SHELL": true,
-
-  "AUTH_SERVICE": "${AUTH_SERVICE}",
-  "AUTH_SERVICE_CUSTOM_URL": "${AUTH_SERVICE_CUSTOM_URL}",
-  "AUTH_SERVICE_CUSTOM_MODULE_NAME": "${AUTH_SERVICE_CUSTOM_MODULE_NAME}",
-  "AUTH_SERVICE_CUSTOM_BFF_URL": "${AUTH_SERVICE_CUSTOM_BFF_URL}",
-
-  "ONECX_PORTAL_SEARCH_BUTTONS_REVERSED": "${ONECX_PORTAL_SEARCH_BUTTONS_REVERSED}",
-  "POLYFILL_SCOPE_MODE": "${POLYFILL_SCOPE_MODE}"
-}
+ENV BFF_URL http://onecx-shell-bff:8080/
+ENV APP_BASE_HREF /newShell/
+ENV AUTH_SERVICE keycloak
+ENV ONECX_PORTAL_SEARCH_BUTTONS_REVERSED 'false'
+ENV POLYFILL_SCOPE_MODE 'PERFORMANCE'
 ----
 
-Placeholders may be replaced during deployment.
+During deployment, these environment variable values are written to `assets/env.json`.
 
 [#configuration-service-access-variables]
 == Access variables
@@ -61,10 +45,6 @@ export class MyShellComponent {
   async ngOnInit() {
     const keycloakUrl = await this.configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL);
     const allValues = await this.configurationService.getConfig();
-
-    this.configurationService.config$.subscribe((currentConfig) => {
-      console.log(keycloakUrl, allValues, currentConfig);
-    });
   }
 }
 ----
@@ -73,4 +53,3 @@ Common access patterns:
 
 - `await configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL)`
 - `await configurationService.getConfig()`
-- `configurationService.config$.subscribe(...)`

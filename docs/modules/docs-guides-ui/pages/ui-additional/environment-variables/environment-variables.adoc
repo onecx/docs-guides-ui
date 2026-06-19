@@ -56,12 +56,7 @@ Per-app values belong to one app only.
 
 `AppConfigService` loads app-specific values from `\{baseUrl}/assets/env.json`.
 
-These values can be influenced by:
-
-- changing the app's `src/assets/env.json`
-- replacing placeholders in that file during deployment
-- changing the `baseUrl` used for `AppConfigService.init(baseUrl)`
-- providing different values per deployed app
+These values can be influenced by changing the app's `src/assets/env.json`.
 
 Further details are available in xref:./appConfigService.adoc[AppConfigService].
 
@@ -69,29 +64,17 @@ Further details are available in xref:./appConfigService.adoc[AppConfigService].
 === Shell values (`ConfigurationService`)
 
 `ConfigurationService` exposes values loaded by the Shell.
-These values are shared with other apps.
-
-These values can be influenced by:
-
-- setting `remoteConfigURL`
-- setting `skipRemoteConfigLoad`
-- changing the Shell `src/assets/env.json`
-- replacing placeholders in that file during deployment
-- setting `globalThis.APP_CONFIG` before the Shell starts
-- using Shell defaults in `src/environments/environment.ts`
+These values are shared with other apps and are configured through the Shell deployment.
+Use Shell environment variables exposed by the Shell UI container.
 
 Further details are available in xref:./configurationService.adoc[ConfigurationService].
-
-
 
 [#environment-variables-files-configured]
 == Files configured (Angular)
 
 Shell application:
 
-- `src/assets/env.json` (runtime config served to the browser)
-- `src/environments/environment.ts` (build-time defaults and loader flags)
-- `src/app/app.module.ts` (wires `APP_CONFIG` + initializes `ConfigurationService`)
+- Shell UI container configuration via Dockerfile or deployment manifests (define Shell environment variables)
 
 Microfrontend (MFE):
 
@@ -110,11 +93,3 @@ Microfrontend (MFE):
 [#environment-variables-troubleshooting-config-not-applied]
 === Config is not applied
   - `AppConfigService.init(baseUrl)` (MFE) must run during bootstrap.
-
-[#environment-variables-troubleshooting-remote-load-disabled]
-=== Remote load unexpectedly disabled
-  - `skipRemoteConfigLoad` must be set correctly, including string values.
-
-[#environment-variables-troubleshooting-cors-errors]
-=== CORS errors
-  - When `remoteConfigURL` points to another origin, the hosting server must return CORS headers.
