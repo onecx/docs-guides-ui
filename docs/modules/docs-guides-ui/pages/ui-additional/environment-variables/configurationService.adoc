@@ -1,0 +1,55 @@
+:idprefix:
+:idseparator: -
+
+[#configuration-service-runtime-configuration]
+= ConfigurationService and environment variables (runtime configuration)
+
+[#configuration-service-configure-env-json]
+== Configure `env.json`
+
+The Shell has its own `assets/env.json` file.
+`ConfigurationService` loads its runtime configuration from that file.
+
+Configure these values only by setting regular environment variables for the Shell deployment.
+The Shell UI container injects those values into `assets/env.json`.
+
+.Example Shell environment variables
+[source,dockerfile]
+----
+ENV BFF_URL http://onecx-shell-bff:8080/
+ENV APP_BASE_HREF /newShell/
+ENV AUTH_SERVICE keycloak
+ENV ONECX_PORTAL_SEARCH_BUTTONS_REVERSED 'false'
+ENV POLYFILL_SCOPE_MODE 'PERFORMANCE'
+----
+
+During deployment, these environment variable values are written to `assets/env.json`.
+
+[#configuration-service-access-variables]
+== Access variables
+
+Values are available after `ConfigurationService.init()` completes.
+
+[source,ts]
+----
+import { Component, inject } from '@angular/core';
+import { CONFIG_KEY, ConfigurationService } from '@onecx/angular-integration-interface';
+
+@Component({
+  selector: 'my-shell-component',
+  template: `...`,
+})
+export class MyShellComponent {
+  private readonly configurationService = inject(ConfigurationService);
+
+  async ngOnInit() {
+    const keycloakUrl = await this.configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL);
+    const allValues = await this.configurationService.getConfig();
+  }
+}
+----
+
+Common access patterns:
+
+- `await configurationService.getProperty(CONFIG_KEY.KEYCLOAK_URL)`
+- `await configurationService.getConfig()`

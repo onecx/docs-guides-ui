@@ -1,0 +1,95 @@
+:idprefix:
+:idseparator: -
+
+[#environment-variables-runtime-configuration]
+= OneCX environment variables (runtime configuration)
+
+In OneCX UI applications, "environment variables" are *runtime configuration values*.
+They are loaded at startup.
+They have to be provided through a public `env.json` file, not through OS process environment variables.
+
+They are intended for values that may change after build, such as endpoints, auth settings, or feature flags.
+
+[IMPORTANT]
+====
+The `env.json` file is downloaded by the browser and is therefore *public*.
+Secrets (passwords, private keys, client secrets, tokens) must not be stored in `env.json`.
+====
+
+[#environment-variables-what-is-env-json]
+== What is `env.json`?
+
+`env.json` is a JSON object containing key/value pairs.
+
+* Requirements:
+** The payload must be a JSON *object*.
+** Keys are strings.
+** Values are expected to be *strings* (see `Config` in `@onecx/integration-interface`).
+** The file must be reachable via HTTP from the running application.
+
+* How to create:
+** `src/assets/env.json` is created in the application (MFE).
+** The build serves the file as `assets/env.json`.
+
+[TIP]
+====
+`src/assets/env.json` can be treated as a *deployment-time template*.
+It may contain placeholders like `$\{KEYCLOAK_URL}` that get replaced when the app is deployed (for example by a container entrypoint).
+====
+
+[#environment-variables-config-scopes]
+== Config scopes
+
+OneCX UI applications use two runtime config scopes:
+
+- *MFE scope* (per microfrontend): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-config-service[AppConfigService]
+- *Shell scope* (shared across multiple microfrontends): xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService]
+
+Global values are shared across apps.
+Per-app values belong to one app only.
+
+[#environment-variables-how-to-influence-values]
+== How to influence values
+
+[#environment-variables-app-values]
+=== App values (`AppConfigService`)
+
+`AppConfigService` loads app-specific values from `\{baseUrl}/assets/env.json`.
+
+These values can be influenced by changing the app's `src/assets/env.json`.
+
+Further details are available in xref:./appConfigService.adoc[AppConfigService].
+
+[#environment-variables-shell-values]
+=== Shell values (`ConfigurationService`)
+
+`ConfigurationService` exposes values loaded by the Shell.
+These values are shared with other apps and are configured through the Shell deployment.
+Use Shell environment variables exposed by the Shell UI container.
+
+Further details are available in xref:./configurationService.adoc[ConfigurationService].
+
+[#environment-variables-files-configured]
+== Files configured (Angular)
+
+Shell application:
+
+- Shell UI container configuration via Dockerfile or deployment manifests (define Shell environment variables)
+
+Microfrontend (MFE):
+
+- `src/assets/env.json` (runtime config for that MFE)
+- `src/environments/environment.ts` (build-time defaults)
+- `src/app/app.module.ts` (commonly provides `APP_CONFIG`; `AppConfigService` is initialized only where a `baseUrl` is known)
+
+[#environment-variables-troubleshooting]
+== Troubleshooting
+
+[#environment-variables-troubleshooting-env-json-404]
+=== `GET .../assets/env.json` returns 404
+  - `src/assets/env.json` must exist and be included in the build output.
+  - The deployment must place the file alongside the Shell (Shell) or alongside the MFE base URL (MFE).
+
+[#environment-variables-troubleshooting-config-not-applied]
+=== Config is not applied
+  - `AppConfigService.init(baseUrl)` (MFE) must run during bootstrap.
