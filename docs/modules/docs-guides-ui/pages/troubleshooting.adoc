@@ -4,441 +4,36 @@
 
 :page-aliases: :onecx-docs-dev/troubleshooting.adoc
 
+[#troubleshooting-ui-issues]
 = Troubleshooting UI Issues
 
 This page provides assistance in resolving common UI problems in OneCX.
 
-
-Possible Issues::
-* Injection error
-* application is not loading
-* Blank page
-
-
+[#preparation]
 == Preparation
 
+[#ui-compatibility]
 === UI Compatibility
 Make sure that the App is compatible as documented in xref:documentation:onecx-portal-ui-libs:onecx-compatibility.adoc[OneCX UI Compatibility].
 
-[#disable-minified-build]
-=== Disable minified Build
-* To better debug your App, you need to disable the minified build.
-* In your project.json or angular.json file, set "optimization" to false in the build options which will disable minification of the build files for all configurations (production, development).:
+[#improve-debugging-experience]
+=== Improve debugging experience
+To understand the root cause of issues, it is recommended to enable source maps in the application and shell during development. For more information on how to enable source maps, see xref:documentation:docs-guides-ui:ui-additional/enable-source-maps.adoc[Enable source maps guide].
 
-.Example for all builds
-[%collapsible]
-====
-[source,json]
-----
-{
-...
-"targets": {
-    ...
-    "build": {
-        ...
-        "options": {
-            "optimization": false,
-            ...
-        }
-        ...
-    }
-    ...
-  }
-}
-...
-----
-====
-
-* If you want to disable minification only for a specific build, set "optimization" to false in the respective configuration:
-
-.Example for production build
-[%collapsible]
-====
-[source,json]
-----
-{
-...
-"targets": {
-    ...
-    "build": {
-        ...
-        "configurations": {
-            "production": {
-                "optimization": false,
-                ...
-            }
-            ...
-        }
-        ...
-    }
-    ...
-  }
-}
-...
-----
-====
-
-
-* If you get an error like this: `Error: bundle initial exceeded maximum budget. Budget 1.05 MB was not met by 267.90 kB with a total of 1.32 MB.`
-* Increase the budget in the budgets section of your project.json or angular.json file.
-
-.Example budgets section
-[%collapsible]
-====
-[source,json]
-----
-{
-...
-"targets": {
-    ...
-    "build": {
-        ...
-        "configurations": {
-            "production": {
-                "optimization": false,
-                "budgets": [
-                    {
-                      ...
-                      "maximumError": "1.5mb"
-                    },
-                    ...
-                ]
-                ...
-            }
-            ...
-        }
-        ...
-    }
-    ...
-  }
-}
-...
-----
-====
-
-
-* In this example you can see the difference between a minified and a non-minified code snippet in the DevTool's Sources tab.
-
-.Example code snippet in DevTool's Sources tab
-[%collapsible]
-====
-[cols="1a,1a",options="header"]
-|===
-| minified
-| non-minified
-
-|
-[source,javascript]
-----
-...
-  ), (0,
-    x.on)(k.searchButtonClicked, (t, {searchCriteria: s}) => ({
-        ...t,
-        criteria: s
-    })), (0,
-    x.on)(k.resetButtonClicked, t => ({
-        ...t,
-        criteria: {}
-    })), (0,
-    x.on)(k.tenantSearchResultsReceived, (t, {results: s}) => ({
-        ...t,
-        results: s
-    })), (0,
-...
-----
-
-|
-[source,javascript]
-----
-...
-search(formValue) {
-      const searchCriteria = Object.entries(formValue.getRawValue())
-        .reduce((acc, [key, value]) => ({
-        ...acc,
-        [key]: this.isVisible(key) ? 
-          (0,_shared_utils_isValidDate_utils__WEBPACK_IMPORTED_MODULE_5__
-            .isValidDate)(value) ? 
-            new Date(Date.UTC(value.getFullYear(), value.getMonth(), 
-              value.getDate(), value.getHours(), value.getMinutes(), 
-              value.getSeconds())) : 
-            value {vbar}{vbar} null : null
-      }), {});
-      this.store.dispatch(_tenant_search_actions__WEBPACK_IMPORTED_MODULE_6__
-        .TenantSearchActions.searchButtonClicked({
-        searchCriteria
-      }));
-    }
-    resetSearch() {
-      this.store.dispatch(_tenant_search_actions__WEBPACK_IMPORTED_MODULE_6__
-        .TenantSearchActions.resetButtonClicked());
-    }
-...
-----
-|===
-====
-
-
-* In this example you can see the difference between a minified and a non-minified NullInjectorError message in the console.
-
-.Example NullInjectorError non-minified in App
-[cols="1a,1a",options="header"]
-|===
-| minified
-| non-minified
-
-|
-----
-ERROR NullInjectorError: R3InjectorError[PortalDialogService -> i -> i -> i]: 
-  NullInjectorError: No provider for i!
-----
-|
-----
-ERROR NullInjectorError: R3InjectorError[i -> i -> i -> i]: 
-  NullInjectorError: No provider for i!
-----
-|===
-
-* In cases like above you are still seeing names like "i" in the non-minified error message, then you should additionally disable the minified build for the Shell locally, too.
-** Clone the Shell repository `https://github.com/onecx/onecx-shell-ui`
-** Run `npm install`
-** Set "optimization" to false in the project.json file of the Shell.
-** Depending on your App's Angular version, set the "optimization" option in the corresponding `pre_loaders/angular-<version>/project.json` file.
-** E.g.: for Angular 18 in the `pre_loaders/angular-18/project.json`
-** Then to start Shell locally, refer to xref:documentation:onecx-docs-start:first-app/image_build_automatic.adoc[Automatic Image Build] which builds from your local source code each time you run `docker compose` or xref:documentation:onecx-docs-start:first-app/image_build_manual.adoc#manual-image-build[Manual Image Build] for manual image building.
-
-.Example NullInjectorError non-minified in App + Shell
-[cols="1a,1a",options="header"]
-|===
-| App non-minified
-| App + Shell non-minified
-
-|
-[source,javascript]
-----
-ERROR NullInjectorError: R3InjectorError[PortalDialogService -> i -> i -> i]: 
-  NullInjectorError: No provider for i!
-----
-|
-[source,javascript]
-----
-ERROR NullInjectorError: R3InjectorError[PortalDialogService -> DialogService -> DialogService -> DialogService]: 
-  NullInjectorError: No provider for DialogService!
-----
-|===
-
+[#general-issues]
+== General issues
 
 [#webpack-configuration]
-== Webpack Configuration
-* Verify if all necessary packages are shared in your webpack.config.js:
-
-** angular packages
-** onecx packages
-** rxjs
-** primeng
-** ngx-translate
-** ngrx packages
-
-* Check in your package.json which of the mentioned packages are installed:
-
-.Example package.json
-[%collapsible]
-====
-[source,json]
-----
-...
-"dependencies": {
-    ...
-    "@angular/core": "^18.2.12",
-    "@angular/forms": "^18.2.12",
-    "@angular/platform-browser": "^18.2.12",
-    "@angular/router": "^18.2.12",
-    "@ngx-translate/core": "^15.0.0",
-    "@onecx/accelerator": "^5.48.3",
-    "@onecx/integration-interface": "^5.48.3",
-    "primeng": "^17.18.11",
-    "rxjs": "~7.8.1",
-    ...
-  },
-...
-----
-====
-
-* Check your webpack.config.json if those packages are shared and add them if they are missing:
-
-.Example webpack.config.js
-[%collapsible]
-====
-[cols="1a,1a",options="header"]
-|===
-| Correct (✓)
-| Incorrect (✗)
-
-|
-.webpack.config.js
-[source,javascript]
-----
-...
-  shared: share({
-    '@angular/common': {
-      requiredVersion: 'auto',
-      includeSecondaries: { skip: ['@angular/common/http/testing'] },
-    },
-    '@angular/common/http': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@angular/core': { requiredVersion: 'auto', includeSecondaries: true },
-    '@angular/forms': { requiredVersion: 'auto', includeSecondaries: true },
-    '@angular/platform-browser': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@angular/router': { requiredVersion: 'auto', includeSecondaries: true },
-    '@ngx-translate/core': { requiredVersion: 'auto' },
-    primeng: { requiredVersion: 'auto', includeSecondaries: true },
-    rxjs: { requiredVersion: 'auto', includeSecondaries: true },
-    '@onecx/accelerator': { requiredVersion: 'auto', includeSecondaries: true },
-    '@onecx/integration-interface': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    ...
-  }),
-...
-----
-
-|
-.webpack.config.js
-[source,javascript]
-----
-...
-shared: share({
-    '@angular/common': {
-      requiredVersion: 'auto',
-      includeSecondaries: { skip: ['@angular/common/http/testing'] },
-    },
-    '@angular/common/http': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@angular/forms': { requiredVersion: 'auto', includeSecondaries: true },
-    '@angular/platform-browser': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@angular/router': { requiredVersion: 'auto', includeSecondaries: true },
-    '@ngx-translate/core': { requiredVersion: 'auto' },
-    primeng: { requiredVersion: 'auto', includeSecondaries: true },
-    '@onecx/accelerator': { requiredVersion: 'auto', includeSecondaries: true },
-    // MISSING: '@angular/core'
-    // MISSING: 'rxjs'
-    // MISSING: '@onecx/integration-interface'
-    ...
-  }),
-...
-----
-|===
-====
-
-[#installed-packages]
-== Installed Packages
-* Verify if all shared packages have the caret '^' sign in your package.json (except for rxjs it is a tilde '~').
-
-* For that, first check your webpack.config.js which packages are being shared:
-
-.Example webpack.config.js
-[%collapsible]
-====
-[source,javascript]
-----
-...
-    shared: share({
-    '@angular/common': {
-      requiredVersion: 'auto',
-      includeSecondaries: { skip: ['@angular/common/http/testing'] },
-    },
-    '@angular/common/http': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@angular/core': { requiredVersion: 'auto', includeSecondaries: true },
-    '@angular/forms': { requiredVersion: 'auto', includeSecondaries: true },
-    '@angular/platform-browser': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@angular/router': { requiredVersion: 'auto', includeSecondaries: true },
-    '@ngx-translate/core': { requiredVersion: 'auto' },
-    primeng: { requiredVersion: 'auto', includeSecondaries: true },
-    '@onecx/accelerator': { requiredVersion: 'auto', includeSecondaries: true },
-    ...
-  }),
-...
-----
-====
-
-* Then check if the correct range (caret '^' or tilde '~' for rxjs) is present for the shared packages in your package.json:
-
-.Example package.json
-[%collapsible]
-====
-[cols="1a,1a",options="header"]
-|===
-| Correct (✓)
-| Incorrect (✗)
-
-|
-.package.json
-[source,json]
-----
-...
-"dependencies": {
-    ...
-    "@angular/common": "^18.2.12",
-    "@angular/core": "^18.2.12",
-    "@angular/forms": "^18.2.12",
-    "@angular/platform-browser": "^18.2.12",
-    "@angular/router": "^18.2.12",
-    "@ngx-translate/core": "^15.0.0",
-    "@onecx/accelerator": "^5.48.3",
-    "@onecx/integration-interface": "^5.48.3",
-    "primeng": "^17.18.11",
-    "rxjs": "~7.8.1",
-    ...
-  },
-...
-----
-
-|
-.package.json
-[source,json]
-----
-...
-"dependencies": {
-    ...
-    "@angular/common": "18.2.12",
-    "@angular/core": "18.2.12",
-    "@angular/forms": "18.2.12",
-    "@angular/platform-browser": "18.2.12",
-    "@angular/router": "18.2.12",
-    "@ngx-translate/core": "15.0.0",
-    "@onecx/accelerator": "5.48.3",
-    "@onecx/integration-interface": "5.48.3",
-    "primeng": "17.18.11",
-    "rxjs": "7.8.1",
-    ...
-  },
-...
-----
-|===
-====
+=== Package sharing
+Common issues arise when the shared packages list is not complete or when the versions of the shared packages are not compatible. To verify correct package sharing, check the xref:documentation:onecx-portal-ui-libs:onecx-compatibility.adoc#package-sharing[package sharing] documentation and verify all technology dependent requirements in the xref:documentation:onecx-portal-ui-libs:onecx-compatibility.adoc[OneCX UI Compatibility] guide.
 
 [#clean-install-build]
-== Clean Install and Build
+=== Clean Install and Build
+Sometimes, issues can be resolved by performing a clean install and build of the application. This involves removing caches, recreating dependencies, clearing the npm cache, and reinstalling all packages.
 Do a clean install and build of the App:
 
-* Remove .angular and .nx folder
-* Remove node_modules and package-lock.json
+* Remove caches (like .angular and .nx folder)
+* Recreate dependencies (node_modules and package-lock.json)
 * Run following command to clear the npm cache:
 ----
   npm cache clean --force
@@ -447,148 +42,76 @@ Do a clean install and build of the App:
 ----
   npm install
 ----
-* Build the App
+* Build and run the App
 
 [#application-setup]
 == Application Setup
-* Verify if the Remote Module name in the webpack.config.js is the same as the Remote Module setting in the Application Store.
+Make sure that the application is set up correctly to work in the environment. Regardless of the used local development strategy, the following should be checked:
 
-* Navigate to the Application Store → open the App → click on the 'Components' tab → open the 'Module' UI Component → check App ID:
+* exposedModule is set to the correct module name
+* tagName is set to the correct tag name
+* remoteEntry url is set to the correct url
 
-.Example webpack.config.js and Application Store setting (remote module name)
-[%collapsible]
-====
-[cols="1a,1a",options="header"]
-|===
-| webpack.config.js
-| Application Store
+Depending on the used local development strategy, those values should be set in different places (data imports for local environment, values.yaml of the application, manual configuration on the OneCX platform via Application Store and Workspace UIs).
 
-|
-[source,javascript]
-----
-...
-const config = withModuleFederationPlugin({
-  name: 'onecx-workspace-ui',
-  filename: 'remoteEntry.js',
-  exposes: {
-    './OneCXWorkspaceModule': 'src/main.ts',
-    ...
-    }
-  }),
-...
-----
-|
-image::application_store_remote_module_name.png[]
-|===
-====
-
-* Verify if the tag name for the component is the same as the tag name set in the Application Store:
-
-.Example values.yaml and Application Store setting (tag name)
-[%collapsible]
-====
-[cols="1a,1a",options="header"]
-|===
-| values.yaml
-| Application Store
-
-|
-.values.yaml
-[source,yaml]
-----
-...
-microfrontend:
-  enabled: true
-  specs:
-    main:
-      exposedModule: "./OneCXWorkspaceModule"
-      description: "OneCX Workspace UI"
-      note: "OneCX Workspace UI auto import via MF operator"
-      type: MODULE
-      technology: WEBCOMPONENTMODULE
-      remoteName: onecx-workspace
-      tagName: ocx-workspace-component
-      endpoints:
-        - name: workspace-detail
-          path: /{workspace-name}
-...
-----
-|
-image::application_store_remote_module_tag-name.png[]
-|===
-====
-
-
-[#shell-related]
-== Shell related Issues
-* Make sure you are using the latest version of the Shell.
-
-* Verify if the Angular version of the App is lower than the Shell's.
-
-* Go to the browser's DevTools and run in the console following command:
-
-.DevTools Console
-[source,javascript]
-----
-window['onecxWebpackContainer']
-----
-
-* You will get a list of all the shared packages.
-
-* Check e.g. the @angular/core entry to see the versions:
-
-image::devtools_webpack_shared_packages.png[]
-
-[#compilation-must-be-instance-of-compilation]
-== Type Errors
-
-TypeError: The 'compilation' argument must be an instance of Compilation::
-
-The error typically occurs when there's more than 1 version of webpack used by the packages. It is a common issue if the `@angular-devkit/build-angular` library is used.
-
-To resolve the issue check the webpack versions requested by the packages and adjust so only one version remains. In order to check webpack versions execute `npm ls webpack` command. This command is going to show the exact package version used per dependency.
-
+[#shell-compatibility]
+== Shell compatibility Issues
+Incorrect package sharing between the shell and the application can lead to issues. To verify available major version of packages in the shell, check the xref:documentation:onecx-shell-ui:onecx-shell-ui-docs.adoc#shell-version-information[Shell version information] documentation.
 
 [#specific-issues]
 == Specific Issues
 
+// Describe specific issues with elements positions where z-index is not working as expected
+[#rendering-priority]
+=== Rendering priority
+In some cases, elements may not be displayed correctly. This can have multiple reasons, however below are some common issues that can be checked to resolve the problem.
+
+[#z-index-issues]
+==== Z-index issues
+Since every microfrontend can use its own CSS and be built on different technology stacks, it is possible that the z-index of elements is not working as expected. To resolve issues where elements are not displayed according to expectations (e.g. a modal is not displayed on top of other elements), check the following:
+
+* z-index of the element that should be displayed on 
+* z-index of the element that is displayed on top of the other element
+
+If possible, the z-index of the element controlled by the application having the issue should be adjusted. In case this is not an option, please reach out to the OneCX support team for assistance. 
+
 [#webpack-compilation]
-The 'compilation' argument must be an instance of Compilation::
-Errors indicating issues with webpack compilation are related to multiple versions used in the project. In order to fix the issue:
+=== The 'compilation' argument must be an instance of Compilation
+Errors indicating issues with webpack compilation are related to multiple versions used in the project. To fix the issue:
 
 * run `npm ls webpack`
 * identify packages with different webpack version
 * ensure only 1 version of webpack is present
 
-To use only 1 version of webpack, you should adjust the versions of the packages that depend on webpack to use the same version. You can do this by updating the package.json file to specify compatible versions or by using npm overrides feature.
+To use only 1 version of webpack, please adjust the versions of the packages that depend on webpack to use the same version. Its possible by updating the package.json file to specify compatible versions or by using npm overrides feature.
 
 [#angular-compilation]
-Application is not showing up and "t is not a function" error is in console::
+=== Application is not showing up and "t is not a function" error is in console
 If the application is not showing up and errors like `t is not a function` are in the console, then most likely the builder and the Angular packages used in the project are not compatible. To resolve the issue:
 
 * make sure that the builder used in the project is compatible with the Angular version used
 ** e.g. for Angular 18 and ngx-build-plus package use version `^18.0.0`
 
 [#tsconfig-path-mapping]
-== Tsconfig Path Alias Mapping Errors
+=== Tsconfig Path Alias Mapping Errors
 
 For more information on how to configure tsconfig paths, refer to xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure tsconfig paths documentation].
 
-=== Error: Cannot find module (build error)
+==== Error: Cannot find module (build error)
 **Problem**:
 If Webpack cannot resolve an import such as `@custom-path/...`, errors like `Cannot find module '@custom-path'` may occur.
 
 **Solution**:
-To fix this, you need to configure Webpack to understand TypeScript path aliases. See xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc#tsconfig-paths-plugin[Webpack path aliases configuration].
+To fix this, please configure Webpack to understand TypeScript path aliases. See xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc#tsconfig-paths-plugin[Webpack path aliases configuration].
 
-=== Error: Cannot find module or type errors (for imports that worked before paths configuration)
+==== Error: Cannot find module or type errors (for imports that worked before paths configuration)
 **Problem**:
 Conflicts can show up as `Module not found: Error: Can't resolve ...` or as TypeScript resolving to the wrong file. 
 
 **Solution**:
 Use unique, descriptive aliases that do not overlap with existing package names.
 
-=== Cannot find module or its corresponding type declarations (editor error on import)
+==== Cannot find module or its corresponding type declarations (editor error on import)
 **Problem**:
 Imports must match the alias pattern (wildcard vs specific). If they don't, TypeScript reports `Cannot find module ...` (for example `@custom-path` vs `@custom-path/custom.component`).
 
