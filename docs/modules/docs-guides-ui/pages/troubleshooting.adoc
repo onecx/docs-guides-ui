@@ -77,7 +77,7 @@ If possible, the z-index of the element controlled by the application having the
 
 [#webpack-compilation]
 === The 'compilation' argument must be an instance of Compilation
-Errors indicating issues with webpack compilation are related to multiple versions used in the project. In order to fix the issue:
+Errors indicating issues with webpack compilation are related to multiple versions used in the project. To fix the issue:
 
 * run `npm ls webpack`
 * identify packages with different webpack version
