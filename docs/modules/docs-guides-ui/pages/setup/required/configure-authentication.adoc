@@ -15,3 +15,8 @@ Import `AngularAuthModule` from `@onecx/angular-auth` in the application's boots
 == React Applications
 
 React applications must use an HTTP client setup that attaches the shell authentication headers to outgoing requests. For the OneCX React helper library, see xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[@onecx/react-auth].
+
+[#advanced-topics]
+== Advanced Topics
+
+For the shell-owns-auth model, sending a logout event, using the auth proxy directly, configuring a custom authentication service, and token refresh, see xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication].

@@ -1,0 +1,93 @@
+:idprefix:
+:idseparator: -
+
+[#authentication]
+= Authentication
+
+In OneCX, the shell has full control of the authentication flow and the user's session. An integrated application never implements its own login, token storage, or session logic — it relies on the shell for all of that and limits itself to the small set of interactions described on this page.
+
+== The shell-owns-auth model
+
+The shell authenticates the user, holds the session, and keeps the access token valid for the lifetime of that session. It does this through a pluggable authentication service: by default this is Keycloak, but the shell can also be configured to use a custom authentication service (see xref:documentation:docs-guides-ui:concepts/authentication.adoc#custom-authentication-service[Custom Authentication Service]) or run with authentication disabled for local development.
+
+Because the shell owns this flow end-to-end, an application never talks to the identity provider directly and never manages tokens on its own. Instead, an application is permitted to:
+
+* attach the current authentication headers to its own outgoing HTTP requests,
+* ask the shell to end the session (log out), and
+* — only if strictly necessary — read auth state directly from the shell.
+
+Each of these is covered below, from the most common (attaching headers) to the last resort (reading state directly).
+
+== Attaching the token to outgoing requests
+
+Every application integrated with OneCX must ensure its outgoing HTTP requests carry the shell's authentication headers. This is the most common interaction with authentication and the one every application needs. For the exact setup steps for Angular (`AngularAuthModule`) and React (`axiosFactory`), see xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication].
+
+== Sending a logout event
+
+An application can ask the shell to end the current session by publishing a logout event on the shared events topic from `@onecx/integration-interface`, rather than implementing its own logout logic:
+
+[source,typescript]
+----
+import { EventsTopic, EventType } from '@onecx/integration-interface'
+
+const eventsTopic = new EventsTopic()
+eventsTopic.publish({ type: EventType.AUTH_LOGOUT_BUTTON_CLICKED })
+----
+
+The shell listens for this event and calls the configured authentication service's logout, which ends the session (for the default Keycloak service, this redirects the user to the identity provider's logout flow).
+
+== Using the auth proxy as a last resort
+
+The shell exposes a small auth proxy on the global namespace — `window.onecxAuth.authServiceProxy.v1` — so that code that cannot go through a framework interceptor or the provided HTTP helper can still read the current auth state. It exposes exactly two operations:
+
+* `getHeaderValues(): Record<string, string>` — the current authentication headers, keyed by header name.
+* `updateTokenIfNeeded(): Promise<boolean>` — ensures the token is still valid, refreshing it first if needed.
+
+Reach for the auth proxy only when the standard header-attaching mechanism (`AngularAuthModule` interceptor or `axiosFactory`) genuinely cannot be used, for example a third-party HTTP client that does not support interceptors. `@onecx/angular-auth` and `@onecx/react-auth` both wrap this same global proxy in an `AuthProxyService` / `authServiceProxy` so application code does not have to touch `window.onecxAuth` directly:
+
+[source,typescript]
+----
+// Angular — inject AuthProxyService from '@onecx/angular-auth'
+await this.authProxyService.updateTokenIfNeeded()
+const headers = this.authProxyService.getHeaderValues()
+----
+
+[source,typescript]
+----
+// React
+import { authServiceProxy } from '@onecx/react-auth'
+
+await authServiceProxy.updateTokenIfNeeded()
+const headers = authServiceProxy.getHeaderValues()
+----
+
+The proxy is only populated once the shell has initialized; guard direct `window.onecxAuth` access accordingly if not going through one of the library wrappers.
+
+== Advanced authentication topics
+
+The topics below go beyond what most applications need and cover how the shell's authentication itself is configured and refreshed.
+
+[#custom-authentication-service]
+=== Configuring a custom authentication service
+
+By default the shell authenticates through Keycloak. A deployment can instead configure the shell to load a custom authentication service via module federation, using the following shell environment variables:
+
+* `AUTH_SERVICE` — set to `custom` to enable a custom authentication service (`keycloak` is the default, `disabled` turns authentication off for local development).
+* `AUTH_SERVICE_CUSTOM_URL` — the module-federation remote URL the shell loads the custom authentication service factory from.
+
+The remote exposed at that URL must default-export an authentication service factory function that returns an implementation of the shell's authentication service contract (`init`, `getHeaderValues`, `logout`, `updateTokenIfNeeded`), and the shell calls that factory to obtain the service used for the rest of the session.
+
+=== Logout
+
+Logout is always driven through the configured authentication service, either because the user triggered it in the shell itself or because an application published the logout event described in xref:documentation:docs-guides-ui:concepts/authentication.adoc#sending-a-logout-event[Sending a logout event]. There is no application-level logout API beyond publishing that event — the shell's authentication service is responsible for actually clearing the session.
+
+=== Token refresh
+
+The shell keeps the access token valid transparently: both the Angular HTTP interceptor and the React `axiosFactory` call `updateTokenIfNeeded()` before every outgoing request, refreshing the token first if it is close to expiry. Application code does not need to schedule its own token refresh — it only needs to go through one of the mechanisms in xref:documentation:docs-guides-ui:concepts/authentication.adoc#attaching-the-token-to-outgoing-requests[Attaching the token to outgoing requests], or call `updateTokenIfNeeded()` itself if it uses the auth proxy directly.
+
+== Related
+
+* xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication] — the required setup how-to for attaching authentication headers.
+* xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[@onecx/react-auth] — full reference for the React auth proxy and `axiosFactory`.
+
+NOTE: A reciprocal cross-link to the *Permissions Handling* feature page will be added once that page exists — whichever ticket lands second.
