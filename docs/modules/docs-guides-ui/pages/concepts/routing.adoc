@@ -3,8 +3,6 @@
 
 :page-aliases: angular/routing/index.adoc
 
-:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc
-
 [#routing]
 = Routing
 
@@ -19,11 +17,6 @@ The OneCX shell owns the top-level routing, including the parts of the URL that 
 * **Build cross-application and absolute paths from the current workspace.** The parts of the URL the shell handles are not known to your application's router, so any absolute path must be constructed dynamically from the current workspace and application rather than hard-coded.
 
 The technology-specific subsections below show how each framework applies these rules.
-
-[#prerequisites]
-== Prerequisites
-
-Before implementing routing in your OneCX application, ensure your application is {onecx_compatible_application}[OneCX compatible].
 
 [#reasons-for-restrictions]
 == Reasons for restrictions
@@ -72,5 +65,3 @@ An application's router *will not be aware of the used parts of the URL that the
 == Related
 
 NOTE: Once the Recommended Setup *Adapt Routing* page is published, link it here as the practical step-by-step how-to (see internal-tasks#607).
-
-NOTE: A link to the internal `dev-docs` routing deep-dive will be added here once the dev-docs follow-up ticket authors it (see internal-tasks#607).
