@@ -1,0 +1,57 @@
+:idprefix:
+:idseparator: -
+
+[#platform-package-compatibility-requirements]
+= Platform & Package Compatibility Requirements
+
+Before an application can be loaded by the OneCX shell, it must satisfy a baseline of platform and package compatibility constraints.
+
+[#angular-version-compatibility]
+== Angular Version Compatibility
+
+The application's Angular version must be equal to or lower than the version used by the shell (or, for shell-loaded technology preloaders, the respective preloader).
+
+* Check the shell version and ensure the app uses an equal or lower Angular version. See xref:documentation:onecx-shell-ui:onecx-shell-ui-docs.adoc#shell-version-information[Shell Version Information] for how to check the shell's supported version.
+
+.Compatible package versions for Angular 18 (libs version 5.x)
+|===
+| Package               | Compatible Versions
+
+| @ngx-translate/core   | ^15.0.0
+| ngx-build-plus        | ^18.0.0
+| primeng               | ^17.18.0
+|===
+
+.Compatible package versions for Angular 19 (libs version 6.x)
+|===
+| Package               | Compatible Versions
+
+| @ngx-translate/core   | ^16.0.0
+| ngx-build-plus        | ^19.0.0
+| primeng               | ^19.0.0
+|===
+
+.Compatible package versions for Angular 20 (libs version 7.x)
+|===
+| Package               | Compatible Versions
+
+| @ngx-translate/core   | ^17.0.0
+| ngx-build-plus        | ^20.0.0
+| primeng               | ^20.3.0
+|===
+
+.Compatible package versions for Angular 21 (libs version 8.x)
+|===
+| Package               | Compatible Versions
+
+| @ngx-translate/core   | ^17.0.0
+| ngx-build-plus        | ^21.0.0
+| primeng               | ^21.0.0
+|===
+
+[#package-sharing-convention]
+== Package Sharing Convention
+
+Use the caret (`^`) range for all shared package versions in `package.json`, except `rxjs`, which should use tilde (`~`).
+
+See xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] for the list of packages that must be shared and the recommended utility for applying OneCX sharing settings.

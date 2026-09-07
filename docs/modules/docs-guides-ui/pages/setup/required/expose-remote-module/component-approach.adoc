@@ -1,0 +1,141 @@
+:idprefix:
+:idseparator: -
+
+[#angular-component-approach]
+= Component Approach
+
+This page covers exposing a single Angular component as a Remote Component webcomponent, bootstrapped via `@onecx/angular-webcomponents`.
+
+[#angular-component-bootstrap-files]
+== Bootstrap Files
+
+Webpack exposes the component's bootstrap file as the Module Federation entry point. The bootstrap file bootstraps asynchronously by dynamically importing the component's bootstrap module, which uses `bootstrapRemoteComponent()` from `@onecx/angular-webcomponents` to bootstrap the component while handling common Angular issues with Module Federation (Remote Component router connection, NgZone sharing, and platform sharing) and registers it as a Custom Element.
+
+.webpack.config.js
+[source,typescript]
+----
+const config = withModuleFederationPlugin({
+  name: 'example-ui',
+  filename: 'remoteEntry.js',
+  exposes: {
+    './ExampleComponent': './src/app/remotes/example/example.component.main.ts'
+  },
+})
+----
+
+.src/app/remotes/example/example.component.main.ts
+[source,typescript]
+----
+import('./example.component.bootstrap').catch((err) => console.error(err))
+----
+
+[%collapsible]
+.src/app/remotes/example/example.component.bootstrap.ts
+====
+[source,typescript]
+----
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { APP_INITIALIZER, importProvidersFrom } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularAuthModule } from '@onecx/angular-auth';
+import { bootstrapRemoteComponent } from '@onecx/angular-webcomponents';
+import { UserService } from '@onecx/angular-integration-interface';
+import { ExampleComponent } from './example.component';
+import { BASE_URL, provideTranslateServiceForRoot } from '@onecx/angular-remote-components';
+
+bootstrapRemoteComponent(
+  ExampleComponent,
+  'example-remote-component',
+  environment.production,
+  [
+    provideHttpClient(withInterceptorsFromDi()),
+    { provide: BASE_URL, useValue: new ReplaySubject<string>(1) },
+    provideTranslateServiceForRoot({ isolate: true }),
+    importProvidersFrom(AngularAuthModule, BrowserModule, BrowserAnimationsModule),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (userService: UserService) => () => userService.isInitialized,
+      deps: [UserService],
+      multi: true,
+    },
+  ]
+)
+----
+====
+
+[#angular-remote-component-definition]
+== Defining the Remote Component
+
+[%collapsible]
+.src/app/remotes/example/example.component.ts
+====
+[source,typescript]
+----
+import { Component, Inject, Input } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { UserService } from '@onecx/angular-integration-interface';
+import {
+  AngularRemoteComponentsModule,
+  BASE_URL,
+  ocxRemoteComponent,
+  ocxRemoteWebcomponent,
+  RemoteComponentConfig,
+} from '@onecx/angular-remote-components';
+import { ReplaySubject } from 'rxjs';
+
+@Component({
+  standalone: true,
+  imports: [
+    AngularRemoteComponentsModule,
+    TranslateModule,
+  ],
+  selector: 'example-comp',
+  template: `<h1>Hello from Remote Component</h1>`,
+})
+export class ExampleComponent implements ocxRemoteComponent, ocxRemoteWebcomponent {
+  permissions: string[] = [];
+
+  constructor(
+    @Inject(BASE_URL) private readonly baseUrl: ReplaySubject<string>,
+    private readonly userService: UserService,
+    private readonly translateService: TranslateService,
+    private readonly exampleService: ExampleAPIService
+  ) {
+    this.translateService.use(this.userService.lang$.getValue());
+  }
+
+  @Input() set ocxRemoteComponentConfig(config: RemoteComponentConfig) {
+    this.ocxInitRemoteComponent(config);
+  }
+
+  ocxInitRemoteComponent(config: RemoteComponentConfig): void {
+    this.baseUrl.next(config.baseUrl);
+    this.permissions = config.permissions;
+    this.exampleService.configuration = new Configuration({
+      basePath: Location.joinWithSlash(config.baseUrl, environment.apiPrefix)
+    })
+  }
+}
+----
+====
+
+The component imports:
+
+* `AngularRemoteComponentsModule` — provides the `ocxRemoteComponent`/`ocxRemoteWebcomponent` contract used by the Slot Component to configure the remote component.
+* `TranslateModule` — enables the `translate` pipe/directive and injecting `TranslateService` for translations.
+
+Key component features:
+
+Component Initialization::
+The component implements `ocxRemoteWebcomponent` (required) and `ocxRemoteComponent` (optional). When `ocxRemoteComponentConfig` is set by the Slot Component, it should update `BASE_URL`, update permissions, and update service base URLs.
+
+RemoteComponentConfig Structure::
+|===
+| Property | Type | Description
+
+| `appId` | `string` | Microfrontend unique identifier
+| `productName` | `string` | Application name
+| `permissions` | `string[]` | User permissions
+| `baseUrl` | `string` | URL for accessing content, e.g. `'/mfe/mfe_name'`
+|===
