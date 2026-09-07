@@ -1,9 +1,0 @@
-:idprefix:
-:idseparator: -
-
-[#configure-translations]
-= Configure Translations
-
-An application integrated with OneCX still loads and runs without multi-language translations, but it behaves incorrectly: text is missing or untranslated. Translations should be set up for i18n so the application's content is properly localized.
-
-See xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations] for the full setup and usage guide for Angular (`@ngx-translate`) and React applications.
