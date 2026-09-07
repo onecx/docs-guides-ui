@@ -52,13 +52,6 @@ The application's Angular version must be equal to or lower than the version use
 [#package-sharing-convention]
 == Package Sharing Convention
 
-* Use the caret (`^`) range for all shared package versions in `package.json`, except `rxjs`, which should use tilde (`~`).
-* The following packages must be shared in the Module Federation `webpack.config.js` configuration:
-** Angular
-** PrimeNG
-** NgRx
-** OneCX
-* If the app uses `@onecx/angular-accelerator` or `@onecx/portal-integration-interface`, also share the `@onecx/angular-utils` library — omitting it can cause unwanted side effects for the app and others in the shell.
-* Use `getOneCXSharedRecommendations` from `@onecx/accelerator` to automatically apply the correct sharing settings for OneCX packages instead of configuring them by hand.
+Use the caret (`^`) range for all shared package versions in `package.json`, except `rxjs`, which should use tilde (`~`).
 
-If package sharing is misconfigured, see xref:documentation:docs-guides-ui:troubleshooting.adoc#webpack-configuration[Package sharing] for verification steps and worked examples.
+See xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] for the list of packages that must be shared and the recommended utility for applying OneCX sharing settings.

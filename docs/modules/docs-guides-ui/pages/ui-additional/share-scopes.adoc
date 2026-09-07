@@ -1,0 +1,7 @@
+:idprefix:
+:idseparator: -
+
+[#module-federation-and-share-scopes]
+= Module Federation and Share Scopes
+
+Remote package sharing and share scopes are part of Required Setup. See xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing].

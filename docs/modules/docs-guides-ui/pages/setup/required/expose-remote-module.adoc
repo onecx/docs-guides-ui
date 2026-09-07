@@ -9,9 +9,9 @@ Every application integrated with OneCX must expose itself to the shell via Modu
 [#overview]
 == Overview
 
-Content loading is triggered by route changes (for modules) or Slot Component display (for remote components). The content is loaded via the remote entry file (`remoteEntry.js`) configured in the bundler's Module Federation plugin. Regardless of technology, an application *must* expose a `remoteEntry.js` — see xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements] for the full compatibility baseline.
+Content loading is triggered by route changes (for modules) or Slot Component display (for remote components). The content is loaded via Module Federation configuration exposed by the application. The recommended setup uses `@module-federation/enhanced` and exposes `mf-manifest.json`; `remoteEntry.js` is still supported when the shell configuration points directly to it. See xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements] for the full compatibility baseline.
 
-It is recommended to build on `@module-federation/enhanced` (directly, or via `@nx/angular/module-federation` for Nx applications) and to also expose the `mf-manifest.json` file it produces, which contains metadata about the exposed modules and their dependencies and enables better integration and compatibility with the shell. See xref:documentation:onecx-docs-dev:shell-integration/shell-v3-migration.adoc#mf-manifest[Exposing mf-manifest.json file] for details.
+`mf-manifest.json` contains metadata about the exposed modules and their dependencies and enables better integration and compatibility with the shell. See xref:documentation:onecx-docs-dev:shell-integration/shell-v3-migration.adoc#mf-manifest[Exposing mf-manifest.json file] for details.
 
 [#angular-applications]
 == Angular Applications
@@ -58,7 +58,7 @@ import { createViteAppWebComponent } from '@onecx/react-webcomponents';
 createViteAppWebComponent(App, 'my-custom-app');
 ----
 
-Expose the resulting entry point via Module Federation the same way as any other technology, with a `webpack.config.js` (or equivalent) that exposes `remoteEntry.js`:
+Expose the resulting entry point through the Module Federation configuration:
 
 [source,js]
 ----

@@ -1,8 +1,6 @@
 :idprefix:
 :idseparator: -
 
-:page-aliases: setup/required/configure-share-scopes.adoc
-
 [#configure-remote-package-sharing]
 = Configure Remote Package Sharing
 
@@ -51,7 +49,7 @@ shared: {
         shareScope: 'angular_21' // this dependency belongs to the 'angular_21' share scope
         // other properties
     },
-    '@onecx/accelerator': {
+    '@onecx/angular-webcomponents': {
         shareScope: 'angular_21' // this dependency belongs to the 'angular_21' share scope
     }
 }
@@ -62,23 +60,49 @@ Depending on the build tool and Module Federation plugin used by the application
 [#which-packages-to-share]
 == Which Packages to Share
 
-See xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc#package-sharing-convention[Package Sharing Convention] for the list of packages that must be shared (Angular, PrimeNG, NgRx, OneCX, and conditionally `@onecx/angular-utils`) and the versioning rules to follow when declaring them.
+The shared package list must include every framework and OneCX package that participates in runtime dependency sharing.
+
+[%header,cols="1,2"]
+|===
+| Package group | Packages
+
+| Angular
+| `@angular/*`
+
+| PrimeNG
+| `primeng`, `primeicons`
+
+| NgRx
+| `@ngrx/*`
+
+| OneCX
+| `@onecx/*`
+
+| Conditional Angular utility sharing
+| Share `@onecx/angular-utils` explicitly when the application uses `@onecx/angular-accelerator` or `@onecx/angular-integration-interface`.
+|===
+
+Use the caret (`^`) range for shared package versions in `package.json`, except `rxjs`, which should use tilde (`~`). See xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc#package-sharing-convention[Package Sharing Convention] for the versioning rule.
 
 [#automatic-package-sharing]
 == Automatic Package Sharing
 
-Use `getOneCXSharedRecommendations` from `@onecx/accelerator` instead of hand-writing the `shared` configuration for OneCX packages — it ensures the correct `shareScope` (and other sharing settings) is always set for each dependency.
+Use `getOneCXSharedLibraryConfig` from `@onecx/build-utils` instead of hand-writing the shared package map. It generates shared entries for OneCX-related libraries and assigns the correct `shareScope` based on the application's Angular or React version.
 
 [source,typescript]
 ----
-import { getOneCXSharedRecommendations } from '@onecx/accelerator'
+import { withModuleFederationPlugin } from '@module-federation/enhanced/webpack'
+import { getOneCXSharedLibraryConfig } from '@onecx/build-utils'
+import { dependencies } from './package.json'
 
-const config = {
+const shared = getOneCXSharedLibraryConfig(dependencies, true)
+
+const config = withModuleFederationPlugin({
   // name, filename, exposes, etc.
-  shared: (libraryName, sharedConfig) => {
-    return getOneCXSharedRecommendations(libraryName, sharedConfig)
-  }
-}
+  shared,
+})
+
+export default config
 ----
 
 [#onecx-share-scopes]
@@ -89,6 +113,6 @@ The OneCX shell operates with the following share scopes:
 * `angular_X` — where X represents the Angular version, e.g. `angular_21` for Angular 21 applications and their dependencies.
 * `default` — scope for all applications integrated with older shell versions and their dependencies.
 
-For Angular applications above Angular 21, the shell expects them to be loaded into the `angular_X` share scope corresponding to their Angular version. For applications integrated with older shell versions, the expected share scope is `default`. If no scope is specified for an application, it is loaded into the `default` share scope by default.
+For Angular 21 and newer applications, the shell expects them to be loaded into the `angular_X` share scope corresponding to their Angular version. For applications integrated with older shell versions, the expected share scope is `default`. If no scope is specified for an application, it is loaded into the `default` share scope by default.
 
 For details on the migration of Angular 21+ applications to the correct share scope, see the xref:documentation:onecx-docs-dev:shell-integration/shell-v3-migration.adoc[Migrate to Shell v3] page in the OneCX documentation.

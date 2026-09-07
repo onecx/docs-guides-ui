@@ -74,7 +74,6 @@ bootstrapRemoteComponent(
 ----
 import { Component, Inject, Input } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AngularAuthModule } from '@onecx/angular-auth';
 import { UserService } from '@onecx/angular-integration-interface';
 import {
   AngularRemoteComponentsModule,
@@ -88,7 +87,6 @@ import { ReplaySubject } from 'rxjs';
 @Component({
   standalone: true,
   imports: [
-    AngularAuthModule,
     AngularRemoteComponentsModule,
     TranslateModule,
   ],
@@ -124,7 +122,6 @@ export class ExampleComponent implements ocxRemoteComponent, ocxRemoteWebcompone
 
 The component imports:
 
-* `AngularAuthModule` — participates in the shell's authentication flow (see xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication]).
 * `AngularRemoteComponentsModule` — provides the `ocxRemoteComponent`/`ocxRemoteWebcomponent` contract used by the Slot Component to configure the remote component.
 * `TranslateModule` — enables the `translate` pipe/directive and injecting `TranslateService` for translations.
 

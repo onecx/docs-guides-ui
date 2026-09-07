@@ -4,7 +4,7 @@
 [#configure-authentication]
 = Configure Authentication
 
-Every application integrated with OneCX must ensure that all outgoing HTTP requests carry the shell's authenticated header. This is the only requirement to participate in the shell's authentication flow; how to configure a custom authentication service or query authentication state directly (logout, token refresh, user info) is covered in a separate Auth deep dive guide.
+Every application integrated with OneCX must ensure that all outgoing HTTP requests carry the shell's authentication headers.
 
 [#angular-applications]
 == Angular Applications
@@ -14,49 +14,4 @@ Import `AngularAuthModule` from `@onecx/angular-auth` in the application's boots
 [#react-applications]
 == React Applications
 
-React applications use `axiosFactory` from `@onecx/react-auth` to create an `axios` instance that automatically attaches the required authentication headers to outgoing requests.
-
-[#react-axios-factory]
-=== axiosFactory Function
-
-`axiosFactory` creates an `axios` instance that automatically injects authorization headers from `window.onecxAuth`, useful in applications that require authentication for every HTTP request.
-
-[source,javascript]
-----
-export const axiosFactory: (baseURL?: string) => AuthenticatedAxiosInstance = (
-  baseURL
-) => {
-  // Implementation
-};
-----
-
-* `baseURL`: an optional parameter specifying the base URL for HTTP requests.
-* An interceptor calls `window.onecxAuth.authServiceProxy.v1.updateTokenIfNeeded()` and injects headers from `getHeaderValues()`.
-* Requests matching the `WHITELIST` (currently `assets`) are not attached with tokens.
-
-.Example usage
-[source,javascript]
-----
-// Create an axios instance with a base URL
-const apiClient = axiosFactory('https://api.example.com');
-
-// Make a GET request
-apiClient.get('/data')
-  .then(response => {
-    console.log('Data received:', response.data);
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
-
-// Make a POST request with authorization headers
-apiClient.post('/submit', { name: 'John Doe' })
-  .then(response => {
-    console.log('Submission successful:', response.data);
-  })
-  .catch(error => {
-    console.error('Error submitting data:', error);
-  });
-----
-
-See xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[@onecx/react-auth] for the full library reference.
+React applications must use an HTTP client setup that attaches the shell authentication headers to outgoing requests. For the OneCX React helper library, see xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[@onecx/react-auth].
