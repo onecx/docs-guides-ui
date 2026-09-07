@@ -24,6 +24,6 @@ The responsibility of a OneCX-compatible application is to expose its translatio
 * xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Angular Translations — Setup] and xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Angular Translations — Usage]
 * xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils]
 
-NOTE: Once the Recommended Setup *Configure Translations* and *Expose Library Assets* pages are published, link them here as the practical step-by-step how-to for exposing application and library translations.
+NOTE: Once the Recommended Setup *Expose Library Assets* page is published, link it here as the practical step-by-step how-to for exposing library translations. Exposing application translations is already covered by the Angular Setup page and the React reference linked above.
 
 NOTE: A reciprocal cross-link to the *Multi-language* feature page will be added once that page exists — whichever ticket lands second.
