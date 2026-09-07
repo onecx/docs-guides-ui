@@ -9,14 +9,14 @@ In OneCX, every application's styles are confined to the DOM region that applica
 [#why-style-isolation]
 == Why style isolation matters
 
-A single OneCX page can render content from many applications at once: the shell chrome, the active microfrontend, and any number of remote components from other applications, all in the same document. If every application's stylesheet applied globally, a rule written by one team could silently repaint another team's UI, the shell's navigation, or vice versa — the kind of cross-application breakage that is hard to trace back to its source.
+A single OneCX page can render content from many applications at once: the shell's own interface (its header, navigation, and menus), the active microfrontend, and any number of remote components from other applications, all in the same document. If every application's stylesheet applied globally, a rule written by one team could silently repaint another team's UI, the shell's navigation, or vice versa — the kind of cross-application breakage that is hard to trace back to its source.
 
 To prevent this, OneCX confines each application's styles to only the DOM elements that belong to that application. An application's stylesheet renders that application correctly, and has no visible effect anywhere else on the page — including on other microfrontends, other remote components, and the shell itself.
 
 [#how-isolation-is-enforced]
 == How isolation is enforced
 
-Style isolation is not a convention applications are trusted to follow — the platform enforces it structurally. When the shell loads an application's `styles.css`, it wraps the stylesheet in a CSS scoping boundary tied to the DOM region that application's content occupies on the page. Any selector in that stylesheet is only ever evaluated against elements inside that region; it cannot match, and therefore cannot affect, anything outside it (the shell chrome, another microfrontend, another remote component). If an application's content is itself hosting a remote component from a *different* application, that boundary also stops at the nested content's edge, so a parent application's styles cannot leak down into a remote component it merely embeds.
+Style isolation is not a convention applications are trusted to follow — the platform enforces it structurally. When the shell loads an application's `styles.css`, it wraps the stylesheet in a CSS scoping boundary tied to the DOM region that application's content occupies on the page. Any selector in that stylesheet is only ever evaluated against elements inside that region; it cannot match, and therefore cannot affect, anything outside it (the shell's own interface, another microfrontend, another remote component). If an application's content is itself hosting a remote component from a *different* application, that boundary also stops at the nested content's edge, so a parent application's styles cannot leak down into a remote component it merely embeds.
 
 One consequence of this is that a `:root` selector in `styles.css` does not do what it would in a standalone page. Instead of targeting the document root, it is automatically rewritten to target the boundary of the application's own DOM region — so CSS custom properties an application defines under `:root` are available throughout its own content, but are not visible to, and do not override, any other application's or the shell's custom properties.
 
@@ -39,7 +39,7 @@ Rules in `styles.css` should only ever describe the appearance of elements that 
 Because `styles.css` rules are confined to your application's own DOM region, any rule written to reach *outside* that region has no effect — it is not a matter of style but simply does not do anything, which makes these patterns confusing to debug rather than merely discouraged:
 
 * **Targeting document-level elements**, such as `body` or `html`, or using the universal selector (`*`) to apply a page-wide reset. These elements sit outside every application's DOM region, so such rules never match.
-* **Targeting classes or IDs you do not own** — for example a selector that happens to match a class name used by another application's components, the shell's chrome, or a shared library, in the hope of overriding its appearance. Even if the name matches, the rule is confined to your own DOM region and will not reach that content.
+* **Targeting classes or IDs you do not own** — for example a selector that happens to match a class name used by another application's components, the shell's own interface, or a shared library, in the hope of overriding its appearance. Even if the name matches, the rule is confined to your own DOM region and will not reach that content.
 * **Relying on `styles.css` to theme other applications or the shell.** Cross-application appearance (colors, fonts, spacing that should be consistent platform-wide) is a xref:documentation:docs-guides-ui:angular/theming.adoc[theming] concern, expressed through shared theme variables, not through application styles reaching into content you do not own.
 [source,css]
 ----
