@@ -20,19 +20,29 @@ The same principle applies in both directions:
 * **Library-provided assets** (e.g. the translation files or icons a OneCX library ships) must be exposed by the application so the application can resolve them at runtime.
 * **Application-provided assets** (the app's own styles and other static files) must be exposed so the shell can load and apply them when the application is active.
 
-[#library-asset-exposure]
-== Library asset exposure (required for translations)
+[#library-assets]
+== Library assets
 
-OneCX libraries ship the assets their functionality depends on. The most important of these are **translation files**: a library that provides user-facing text ships i18n files for the languages it supports, and the application that uses the library is responsible for making those files available. Without them, library-provided strings fall back to untranslated keys or missing text.
-
-Because the application is what loads and runs in the shell, exposing the assets of the libraries it uses is the application's responsibility. The **translation files** of the OneCX libraries the application uses are required to be exposed: they are what carry the user-facing text, and without them the library's strings fall back to untranslated keys or missing text. Other library assets (icons, fonts, and other static files) should also be exposed so the application resolves them at runtime; the application still loads and runs without them, but it renders with missing or broken assets.
+OneCX libraries ship the assets their functionality depends on: translation files, icons, fonts, and other static files. Because the application is what loads and runs in the shell, exposing the assets of the libraries it uses is the application's responsibility. Other library assets (icons, fonts, and other static files) should be exposed so the application resolves them at runtime; the application still loads and runs without them, but it renders with missing or broken assets.
 
 The exact build configuration — how to declare the assets of a given library in an Angular or React application — is described on the Recommended Setup *Expose Library Assets* page for each technology. The conceptual requirement, regardless of technology, is: *make the assets of the libraries you use part of your build output, at a path you reference them from.*
 
-[#application-asset-exposure]
-== Application asset exposure (recommended)
+[#translation-assets]
+=== Translation assets (required)
 
-An application should also expose its own styles so the shell can apply them when the application is active. In OneCX, an application's own styles live in a `styles.css` file (the entry point for the application's global stylesheet), and that file is what the application exposes to the shell.
+The most important library assets are **translation files**: a library that provides user-facing text ships i18n files for the languages it supports, and the application that uses the library is responsible for making those files available. Without them, library-provided strings fall back to untranslated keys or missing text.
+
+The **translation files** of the OneCX libraries the application uses are required to be exposed: they are what carry the user-facing text, and without them the library's strings fall back to untranslated keys or missing text.
+
+[#application-assets]
+== Application assets
+
+An application should also expose its own assets so the shell can apply them when the application is active.
+
+[#application-styles]
+=== Application styles (recommended)
+
+In OneCX, an application's own styles live in a `styles.css` file (the entry point for the application's global stylesheet), and that file is what the application exposes to the shell.
 
 Exposing the application's `styles.css` is recommended rather than strictly required: the application still loads and runs without it, but the shell has no stylesheet to apply for that application, so the application may render without its intended global styling. How to expose `styles.css` — the per-technology mechanism — is described on the Recommended Setup *Expose Component Styles* page.
 
