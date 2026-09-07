@@ -1,0 +1,128 @@
+:idprefix:
+:idseparator: -
+
+[#angular-module-approach]
+= Module Approach
+
+This page covers exposing an Angular application as a full Angular `NgModule` webcomponent, bootstrapped via `@onecx/angular-webcomponents`.
+
+[#angular-module-bootstrap-files]
+== Bootstrap Files
+
+Webpack exposes `main.ts` as the Module Federation entry point. `main.ts` bootstraps asynchronously by dynamically importing `bootstrap.ts`, which uses `bootstrapModule()` from `@onecx/angular-webcomponents` to bootstrap the module while handling common Angular issues with Module Federation (NgZone sharing and platform sharing).
+
+.webpack.config.js
+[source,typescript]
+----
+const config = withModuleFederationPlugin({
+  name: 'example-ui',
+  filename: 'remoteEntry.js',
+  exposes: {
+    './ExampleModule': './src/main.ts'
+  },
+})
+----
+
+.src/main.ts
+[source,typescript]
+----
+import('./bootstrap').catch((err) => console.error(err))
+----
+
+.src/bootstrap.ts
+[source,typescript]
+----
+import { bootstrapModule } from '@onecx/angular-webcomponents'
+import { environment } from './environments/environment'
+import { ExampleModule } from './app/module'
+
+bootstrapModule(ExampleModule, 'microfrontend', environment.production)
+----
+
+[#angular-module-with-dobootstrap]
+== Create a Module with DoBootstrap and CreateAppEntrypoint
+
+`createAppEntrypoint` registers `AppEntrypointComponent` as `<example-webcomponent>` in the Custom Elements registry, and connects the module's router to the shell's router.
+
+.src/app/module.ts
+[source,typescript]
+----
+import { createAppEntrypoint } from '@onecx/angular-webcomponents'
+export class ExampleModule implements DoBootstrap {
+    constructor(private readonly injector: Injector) {}
+
+    ngDoBootstrap(): void {
+        createAppEntrypoint(AppEntrypointComponent, 'example-webcomponent', this.injector)
+    }
+}
+----
+
+[#angular-initialize-router-provider]
+== Adding the initializeRouter Provider
+
+`initializeRouter` must be registered as an `APP_INITIALIZER` so the bootstrapped module's router is connected with other routers.
+
+[source,typescript]
+----
+// In Module
+import { initializeRouter, startsWith } from '@onecx/angular-webcomponents'
+@NgModule({
+providers: [
+        // other providers
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeRouter,
+            multi: true,
+            deps: [Router, AppStateService]
+        }
+    ]
+})
+----
+
+[#angular-routes-matcher-startswith]
+== Routes Defined Using matcher and startsWith
+
+Use `startsWith` when constructing routes so the router only matches the URL parts relevant to the module.
+
+[source,typescript]
+----
+// Routes configuration
+export const routes: Routes = [
+  {
+    matcher: startsWith(''),
+    loadChildren: () => import('./feature/feature.module').then((mod) => mod.FeatureModule)
+  },
+  {
+    matcher: startsWith('tracking'),
+    loadChildren: () => import('./tracking/tracking.module').then((mod) => mod.TrackingModule)
+  }
+]
+----
+
+NOTE: When `startsWith` is used with `initializeRouter`, it removes already-used parts from the URL, allowing the app to route only within its own context instead of the shell's context.
+
+[#angular-portal-api-configuration]
+== Configuring API Requests with PortalApiConfiguration
+
+Services should use `PortalApiConfiguration` to construct correct URLs based on the current MFE topic, ensuring calls go to the right resources (e.g. `deployment_url/mfe/example/bff/search`).
+
+[source,typescript]
+----
+import { PortalApiConfiguration } from '@onecx/angular-utils'
+import { Configuration } from './shared/generated'
+import { environment } from './environments/environment'
+
+function apiConfigProvider() {
+  return new PortalApiConfiguration(Configuration, environment.apiPrefix)
+}
+
+@NgModule({
+  providers: [
+    {
+      provide: Configuration,
+      useFactory: apiConfigProvider
+    }
+    // other providers
+  ]
+})
+----
