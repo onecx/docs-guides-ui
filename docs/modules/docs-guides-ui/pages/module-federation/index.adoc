@@ -36,10 +36,8 @@ Following are important concepts where module federation is involved:
 |===
 | Name  | Description
 | xref:./mf-preloaders.adoc[Preloaders] | Preloaders register Module Federation share scopes
-| xref:./mf-shell-router.adoc[Shell router] | Shell router - dynamic content loading
 | xref:./mf-dependancy-sharing.adoc[Dependency Sharing] | Build-time and runtime negotiation of shared packages
 | xref:./mf-slot-components.adoc[Slot components] | Load remote modules or components in slots
-| xref:./mf-authentication-service.adoc[Custom Authentication Service] | Implementation of a custom authentication service
 |===
 
 == OneCX Recommendations
@@ -49,5 +47,6 @@ The following documents describe how to configure and use Module Federation in O
 |===
 | Name  | Description
 | xref:./module-federation-config.adoc[Module federation configuration] | Describes how to configure module federation in microfrontends
-| xref:./application-bootstrapping.adoc[Application bootstrapping] | Describes how to bootstrap microfrontends content to use module federation
 |===
+
+TIP: Bootstrapping your application to be loaded via Module Federation (including how the shell router loads it), configuring a custom authentication service, and configuring share scopes are now covered under Required Setup: see xref:documentation:docs-guides-ui:setup/required/expose-remote-module.adoc[Expose a Remote Module], xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication], and xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing].
