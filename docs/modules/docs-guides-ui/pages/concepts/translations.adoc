@@ -1,0 +1,29 @@
+:idprefix:
+:idseparator: -
+
+[#translations]
+= Translations
+
+In OneCX, applications provide multi-language support through translations. Each application keeps its own translation files — key-value pairs, one set per supported language (for example `en` and `de`) — and at runtime looks up the value for a given key in the language the user has selected. A OneCX-compatible application that does not expose these translations still loads and runs, but its user-facing text is not translated — the key itself is shown where the text should be — so translations should be set up for any app that must present localized content.
+
+== How translations work
+
+An application owns its own translation content and provides it to the framework's translation service. Once registered, the application resolves each key to the value in the active language, and that active language is the language of the user accessing the application.
+
+How a translation is written and looked up is the same idea regardless of technology: the source text is replaced by a key, and the framework resolves that key against the translation files for the current language. The only difference between technologies is which service does the lookup.
+
+* **Angular** applications use `@ngx-translate`. Translations are exposed by the app's own files, shared through the module-federation setup, and looked up in templates and components through the `translate` pipe or the `TranslateService`. See xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Multi-language Translations] for the full Angular setup and usage.
+* **React** applications use `@onecx/react-utils` to configure an `i18next` backend and keep the current language in sync with the OneCX user language. The app's own translation files are wired in through `getTranslationPathFromMeta`; `registerPortalPageTranslations` is a separate helper that registers the portal/react-utils resources, not the app's own files. See xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils] for the full library reference.
+
+== What an application must do
+
+The responsibility of a OneCX-compatible application is to expose its translation files and make them available to the framework's translation service for each supported language, and to write its content against translation keys rather than hard-coded strings. Declaring where its translation files live — the translation path — is required so the framework's translation service can find them; see the linked Angular and React pages for the exact API. When translation keys are used, the application automatically picks up the user's language and presents localized content; hard-coded strings, by contrast, do not localize and appear untranslated when the user's language differs.
+
+== Related
+
+* xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Angular Translations — Setup] and xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Angular Translations — Usage]
+* xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils]
+
+NOTE: Once the Recommended Setup *Expose Library Assets* page is published, link it here as the practical step-by-step how-to for exposing library translations. Exposing application translations is already covered by the Angular Setup page and the React reference linked above.
+
+NOTE: A reciprocal cross-link to the *Multi-language* feature page will be added once that page exists — whichever ticket lands second.
