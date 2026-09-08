@@ -24,9 +24,6 @@
 *** xref:documentation:docs-guides-ui:ui-additional/environment-variables/environment-variables.adoc[Configure OneCX Environment Variables (Runtime Configuration)]
 *** xref:documentation:docs-guides-ui:ui-additional/enable-source-maps.adoc[Enable Source Maps]
 
-* Concepts
-** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
-
 ** xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 *** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 *** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
@@ -73,4 +70,4 @@
 ** xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming]
 ** xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations]
 ** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
-
+** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
