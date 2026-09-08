@@ -4,7 +4,7 @@
 [#assets]
 = Assets
 
-In OneCX, *assets* are the non-code files a user interface needs at runtime: icons, images, fonts, and translation (i18n) files. This page is a technology-agnostic overview of how assets are treated in OneCX and why they need special treatment; it does not cover the build configuration, which is described per-technology on the Recommended Setup how-to pages.
+In OneCX, *assets* are the non-code files a user interface needs at runtime: icons, images, fonts, and translation (i18n) files. This page is a technology-agnostic overview of how assets are treated in OneCX and why they need special treatment; it does not cover the build configuration, which will be added per-technology on the Recommended Setup how-to pages once they are published.
 
 [#why-assets-need-special-treatment]
 == Why assets need special treatment in OneCX
@@ -25,7 +25,7 @@ The same principle applies in both directions:
 
 OneCX libraries ship the assets their functionality depends on: translation files, icons, fonts, and other static files. Because the application is what loads and runs in the shell, exposing the assets of the libraries it uses is the application's responsibility. Other library assets (icons, fonts, and other static files) should be exposed so the application resolves them at runtime; the application still loads and runs without them, but it renders with missing or broken assets.
 
-The exact build configuration — how to declare the assets of a given library in an Angular or React application — is described on the Recommended Setup *Expose Library Assets* page for each technology. The conceptual requirement, regardless of technology, is: *make the assets of the libraries you use part of your build output, at a path you reference them from.*
+The exact build configuration — how to declare the assets of a given library in an Angular or React application — will be described on the Recommended Setup *Expose Library Assets* page for each technology once that guidance is published. The conceptual requirement, regardless of technology, is: *make the assets of the libraries you use part of your build output, at a path you reference them from.*
 
 [#translation-assets]
 === Translation assets (required)
@@ -44,15 +44,15 @@ An application should also expose its own assets so the shell can apply them whe
 
 In OneCX, an application's own styles live in a `styles.css` file (the entry point for the application's global stylesheet), and that file is what the application exposes to the shell.
 
-Exposing the application's `styles.css` is recommended rather than strictly required: the application still loads and runs without it, but the shell has no stylesheet to apply for that application, so the application may render without its intended global styling. How to expose `styles.css` — the per-technology mechanism — is described on the Recommended Setup *Expose Component Styles* page.
+Exposing the application's `styles.css` is recommended rather than strictly required: the application still loads and runs without it, but the shell has no stylesheet to apply for that application, so the application may render without its intended global styling. How to expose `styles.css` — the per-technology mechanism — will be described on the Recommended Setup *Expose Component Styles* page once that guidance is published.
 
-Note the boundary with the *Style Isolation* concept: exposing `styles.css` is the *what* and *how* — the mechanics of publishing the file so the shell can load it. What *belongs* inside that stylesheet, and how it is scoped so it does not leak into or out of the application, is a separate concern owned by the *Style Isolation* concept page.
+Note the boundary with the *xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]* concept: exposing `styles.css` is the *what* and *how* — the mechanics of publishing the file so the shell can load it. What *belongs* inside that stylesheet, and how it is scoped so it does not leak into or out of the application, is a separate concern owned by the *Style Isolation* concept page.
 
 [#related]
 == Related
 
 NOTE: A link to the *Translations* concept page will be added here once that page is published — it covers the library-translation exposure requirement described above in depth.
 
-NOTE: A link to the *Style Isolation* concept page will be added here once that page is published — it owns the rules for what belongs in an application's `styles.css` and how it is scoped.
+* xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation] — rules for what belongs in an application's `styles.css` and how the platform scopes it.
 
 NOTE: Once the Recommended Setup *Expose Library Assets* and *Expose Component Styles* pages are published, link them here as the practical step-by-step how-to for the two exposure steps described above.
