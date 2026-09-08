@@ -4,12 +4,12 @@
 [#angular-expose-component-styles]
 = Expose Component Styles in Angular Applications
 
-This page covers exposing your Angular application's and its OneCX libraries' styles in the build output. See xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles] for why this matters.
+This page covers exposing an Angular application's and its OneCX libraries' styles in the build output. See xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles] for why this matters.
 
 [#angular-expose-app-styles]
 == Expose App styles.css
 
-Your application must expose its own `styles.css` in the build output. How this is done depends on the build tool used:
+The application must expose its own `styles.css` in the build output. How this is done depends on the build tool used:
 
 .NX (project.json)
 [source,json]
@@ -55,12 +55,12 @@ Because the generated stylesheet filename normally includes a content hash, adju
 }
 ----
 
-Verify that `styles.css`, including all of your app's styles, is present in the build output before deploying.
+Verify that `styles.css`, including all of the app's styles, is present in the build output before deploying.
 
 [#angular-expose-library-styles]
 == Expose Library Styles
 
-If your application uses OneCX libraries that ship their own stylesheets, expose those stylesheets in your build configuration as well — otherwise components sourced from those libraries render with incorrect styles.
+If the application uses OneCX libraries that ship their own stylesheets, expose those stylesheets in the build configuration as well — otherwise components sourced from those libraries render with incorrect styles.
 
 .Example styles configuration
 [source,json]
