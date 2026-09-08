@@ -1,0 +1,20 @@
+:idprefix:
+:idseparator: -
+
+[#react-expose-component-styles]
+= Expose Component Styles in React Applications
+
+This page covers exposing a React application's styles in the build output. See xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles] for why this matters.
+
+[#react-expose-app-styles]
+== Expose App styles.css
+
+The goal for React applications is the same as for any other technology: expose a stable `styles.css` file, containing the app's styles, in the build output so the shell can style the app correctly. There is no single OneCX-prescribed mechanism for React — how this is achieved depends on the build tool used (e.g. Vite, webpack).
+
+As general guidance:
+
+* Configure the build so all of the application's styles are emitted into a single stylesheet.
+* Because the generated stylesheet filename often includes a content hash, adjust the build output (e.g. via a post-build step) so a stable `styles.css` file is available.
+* Verify that `styles.css`, including all of the app's styles, is present in the build output before deploying.
+
+NOTE: This page does not cover style scoping (isolating the app's styles from other applications in the shell). See xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils] for the style scoping helpers provided for React applications.

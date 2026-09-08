@@ -7,6 +7,16 @@
 *** xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]
 *** xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication]
 
+** xref:documentation:docs-guides-ui:setup/recommended/index.adoc[Recommended Setup]
+*** xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles]
+**** xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/angular.adoc[Angular Applications]
+**** xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/react.adoc[React Applications]
+*** xref:documentation:docs-guides-ui:setup/recommended/apply-theming.adoc[Apply Theming]
+*** xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets.adoc[Expose Library Assets]
+**** xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets/angular.adoc[Angular Applications]
+**** xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets/react.adoc[React Applications]
+*** xref:documentation:docs-guides-ui:setup/recommended/adapt-routing.adoc[Adapt Routing]
+
 ** xref:documentation:docs-guides-ui:troubleshooting.adoc[UI Troubleshooting]
 
 ** xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
@@ -24,10 +34,8 @@
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
 
 *** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
-*** xref:documentation:docs-guides-ui:angular/theming.adoc[Theming]
 *** xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc[Permissions]
 **** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
-*** xref:documentation:docs-guides-ui:angular/routing/index.adoc[Routing]
 
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
 **** xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]

@@ -1,0 +1,13 @@
+:idprefix:
+:idseparator: -
+
+[#expose-library-assets]
+= Expose Library Assets
+
+An application integrated with OneCX still loads and runs without exposing the assets of the OneCX libraries it depends on, but it behaves incorrectly: missing static assets (e.g. icons) shipped by those libraries. Because Micro Frontends are loaded relative to the shell rather than from their own origin, library assets need to be exposed through the application's own build output using a dedicated mechanism, rather than assuming they're resolvable from the library's package location.
+
+[#expose-library-assets-pages]
+== Pages
+
+* xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets/angular.adoc[Angular Applications] — exposing OneCX library assets via the `angular.json` or `project.json` build configuration.
+* xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets/react.adoc[React Applications] — what needs to be achieved for React applications.
