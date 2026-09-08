@@ -1,6 +1,6 @@
 = Specific Issues
 
-This page covers specific, named errors and rendering problems. Each issue is described here exactly once. For tsconfig path-alias errors, see the xref:documentation:docs-guides-ui:troubleshooting/tsconfig-paths.adoc[TSConfig Paths] page.
+This page covers specific, named errors and rendering problems. Each issue is described here exactly once.
 
 [#rendering-priority]
 == Rendering priority
@@ -16,6 +16,8 @@ Since every microfrontend can use its own CSS and be built on different technolo
 * z-index of the element that is displayed on top of the other element
 
 If possible, the z-index of the element controlled by the application having the issue should be adjusted. In case this is not an option, please reach out to the OneCX support team for assistance.
+
+For a practical explanation of stacking behavior, see the link:https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Positioned_layout/Stacking_context[MDN stacking context guide].
 
 [#webpack-compilation]
 == The 'compilation' argument must be an instance of Compilation

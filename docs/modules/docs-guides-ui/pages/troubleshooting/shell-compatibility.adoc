@@ -2,12 +2,12 @@
 
 = Shell Compatibility
 
-Issues caused by a mismatch between the shell and the application — for example, package sharing or Angular version differences — are often resolved by inspecting what the shell actually exposes.
+Issues caused by a mismatch between the shell and the application are often resolved by inspecting what the shell actually exposes. For the shell itself, sharing trouble is typically caused by Angular version differences, because one page can only contain one Angular major library version at runtime.
 
 [#shell-version-information]
 == Verify the shell's package versions
 
-Incorrect package sharing between the shell and the application can lead to issues. To verify the available major version of packages in the shell, check the xref:documentation:onecx-shell-ui:onecx-shell-ui-docs.adoc#shell-version-information[Shell version information] documentation.
+Incorrect Angular version sharing between the shell and the application can lead to issues. To verify the available major version of packages in the shell, check the xref:documentation:onecx-shell-ui:onecx-shell-ui-docs.adoc#shell-version-information[Shell version information] documentation.
 
 When working locally, also make sure the following are consistent between the shell and your app:
 
@@ -26,6 +26,8 @@ __FEDERATION__
 ----
 
 You will get the module federation runtime object. The shell's shared packages are listed under the `onecx_shell_ui` instance's `shareScopeMap`; check, for example, the `@angular/core` entry to see the versions the shell exposes.
+
+Verify that there are no duplicate loaded entries for the same Angular major version in the federation object. For example, `@angular/core`, `@angular/common`, and related Angular packages should not appear as multiple independently loaded entries for the same major on one page.
 
 On older shell versions, the same information is exposed via `window['onecxWebpackContainer']`, which is now deprecated in favor of `__FEDERATION__`:
 
