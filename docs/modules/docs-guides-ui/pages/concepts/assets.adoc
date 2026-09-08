@@ -53,6 +53,6 @@ Note the boundary with the *Style Isolation* concept: exposing `styles.css` is t
 
 NOTE: A link to the *Translations* concept page will be added here once that page is published — it covers the library-translation exposure requirement described above in depth.
 
-NOTE: A link to the *Style Isolation* concept page will be added here once that page is published — it owns the rules for what belongs in an application's `styles.css` and how it is scoped.
+* xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation] — rules for what belongs in an application's `styles.css` and how the platform scopes it.
 
 NOTE: Once the Recommended Setup *Expose Library Assets* and *Expose Component Styles* pages are published, link them here as the practical step-by-step how-to for the two exposure steps described above.

@@ -4,7 +4,7 @@
 [#style-isolation]
 = Style Isolation
 
-In OneCX, every application's styles are confined to the DOM region that application renders into. This page is a technology-agnostic overview of the rules OneCX places on application styles and why they exist; it does not cover how to publish `styles.css` in the first place — that mechanic is owned by the *Assets* concept page (see <<related>> below) and, per technology, by the Recommended Setup *Expose Component Styles* page.
+In OneCX, every application's styles are confined to the DOM region that application renders into. This page is a technology-agnostic overview of the rules OneCX places on application styles and why they exist; it does not cover how to publish `styles.css` in the first place — that mechanic is owned by xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets] and, per technology, by the Recommended Setup *Expose Component Styles* page.
 
 [#why-style-isolation]
 == Why style isolation matters
@@ -23,7 +23,7 @@ One consequence of this is that a `:root` selector in `styles.css` does not do w
 [#the-styles-css-contract]
 == The styles.css contract
 
-`styles.css` is the *only* sanctioned location for an application's own styles. It is the single file the platform loads on the application's behalf and confines to the application's DOM region. How `styles.css` is exposed and loaded is described on the Assets concept page (see <<related>>). Any CSS an application needs beyond its components' own scoped styles belongs in it, and nowhere else:
+`styles.css` is the *only* sanctioned location for an application's own styles. It is the single file the platform loads on the application's behalf and confines to the application's DOM region. How `styles.css` is exposed and loaded is described on xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]. Any CSS an application needs beyond its components' own scoped styles belongs in it, and nowhere else:
 
 * Do not rely on stylesheets injected outside of this mechanism (for example a `<link>` or `<style>` tag added directly to the document by application code) to style your application — the platform has no way to confine or clean up styles it did not load itself.
 * Do not assume rules in `styles.css` apply outside your application's own DOM region. The platform actively confines them to it.
@@ -38,14 +38,20 @@ Rules in `styles.css` should only ever describe the appearance of elements that 
 
 Because `styles.css` rules are confined to your application's own DOM region, any rule written to reach *outside* that region has no effect — it is not a matter of style but simply does not do anything, which makes these patterns confusing to debug rather than merely discouraged:
 
-* **Targeting document-level elements**, such as `body` or `html`, or using the universal selector (`*`) to apply a page-wide reset. These elements sit outside every application's DOM region, so such rules never match.
+* **Targeting document-level elements**, such as `body` or `html`. These elements sit outside every application's DOM region, so such rules never match.
+* **Using the universal selector (`*`) deliberately** to apply an application-wide reset inside your own DOM region. The selector still matches only your application's descendants, so it can affect the whole application but cannot affect the shell or another application.
 * **Targeting classes or IDs you do not own** — for example a selector that happens to match a class name used by another application's components, the shell's own interface, or a shared library, in the hope of overriding its appearance. Even if the name matches, the rule is confined to your own DOM region and will not reach that content.
 * **Relying on `styles.css` to theme other applications or the shell.** Cross-application appearance (colors, fonts, spacing that should be consistent platform-wide) is a xref:documentation:docs-guides-ui:angular/theming.adoc[theming] concern, expressed through shared theme variables, not through application styles reaching into content you do not own.
 [source,css]
 ----
-/* Anti-pattern: has no effect — body is outside every application's DOM region */
+/* Anti-pattern: body and html are outside every application's DOM region */
 body {
     background-color: #f5f5f5;
+}
+
+/* Correct: applies a reset across your application's own descendants only */
+* {
+    box-sizing: border-box;
 }
 
 /* Anti-pattern: has no effect even if the class name matches another
@@ -63,7 +69,6 @@ body {
 [#related]
 == Related
 
-* *Assets* — owns the *what* and *how* of exposing `styles.css` so the shell can load it; this page owns the *rules* for what belongs inside it once exposed.
+* xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets] — owns the *what* and *how* of exposing `styles.css` so the shell can load it; this page owns the *rules* for what belongs inside it once exposed.
 * xref:documentation:docs-guides-ui:angular/theming.adoc[Theming] — the mechanism for platform-wide, cross-application appearance (theme variables), as opposed to an individual application's own styles.
-
-NOTE: A cross-link to the *Assets* concept page will be added here once that page is published.
+* https://github.com/onecx/onecx-portal-ui-libs/blob/main/dev-docs/styles/scoping.adoc[Style scoping implementation deep dive] — implementation details for the shell's CSS scoping boundary.
