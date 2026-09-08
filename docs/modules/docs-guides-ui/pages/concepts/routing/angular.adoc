@@ -1,0 +1,116 @@
+:idprefix:
+:idseparator: -
+
+:app_state_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-state-service
+:workspace_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#workspace-service
+
+[#angular-routing]
+= Routing in Angular Applications
+
+This page covers the Angular-specific routing guidelines. See xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing] for the shared routing requirements and reasons behind them.
+
+[#general-routing-guidelines]
+== General Routing Guidelines
+
+[#routing-inside-application]
+=== Routing Inside the Application
+
+When routing inside the application, it is important to use *relative paths* instead of *absolute paths*. This ensures that the application can handle routing correctly regardless of the workspace configuration.
+
+[#navigate-to-sub-page]
+==== Navigate to sub page
+
+Application is currently at `https://shell_deployment_path/employees-workspace/client-management` and needs to navigate to a client with ID 123, it should use a relative path.
+
+[source,javascript]
+----
+this.router.navigate(['client', 123]);
+----
+
+[#navigate-back]
+==== Navigate back
+
+Application is currently at `https://shell_deployment_path/employees-workspace/client-management/client/123` and needs to navigate back to the client list, it should use a relative path.
+
+[source,javascript]
+----
+this.router.navigate(['../'], { relativeTo: this.route });
+----
+
+[#routing-using-absolute-paths]
+=== Routing Using Absolute Paths
+
+Sometimes, it might be necessary to use absolute paths for routing. In such cases, it is crucial to construct the absolute path dynamically based on the current workspace configuration. This can be achieved by using the {app_state_service}[AppStateService] to get the `currentMfe$`, which contains the current workspace and application information.
+
+[#navigate-to-details-page-absolute]
+==== Navigate to details page using absolute path
+
+Application is currently at `https://shell_deployment_path/employees-workspace/client-management` and needs to navigate to a client with ID 123 using an absolute path. It should construct the absolute path dynamically.
+
+[source,typescript]
+----
+import { firstValueFrom } from 'rxjs';
+...
+
+appStateService: AppStateService; // Injected via constructor
+
+async routeOnClick() {
+    const mfeInfo = await firstValueFrom(this.appStateService.currentMfe$);
+    this.router.navigateByUrl(`/${mfeInfo.baseHref}/client/123`);
+}
+----
+
+NOTE: If you are using ngrx, you can use the {app_state_service}[AppStateService] directly in your effects to construct the absolute path dynamically.
+
+[#navigate-to-details-page-absolute-effect]
+==== Navigate to details page using absolute path in an ngrx effect
+
+The same navigation can be triggered from an ngrx effect by combining the dispatched action with `currentMfe$` before calling the router.
+
+[source,typescript]
+----
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
+import { AppStateService } from '@onecx/angular-integration-interface';
+
+import { navigateToClientDetails } from './client.actions';
+
+@Injectable()
+export class ClientEffects {
+    navigateToClientDetails$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(navigateToClientDetails),
+                switchMap((action) =>
+                    this.appStateService.currentMfe$.pipe(
+                        tap((mfeInfo) =>
+                            this.router.navigateByUrl(`/${mfeInfo.baseHref}/client/${action.clientId}`)
+                        )
+                    )
+                )
+            ),
+        { dispatch: false }
+    );
+
+    constructor(
+        private actions$: Actions,
+        private appStateService: AppStateService,
+        private router: Router
+    ) {}
+}
+----
+
+[#routing-between-applications]
+=== Routing Between Applications
+
+If it is necessary to route between different applications or to specific endpoints, it is recommended to use the {workspace_service}[WorkspaceService].
+
+The {workspace_service}[WorkspaceService] provides methods to:
+
+* Dynamically construct URLs for applications and endpoints based on the current workspace.
+* Validate whether a route or endpoint exists before navigating.
+* Resolve endpoint aliases and inject parameters into endpoint paths.
+
+This approach ensures that applications remain decoupled from static configurations and are fully integrated into the OneCX workspace model.

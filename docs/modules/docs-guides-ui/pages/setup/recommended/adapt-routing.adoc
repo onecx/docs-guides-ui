@@ -1,0 +1,9 @@
+:idprefix:
+:idseparator: -
+
+[#adapt-routing]
+= Adapt Routing
+
+An application integrated with OneCX still loads and runs without adapting its routing, but it behaves incorrectly: navigation may break when the app is embedded under a workspace-specific base path, or links to other applications may resolve to the wrong location. Because Micro Frontends are loaded relative to the shell rather than at a fixed base path, applications need to adapt how they route internally and to other OneCX applications.
+
+See xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing] for the full routing requirements and guidelines for Angular and React applications.

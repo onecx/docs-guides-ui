@@ -1,0 +1,67 @@
+:idprefix:
+:idseparator: -
+
+:page-aliases: angular/routing/index.adoc
+
+[#routing]
+= Routing
+
+An application integrated with OneCX still loads and runs without following these routing guidelines, but it behaves incorrectly: navigation may break when the app is embedded under a workspace-specific base path, or links to other applications may resolve to the wrong location. This page explains the platform-level routing requirements and the reasons behind them, shared by both Angular and React applications.
+
+[#overview]
+== Overview
+
+The OneCX shell owns the top-level routing, including the parts of the URL that identify the deployment, the active workspace, and the active application. Two platform-level rules follow from that:
+
+* **Route within your application using relative paths.** The application path is resolved relative to the base path the shell mounted the app under, so relative navigation keeps working regardless of the workspace.
+* **Build cross-application and absolute paths from the current workspace.** The parts of the URL the shell handles are not known to your application's router, so any absolute path must be constructed dynamically from the current workspace and application rather than hard-coded.
+
+The technology-specific subsections below show how each framework applies these rules.
+
+[#reasons-for-restrictions]
+== Reasons for restrictions
+
+[#why-routing-restrictions]
+=== Why Routing Restrictions?
+
+In OneCX, each application can be accessed via different base paths depending on the workspace configuration. Below are some examples of how *the same application* might be accessed:
+
+* `https://shell_deployment_path/my-workspace/my-application`
+* `https://shell_deployment_path/employees-workspace/client-management/base`
+
+When an application is accessed via OneCX shell, the base path can vary, but every time the common parts are:
+
+* `https://shell_deployment_path/` - the deployment path of the OneCX shell
+* `my-workspace` or `employees-workspace` - the workspace identifier
+* `my-application` or `client-management/base` - the application path
+
+What is important to note is that the workspace identifier and application path are not fixed and can be different depending on the workspace that the app is accessed from and the workspace configuration.
+
+[#onecx-shell-routing]
+=== OneCX Shell Routing
+
+The OneCX shell handles the routing to the correct application based on the workspace configuration. It handles that on every navigation that changes the active workspace or application.
+
+As an example, if any application navigates to `https://shell_deployment_path/employees-workspace/client-management/client/123`, the OneCX shell will ensure that the `employees-workspace` is activated and the `client-management` application is loaded with the correct context. The URL parts that the OneCX shell handles are:
+
+* `https://shell_deployment_path/` - the deployment path of the OneCX shell
+* `employees-workspace` - the workspace used to determine which workspace data to load
+* `client-management` - the application path to determine which application to load
+
+The rest of the URL path should be handled by the application itself. In this case, the `client/123` part should be handled by the `client-management` application.
+
+[IMPORTANT]
+====
+An application's router *will not be aware of the used parts of the URL that the OneCX shell handles*. Therefore, it is required to have appropriate routing mechanisms in order to ensure that the application can handle routing correctly regardless of the workspace configuration.
+====
+
+[#technology-specific-guidelines]
+== Technology-specific Guidelines
+
+* xref:documentation:docs-guides-ui:concepts/routing/angular.adoc[Angular Applications] — relative and absolute path routing, and routing between applications, using the AppStateService and WorkspaceService.
+* xref:documentation:docs-guides-ui:concepts/routing/react.adoc[React Applications] — routing with the `useAppHref` hook from `@onecx/react-webcomponents`.
+
+[#related]
+== Related
+
+NOTE: Once the Recommended Setup *Adapt Routing* page is published, link it here as the practical step-by-step how-to (see internal-tasks#607).

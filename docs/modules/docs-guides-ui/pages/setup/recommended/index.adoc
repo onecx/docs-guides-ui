@@ -1,0 +1,22 @@
+:idprefix:
+:idseparator: -
+
+[#recommended-setup]
+= Recommended Setup
+
+Recommended Setup covers the steps an application *should* complete to behave correctly in the OneCX shell. Unlike Required Setup, skipping any of these steps does not break the app outright — it still loads and runs — but it behaves *visibly incorrectly*: wrong or missing styles, missing or broken translations, or broken navigation.
+
+This tier applies to both paths of building a OneCX UI:
+
+* *Migrating an existing app* — bring a vanilla Angular or React application up to this checklist after completing xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup]. See xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX] for the migration path itself; it cross-links back into these pages rather than restating their steps.
+* *Creating a new app from scratch* — use this checklist, alongside Required Setup, as the target end-state for a freshly generated application.
+
+TIP: If a step isn't listed here, it belongs to a different tier. Steps every app *must* complete to function at all belong to xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup]. An Optional tier (steps an app *may* adopt with no correctness impact if skipped) is planned alongside this Recommended tier as part of the same three-tier Setup structure.
+
+[#recommended-setup-pages]
+== Pages
+
+* xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles] — how to expose an application's and its libraries' `styles.css` in the build output, so the shell can style the app.
+* xref:documentation:docs-guides-ui:setup/recommended/apply-theming.adoc[Apply Theming] — introduces OneCX theme variables and why application styles should use them; links to xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming] for the full deep dive.
+* xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets.adoc[Expose Library Assets] — how to expose the static assets (e.g. icons) of the OneCX libraries an application depends on, since Micro Frontends are loaded relative to the shell.
+* xref:documentation:docs-guides-ui:setup/recommended/adapt-routing.adoc[Adapt Routing] — introduces why routing needs adaptation since Micro Frontends are relative to the shell; links to xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing] for the full deep dive.

@@ -1,28 +1,29 @@
-= OneCX Theming
-
 :idprefix:
 :idseparator: -
-:imagesdir: ../../../images
 
-:onecx_compatible_application: xref:./app-to-onecx.adoc
+[#theming]
+= Theming
 
-[#overview]
-== Overview
-In an OneCX application theming is handled by the OneCX shell in collaboration with the OneCX Theme Management application.
+In OneCX, theming controls how the content of a page looks. The OneCX shell, working together with the OneCX Theme Management application, provides the theme. A theme's look is expressed as a set of CSS variables (design tokens) — OneCX's own suite of theme variables. Each workspace can use a different theme, and the theme's variables are exposed on every page — with different values depending on the workspace being accessed.
 
-{onecx_compatible_application}[OneCX compatible application]:
+[#how-theming-works]
+== How theming works
 
-* should use theme variables to theme its content.
+The shell makes the active theme's variables available on the page automatically, based on the workspace being accessed. An application does not have to do anything to apply a theme — there is no import, provider, or build step on its side.
 
-[#theme-appliance]
-== Theme Appliance
-In OneCX each workspace can use different theme for its pages. Each theme defines a set of the same CSS variables that are available on each pages with different values. The availability of those CSS variables is handled by the OneCX shell based on the accessed workspace. It means that *{onecx_compatible_application}[OneCX compatible] application does not have to do anything to apply the theme*. The only responsibility is to use theme variables.
+Regardless of whether an application is built with Angular or React, consuming a theme is the same thing: reference the corresponding CSS variable in the application's own styles, as shown in xref:#utilizing-theme-variables[Utilizing Theme Variables] below.
+
+[#what-an-application-must-do]
+== What an application must do
+
+The only responsibility of a OneCX-compatible application is to use the theme variables in its own styles instead of hard-coded color, font, or spacing values. Doing so means the application automatically adopts whatever theme is active for the workspace and restyles itself when the theme changes. Hard-coded styles, by contrast, do not follow the active theme and look out of place when the theme differs.
 
 [#theme-variables]
 == Theme Variables
+
 Theme variables are CSS variables available on the page for any application.
 
-Below, is a list of all theme variables available on the page:
+Below is a list of the theme variables available on the page:
 
 [#basic-variables]
 Basic Variables::
@@ -37,6 +38,8 @@ Basic Variables::
 |Secondary color of non-text content.
 |`--content-bg-color`
 |Default background color of non-text content.
+|`--content-alt-bg-color`
+|Alternate background color of non-text content.
 |`--hover-bg-color`
 |Default background color on hover of non-text content.
 |===
@@ -57,6 +60,8 @@ Text-related Variables::
 |Primary font text color.
 |`--text-secondary-color`
 |Secondary font text color for elements in lower design hierarchy, usually less prominent.
+|`--solid-surface-text-color`
+|Font text color on solid (opaque) surfaces.
 |===
 ====
 
@@ -106,13 +111,7 @@ Misc Variables::
 |`--body-bg-color`
 |Background color of the document's body, used for the content pane's background color.
 |`--overlay-content-bg-color`
-|Background color of the overlays,
-// Unclear usage
-// |`--solid-surface-text-color`
-// |
-// Unclear usage
-// |`--content-alt-bg-color`
-// |
+|Background color of the overlays.
 |===
 ====
 
@@ -135,6 +134,8 @@ Topbar Variables::
 |Background color for the items located in the topbar on hover state.
 |`--topbar-menu-button-bg-color`
 |Background color of the vertical menu hiding toggle.
+|`--topbar-menu-button-text-color`
+|Color of the text in the vertical menu hiding toggle.
 |`--logo-color`
 |Color of the topbar's logo.
 |===
@@ -161,18 +162,15 @@ Sidebar Variables::
 |Text color of the menu item in active state, located in the sidebar (left side of the shell).
 |`--menu-active-item-bg-color`
 |Background color of the menu item in active state, located in the sidebar (left side of the shell).
-// Unclear usage
-// |`--menu-inline-border-color`
-// |
-
+|`--menu-inline-border-color`
+|Border color of the inline menu, located in the sidebar (left side of the shell).
 |===
 ====
-
 
 [#utilizing-theme-variables]
 == Utilizing Theme Variables
 
-When creating styles for UI components it's important to consider whether a style should be theme-aware. Example of a stylesheet using a theme variable:
+Regardless of whether your application is built with Angular or React, using a theme variable just means referencing the corresponding CSS variable in your styles — injecting and applying the variables' values is handled automatically. When creating styles for UI components, it's important to consider whether a style should be theme-aware. Example of a stylesheet using a theme variable:
 
 .styles.css
 [.source,css]
@@ -182,4 +180,11 @@ button {
 }
 ----
 
-The example above will set background color for each button element to the value corresponding to the `--primary-color` theme variable value.
+The example above sets the background color for each button element to the value corresponding to the `--primary-color` theme variable.
+
+[#related]
+== Related
+
+To apply a theme to an application step by step, see xref:documentation:docs-guides-ui:setup/recommended/apply-theming.adoc[Apply Theming] and xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles].
+
+For details on customizing the OneCX PrimeNG theme, see xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[OneCX PrimeNG Theming].
