@@ -17,7 +17,13 @@
 **** xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets/react.adoc[React Applications]
 *** xref:documentation:docs-guides-ui:setup/recommended/adapt-routing.adoc[Adapt Routing]
 
-** xref:documentation:docs-guides-ui:troubleshooting.adoc[UI Troubleshooting]
+** xref:documentation:docs-guides-ui:troubleshooting/index.adoc[Troubleshooting]
+*** xref:documentation:docs-guides-ui:troubleshooting/preparation.adoc[Preparation]
+*** xref:documentation:docs-guides-ui:troubleshooting/general-issues.adoc[General Issues]
+*** xref:documentation:docs-guides-ui:troubleshooting/application-setup.adoc[Application Setup]
+*** xref:documentation:docs-guides-ui:troubleshooting/shell-compatibility.adoc[Shell Compatibility]
+*** xref:documentation:docs-guides-ui:troubleshooting/specific-issues.adoc[Specific Issues]
+*** xref:documentation:docs-guides-ui:troubleshooting/tsconfig-paths.adoc[TSConfig Paths]
 
 ** xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
 *** xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases (tsconfig paths)]

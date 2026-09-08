@@ -1,0 +1,39 @@
+= Specific Issues
+
+This page covers specific, named errors and rendering problems. Each issue is described here exactly once.
+
+[#rendering-priority]
+== Rendering priority
+
+In some cases, elements may not be displayed correctly. This can have multiple reasons; however, below are some common issues that can be checked to resolve the problem.
+
+[#z-index-issues]
+=== Z-index issues
+
+Since every microfrontend can use its own CSS and be built on different technology stacks, it is possible that the z-index of elements is not working as expected. To resolve issues where elements are not displayed according to expectations (for example, a modal is not displayed on top of other elements), check the following:
+
+* z-index of the element that should be displayed on top
+* z-index of the element that is displayed on top of the other element
+
+If possible, the z-index of the element controlled by the application having the issue should be adjusted. In case this is not an option, please reach out to the OneCX support team for assistance.
+
+For a practical explanation of stacking behavior, see the link:https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Positioned_layout/Stacking_context[MDN stacking context guide].
+
+[#webpack-compilation]
+== The 'compilation' argument must be an instance of Compilation
+
+Errors indicating issues with webpack compilation are related to multiple versions used in the project. It is a common issue when the `@angular-devkit/build-angular` library is used. To fix the issue:
+
+* run `npm ls webpack` (this command shows the exact package version used per dependency)
+* identify packages with a different webpack version
+* ensure only 1 version of webpack is present
+
+To use only 1 version of webpack, please adjust the versions of the packages that depend on webpack to use the same version. It is possible by updating the `package.json` file to specify compatible versions or by using the npm overrides feature.
+
+[#angular-compilation]
+== Application is not showing up and "t is not a function" error is in the console
+
+If the application is not showing up and errors like `t is not a function` are in the console, then most likely the builder and the Angular packages used in the project are not compatible. To resolve the issue:
+
+* make sure that the builder used in the project is compatible with the Angular version used
+** e.g. for Angular 18 and the `ngx-build-plus` package use version `^18.0.0`

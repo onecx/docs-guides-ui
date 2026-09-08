@@ -1,0 +1,43 @@
+:imagesdir: ../../images
+
+= Shell Compatibility
+
+Issues caused by a mismatch between the shell and the application are often resolved by inspecting what the shell actually exposes. For the shell itself, sharing trouble is typically caused by Angular version differences, because one page can only contain one Angular major library version at runtime.
+
+[#shell-version-information]
+== Verify the shell's package versions
+
+Incorrect Angular version sharing between the shell and the application can lead to issues. To verify the available major version of packages in the shell, check the xref:documentation:onecx-shell-ui:onecx-shell-ui-docs.adoc#shell-version-information[Shell version information] documentation.
+
+When working locally, also make sure the following are consistent between the shell and your app:
+
+* Make sure you are using the latest version of the shell.
+* Verify that the Angular version of the app is lower than the shell's.
+
+[#devtools-inspection]
+== Inspect the shell's shared packages in the browser
+
+Go to the browser's DevTools and run the following command in the console:
+
+.DevTools console
+[source,javascript]
+----
+__FEDERATION__
+----
+
+You will get the module federation runtime object. The shell's shared packages are listed under the `onecx_shell_ui` instance's `shareScopeMap`; check, for example, the `@angular/core` entry to see the versions the shell exposes.
+
+Verify that there are no duplicate loaded entries for the same Angular major version in the federation object. For example, `@angular/core`, `@angular/common`, and related Angular packages should not appear as multiple independently loaded entries for the same major on one page.
+
+On older shell versions, the same information is exposed via `window['onecxWebpackContainer']`, which is now deprecated in favor of `__FEDERATION__`:
+
+.DevTools console (older shells)
+[source,javascript]
+----
+window['onecxWebpackContainer']
+----
+
+You will get a list of all the shared packages. Check, for example, the `@angular/core` entry to see the versions:
+
+.Example DevTools output (`window['onecxWebpackContainer']`)
+image::devtools_webpack_shared_packages.png[]
