@@ -4,10 +4,10 @@
 [#expose-component-styles]
 = Expose Component Styles
 
-An application integrated with OneCX still loads and runs even if its own or its libraries' styles aren't exposed correctly, but it renders with visibly wrong styles: missing layout or unstyled components. This page covers exposing your application's and its OneCX libraries' styles in the build output, so the shell can style your app correctly.
+An application integrated with OneCX still loads and runs even if its own or its libraries' styles aren't exposed correctly, but it renders with visibly wrong styles: missing layout or unstyled components. This page covers exposing an application's and its OneCX libraries' styles in the build output, so the shell can style the app correctly.
 
 [#expose-component-styles-pages]
 == Pages
 
-* xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/angular.adoc[Angular Applications] — exposing your app's `styles.css` and the stylesheets of OneCX libraries you depend on.
-* xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/react.adoc[React Applications] — guidance for exposing your app's `styles.css`.
+* xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/angular.adoc[Angular Applications] — exposing an application's `styles.css` and the stylesheets of OneCX libraries it depends on.
+* xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/react.adoc[React Applications] — guidance for exposing an application's `styles.css`.

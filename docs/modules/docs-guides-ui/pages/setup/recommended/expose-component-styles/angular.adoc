@@ -11,7 +11,7 @@ This page covers exposing an Angular application's and its OneCX libraries' styl
 
 The application must expose its own `styles.css` in the build output. How this is done depends on the build tool used:
 
-.NX (project.json)
+.Nx (project.json)
 [source,json]
 ----
 {
@@ -27,7 +27,7 @@ The application must expose its own `styles.css` in the build output. How this i
 }
 ----
 
-.Angular CLI (package.json)
+.package.json
 [source,json]
 ----
 {
@@ -41,7 +41,7 @@ The application must expose its own `styles.css` in the build output. How this i
 
 Because the generated stylesheet filename normally includes a content hash, adjust the build command to rename it to a stable `styles.css`:
 
-.Example package.json
+.package.json build output
 [source,json]
 ----
 {

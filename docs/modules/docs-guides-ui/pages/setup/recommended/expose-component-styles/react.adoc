@@ -13,7 +13,7 @@ The goal for React applications is the same as for any other technology: expose 
 
 As general guidance:
 
-* Configure the build so all of the app's styles are emitted into a single stylesheet.
+* Configure the build so all of the application's styles are emitted into a single stylesheet.
 * Because the generated stylesheet filename often includes a content hash, adjust the build output (e.g. via a post-build step) so a stable `styles.css` file is available.
 * Verify that `styles.css`, including all of the app's styles, is present in the build output before deploying.
 
