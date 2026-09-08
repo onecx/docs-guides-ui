@@ -70,4 +70,4 @@
 ** xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming]
 ** xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations]
 ** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
-
+** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
