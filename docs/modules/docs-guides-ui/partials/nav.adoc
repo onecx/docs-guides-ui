@@ -62,3 +62,7 @@
 **** xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[react-utils]
 **** xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc[react-remote-components]
 **** xref:documentation:docs-guides-ui:react/libraries/react-webcomponents.adoc[react-webcomponents]
+
+* Concepts
+** xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations]
+
