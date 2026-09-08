@@ -64,6 +64,9 @@
 **** xref:documentation:docs-guides-ui:react/libraries/react-webcomponents.adoc[react-webcomponents]
 
 * Concepts
+** xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing]
+*** xref:documentation:docs-guides-ui:concepts/routing/angular.adoc[Angular Applications]
+*** xref:documentation:docs-guides-ui:concepts/routing/react.adoc[React Applications]
 ** xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming]
 ** xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations]
 
