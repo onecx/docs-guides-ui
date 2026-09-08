@@ -1,0 +1,118 @@
+:idprefix:
+:idseparator: -
+
+[#configure-remote-package-sharing]
+= Configure Remote Package Sharing
+
+Module Federation allows applications to share dependencies at runtime, but it requires a consistent configuration of shared modules and their versions. This is mandatory Module Federation configuration — without it, remote loading is broken, not merely degraded.
+
+Configuring remote package sharing has two parts: assigning a *share scope* (see below) and, for each shared dependency, its own share scope assignment.
+
+[#share-scopes]
+== Share Scopes
+
+Share scopes are a way to group shared dependencies under a specific name, and every application must specify which share scope it should be loaded into.
+
+Every application can specify the following in relation to share scopes:
+
+* Which share scope it should be loaded into.
+* For each shared dependency, which scope it belongs to.
+
+[#setting-loading-share-scope]
+=== Setting Loading Share Scope
+
+For every application, the share scope it should be loaded into is determined by the `shareScope` property in the deployment configuration of the app via Helm. It can be set for the whole application or for individual microfrontends. This information is used by the shell during remote loading.
+
+.Example share scope configuration
+[source,yaml]
+----
+app:
+    operator:
+        microfrontend:
+            spec:
+                shareScope: 'angular_21' # this app should be loaded into the 'angular_21' share scope
+            spec:
+                my-mfe:
+                    shareScope: 'angular_21' # this mfe should be shared within the 'angular_21' share scope
+----
+
+[#setting-shared-dependencies-share-scope]
+=== Setting Shared Dependencies' Share Scope
+
+On the application side, each shared dependency can be assigned to a share scope in the Module Federation configuration, by adding the `shareScope` property to the shared dependency declaration.
+
+.Example shared dependency share scope configuration
+[source,typescript]
+----
+shared: {
+    '@angular/core': {
+        shareScope: 'angular_21' // this dependency belongs to the 'angular_21' share scope
+        // other properties
+    },
+    '@onecx/angular-webcomponents': {
+        shareScope: 'angular_21' // this dependency belongs to the 'angular_21' share scope
+    }
+}
+----
+
+Depending on the build tool and Module Federation plugin used by the application, the exact configuration syntax may differ, but the concept of assigning shared dependencies to a share scope remains the same.
+
+[#which-packages-to-share]
+== Which Packages to Share
+
+The shared package list must include every framework and OneCX package that participates in runtime dependency sharing.
+
+[%header,cols="1,2"]
+|===
+| Package group | Packages
+
+| Angular
+| `@angular/*`
+
+| PrimeNG
+| `primeng`, `primeicons`
+
+| NgRx
+| `@ngrx/*`
+
+| OneCX
+| `@onecx/*`
+
+| Conditional Angular utility sharing
+| Share `@onecx/angular-utils` explicitly when the application uses `@onecx/angular-accelerator` or `@onecx/angular-integration-interface`.
+|===
+
+Use the caret (`^`) range for shared package versions in `package.json`, except `rxjs`, which should use tilde (`~`). See xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc#package-sharing-convention[Package Sharing Convention] for the versioning rule.
+
+[#automatic-package-sharing]
+== Automatic Package Sharing
+
+Use `getOneCXSharedLibraryConfig` from `@onecx/build-utils` instead of hand-writing the shared package map. It generates shared entries for OneCX-related libraries and assigns the correct `shareScope` based on the application's Angular or React version.
+
+[source,typescript]
+----
+import { withModuleFederationPlugin } from '@module-federation/enhanced/webpack'
+import { getOneCXSharedLibraryConfig } from '@onecx/build-utils'
+import { dependencies } from './package.json'
+
+const shared = getOneCXSharedLibraryConfig(dependencies, true)
+
+const config = withModuleFederationPlugin({
+  // name, filename, exposes, etc.
+  shared,
+})
+
+export default config
+----
+
+[#onecx-share-scopes]
+== OneCX Share Scopes
+
+The OneCX shell operates with the following share scopes:
+
+* `angular_X` — where X represents the Angular version, e.g. `angular_21` for Angular 21 applications and their dependencies.
+* `default` — scope for all applications integrated with older shell versions and their dependencies.
+
+For Angular 21 and newer applications, the shell expects them to be loaded into the `angular_X` share scope corresponding to their Angular version. For applications integrated with older shell versions, the expected share scope is `default`. If no scope is specified for an application, it is loaded into the `default` share scope by default.
+
+For details on the migration of Angular 21+ applications to the correct share scope, see the xref:documentation:onecx-docs-dev:shell-integration/shell-v3-migration.adoc[Migrate to Shell v3] page in the OneCX documentation.

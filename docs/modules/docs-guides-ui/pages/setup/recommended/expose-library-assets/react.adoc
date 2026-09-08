@@ -1,0 +1,13 @@
+:idprefix:
+:idseparator: -
+
+[#react-expose-library-assets]
+= Expose Library Assets in React Applications
+
+This page covers exposing the static assets of the OneCX libraries a React application depends on. See xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets.adoc[Expose Library Assets] for why this matters.
+
+The end goal for React applications is the same as for any other technology: the static assets (e.g. icons) shipped by the OneCX libraries depended on must be exposed in the application's own build output, since Micro Frontends are loaded relative to the shell rather than from their own origin.
+
+Translation files are resolved for React applications at runtime — see xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc#translation-resources[@onecx/react-utils: Translation Resource Registration] for that mechanism. There is currently no equivalent OneCX-prescribed build-time mechanism documented for exposing other library assets (e.g. icons) in React applications. Until such a mechanism is documented, confirm what assets the OneCX libraries in use ship, and ensure the build makes them available in the build output at a path the application resolves them from.
+
+See xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils] for the library reference of the runtime helpers React applications rely on.
