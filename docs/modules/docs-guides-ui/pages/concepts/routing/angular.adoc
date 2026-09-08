@@ -62,6 +62,46 @@ async routeOnClick() {
 
 NOTE: If you are using ngrx, you can use the {app_state_service}[AppStateService] directly in your effects to construct the absolute path dynamically.
 
+[#navigate-to-details-page-absolute-effect]
+==== Navigate to details page using absolute path in an ngrx effect
+
+The same navigation can be triggered from an ngrx effect by combining the dispatched action with `currentMfe$` before calling the router.
+
+[source,typescript]
+----
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
+import { AppStateService } from '@onecx/angular-integration-interface';
+
+import { navigateToClientDetails } from './client.actions';
+
+@Injectable()
+export class ClientEffects {
+    navigateToClientDetails$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(navigateToClientDetails),
+                switchMap((action) =>
+                    this.appStateService.currentMfe$.pipe(
+                        tap((mfeInfo) =>
+                            this.router.navigateByUrl(`/${mfeInfo.baseHref}/client/${action.clientId}`)
+                        )
+                    )
+                )
+            ),
+        { dispatch: false }
+    );
+
+    constructor(
+        private actions$: Actions,
+        private appStateService: AppStateService,
+        private router: Router
+    ) {}
+}
+----
+
 [#routing-between-applications]
 === Routing Between Applications
 
