@@ -46,7 +46,7 @@ In OneCX, an application's own styles live in a `styles.css` file (the entry poi
 
 Exposing the application's `styles.css` is recommended rather than strictly required: the application still loads and runs without it, but the shell has no stylesheet to apply for that application, so the application may render without its intended global styling. How to expose `styles.css` — the per-technology mechanism — is described on the Recommended Setup *Expose Component Styles* page.
 
-Note the boundary with the *Style Isolation* concept: exposing `styles.css` is the *what* and *how* — the mechanics of publishing the file so the shell can load it. What *belongs* inside that stylesheet, and how it is scoped so it does not leak into or out of the application, is a separate concern owned by the *Style Isolation* concept page.
+Note the boundary with the *xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]* concept: exposing `styles.css` is the *what* and *how* — the mechanics of publishing the file so the shell can load it. What *belongs* inside that stylesheet, and how it is scoped so it does not leak into or out of the application, is a separate concern owned by the *Style Isolation* concept page.
 
 [#related]
 == Related
