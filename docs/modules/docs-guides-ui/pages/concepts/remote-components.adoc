@@ -9,7 +9,7 @@ This page is a technology-agnostic overview of *Remote Components* — how a pie
 [#remote-components-vs-modules]
 == Remote Components vs. regular modules
 
-Most of what a user sees in OneCX comes from *modules*: an application registers one or more routes with the shell via xref:documentation:docs-guides-ui:concepts/module-federation.adoc[module federation], and the shell loads and renders that application's module whenever the user navigates to one of its routes. A module owns a whole page (or a whole section of the URL space) and is only ever loaded by the shell itself.
+Most of what a user sees in OneCX comes from *modules*: an application registers one or more routes with the shell via xref:documentation:docs-guides-ui:module-federation/index.adoc[module federation], and the shell loads and renders that application's module whenever the user navigates to one of its routes. A module owns a whole page (or a whole section of the URL space) and is only ever loaded by the shell itself.
 
 A *Remote Component* is different in scope and in who loads it. Instead of owning a page, it is a single, self-contained piece of UI — a button, a widget, a panel — that an application exposes so that *any other application* can embed it, not just the shell. The same technical mechanism (module federation) is used to load its code, but the loading is driven by a xref:#onecx-slot[Slot] wherever it is embedded, rather than by the shell's router.
 
@@ -33,7 +33,7 @@ Making a Remote Component appear inside a Slot involves two applications and the
 * **Shell → embedding application:** during workspace construction, the Shell publishes the complete configuration for the current workspace — every registered Remote Component (which application owns it, how to load it, which technology it uses) and every Slot (its name and which Remote Component(s), if any, are assigned to it).
 * **Embedding application → Shell:** wherever a Slot is used in a page, the technology-specific Slot host reads that configuration, resolves which Remote Component(s) are assigned to the slot by name, and loads and renders each one — passing along any inputs and outputs needed to communicate between the embedding page and the embedded component.
 
-Loading itself reuses the same xref:documentation:docs-guides-ui:concepts/module-federation.adoc[module federation] mechanism used for modules: the owning application exposes the Remote Component from its own remote entry, and the Slot host fetches and instantiates it from there, on demand, the first time it is needed.
+Loading itself reuses the same xref:documentation:docs-guides-ui:module-federation/index.adoc[module federation] mechanism used for modules: the owning application exposes the Remote Component from its own remote entry, and the Slot host fetches and instantiates it from there, on demand, the first time it is needed.
 
 [#slots-and-administrators]
 == Slots and workspace administrators
@@ -55,7 +55,7 @@ This gives administrators a way to customize and compose a workspace's UI — fo
 [#related]
 == Related
 
-* xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] — the underlying mechanism Remote Components are loaded through, and how it differs from loading a module.
+* xref:documentation:docs-guides-ui:module-federation/index.adoc[Module Federation in OneCX] — the underlying mechanism Remote Components are loaded through, and how it differs from loading a module.
 * xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation] — how a Remote Component's styles are confined to it even though it is rendered inside another application's page.
 * xref:documentation:onecx-portal-ui-libs:libraries/integration-interface.adoc#remote-components-topic[Remote Components Topic] — the underlying topic and data model the Shell uses to publish Remote Component and Slot configuration.
 * xref:documentation:docs-guides-ui:module-federation/mf-slot-components.adoc[Slots and Module Federation] — an earlier, more implementation-focused write-up of the same mechanism.
