@@ -1,0 +1,52 @@
+:idprefix:
+:idseparator: -
+
+[#state-management]
+= State Management
+
+NOTE: This page is Angular-only. There is currently no React equivalent — OneCX does not yet document a recommended state management pattern for React applications. This gap will be closed in a future ticket; until then, React applications are free to choose their own state management approach.
+
+State management is how an application holds, updates, and reads the data that drives its UI — for example the results of a search, the currently selected record, or in-progress form data. In OneCX Angular applications, this is not left to ad hoc component fields: applications use NgRx, a Redux-style state management library for Angular, to model that data as a single, predictable, testable store.
+
+[#why-ngrx]
+== Why OneCX Angular applications use NgRx
+
+An Angular application in OneCX is typically composed of multiple feature modules, each with several pages, dialogs, and subcomponents that all need to read and react to the same underlying data. Keeping that data in scattered component fields makes it hard to know where a piece of state lives, who can change it, and in what order changes happen — problems that get worse as an application grows. NgRx addresses this by giving the application:
+
+* a single, explicit place each feature's state lives (the store),
+* a single, traceable way state can change (dispatching actions that reducers handle),
+* memoized selectors to derive and read view data without duplicating computed state, and
+* effects to isolate asynchronous work (HTTP calls, routing) from the store itself.
+
+Prefer local component state for state that is purely local and does not need to be shared, and reach for NgRx when data needs to be shared across components, routes, or modules, or when it involves non-trivial async orchestration.
+
+[#core-building-blocks]
+== Core building blocks
+
+NgRx models state around a small set of building blocks:
+
+* **Actions** — plain events that describe what happened (a user intent or the outcome of an async operation).
+* **Reducers** — pure functions that compute the next state from the previous state and an action.
+* **Selectors** — memoized queries used to read and derive data from the store; view data that can be computed from other state is expressed as a selector rather than stored directly.
+* **Effects** — handlers for side effects, such as HTTP calls and routing, kept out of reducers and selectors.
+
+[#onecx-conventions]
+== OneCX conventions on top of NgRx
+
+Beyond what NgRx itself provides, OneCX applications follow a shared set of conventions so that state, view data, and templates stay consistent across features and teams:
+
+* Every feature module owns its own feature store; state relevant to all of a feature's pages lives at the top level of that store, while state relevant to only one page lives in a subsection named after that page.
+* Every component that reads from the store does so through exactly one selector, which produces a "view model" — an interface named after the component with a `ViewModel` suffix, exposed as an observable named `viewModel$`.
+* Every action is dispatched from exactly one place and is never dispatched conditionally.
+* All HTTP calls, and any routing or URL-parameter changes, are performed in effects — never directly in components or reducers.
+* Selectors, reducers, and effects are unit tested (including at least one test of a reducer's initial state and one non-initial state, and marble tests for effects).
+
+These conventions, along with the full guidelines, project structure, and the dialogs pattern, are described in detail on xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx Guidelines]. The xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] page covers NgRx itself — its core packages, getting-started steps, and OneCX-specific examples (lazy-loaded tabs, search criteria) — as well as links to the official documentation.
+
+[#related]
+== Related
+
+* xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] — introduction to the NgRx library, its packages, and getting-started steps.
+* xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx Guidelines] — the full OneCX conventions, project structure, and worked examples referenced above.
+
+NOTE: A reciprocal cross-link to the *NgRx State Management* feature page will be added once that page exists — whichever ticket lands second.
