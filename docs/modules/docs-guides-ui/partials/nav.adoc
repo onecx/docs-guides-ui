@@ -72,3 +72,6 @@
 ** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
 ** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
 ** xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]
+
+* Features
+** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
