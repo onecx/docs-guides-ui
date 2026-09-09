@@ -72,3 +72,6 @@
 ** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
 ** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
 ** xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]
+** xref:documentation:docs-guides-ui:concepts/remote-components.adoc[Remote Components]
+*** xref:documentation:docs-guides-ui:concepts/remote-components/angular.adoc[Angular Applications]
+*** xref:documentation:docs-guides-ui:concepts/remote-components/react.adoc[React Applications]

@@ -1,0 +1,61 @@
+:idprefix:
+:idseparator: -
+
+[#remote-components]
+= Remote Components
+
+This page is a technology-agnostic overview of *Remote Components* — how a piece of UI owned by one application can be embedded inside another — and the *Slots* that host them. It does not cover how to expose or configure a Remote Component for a specific technology; that is covered in the Angular and React subsections below.
+
+[#remote-components-vs-modules]
+== Remote Components vs. regular modules
+
+Most of what a user sees in OneCX comes from *modules*: an application registers one or more routes with the shell via xref:documentation:docs-guides-ui:concepts/module-federation.adoc[module federation], and the shell loads and renders that application's module whenever the user navigates to one of its routes. A module owns a whole page (or a whole section of the URL space) and is only ever loaded by the shell itself.
+
+A *Remote Component* is different in scope and in who loads it. Instead of owning a page, it is a single, self-contained piece of UI — a button, a widget, a panel — that an application exposes so that *any other application* can embed it, not just the shell. The same technical mechanism (module federation) is used to load its code, but the loading is driven by a xref:#onecx-slot[Slot] wherever it is embedded, rather than by the shell's router.
+
+This distinction matters because it changes who owns what:
+
+* A module is built, owned, and maintained entirely by the team that develops the application it belongs to.
+* A Remote Component is still implemented and maintained by its owning application's team, but it is designed to be *reused* by other applications — for example, a "change password" widget owned by the User Profile application, embedded in the Welcome application, the Shell's header, or any other application that needs the same functionality without reimplementing it.
+
+[#onecx-slot]
+== What is a Slot
+
+A *Slot* is the host element a page uses to display a Remote Component. Slots do not have any content of their own — an empty slot renders nothing. A page declares a slot by name, and it is up to configuration (see xref:#slots-and-administrators[below]) to decide which Remote Component, if any, is rendered inside it. The same slot can also be configured to render more than one Remote Component at once, in which case all of them are rendered, in order.
+
+Because a slot's content is resolved at runtime rather than fixed at build time, the same page can show different embedded UI in different workspaces without any code change — the Shell application itself uses this to let different workspaces customize parts of its own interface (for example, its header or navigation) by assigning different Remote Components to its built-in slots.
+
+[#how-registration-and-rendering-works]
+== How registration and rendering works
+
+Making a Remote Component appear inside a Slot involves two applications and the Shell, and happens in two directions:
+
+* **Shell → embedding application:** during workspace construction, the Shell publishes the complete configuration for the current workspace — every registered Remote Component (which application owns it, how to load it, which technology it uses) and every Slot (its name and which Remote Component(s), if any, are assigned to it).
+* **Embedding application → Shell:** wherever a Slot is used in a page, the technology-specific Slot host reads that configuration, resolves which Remote Component(s) are assigned to the slot by name, and loads and renders each one — passing along any inputs and outputs needed to communicate between the embedding page and the embedded component.
+
+Loading itself reuses the same xref:documentation:docs-guides-ui:concepts/module-federation.adoc[module federation] mechanism used for modules: the owning application exposes the Remote Component from its own remote entry, and the Slot host fetches and instantiates it from there, on demand, the first time it is needed.
+
+[#slots-and-administrators]
+== Slots and workspace administrators
+
+Because slot assignment is workspace configuration rather than application code, it is something a *workspace administrator* manages through Workspace Management, without needing a code change or a new deployment. Making a Remote Component available in a workspace involves:
+
+* Both the application that owns the Remote Component and the application that hosts the Slot must be registered for the workspace.
+* The Slot must be registered for the workspace (a Slot can exist without ever having a Remote Component assigned to it — it will simply render nothing).
+* The Remote Component must be assigned to the Slot for that workspace.
+
+This gives administrators a way to customize and compose a workspace's UI — for example, enabling an optional widget in the Shell's header for one workspace but not another — purely through configuration. It also means that removing or reassigning a Slot's Remote Component in one workspace has no effect on any other workspace, since the assignment is scoped per workspace.
+
+[#technology-specific-guidelines]
+== Technology-specific guidelines
+
+* xref:documentation:docs-guides-ui:concepts/remote-components/angular.adoc[Angular Applications] — exposing a Remote Component with `@onecx/angular-webcomponents`, and hosting one with the `<ocx-slot>` component from `@onecx/angular-remote-components`.
+* xref:documentation:docs-guides-ui:concepts/remote-components/react.adoc[React Applications] — exposing and registering a Remote Component, and hosting one with `SlotComponent` from `@onecx/react-remote-components`.
+
+[#related]
+== Related
+
+* xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] — the underlying mechanism Remote Components are loaded through, and how it differs from loading a module.
+* xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation] — how a Remote Component's styles are confined to it even though it is rendered inside another application's page.
+* xref:documentation:onecx-portal-ui-libs:libraries/integration-interface.adoc#remote-components-topic[Remote Components Topic] — the underlying topic and data model the Shell uses to publish Remote Component and Slot configuration.
+* xref:documentation:docs-guides-ui:module-federation/mf-slot-components.adoc[Slots and Module Federation] — an earlier, more implementation-focused write-up of the same mechanism.
