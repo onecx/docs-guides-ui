@@ -1,0 +1,43 @@
+:idprefix:
+:idseparator: -
+
+[#module-federation]
+= Module Federation
+
+OneCX is a platform composed of many independently developed applications, each built, versioned, and deployed on its own schedule. This page is a technology-agnostic overview of *module federation* — the mechanism that makes that composition possible — and the role it plays in OneCX; it does not cover how to configure it for a specific application, which is described in xref:documentation:docs-guides-ui:setup/required/expose-remote-module.adoc[Expose a Remote Module] and xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing].
+
+[#what-is-module-federation]
+== What is module federation
+
+Module federation is a pattern for loading JavaScript code across independently built and deployed bundles at runtime, rather than at build time. A conventional web application is compiled as a single bundle: every module it depends on is known and linked when the application is built. Module federation removes that constraint — a bundle (a *host*) can load modules exposed by another, separately built bundle (a *remote*) over the network when the application actually runs, without either bundle having been compiled against the other's source.
+
+This is what allows OneCX's UI to be assembled from applications that are developed by different teams, in different repositories, and released independently of one another and of the shell itself, while still appearing to the user as a single, seamless application.
+
+The concept originates from https://webpack.js.org/concepts/module-federation/[Webpack's Module Federation] and has since been adopted more broadly, including implementations such as https://module-federation.io/[Module Federation (the framework-agnostic runtime and tooling that OneCX's recommended setup builds on)] and, for Angular applications that do not use Webpack, https://www.angulararchitects.io/en/blog/dynamic-module-federation-with-angular/[Native Federation]. All of these share the same underlying idea — hosts loading remotely-exposed modules at runtime — even though their configuration and build tooling differ.
+
+[#module-federations-role-in-onecx]
+== Module federation's role in OneCX
+
+In OneCX, the *shell* is the host and every other application is a remote. At startup, and as the user navigates, the shell uses module federation to fetch and load the code for whichever application or component needs to be displayed, straight from that application's own deployment — the shell never bundles application code itself. This is what OneCX means by a *microfrontend*: an application that is developed and deployed as an independent unit, but is loaded and composed into the shell's UI at runtime via module federation.
+
+Module federation is the mechanism behind two distinct kinds of composition in OneCX:
+
+* **Loading a microfrontend module** — when the user navigates to a route owned by an application, the shell resolves the route to that application's module federation configuration and loads the corresponding module on demand.
+* **Loading a remote component** — when a page needs to embed a piece of UI owned by a *different* application (a Slot Component), the shell loads that component the same way, via module federation, rather than the embedding application bundling it.
+
+Because each application publishes its own module federation configuration independently, teams can release a new version of their application at any time without rebuilding or redeploying the shell, or any other application.
+
+[#sharing-dependencies-at-runtime]
+== Sharing dependencies at runtime
+
+Loading every application's code independently would be wasteful if each one also shipped its own copy of every shared library (the framework itself, the OneCX platform libraries, and so on). Module federation addresses this with *shared dependencies*: a host and its remotes can negotiate, at runtime, to reuse a single instance of a matching dependency instead of each loading their own. In OneCX, this is what allows many independently built applications to share a single instance of Angular or React, `rxjs`, and the OneCX platform packages, rather than loading a duplicate copy per application.
+
+This negotiation is governed by *share scopes* — named groupings that determine which applications' shared dependencies are eligible to be reused by which other applications. Configuring an application's share scope, and which dependencies it shares into that scope, is covered in xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing].
+
+[#related]
+== Related
+
+* xref:documentation:docs-guides-ui:setup/required/expose-remote-module.adoc[Expose a Remote Module] — the practical, per-technology how-to for exposing an application to the shell via module federation.
+* xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] — the practical how-to for configuring share scopes and shared dependencies.
+* xref:documentation:docs-guides-ui:module-federation/index.adoc[Module Federation in OneCX] — deep internal reference covering preloaders, dependency sharing, and slot components in implementation detail.
+* https://webpack.js.org/concepts/module-federation/[Webpack Module Federation] and https://module-federation.io/[Module Federation] — external documentation for the underlying technology.
