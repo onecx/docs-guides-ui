@@ -63,12 +63,15 @@
 **** xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc[react-remote-components]
 **** xref:documentation:docs-guides-ui:react/libraries/react-webcomponents.adoc[react-webcomponents]
 
-* Concepts
-** xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing]
-*** xref:documentation:docs-guides-ui:concepts/routing/angular.adoc[Angular Applications]
-*** xref:documentation:docs-guides-ui:concepts/routing/react.adoc[React Applications]
-** xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming]
-** xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations]
-** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
-** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
-** xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]
+** Concepts
+*** xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing]
+**** xref:documentation:docs-guides-ui:concepts/routing/angular.adoc[Angular Applications]
+**** xref:documentation:docs-guides-ui:concepts/routing/react.adoc[React Applications]
+*** xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming]
+*** xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations]
+*** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
+*** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
+*** xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]
+
+** Features
+*** xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
