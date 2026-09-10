@@ -18,7 +18,7 @@ Make sure that the App is compatible as documented in xref:documentation:onecx-p
 
 [#improve-debugging-experience]
 === Improve debugging experience
-To understand the root cause of issues, it is recommended to enable source maps in the application and shell during development. For more information on how to enable source maps, see xref:documentation:docs-guides-ui:ui-additional/enable-source-maps.adoc[Enable source maps guide].
+To understand the root cause of issues, it is recommended to enable source maps in the application and shell during development. For more information on how to enable source maps, see xref:documentation:docs-guides-ui:features/development/source-maps.adoc[Source Maps].
 
 [#general-issues]
 == General issues
