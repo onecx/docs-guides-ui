@@ -187,4 +187,4 @@ The example above sets the background color for each button element to the value
 
 To apply a theme to an application step by step, see xref:documentation:docs-guides-ui:setup/recommended/apply-theming.adoc[Apply Theming] and xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles].
 
-For details on customizing the OneCX PrimeNG theme, see xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[OneCX PrimeNG Theming].
+For details on customizing the OneCX PrimeNG theme, see the xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[PrimeNG Theming Customization] feature page for how the OneCX theme maps to PrimeNG and how to apply optional token overrides.

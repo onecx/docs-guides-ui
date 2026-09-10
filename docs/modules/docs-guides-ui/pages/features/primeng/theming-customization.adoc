@@ -1,31 +1,36 @@
 :idprefix:
 :idseparator: -
 
-= OneCX PrimeNG Theming
+:theming_concept: xref:documentation:docs-guides-ui:concepts/theming.adoc
 
-:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc
+[#primeng-theming-customization]
+= PrimeNG Theming Customization
 
-[#overview]
-== Overview
-In OneCX PrimeNG theming is handled by the OneCX shell in collaboration with the OneCX Theme Management application.
+In OneCX PrimeNG is themed through the OneCX theme, not through a PrimeNG theme of its own. The active OneCX theme provides the design tokens, and the way PrimeNG is made to follow them is a mapping mechanism (see How PrimeNG is themed in OneCX below). This feature covers the *optional* step of overriding PrimeNG design tokens, so that one application styles PrimeNG (or OneCX components based on it) differently from every other application on the page. Skipping this step has no correctness impact.
 
-{onecx_compatible_application}[OneCX compatible application]:
+This feature is Angular-only today, because it targets PrimeNG specifically; React applications theme PrimeReact through a different mechanism.
 
-* can influence PrimeNG design token values for itself.
+[#how-primeNG-is-themed]
+== How PrimeNG is themed in OneCX
+
+The reason PrimeNG follows the active OneCX theme is a mapping mechanism between OneCX theming and PrimeNG theming. The OneCX theme is itself a set of design tokens (see the {theming_concept}[Theming] concept page), and each application that has all required setup completed maps those tokens to a PrimeNG preset through the `provideThemeConfig` call, so PrimeNG — and the OneCX components built on it — pick up the active OneCX theme automatically. This feature is about such an application overriding those mapped PrimeNG design tokens for its own content, so that it styles PrimeNG differently from other applications on the page.
 
 [#theme-overrides]
 == Theme Overrides
+
 In OneCX it is possible to style the PrimeNG content differently for each Application. The mechanism that allows that is called theme overrides. Each application can specify what overrides should be applied to style PrimeNG content differently than in other applications on the page.
 
 [#appropriate-scenarios]
 === Appropriate Scenarios
+
 This feature should be used when the application wants to control the style of:
 
 * PrimeNG components
 * OneCX components that base on PrimeNG components
 
-[#usage-instructions]
-=== Usage Instructions
+[#usage]
+=== Usage
+
 To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument has a property called `overrides` that can be one of the following:
 
 * Object with defined overrides
@@ -40,7 +45,8 @@ Each PrimeNG component specifies a list of design tokens (e.g. https://v18.prime
 === Examples
 
 Overriding the primary color with static values::
-```
+[source,typescript]
+-----
 const primary = {
     50: '#ecfeff',
     100: '#cffafe',
@@ -66,10 +72,11 @@ provideThemeConfig({
     }
   }
 })
-```
+-----
 
 Overriding the form field focus border color with token value::
-```
+[source,typescript]
+-----
 provideThemeConfig({
   overrides: {
     semantic: {
@@ -83,4 +90,9 @@ provideThemeConfig({
     }
   }
 })
-```
+-----
+
+[#related]
+== Related
+
+* {theming_concept}[Theming] — the concept page for how OneCX theming works and the theme variables available on the page.

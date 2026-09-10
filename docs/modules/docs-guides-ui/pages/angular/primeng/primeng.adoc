@@ -18,7 +18,7 @@ PrimeNG supports theming, allowing developers to customize the look and feel of 
 * Documentation: https://www.primefaces.org/primeng/showcase/[PrimeNG Showcase]
 * GitHub Repository: https://github.com/primefaces/primeng[PrimeNG GitHub]
 * Theme Designer: https://www.primefaces.org/designer/primeng/[PrimeNG Theme Designer]
-* OneCX PrimeNG Integration Guide: xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]
+* PrimeNG Theming Customization: xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[PrimeNG Theming Customization]
 
 
 == OneCX Integration
