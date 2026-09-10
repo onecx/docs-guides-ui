@@ -26,54 +26,12 @@ The application does **not** own the display. After the message is published on 
 [#display-messages-angular]
 == Angular applications
 
-Angular applications display messages through the `PortalMessageService`, available from `@onecx/angular-integration-interface`:
-
-[source,typescript]
-----
-import { PortalMessageService } from '@onecx/angular-integration-interface'
-
-constructor(private portalMessageService: PortalMessageService) {}
-
-// later, in response to a page event:
-this.portalMessageService.success({
-  summaryKey: 'ORDER.SAVED',
-  summaryParameters: { name: 'User' },
-  detailKey: 'ORDER.SAVED.DETAIL',
-  life: 5000,
-  closable: true
-});
-----
-
-Inject the service into a component or service and call one of the severity methods — `success()`, `info()`, `warning()`, or `error()`. Each takes a message object holding the translation keys and parameters.
-
-The message object also supports optional properties to customize the toast — for example `life` (how long it stays on screen), `sticky` (whether it lingers until dismissed), `closable` (whether it shows a close button), `icon`, and a few style hooks. See {portal_message_service}[PortalMessageService documentation] for the full list of message properties.
+Angular applications display messages through the `PortalMessageService` (from `@onecx/angular-integration-interface`). Inject the service and call one of the severity methods — `success()`, `info()`, `warning()`, or `error()` — passing a message object holding the translation keys and parameters. See the {portal_message_service}[PortalMessageService documentation] for usage and the full list of message properties.
 
 [#display-messages-react]
 == React applications
 
-React applications display messages through the `PortalMessageProvider` and the `usePortalMessage` hook, available from `@onecx/react-integration-interface`:
-
-[source,tsx]
-----
-import { PortalMessageProvider, usePortalMessage } from '@onecx/react-integration-interface'
-
-const Notify = () => {
-  const { success } = usePortalMessage()
-
-  // later, in response to a page event:
-  // success({ summaryKey: 'ORDER.SAVED', detailKey: 'ORDER.SAVED.DETAIL' })
-
-  return null
-}
-
-export const App = () => (
-  <PortalMessageProvider>
-    <Notify />
-  </PortalMessageProvider>
-)
-----
-
-Wrap the application (or the relevant subtree) in `PortalMessageProvider`, then use the `usePortalMessage()` hook in any component to read the `success`, `info`, `warning`, and `error` helpers. The message object and its translation keys work the same way as in Angular applications. See {react_message_provider}[Portal Message Provider] for the full provider and hook API.
+React applications display messages through the `PortalMessageProvider` and the `usePortalMessage` hook (from `@onecx/react-integration-interface`). Wrap the application (or the relevant subtree) in `PortalMessageProvider`, then read the `success`, `info`, `warning`, and `error` helpers from the hook in any component. See the {react_message_provider}[Portal Message Provider] documentation for the full provider and hook API.
 
 [#display-messages-related]
 == Related
