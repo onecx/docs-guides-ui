@@ -84,6 +84,7 @@
 ** Features
 *** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
 *** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
+*** xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
 *** PrimeNG
 **** xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[Theming Customization]
 *** Development
