@@ -33,7 +33,6 @@
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Setup]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
 
-*** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
 *** xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc[Permissions]
 **** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
 

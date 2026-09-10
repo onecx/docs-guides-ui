@@ -5,7 +5,6 @@
 :message_topic: xref:documentation:onecx-portal-ui-libs:libraries/integration-interface.adoc#message-topic
 :react_message_provider: xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc#portal-message-provider
 :translations_concept: xref:documentation:docs-guides-ui:concepts/translations.adoc
-:toast_messages: xref:documentation:docs-guides-ui:angular/toast-messages.adoc
 
 [#display-messages]
 = Display Messages
@@ -83,4 +82,3 @@ Wrap the application (or the relevant subtree) in `PortalMessageProvider`, then 
 * {react_message_provider}[React Portal Message Provider] — the React provider and `usePortalMessage` hook.
 * {message_topic}[MessageTopic] — the shared topic the application publishes messages on.
 * {translations_concept}[Translations] — how the summary and detail translation keys are resolved.
-* {toast_messages}[Toast Messages] — the Angular-specific view of this feature (how a OneCX-compatible Angular application displays toasts).
