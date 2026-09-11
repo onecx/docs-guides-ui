@@ -2,10 +2,10 @@
 :idseparator: -
 
 :react_remote_components:  xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc
-:conditional_rendering:    xref:documentation:docs-guides-ui:features/permissions/conditional-rendering.adoc[Conditional rendering]
-:checking_permissions_code: xref:documentation:docs-guides-ui:features/permissions/checking-permissions-in-code.adoc[Checking permissions in code]
+:conditional_rendering:    xref:documentation:docs-guides-ui:features/permissions/angular/conditional-rendering.adoc[Conditional rendering]
+:checking_permissions_code: xref:documentation:docs-guides-ui:features/permissions/angular/checking-permissions-in-code.adoc[Checking permissions in code]
 
-= Permissions in React
+= Checking Permissions in Code
 
 React applications in the OneCX portal can read the current user's permissions from the `{react_remote_components}[@onecx/react-remote-components]` package, which exposes a `usePermission` hook and a `PermissionProvider`. This is the React counterpart to the {checking_permissions_code}[Angular `PermissionService` checks]: it lets a React component ask "which permissions does this user have?" and render conditionally in plain React code.
 

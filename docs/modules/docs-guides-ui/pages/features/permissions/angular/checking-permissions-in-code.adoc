@@ -3,8 +3,8 @@
 
 :permissions_handling:     xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
 :user_service:             xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
-:conditional_rendering:    xref:documentation:docs-guides-ui:features/permissions/conditional-rendering.adoc[Conditional rendering]
-:permissions_in_react:     xref:documentation:docs-guides-ui:features/permissions/permissions-in-react.adoc[Permissions in React]
+:conditional_rendering:    xref:documentation:docs-guides-ui:features/permissions/angular/conditional-rendering.adoc[Conditional rendering]
+:permissions_in_react:     xref:documentation:docs-guides-ui:features/permissions/react/checking-permissions-in-code.adoc[Checking permissions in code (React)]
 
 [#checking-permissions-in-code]
 = Checking Permissions in Code
@@ -156,4 +156,4 @@ userService.getPermissions().pipe(
 * {permissions_handling}[Permissions Handling] — the feature overview, how permissions reach an application, and the `<RESOURCE>#<ACTION>` convention.
 * {conditional_rendering}[Conditional rendering] — the `*ocxIfPermission` / `*ocxIfNotPermission` directives for permission-based UI inside templates.
 * {user_service}[User Service] — the full `@onecx/angular-integration-interface` reference.
-* {permissions_in_react}[Permissions in React] — the `usePermission` hook / `PermissionProvider` equivalent for React applications.
+* {permissions_in_react}[Checking permissions in code (React)] — the `usePermission` hook / `PermissionProvider` equivalent for React applications.
