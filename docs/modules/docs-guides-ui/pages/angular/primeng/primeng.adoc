@@ -23,4 +23,4 @@ PrimeNG supports theming, allowing developers to customize the look and feel of 
 
 == OneCX Integration
 PrimeNG is integrated into the OneCX platform to provide a consistent and efficient way to build user interfaces. The OneCX team has created guidelines and best practices for using PrimeNG components within OneCX applications. This includes recommendations on theming, component usage, and performance optimization to ensure that applications built with PrimeNG meet the high standards of the OneCX platform.
-For more information on how to use PrimeNG within OneCX, refer to the {OneCX PrimeNG Integration Guide}[Theming with PrimeNG].
+For more information on how to use PrimeNG within OneCX, refer to the xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[PrimeNG Theming Customization].
