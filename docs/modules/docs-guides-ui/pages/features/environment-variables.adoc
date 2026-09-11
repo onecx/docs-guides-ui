@@ -25,7 +25,9 @@ All OneCX UI configuration is read through the integration-interface package. Tw
 * **{app_config_service}** — *application (MFE) scope*. Loads a single micro-frontend's configuration.
 * **{configuration_service}** — *Shell scope*. Holds the platform-wide configuration shared across every micro-frontend.
 
-These two are the only services used to read environment variables. The Angular examples on this page use `@onecx/angular-integration-interface`; React applications read the same values through the React integration interface (see xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[React integration interface]) rather than the Angular services below.
+These two are the only services used to read environment variables.
+In Angular the values are read through the `@onecx/angular-integration-interface` services; in React the same values are read through the `useConfiguration` hook of `@onecx/react-integration-interface` (see xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[React integration interface]).
+Each section below shows the Angular and React usage side by side.
 
 [TIP]
 ====
@@ -71,9 +73,12 @@ The major requirement is that an `env.json` file is *available to be fetched* by
 3. `AppConfigService` reads the file from `{baseUrl}/assets/env.json`, so the path must resolve from the application's own base URL.
 
 [#environment-variables-mfe-read]
-=== Reading the values (Angular)
+=== Reading the values
 
-The following bootstrap and read examples are *Angular-specific*; the service and the values themselves are framework-agnostic.
+The values in `env.json` are the same regardless of framework; only the way they are read differs. Angular reads them with the `AppConfigService` injectable, React with the `useConfiguration` hook.
+
+[#environment-variables-mfe-read-angular]
+==== Angular
 
 `AppConfigService` is a plain `@Injectable()` (not provided in root), so the application provides it and calls `init(baseUrl)` once during bootstrap.
 Rather than hard-coding the base URL, read it from {xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-state-service[AppStateService]}: the current micro-frontend's `remoteBaseUrl` is the base path under which the application is mounted, and it is exactly what `init()` needs to locate `{baseUrl}/assets/env.json`.
@@ -116,6 +121,35 @@ const allValues = this.appConfigService.getConfig();
 
 See {app_config_service} for the full API.
 
+[#environment-variables-mfe-read-react]
+==== React
+
+The `@onecx/react-integration-interface` has no separate app-config hook — the same `useConfiguration` hook reads the application's `env.json`.
+The `ConfigurationProvider` loads that file on mount (from `assets/env.json` by default), so the application only needs to wrap itself in the provider once and read the values from the hook.
+Application-specific keys (those not in `CONFIG_KEY`) are read from the `config` snapshot:
+
+[source,tsx]
+----
+import {
+  ConfigurationProvider,
+  useConfiguration,
+} from '@onecx/react-integration-interface';
+
+// Wrap the application once, at the root:
+// <ConfigurationProvider>
+//   <MyApp />
+// </ConfigurationProvider>
+
+const MyFeature = () => {
+  const { config } = useConfiguration();
+  const apiUrl = config?.API_URL; // value read from env.json
+  return <div>API URL: {apiUrl ?? 'loading…'}</div>;
+};
+----
+
+`useConfiguration` also exposes async `getProperty(key)` and `getConfig()` for programmatic reads.
+See xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc#configuration-provider[Configuration Provider] for the full API.
+
 [#environment-variables-shell]
 == Applying changes to the Shell at deployment (`ConfigurationService`)
 
@@ -142,11 +176,15 @@ Because `ConfigurationService` is *owned by the Shell*, micro-frontends never in
 They read its values through the same API, so any change applied to the Shell is picked up by every application that reads it.
 
 [#environment-variables-shell-read]
-=== Reading the Shell values (Angular)
+=== Reading the Shell values
 
-The following read example is *Angular-specific*; reading Shell values uses `await` in every framework.
+Shell values are read asynchronously: the value is only available once the Shell has initialised its configuration, so reads use `await` in every framework.
+For the well-known platform keys, use the `CONFIG_KEY` enum rather than ad-hoc strings.
 
-`ConfigurationService` reads are asynchronous — the value is only available once the Shell has initialised the service — so reads use `await`. Import `CONFIG_KEY` from `@onecx/angular-integration-interface` and use its well-known constants for platform values rather than ad-hoc strings:
+[#environment-variables-shell-read-angular]
+==== Angular
+
+Import `CONFIG_KEY` and `ConfigurationService` from `@onecx/angular-integration-interface`:
 
 [source,ts]
 ----
@@ -160,6 +198,37 @@ const allValues = await this.configurationService.getConfig();
 ----
 
 See {configuration_service} for the full API.
+
+[#environment-variables-shell-read-react]
+==== React
+
+The Shell reads its own `env.json` through the same `useConfiguration` hook — there is no separate app-config hook in React.
+Read a platform value with the async `getProperty`, gated on the provider's `isInitialized` promise so the value has been loaded first:
+
+[source,tsx]
+----
+import { useEffect, useState } from 'react';
+import {
+  CONFIG_KEY,
+  useConfiguration,
+} from '@onecx/react-integration-interface';
+
+const KeycloakBanner = () => {
+  const { getProperty, isInitialized } = useConfiguration();
+  const [keycloakUrl, setKeycloakUrl] = useState<string | undefined>();
+
+  useEffect(() => {
+    void isInitialized.then(async () => {
+      setKeycloakUrl(await getProperty(CONFIG_KEY.KEYCLOAK_URL));
+    });
+  }, [getProperty, isInitialized]);
+
+  return keycloakUrl ? <a href={keycloakUrl}>SSO</a> : null;
+};
+----
+
+The React `CONFIG_KEY` enum is a subset of the Angular one, so only the platform keys shared by both frameworks are available.
+See xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc#configuration-provider[Configuration Provider] for the full API.
 
 [#environment-variables-shell-config-keys]
 === Available Shell configuration variables
