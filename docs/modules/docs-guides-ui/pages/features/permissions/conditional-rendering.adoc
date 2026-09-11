@@ -3,6 +3,7 @@
 
 :permissions_handling:   xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
 :user_service:           xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
+:checking_permissions_code: xref:documentation:docs-guides-ui:features/permissions/checking-permissions-in-code.adoc[Checking permissions in code]
 
 [#conditional-rendering]
 = Conditional Rendering
@@ -121,5 +122,5 @@ The directive adds and removes the `disabled` attribute on the *root node* of th
 == Related
 
 * {permissions_handling}[Permissions Handling] — the feature overview, how permissions reach an application, and the `<RESOURCE>#<ACTION>` convention.
-* xref:documentation:docs-guides-ui:features/permissions/checking-permissions-in-code.adoc[Checking permissions in code] — the `UserService` checks for logic outside a template.
+* {checking_permissions_code}[Checking permissions in code] — the `UserService` checks for logic outside a template.
 * {user_service}[User Service] — the `@onecx/angular-integration-interface` service the directives resolve permissions through.
