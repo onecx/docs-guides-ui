@@ -19,7 +19,7 @@ NOTE: This feature is currently documented for Angular applications. There is no
 [#how-it-works]
 == How it works
 
-In OneCX, permissions are assigned to roles and roles to users, so a given user ends up with a set of permissions that the {permission_management} application has resolved. The shell exposes the current user's permissions to integrated applications, and the application reads them through the {user_service}[User Service] — either directly in code or through the conditional-rendering directives, both covered on the subpages below.
+In OneCX, permissions are assigned to roles and roles to users, so a given user ends up with a set of permissions that the {permission_management} application has resolved. The shell exposes the current user's permissions to integrated applications through the {user_service}[User Service]. From there an application can check permissions directly in code — through the `PermissionService` — or conditionally render template content — through the permission directives, both covered on the subpages below.
 
 The permission strings follow the `<RESOURCE>#<ACTION>` convention (for example, `USER#DELETE`, `ORDER#EXPORT`). What a user is actually permitted to do is configured in the OneCX core applications, not in the application's own code.
 
@@ -27,7 +27,7 @@ The permission strings follow the `<RESOURCE>#<ACTION>` convention (for example,
 == Sub-features
 
 * {conditional_rendering}[Conditional rendering] — the `*ocxIfPermission` / `*ocxIfNotPermission` directives: rendering or hiding template content based on the current user's permissions, including `elseTemplate` and `onMissingPermission: 'disable'`.
-* {checking_permissions_code}[Checking permissions in code] — the `UserService.hasPermission()` / `getPermissions()` checks for guards, services, and other logic outside a template.
+* {checking_permissions_code}[Checking permissions in code] — the `PermissionService.hasPermission()` / `getPermissions()` checks for guards, services, and other logic outside a template, plus how to swap the underlying permission source with a `HAS_PERMISSION_CHECKER`.
 
 [#related]
 == Related
