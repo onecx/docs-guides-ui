@@ -3,7 +3,7 @@
 
 :react_remote_components:  xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc
 :conditional_rendering:    xref:documentation:docs-guides-ui:features/permissions/angular/conditional-rendering.adoc[Conditional rendering]
-:checking_permissions_code: xref:documentation:docs-guides-ui:features/permissions/angular/checking-permissions-in-code.adoc[Checking permissions in code]
+:checking_permissions_code: xref:documentation:docs-guides-ui:features/permissions/angular/checking-permissions-in-code.adoc[Checking permissions in code (Angular)]
 
 = Checking Permissions in Code
 
@@ -31,7 +31,7 @@ The permission strings follow the same `<RESOURCE>#<ACTION>` convention used thr
 
 [NOTE]
 ====
-This API is scoped by `appId` and `productName` and resolves permissions over the `PermissionsRpcTopic` — the remote-components data path. It is a different source from the Angular `UserService` / `PermissionService` standard path documented on the {checking_permissions_code}[Checking permissions in code] page. Both reflect the same underlying role-based assignments, but they read them through different integrations.
+This API is scoped by `appId` and `productName` and resolves permissions over the `PermissionsRpcTopic` — the remote-components data path. It is a different source from the Angular `UserService` / `PermissionService` standard path documented on the {checking_permissions_code}[Checking permissions in code (Angular)] page. Both reflect the same underlying role-based assignments, but they read them through different integrations.
 ====
 
 [#provider]
@@ -94,5 +94,5 @@ There is no `*ocxIfPermission`-equivalent conditional-rendering directive in the
 == Related
 
 * {react_remote_components}[@onecx/react-remote-components] — the library page, covering the provider/hooks setup and the slot API this permission API pairs with.
-* {checking_permissions_code}[Checking permissions in code] — the Angular `PermissionService` / `HAS_PERMISSION_CHECKER` equivalent.
+* {checking_permissions_code}[Checking permissions in code (Angular)] — the Angular `PermissionService` / `HAS_PERMISSION_CHECKER` equivalent.
 * {conditional_rendering}[Conditional rendering] — the Angular `*ocxIfPermission` / `*ocxIfNotPermission` directives.
