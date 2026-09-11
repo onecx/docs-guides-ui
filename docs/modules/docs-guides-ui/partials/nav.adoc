@@ -73,6 +73,8 @@
 
 ** Features
 *** xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
-**** xref:documentation:docs-guides-ui:features/permissions/conditional-rendering.adoc[Conditional Rendering]
-**** xref:documentation:docs-guides-ui:features/permissions/checking-permissions-in-code.adoc[Checking Permissions in Code]
-**** xref:documentation:docs-guides-ui:features/permissions/permissions-in-react.adoc[Permissions in React]
+**** Angular
+***** xref:documentation:docs-guides-ui:features/permissions/angular/conditional-rendering.adoc[Conditional Rendering]
+***** xref:documentation:docs-guides-ui:features/permissions/angular/checking-permissions-in-code.adoc[Checking Permissions in Code]
+**** React
+***** xref:documentation:docs-guides-ui:features/permissions/react/checking-permissions-in-code.adoc[Checking Permissions in Code]
