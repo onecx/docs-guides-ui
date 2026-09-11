@@ -31,6 +31,13 @@ This feature should be used when the application wants to control the style of:
 [#usage]
 === Usage
 
+The `provideThemeConfig` function is provided by `@onecx/angular-utils/theme/primeng`. Import it and add it once to the application's providers (before any component is rendered):
+
+[source,typescript]
+-----
+import { provideThemeConfig } from '@onecx/angular-utils/theme/primeng'
+-----
+
 To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument has a property called `overrides` that can be one of the following:
 
 * Object with defined overrides
@@ -39,7 +46,7 @@ To use this feature, it's required to add the options object as an argument to t
 
 The object containing overrides must have the same structure as https://primeng.org/theming#definepreset[PrimeNG's presets]. The presets can contain general variables like primary color or surface color, but its also possible to define customizations for components.
 
-Each PrimeNG component specifies a list of design tokens (e.g. https://v18.primeng.org/button#Buttonclasses[button component design tokens]). Those can be used to override certain styles of each component.
+Each PrimeNG component specifies a list of design tokens (e.g. https://v21.primeng.org/button#Buttonclasses[button component design tokens]). Those can be used to override certain styles of each component.
 
 [#examples]
 === Examples
