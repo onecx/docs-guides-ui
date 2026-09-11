@@ -19,7 +19,7 @@ NOTE: This feature is currently documented for Angular applications. There is no
 [#how-it-works]
 == How it works
 
-In OneCX, permissions are assigned to roles and roles to users, so a given user ends up with a set of permissions that the {permission_management} application has resolved. The shell exposes the current user's permissions to integrated applications, and the application reads them through the {user_service}[User Service] — either directly in code or through the conditional-rendering directives described below.
+In OneCX, permissions are assigned to roles and roles to users, so a given user ends up with a set of permissions that the {permission_management} application has resolved. The shell exposes the current user's permissions to integrated applications, and the application reads them through the {user_service}[User Service] — either directly in code or through the conditional-rendering directives, both covered on the subpages below.
 
 The permission strings follow the `<RESOURCE>#<ACTION>` convention (for example, `USER#DELETE`, `ORDER#EXPORT`). What a user is actually permitted to do is configured in the OneCX core applications, not in the application's own code.
 
@@ -33,6 +33,4 @@ The permission strings follow the `<RESOURCE>#<ACTION>` convention (for example,
 == Related
 
 * {authentication_concept}[Authentication] — how the shell owns the authentication flow and where a user's permissions come from.
-* {conditional_rendering}[Conditional rendering] — the permission-based template directives.
-* {checking_permissions_code}[Checking permissions in code] — the `UserService` permission checks.
 * {user_service}[User Service] — the `@onecx/angular-integration-interface` service that resolves the current user's permissions.
