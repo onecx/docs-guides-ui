@@ -1,0 +1,98 @@
+:idprefix:
+:idseparator: -
+
+:react_remote_components:  xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc
+:conditional_rendering:    xref:documentation:docs-guides-ui:features/permissions/conditional-rendering.adoc[Conditional rendering]
+:checking_permissions_code: xref:documentation:docs-guides-ui:features/permissions/checking-permissions-in-code.adoc[Checking permissions in code]
+
+= Permissions in React
+
+React applications in the OneCX portal can read the current user's permissions from the `{react_remote_components}[@onecx/react-remote-components]` package, which exposes a `usePermission` hook and a `PermissionProvider`. This is the React counterpart to the {checking_permissions_code}[Angular `PermissionService` checks]: it lets a React component ask "which permissions does this user have?" and render conditionally in plain React code.
+
+[#how-it-works]
+== How it works
+
+The `PermissionProvider` subscribes to the portal's permission topic (`PermissionsRpcTopic`) and resolves permissions for the pair of `appId` and `productName` you ask about:
+
+[source,tsx]
+----
+const { permissions, getPermissions } = usePermission()
+
+const appPermissions = await getPermissions('my-app', 'my-product')
+// appPermissions === ['USER#VIEW', 'USER#EDIT', ...]
+----
+
+There are two ways to obtain the permissions:
+
+* **`getPermissions(appId, productName)`** — a `Promise<string[]>` that resolves with the list of permission keys for that application/product. This is the primary mechanism; call it once (typically in an effect) and store the result.
+* **`permissions`** — the accumulated list of permission messages received from the topic so far. Use this when you want the value to stay reactive to newly published permissions.
+
+The permission strings follow the same `<RESOURCE>#<ACTION>` convention used throughout OneCX (for example, `USER#EDIT`).
+
+[NOTE]
+====
+This API is scoped by `appId` and `productName` and resolves permissions over the `PermissionsRpcTopic` — the remote-components data path. It is a different source from the Angular `UserService` / `PermissionService` standard path documented on the {checking_permissions_code}[Checking permissions in code] page. Both reflect the same underlying role-based assignments, but they read them through different integrations.
+====
+
+[#provider]
+== Setting up the provider
+
+`usePermission` must be called inside a component that is wrapped by a `PermissionProvider` (otherwise it throws). When a remote component is rendered through the standard `withSlot` / `SlotComponent` flow, the provider is already mounted for you — so `usePermission` is available directly in those components. If you build a standalone React app that talks to the portal directly, mount the provider yourself:
+
+[source,tsx]
+----
+import { PermissionProvider } from '@onecx/react-remote-components'
+
+<PermissionProvider>
+  <YourApp />
+</PermissionProvider>
+----
+
+[#checking-permissions]
+== Checking permissions in a component
+
+Because `getPermissions` is asynchronous, fetch the list once and then derive your rendering from it. The example below shows a button that is only rendered when the user holds the `USER#EDIT` permission:
+
+[source,tsx]
+----
+import { useEffect, useState } from 'react'
+import { usePermission } from '@onecx/react-remote-components'
+
+function EditButton({ appId, productName }) {
+  const { getPermissions } = usePermission()
+  const [permissions, setPermissions] = useState<string[]>()
+
+  useEffect(() => {
+    let active = true
+    getPermissions(appId, productName).then((result) => {
+      if (active) setPermissions(result)
+    })
+    return () => { active = false }
+  }, [appId, productName, getPermissions])
+
+  if (!permissions) return null
+  if (!permissions.includes('USER#EDIT')) return null
+
+  return <button>Edit</button>
+}
+----
+
+To require several permissions at once, check that the list contains all of them:
+
+[source,tsx]
+----
+const required = ['USER#VIEW', 'USER#EXPORT']
+const canExport = permissions.every((p) => required.includes(p))
+----
+
+[NOTE]
+====
+There is no `*ocxIfPermission`-equivalent conditional-rendering directive in the React libraries. Conditional rendering is done in plain React (as above) — see the {conditional_rendering}[Angular conditional rendering] page for the directive-based equivalent.
+====
+
+[#related]
+== Related
+
+* {react_remote_components}[@onecx/react-remote-components] — the library page, covering the provider/hooks setup and the slot API this permission API pairs with.
+* {checking_permissions_code}[Checking permissions in code] — the Angular `PermissionService` / `HAS_PERMISSION_CHECKER` equivalent.
+* {conditional_rendering}[Conditional rendering] — the Angular `*ocxIfPermission` / `*ocxIfNotPermission` directives.
