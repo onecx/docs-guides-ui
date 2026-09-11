@@ -24,7 +24,7 @@ const appPermissions = await getPermissions('my-app', 'my-product')
 
 There are two ways to obtain the permissions:
 
-* **`getPermissions(appId, productName)`** — a `Promise<string[]>` that resolves with the list of permission keys for that application/product. This is the primary mechanism; call it once (typically in an effect) and store the result.
+* **`getPermissions(appId, productName)`** — a `Promise<string[]>` that resolves with the list of permission keys for that application. This is the primary mechanism; call it once (typically in an effect) and store the result.
 * **`permissions`** — the accumulated list of permission messages received from the topic so far. Use this when you want the value to stay reactive to newly published permissions.
 
 The permission strings follow the same `<RESOURCE>#<ACTION>` convention used throughout OneCX (for example, `USER#EDIT`).
