@@ -13,7 +13,7 @@
 
 For logic outside a template — route or component guards, services, computed visibility — use the `PermissionService` from the `@onecx/angular-utils` library. It validates the same permissions the {conditional_rendering}[conditional rendering] directives use, but as an API you can call from TypeScript. It caches its results, so repeated checks stay cheap and do not re-query the source on every render.
 
-Under the hood the `PermissionService` resolves the current user's permissions through the `HAS_PERMISSION_CHECKER` injection token. By default that token points at the {user_service}[User Service]; you can swap in your own checker when you control how permissions are resolved.
+Under the hood the `PermissionService` resolves the current user's permissions through the `HAS_PERMISSION_CHECKER` injection token, falling back to the {user_service}[User Service] when no custom checker is provided. You can swap in your own checker when you control how permissions are resolved.
 
 [#permission-service]
 == `PermissionService`
