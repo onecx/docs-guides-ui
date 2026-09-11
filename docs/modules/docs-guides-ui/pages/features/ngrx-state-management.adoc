@@ -1,0 +1,108 @@
+:idprefix:
+:idseparator: -
+
+[#ngrx-state-management]
+= NgRx State Management
+
+This page is the practical guide to adopting NgRx for state management in a OneCX Angular application. It walks through the setup and shows how to use the three `@onecx/ngrx-*` libraries that ship with OneCX.
+
+NOTE: This page covers Angular only. There is currently no equivalent state-management pattern documented for React applications in OneCX.
+
+If you are new to NgRx, start with the xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] reference for the core building blocks (store, actions, reducers, selectors, effects), and follow the xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] for the conventions OneCX expects. This page focuses on what OneCX adds on top of the framework itself.
+
+== When to use NgRx
+
+Use NgRx in a OneCX app when you need shared state across multiple routes, components, or module-federated remotes, or when you want predictable, testable handling of complex async flows. For purely local, ephemeral UI state, prefer local component state or `ComponentStore` instead.
+
+NOTE: A reciprocal cross-link to the *State Management* concept page will be added once that page exists — whichever ticket lands second.
+
+== Installation
+
+Install the NgRx packages plus the three OneCX libraries:
+
+[source, bash]
+----
+npm install @ngrx/store @ngrx/effects @ngrx/entity @ngrx/router-store @ngrx/component-store
+npm install @onecx/ngrx-integration-interface @onecx/ngrx-accelerator @onecx/ngrx-linter-rules
+----
+
+The three `@onecx/ngrx-*` packages are released as part of the same OneCX portal release train as the other `@onecx/*` libraries, so keep them on a matching version.
+
+== Wiring OneCX platform state into the store
+
+@onecx/ngrx-integration-interface
+
+`@onecx/ngrx-integration-interface` bridges OneCX platform state — location, permissions, configuration, app config, current MFE, page, theme, and workspace — into the NgRx store as a single `onecx` feature slice. You provide a reducer and opt into the platform pieces you need by registering one or more store-connector providers.
+
+Register the `onecx` slice with its reducer, then add the connectors you want to your root providers. For a standalone app, pass them to `bootstrapApplication`:
+
+[source, typescript]
+----
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideStore } from '@ngrx/store';
+import {
+  oneCxReducer,
+  providePermissionsStoreConnector,
+  provideConfigurationStoreConnector,
+  provideCurrentThemeStoreConnector,
+  provideAppConfigStoreConnector,
+} from '@onecx/ngrx-integration-interface';
+
+bootstrapApplication(AppComponent, [
+  // feature key is "onecx"
+  provideStore({ onecx: oneCxReducer }),
+
+  // opt into the platform state you consume
+  providePermissionsStoreConnector(),
+  provideConfigurationStoreConnector(),
+  provideCurrentThemeStoreConnector(),
+  provideAppConfigStoreConnector(),
+]);
+----
+
+Each connector subscribes to the matching OneCX platform service and dispatches into the store, so you can read platform state with selectors instead of reaching for a service directly. Read it back with the generated selectors:
+
+[source, typescript]
+----
+import { createOneCxSelector, getOneCxSelectors } from '@onecx/ngrx-integration-interface';
+
+const { selectPermissions, selectConfig, selectCurrentTheme, selectAppConfig } =
+  getOneCxSelectors(createOneCxSelector<AppState>());
+----
+
+Use the matching `select...` for each slice you registered. Selectors for slices that are not registered simply resolve to `undefined` until that connector is added.
+
+NOTE: The full list of available store-connector providers and the `onecx` slice state shape is documented with the library.
+
+== Using the NgRx helpers
+
+@onecx/ngrx-accelerator
+
+`@onecx/ngrx-accelerator` provides small helpers for the recurring NgRx patterns in OneCX apps:
+
+* *URI/fragment parameters.* Helpers to keep route fragment parameters in sync with the store (create a parameter-sync effect, filter navigation to only the fragment-parameter changes you care about) and to narrow router-store navigation to a given component. Prefer the fragment-parameter variants — the older query-parameter variants are deprecated.
+* *Selectors.* `createChildSelectors` derives a set of `select...` selectors for the top-level keys of a nested feature state, so each component selects only its own slice.
+* *Local-storage rehydration.* `lazyLoadingMergeReducer` and `createNestedKeyConfiguration` help rehydrate only the slices you have persisted, rather than overwriting the whole store.
+
+NOTE: The full helper API and usage examples are documented with the library.
+
+== Enforcing the conventions
+
+@onecx/ngrx-linter-rules
+
+`@onecx/ngrx-linter-rules` is an ESLint plugin that encodes the xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] as static checks. Register it with the `recommended` config so that, for example, HTTP calls only run inside effects and effects never dispatch to the store directly:
+
+[source, javascript]
+----
+// eslint.config.mjs
+import { configs } from '@onecx/ngrx-linter-rules';
+
+export default tseslint.config(
+  configs.recommended
+);
+----
+
+== Related
+
+* xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] — the Angular NgRx reference (packages, getting started, OneCX guides and examples).
+* xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] — the conventions the linter rules enforce.
