@@ -34,8 +34,6 @@
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
 
 *** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
-*** xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc[Permissions]
-**** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
 
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
 **** xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]
@@ -75,3 +73,5 @@
 
 ** Features
 *** xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
+**** xref:documentation:docs-guides-ui:features/permissions/conditional-rendering.adoc[Conditional Rendering]
+**** xref:documentation:docs-guides-ui:features/permissions/checking-permissions-in-code.adoc[Checking Permissions in Code]

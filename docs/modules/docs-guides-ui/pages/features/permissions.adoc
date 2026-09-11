@@ -7,10 +7,10 @@
 :permission_management:      xref:documentation:onecx-permission:index.adoc[OneCX permission management]
 :user_service:               xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
 :authentication_concept:     xref:documentation:docs-guides-ui:concepts/authentication.adoc
-:permissions_reference:      xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc
-:if_permission_directive:    xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc
+:conditional_rendering:      xref:documentation:docs-guides-ui:features/permissions/conditional-rendering.adoc[Conditional rendering]
+:checking_permissions_code:  xref:documentation:docs-guides-ui:features/permissions/checking-permissions-in-code.adoc[Checking permissions in code]
 
-An Angular application often needs to show, hide, or disable parts of its UI depending on what the current user is allowed to do — for example, rendering an *Edit* button only for users who hold the `USER#EDIT` permission. The {permission_management} product decides which permissions a user has (derived from their roles); this feature is how an application *reacts* to those permissions by rendering UI conditionally.
+An Angular application often needs to show, hide, or disable parts of its UI depending on what the current user is allowed to do — for example, rendering an *Edit* button only for users who hold the `USER#EDIT` permission. The {permission_management} application decides which permissions a user has (derived from their roles); this feature is how an application *reacts* to those permissions by rendering UI conditionally.
 
 For the deep dive on where permissions come from and how they relate to the authentication provider and the user's session, see {authentication_concept}[Authentication].
 
@@ -19,71 +19,20 @@ NOTE: This feature is currently documented for Angular applications. There is no
 [#how-it-works]
 == How it works
 
-In OneCX, permissions are assigned to roles and roles to users, so a given user ends up with a set of permissions that the {permission_management} product has resolved. The shell exposes the current user's permissions to integrated applications, and the application reads them through the {user_service}[User Service] — either directly in code or through the conditional-rendering directives described below.
+In OneCX, permissions are assigned to roles and roles to users, so a given user ends up with a set of permissions that the {permission_management} application has resolved. The shell exposes the current user's permissions to integrated applications, and the application reads them through the {user_service}[User Service] — either directly in code or through the conditional-rendering directives described below.
 
 The permission strings follow the `<RESOURCE>#<ACTION>` convention (for example, `USER#DELETE`, `ORDER#EXPORT`). What a user is actually permitted to do is configured in the OneCX core applications, not in the application's own code.
 
-[#conditional-rendering]
-== Conditional rendering
+[#sub-features]
+== Sub-features
 
-Two structural directives render a template based on the current user's permissions:
-
-* `*ocxIfPermission` — renders the template only when the user *has* the required permission(s).
-* `*ocxIfNotPermission` — renders the template only when the user does *not* have the required permission(s), which is useful for showing a fallback or hint to users without access.
-
-Both accept a single permission (a string) or several (an array). When an array is given, all of the listed permissions are required — the check is a logical AND.
-
-.button shown only with the USER#EDIT permission
-[source,html]
-----
-<button pButton pRipple *ocxIfPermission="'USER#EDIT'">
-  {{ 'ACCESS_PAGE_KEY.EDIT' | translate }}
-</button>
-----
-
-.button shown only when every listed permission is present
-[source,html]
-----
-<button pButton pRipple *ocxIfPermission="['USER#VIEW', 'USER#EXPORT']">
-  {{ 'ACCESS_PAGE_KEY.EXPORT' | translate }}
-</button>
-----
-
-.fallback hint for users without the USER#VIEW permission
-[source,html]
-----
-<div class="text-muted" *ocxIfNotPermission="'USER#VIEW'">
-  {{ 'ACCESS_PAGE_KEY.NO_ACCESS_HINT' | translate }}
-</div>
-----
-
-Beyond show/hide, the directives also support rendering an alternative `elseTemplate` and keeping the UI visible but `disabled` when the permission is missing (`onMissingPermission: 'disable'`). See {if_permission_directive}[ifPermissions directive] for the full microsyntax and option reference.
-
-[#checking-permissions-in-code]
-== Checking permissions in code
-
-For logic outside a template — route or component guards, services, computed visibility — use the {user_service}[User Service]:
-
-* `hasPermission(permissionKey)` resolves to `true` only when the current user holds every permission in `permissionKey` (a single string or a `string[]`), and to `true` when nothing is passed.
-* `getPermissions()` returns the current user's full list of permissions as an observable.
-
-.example.ts
-[source,typescript]
-----
-const userService = inject(UserService)
-
-// Check for a single permission
-const canDelete = await userService.hasPermission('USER#DELETE')
-
-// Check for multiple permissions (all must be present)
-const canManage = await userService.hasPermission(['USER#EDIT', 'USER#EXPORT'])
-----
-
-See {permissions_reference}[Permissions in Angular] for permission setup and the full `User Service` reference.
+* {conditional_rendering}[Conditional rendering] — the `*ocxIfPermission` / `*ocxIfNotPermission` directives: rendering or hiding template content based on the current user's permissions, including `elseTemplate` and `onMissingPermission: 'disable'`.
+* {checking_permissions_code}[Checking permissions in code] — the `UserService.hasPermission()` / `getPermissions()` checks for guards, services, and other logic outside a template.
 
 [#related]
 == Related
 
 * {authentication_concept}[Authentication] — how the shell owns the authentication flow and where a user's permissions come from.
-* {permissions_reference}[Permissions in Angular] — permission basics, setup, and the `User Service` reference.
-* {if_permission_directive}[ifPermissions directive] — full microsyntax and option reference for the conditional-rendering directives.
+* {conditional_rendering}[Conditional rendering] — the permission-based template directives.
+* {checking_permissions_code}[Checking permissions in code] — the `UserService` permission checks.
+* {user_service}[User Service] — the `@onecx/angular-integration-interface` service that resolves the current user's permissions.

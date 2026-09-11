@@ -1,0 +1,54 @@
+:idprefix:
+:idseparator: -
+
+:permissions_handling:     xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
+:user_service:             xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
+:conditional_rendering:    xref:documentation:docs-guides-ui:features/permissions/conditional-rendering.adoc[Conditional rendering]
+
+[#checking-permissions-in-code]
+= Checking Permissions in Code
+
+[#overview]
+== Overview
+
+For logic outside a template — route or component guards, services, computed visibility — use the {user_service}[User Service] from the Angular Integration Interface. It exposes the current user's permissions so an application can validate access in code, independent of the template directives on the {conditional_rendering}[conditional rendering] page.
+
+[#haspermission]
+== `hasPermission`
+
+`hasPermission(permissionKey)` resolves to `true` only when the current user holds every permission in `permissionKey` — a single string or a `string[]` — and to `true` when nothing is passed.
+
+.example.ts
+[source,typescript]
+----
+const userService = inject(UserService)
+
+// Check for a single permission
+const canDelete = await userService.hasPermission('USER#DELETE')
+
+// Check for multiple permissions (all must be present)
+const canManage = await userService.hasPermission(['USER#EDIT', 'USER#EXPORT'])
+----
+
+[#getpermissions]
+== `getPermissions`
+
+`getPermissions()` returns the current user's full list of permissions as an observable, for the context of the application.
+
+.example.ts
+[source,typescript]
+----
+const userService = inject(UserService)
+
+// Pipe the permission list as it resolves
+userService.getPermissions().pipe(
+  // map/filter the permission list for the current user
+)
+----
+
+[#related]
+== Related
+
+* {permissions_handling}[Permissions Handling] — the feature overview, how permissions reach an application, and the `<RESOURCE>#<ACTION>` convention.
+* {conditional_rendering}[Conditional rendering] — the `*ocxIfPermission` / `*ocxIfNotPermission` directives for permission-based UI inside templates.
+* {user_service}[User Service] — the full `@onecx/angular-integration-interface` reference.
