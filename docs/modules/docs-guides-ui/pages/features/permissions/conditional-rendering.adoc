@@ -20,7 +20,7 @@ Both accept a single permission (a string) or several (an array). When an array 
 
 [NOTE]
 ====
-The directives require the {user_service}[User Service] to be provided for the current user's permissions to be resolved.
+The directives resolve the current user's permissions through the `HAS_PERMISSION_CHECKER` injection token, falling back to the {user_service}[User Service] when no custom checker is provided.
 ====
 
 [#ifpermission]
@@ -122,5 +122,5 @@ The directive adds and removes the `disabled` attribute on the *root node* of th
 == Related
 
 * {permissions_handling}[Permissions Handling] — the feature overview, how permissions reach an application, and the `<RESOURCE>#<ACTION>` convention.
-* {checking_permissions_code}[Checking permissions in code] — the `UserService` checks for logic outside a template.
+* {checking_permissions_code}[Checking permissions in code] — the `PermissionService` and `HAS_PERMISSION_CHECKER` checks for logic outside a template.
 * {user_service}[User Service] — the `@onecx/angular-integration-interface` service the directives resolve permissions through.
