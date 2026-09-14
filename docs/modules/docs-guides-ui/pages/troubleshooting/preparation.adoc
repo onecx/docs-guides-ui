@@ -5,7 +5,7 @@ Work through these steps before digging into a specific error. They set up the a
 [#ui-compatibility]
 == UI compatibility
 
-Make sure that the app follows the required OneCX application setup described in xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate vanilla Angular apps to OneCX], especially the prerequisites, dependency, and module federation configuration steps.
+Make sure that the app follows the required OneCX application setup described in xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup], especially the platform/package compatibility, package sharing, and module federation configuration steps.
 
 [#improve-debugging-experience]
 == Improve the debugging experience
