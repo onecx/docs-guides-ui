@@ -9,7 +9,7 @@ This page is a technology-agnostic overview of *Remote Components* — how a pie
 [#remote-components-vs-modules]
 == Remote Components vs. regular modules
 
-Most of what a user sees in OneCX comes from *modules*: an application registers one or more routes with the shell via xref:documentation:docs-guides-ui:module-federation/index.adoc[module federation], and the shell loads and renders that application's module whenever the user navigates to one of its routes. A module owns a whole page (or a whole section of the URL space) and is only ever loaded by the shell itself.
+Most of what a user sees in OneCX comes from *modules*: an application's routes and microfrontends are configured via OneCX platform configuration, and the shell loads and renders that application's module via xref:documentation:docs-guides-ui:module-federation/index.adoc[module federation] whenever the user navigates to one of its routes. A module owns a whole page (or a whole section of the URL space) and is only ever loaded by the shell itself.
 
 A *Remote Component* is different in scope and in who loads it. Instead of owning a page, it is a single, self-contained piece of UI — a button, a widget, a panel — that an application exposes so that *any other application* can embed it, not just the shell. The same technical mechanism (module federation) is used to load its code, but the loading is driven by a xref:#onecx-slot[Slot] wherever it is embedded, rather than by the shell's router.
 
