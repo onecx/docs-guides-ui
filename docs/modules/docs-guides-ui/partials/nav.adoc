@@ -39,7 +39,6 @@
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Setup]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
 
-*** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
 *** xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc[Permissions]
 **** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
 
@@ -83,3 +82,6 @@
 **** xref:documentation:docs-guides-ui:concepts/remote-components/angular.adoc[Angular Applications]
 **** xref:documentation:docs-guides-ui:concepts/remote-components/react.adoc[React Applications]
 *** xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management]
+
+** Features
+*** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
