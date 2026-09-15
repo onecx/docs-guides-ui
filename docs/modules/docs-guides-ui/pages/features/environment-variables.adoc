@@ -83,6 +83,7 @@ The values in `env.json` are the same regardless of framework; only the way they
 `AppConfigService` is a plain `@Injectable()` (not provided in root), so the application provides it and calls `init(baseUrl)` once during bootstrap.
 Rather than hard-coding the base URL, read it from {xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-state-service[AppStateService]}: the current micro-frontend's `remoteBaseUrl` is the base path under which the application is mounted, and it is exactly what `init()` needs to locate `{baseUrl}/assets/env.json`.
 
+.Example `src/app/app.config.ts`
 [source,ts]
 ----
 import { inject, provideAppInitializer } from '@angular/core';
@@ -113,6 +114,7 @@ export function appConfigServiceInitializer(
 
 Once `init()` has completed, values are read synchronously:
 
+.Example `src/app/my-feature.component.ts`
 [source,ts]
 ----
 const apiUrl = this.appConfigService.getProperty('API_URL');
@@ -128,6 +130,7 @@ The `@onecx/react-integration-interface` has no separate app-config hook — the
 The `ConfigurationProvider` loads that file on mount (from `assets/env.json` by default), so the application only needs to wrap itself in the provider once and read the values from the hook.
 Application-specific keys (those not in `CONFIG_KEY`) are read from the `config` snapshot:
 
+.Example `src/MyFeature.tsx`
 [source,tsx]
 ----
 import {
@@ -186,6 +189,7 @@ For the well-known platform keys, use the `CONFIG_KEY` enum rather than ad-hoc s
 
 Import `CONFIG_KEY` and `ConfigurationService` from `@onecx/angular-integration-interface`:
 
+.Example `src/app/keycloak-banner.component.ts`
 [source,ts]
 ----
 import {
@@ -205,6 +209,7 @@ See {configuration_service} for the full API.
 The Shell reads its own `env.json` through the same `useConfiguration` hook — there is no separate app-config hook in React.
 Read a platform value with the async `getProperty`, gated on the provider's `isInitialized` promise so the value has been loaded first:
 
+.Example `src/KeycloakBanner.tsx`
 [source,tsx]
 ----
 import { useEffect, useState } from 'react';
