@@ -85,3 +85,4 @@
 
 ** Features
 *** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
+*** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
