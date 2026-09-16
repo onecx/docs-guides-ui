@@ -37,10 +37,7 @@
 *** xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Translations]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Setup]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
-
-*** xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc[Permissions]
-**** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
-
+*** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
 
 *** xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx]
@@ -84,6 +81,12 @@
 ** Features
 *** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
 *** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
+*** xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
+**** Angular
+***** xref:documentation:docs-guides-ui:features/permissions/angular/conditional-rendering.adoc[Conditional Rendering]
+***** xref:documentation:docs-guides-ui:features/permissions/angular/checking-permissions-in-code.adoc[Checking Permissions in Code]
+**** React
+***** xref:documentation:docs-guides-ui:features/permissions/react/checking-permissions-in-code.adoc[Checking Permissions in Code]
 *** PrimeNG
 **** xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[Theming Customization]
 *** Development
