@@ -42,7 +42,6 @@
 **** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
 
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
-**** xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]
 
 *** xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx]
 **** xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[Guidelines]
@@ -85,5 +84,7 @@
 ** Features
 *** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
 *** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
+*** PrimeNG
+**** xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[Theming Customization]
 *** Development
 **** xref:documentation:docs-guides-ui:features/development/source-maps.adoc[Source Maps]
