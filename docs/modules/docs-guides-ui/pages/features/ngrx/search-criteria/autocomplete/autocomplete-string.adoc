@@ -1,4 +1,5 @@
 = AutoComplete for suggestions with array of type string
+:page-aliases: angular/ngrx/search-criteria/autocomplete/autocomplete-string.adoc
 
 :idprefix:
 :idseparator: -
