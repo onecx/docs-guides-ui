@@ -1,9 +1,17 @@
 :idprefix:
 :idseparator: -
 
+[#ngrx]
 = NgRx
+:page-aliases: angular/ngrx/ngrx.adoc
+
 NgRx is a reactive state management library for Angular based on the Redux pattern and powered by RxJS. It helps you model application state as a single immutable source of truth, describe state changes with actions, and derive view data with selectors and effects.
 
+NOTE: NgRx applies to Angular applications only. There is currently no equivalent state-management pattern documented for React applications in OneCX.
+
+For why OneCX Angular applications use NgRx, see the xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] concept page.
+
+[#ngrx-what-is-ngrx]
 == What Is NgRx?
 * A set of libraries for Angular to manage global and feature state in a predictable and testable way.
 * Core building blocks:
@@ -13,6 +21,7 @@ NgRx is a reactive state management library for Angular based on the Redux patte
 ** Effects: Side-effect handlers for async work (HTTP, routing, etc.).
 ** Entity/ComponentStore/Router Store/DevTools: Optional libraries to simplify common patterns.
 
+[#ngrx-overview]
 == Overview
 Use NgRx when you need any of the following:
 * Shared state across multiple routes/components and modules.
@@ -22,6 +31,7 @@ Use NgRx when you need any of the following:
 
 Prefer local component state or `ComponentStore` for purely local/ephemeral UI concerns. Avoid putting computed/derivable data into the store; compute it via selectors instead.
 
+[#ngrx-core-packages]
 == Core Packages
 * Store: `@ngrx/store` — application and feature state containers.
 * Effects: `@ngrx/effects` — side-effects and async flows.
@@ -30,31 +40,19 @@ Prefer local component state or `ComponentStore` for purely local/ephemeral UI c
 * ComponentStore: `@ngrx/component-store` — local, component-scoped state management.
 * Store DevTools: `@ngrx/store-devtools` — time-travel debugging via Redux DevTools.
 
-== Getting Started
-Install commonly used packages:
+[#ngrx-pages]
+== Pages in this section
 
-[source, bash]
-----
-npm install @ngrx/store @ngrx/effects @ngrx/entity @ngrx/router-store @ngrx/store-devtools
-----
+* xref:documentation:docs-guides-ui:features/ngrx/setup.adoc[Setup] — installing NgRx and the OneCX libraries, getting-started steps, and wiring OneCX platform state into the store.
+* xref:documentation:docs-guides-ui:features/ngrx/guidelines.adoc[Guidelines] — the OneCX NgRx conventions, project structure, dialogs, and the OneCX utility libraries.
+* xref:documentation:docs-guides-ui:features/ngrx/lazy-loading.adoc[Lazy Loading Tabs] — loading tabs dynamically with NgRx.
+* xref:documentation:docs-guides-ui:features/ngrx/search-criteria/search-criteria.adoc[Search Criteria] — adding search criteria to a search page:
+** xref:documentation:docs-guides-ui:features/ngrx/search-criteria/autocomplete/autocomplete.adoc[AutoComplete]
+** xref:documentation:docs-guides-ui:features/ngrx/search-criteria/calendar.adoc[Calendar]
+** xref:documentation:docs-guides-ui:features/ngrx/search-criteria/dropdown.adoc[Dropdown]
+** xref:documentation:docs-guides-ui:features/ngrx/search-criteria/multiselect.adoc[MultiSelect]
 
-High-level steps:
-1. Define actions for user intents and async outcomes.
-2. Create feature state, initial state, and reducers.
-3. Add selectors to expose view models from state.
-4. Implement effects to handle HTTP calls, routing, and other side effects.
-5. Wire up the feature with `provideState`/`provideEffects` (standalone) or feature modules.
-6. Use the Redux DevTools for debugging (`StoreDevtoolsModule` or `provideStoreDevtools`).
-
-== OneCX Guides and Examples
-* xref:./lazy-loading.adoc[Lazy Loading Tabs with NgRx]
-* Adding Search Criteria:
-** xref:./search-criteria/search-criteria.adoc[Search Criteria]
-** xref:./search-criteria/autocomplete/autocomplete.adoc[Autocomplete]
-** xref:./search-criteria/calendar.adoc[Calendar]
-** xref:./search-criteria/dropdown.adoc[Dropdown]
-** xref:./search-criteria/multiselect.adoc[MultiSelect]
-
+[#ngrx-useful-links]
 == Useful Links
 * Official website: https://ngrx.io/[NgRx]
 * Documentation: https://ngrx.io/docs[Docs]

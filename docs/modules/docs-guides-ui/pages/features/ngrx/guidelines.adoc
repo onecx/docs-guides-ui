@@ -1,4 +1,5 @@
-= NgRX
+= NgRx Guidelines
+:page-aliases: angular/ngrx/guidelines.adoc
 
 :idprefix:
 :idseparator: -
@@ -165,6 +166,50 @@ The dialogs can also dispatch actions but only if they are not used to react on 
 === Dialogs used in multiple pages
 The structure and inner workings of a dialog that is used in many pages is similar to the structure of a page. They have their own section in the store, own effects, own selectors,...
 Dialogs that are used by multiple pages are always dispatching an action that is informing about the opening of the dialog in the constructor of the dialog component. The viewmodel is read from the store inside of the component via a selector like it is done for a page.
+
+[#ngrx-guidelines-onecx-utilities]
+== OneCX utilities
+
+OneCX ships three libraries that support these guidelines. `@onecx/ngrx-integration-interface`, which brings OneCX platform state into the store, is covered in xref:documentation:docs-guides-ui:features/ngrx/setup.adoc#ngrx-setup-platform-state[NgRx Setup]. The other two are described below.
+
+[#ngrx-guidelines-accelerator]
+=== Helpers
+
+Library: `@onecx/ngrx-accelerator`
+
+`@onecx/ngrx-accelerator` provides small helpers for the recurring NgRx patterns in OneCX apps:
+
+* *URI parameters.* Helpers to keep route query parameters in sync with the store (`createQueryParamsEffect`, `filterOutQueryParamsHaveNotChanged`, `filterOutOnlyQueryParamsChanged`) and to narrow router-store navigation to a given component (`filterForNavigatedTo`). The query-parameter helpers are marked deprecated in favour of fragment-parameter variants, but those variants are not yet exported from the `@onecx/ngrx-accelerator` package entry point, so the query-parameter helpers are the ones you can import today.
+* *Selectors.* `createChildSelectors` derives a set of `select...` selectors for the top-level keys of a nested feature state, so each component selects only its own slice.
+* *Local-storage rehydration.* `lazyLoadingMergeReducer` and `createNestedKeyConfiguration` help rehydrate only the slices you have persisted, rather than overwriting the whole store.
+
+NOTE: The full helper API and usage examples are documented with the library.
+
+[#ngrx-guidelines-linter-rules]
+=== Enforcing the guidelines
+
+Library: `@onecx/ngrx-linter-rules`
+
+`@onecx/ngrx-linter-rules` is an ESLint plugin that encodes the guidelines on this page as static checks. Register the plugin and its `recommended` rules so that, for example, HTTP calls only run inside effects and effects never dispatch to the store directly. The exported `configs.recommended` uses the legacy `.eslintrc` shape, so in an ESLint flat config register the plugin object and reuse its rule map:
+
+.eslint.config.cjs
+[source,javascript]
+----
+const ngrxLinterRules = require('@onecx/ngrx-linter-rules');
+
+module.exports = [
+  {
+    plugins: {
+      '@onecx/ngrx-linter-rules': ngrxLinterRules.plugin,
+    },
+    rules: {
+      ...ngrxLinterRules.configs.recommended.rules,
+    },
+  },
+];
+----
+
+For the legacy `.eslintrc` setup and for overriding rule severities, see the xref:onecx-portal-ui-libs:libraries/ngrx-linter-rules.adoc[ngrx-linter-rules] library documentation.
 
 [#further-information-about-ngrx]
 == Further information about NgRx

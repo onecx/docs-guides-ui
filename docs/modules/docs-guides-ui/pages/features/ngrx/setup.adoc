@@ -1,36 +1,41 @@
 :idprefix:
 :idseparator: -
 
-[#ngrx-state-management]
-= NgRx State Management
+[#ngrx-setup]
+= NgRx Setup
 
-This page is the practical guide to adopting NgRx for state management in a OneCX Angular application. It walks through the setup and shows how to use the three `@onecx/ngrx-*` libraries that ship with OneCX.
+This page walks through setting up NgRx in a OneCX Angular application: installing the packages, the general steps to build a feature store, and wiring OneCX platform state into the store with `@onecx/ngrx-integration-interface`.
 
 NOTE: This page covers Angular only. There is currently no equivalent state-management pattern documented for React applications in OneCX.
 
-If you are new to NgRx, start with the xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] reference for the core building blocks (store, actions, reducers, selectors, effects), and follow the xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] for the conventions OneCX expects. This page focuses on what OneCX adds on top of the framework itself.
+For what NgRx is and when to use it, see xref:documentation:docs-guides-ui:features/ngrx.adoc[NgRx]. For the conventions OneCX applications follow, see xref:documentation:docs-guides-ui:features/ngrx/guidelines.adoc[NgRx Guidelines].
 
-[#ngrx-state-management-when-to-use]
-== When to use NgRx
-
-Use NgRx in a OneCX app when you need shared state across multiple routes, components, or module-federated remotes, or when you want predictable, testable handling of complex async flows. For purely local, ephemeral UI state, prefer local component state or `ComponentStore` instead.
-
-For why OneCX Angular applications use NgRx and the conventions they follow, see the xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] concept page.
-
-[#ngrx-state-management-installation]
+[#ngrx-setup-installation]
 == Installation
 
 Install the NgRx packages plus the three OneCX libraries:
 
-[source, bash]
+[source,bash]
 ----
-npm install @ngrx/store @ngrx/effects @ngrx/entity @ngrx/router-store @ngrx/component-store
+npm install @ngrx/store @ngrx/effects @ngrx/entity @ngrx/router-store @ngrx/component-store @ngrx/store-devtools
 npm install @onecx/ngrx-integration-interface @onecx/ngrx-accelerator @onecx/ngrx-linter-rules
 ----
 
 The three `@onecx/ngrx-*` packages are released as part of the same OneCX portal release train as the other `@onecx/*` libraries, so keep them on a matching version.
 
-[#ngrx-state-management-wiring-platform-state]
+[#ngrx-setup-getting-started]
+== Getting started
+
+High-level steps:
+
+1. Define actions for user intents and async outcomes.
+2. Create feature state, initial state, and reducers.
+3. Add selectors to expose view models from state.
+4. Implement effects to handle HTTP calls, routing, and other side effects.
+5. Wire up the feature with `provideState`/`provideEffects` (standalone) or feature modules.
+6. Use the Redux DevTools for debugging (`StoreDevtoolsModule` or `provideStoreDevtools`).
+
+[#ngrx-setup-platform-state]
 == Wiring OneCX platform state into the store
 
 Library: `@onecx/ngrx-integration-interface`
@@ -116,48 +121,11 @@ Use the matching `select...` for each slice you registered. Selectors for slices
 
 NOTE: The full list of available store-connector providers and the `onecx` slice state shape is documented with the library.
 
-[#ngrx-state-management-helpers]
-== Using the NgRx helpers
+For the other OneCX NgRx libraries, `@onecx/ngrx-accelerator` and `@onecx/ngrx-linter-rules`, see xref:documentation:docs-guides-ui:features/ngrx/guidelines.adoc#ngrx-guidelines-onecx-utilities[OneCX utilities] in the guidelines.
 
-Library: `@onecx/ngrx-accelerator`
-
-`@onecx/ngrx-accelerator` provides small helpers for the recurring NgRx patterns in OneCX apps:
-
-* *URI parameters.* Helpers to keep route query parameters in sync with the store (`createQueryParamsEffect`, `filterOutQueryParamsHaveNotChanged`, `filterOutOnlyQueryParamsChanged`) and to narrow router-store navigation to a given component (`filterForNavigatedTo`). The query-parameter helpers are marked deprecated in favour of fragment-parameter variants, but those variants are not yet exported from the `@onecx/ngrx-accelerator` package entry point, so the query-parameter helpers are the ones you can import today.
-* *Selectors.* `createChildSelectors` derives a set of `select...` selectors for the top-level keys of a nested feature state, so each component selects only its own slice.
-* *Local-storage rehydration.* `lazyLoadingMergeReducer` and `createNestedKeyConfiguration` help rehydrate only the slices you have persisted, rather than overwriting the whole store.
-
-NOTE: The full helper API and usage examples are documented with the library.
-
-[#ngrx-state-management-linter-rules]
-== Enforcing the conventions
-
-Library: `@onecx/ngrx-linter-rules`
-
-`@onecx/ngrx-linter-rules` is an ESLint plugin that encodes the xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] as static checks. Register the plugin and its `recommended` rules so that, for example, HTTP calls only run inside effects and effects never dispatch to the store directly. The exported `configs.recommended` uses the legacy `.eslintrc` shape, so in an ESLint flat config register the plugin object and reuse its rule map:
-
-.eslint.config.cjs
-[source,javascript]
-----
-const ngrxLinterRules = require('@onecx/ngrx-linter-rules');
-
-module.exports = [
-  {
-    plugins: {
-      '@onecx/ngrx-linter-rules': ngrxLinterRules.plugin,
-    },
-    rules: {
-      ...ngrxLinterRules.configs.recommended.rules,
-    },
-  },
-];
-----
-
-For the legacy `.eslintrc` setup and for overriding rule severities, see the xref:onecx-portal-ui-libs:libraries/ngrx-linter-rules.adoc[ngrx-linter-rules] library documentation.
-
-[#ngrx-state-management-related]
+[#ngrx-setup-related]
 == Related
 
-* xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] — why OneCX Angular applications use NgRx and the conventions on top of it.
-* xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] — the Angular NgRx reference (packages, getting started, OneCX guides and examples).
-* xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] — the conventions the linter rules enforce.
+* xref:documentation:docs-guides-ui:features/ngrx.adoc[NgRx] — what NgRx is, when to use it, and an index of the NgRx pages.
+* xref:documentation:docs-guides-ui:features/ngrx/guidelines.adoc[NgRx Guidelines] — the conventions OneCX applications follow and the OneCX utility libraries.
+* xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] — why OneCX Angular applications use NgRx.
