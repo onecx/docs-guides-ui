@@ -1,0 +1,20 @@
+:idprefix:
+:idseparator: -
+
+[#concepts]
+= Concepts
+
+This section holds OneCX's core platform concepts as short, public, technology-agnostic overviews, suitable for any OneCX developer. Each page introduces a concept and links out to the internal developer docs for the full deep dive.
+
+[#concepts-pages]
+== Pages
+
+* xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing] — why a OneCX app's routing must adapt to the shell's base path, and how links between applications resolve.
+* xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming] — how the shell and the OneCX Theme Management application provide the theme, expressed as CSS variables (design tokens) available on every page.
+* xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations] — how OneCX applications provide multi-language support through per-language translation files.
+* xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets] — what *assets* are in OneCX (icons, images, fonts, and i18n files) and why they need special treatment.
+* xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication] — how the shell owns the entire authentication flow and session, and the small set of interactions an integrated app is limited to.
+* xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation] — the rules OneCX places on application styles so they stay confined to the region each app renders into.
+* xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] — the mechanism that lets OneCX compose many independently developed and independently deployed applications at runtime.
+* xref:documentation:docs-guides-ui:concepts/remote-components.adoc[Remote Components] — how a piece of UI owned by one application can be embedded inside another, and the *Slots* that host them.
+* xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] — how OneCX Angular applications use NgRx to model the data that drives their UI as a single, predictable store.

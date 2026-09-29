@@ -62,7 +62,7 @@
 **** xref:documentation:docs-guides-ui:react/libraries/react-remote-components.adoc[react-remote-components]
 **** xref:documentation:docs-guides-ui:react/libraries/react-webcomponents.adoc[react-webcomponents]
 
-** Concepts
+** xref:documentation:docs-guides-ui:concepts/index.adoc[Concepts]
 *** xref:documentation:docs-guides-ui:concepts/routing.adoc[Routing]
 **** xref:documentation:docs-guides-ui:concepts/routing/angular.adoc[Angular Applications]
 **** xref:documentation:docs-guides-ui:concepts/routing/react.adoc[React Applications]
@@ -77,7 +77,7 @@
 **** xref:documentation:docs-guides-ui:concepts/remote-components/react.adoc[React Applications]
 *** xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management]
 
-** Features
+** xref:documentation:docs-guides-ui:features/index.adoc[Features]
 *** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
 *** xref:documentation:docs-guides-ui:features/environment-variables.adoc[Environment Variables]
 *** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
