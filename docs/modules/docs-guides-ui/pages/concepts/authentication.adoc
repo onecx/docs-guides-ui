@@ -104,5 +104,4 @@ The shell keeps the access token valid transparently: both the Angular HTTP inte
 
 * xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication] — the required setup how-to for attaching authentication headers.
 * xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[@onecx/react-auth] — full reference for the React auth proxy and `axiosFactory`.
-
-NOTE: A reciprocal cross-link to the *Permissions Handling* feature page will be added once that page exists — whichever ticket lands second.
+* xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling] — rendering UI conditionally based on the permissions the shell exposes for the current user.
