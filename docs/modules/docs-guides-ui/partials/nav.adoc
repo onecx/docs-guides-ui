@@ -17,11 +17,16 @@
 **** xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets/react.adoc[React Applications]
 *** xref:documentation:docs-guides-ui:setup/recommended/adapt-routing.adoc[Adapt Routing]
 
-** xref:documentation:docs-guides-ui:troubleshooting.adoc[UI Troubleshooting]
+** xref:documentation:docs-guides-ui:troubleshooting/index.adoc[Troubleshooting]
+*** xref:documentation:docs-guides-ui:troubleshooting/preparation.adoc[Preparation]
+*** xref:documentation:docs-guides-ui:troubleshooting/general-issues.adoc[General Issues]
+*** xref:documentation:docs-guides-ui:troubleshooting/application-setup.adoc[Application Setup]
+*** xref:documentation:docs-guides-ui:troubleshooting/shell-compatibility.adoc[Shell Compatibility]
+*** xref:documentation:docs-guides-ui:troubleshooting/specific-issues.adoc[Specific Issues]
+*** xref:documentation:docs-guides-ui:troubleshooting/tsconfig-paths.adoc[TSConfig Paths]
 
 ** xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
 *** xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases (tsconfig paths)]
-*** xref:documentation:docs-guides-ui:ui-additional/enable-source-maps.adoc[Enable Source Maps]
 
 ** xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 *** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
@@ -31,13 +36,8 @@
 *** xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Translations]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Setup]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
-
 *** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
-*** xref:documentation:docs-guides-ui:angular/permissions/permissions.adoc[Permissions]
-**** xref:documentation:docs-guides-ui:angular/permissions/ifPermissions.adoc[ifPermissions Directive]
-
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
-**** xref:documentation:docs-guides-ui:angular/primeng/theming.adoc[Theming with PrimeNG]
 
 *** xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx]
 **** xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[Guidelines]
@@ -71,6 +71,23 @@
 *** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
 *** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
 *** xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]
+*** xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation]
+*** xref:documentation:docs-guides-ui:concepts/remote-components.adoc[Remote Components]
+**** xref:documentation:docs-guides-ui:concepts/remote-components/angular.adoc[Angular Applications]
+**** xref:documentation:docs-guides-ui:concepts/remote-components/react.adoc[React Applications]
+*** xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management]
 
 ** Features
+*** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
 *** xref:documentation:docs-guides-ui:features/environment-variables.adoc[Environment Variables]
+*** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
+*** xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
+**** Angular
+***** xref:documentation:docs-guides-ui:features/permissions/angular/conditional-rendering.adoc[Conditional Rendering]
+***** xref:documentation:docs-guides-ui:features/permissions/angular/checking-permissions-in-code.adoc[Checking Permissions in Code]
+**** React
+***** xref:documentation:docs-guides-ui:features/permissions/react/checking-permissions-in-code.adoc[Checking Permissions in Code]
+*** PrimeNG
+**** xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[Theming Customization]
+*** Development
+**** xref:documentation:docs-guides-ui:features/development/source-maps.adoc[Source Maps]
