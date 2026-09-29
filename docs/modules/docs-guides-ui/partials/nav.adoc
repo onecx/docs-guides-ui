@@ -91,3 +91,8 @@
 **** xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[Theming Customization]
 *** Development
 **** xref:documentation:docs-guides-ui:features/development/source-maps.adoc[Source Maps]
+
+** xref:documentation:onecx-portal-ui-libs:contribution-testing/index.adoc[Contribution & Testing]
+*** xref:documentation:onecx-portal-ui-libs:contribution-testing/local-only.adoc[Local-only]
+*** xref:documentation:onecx-portal-ui-libs:contribution-testing/integration.adoc[Integration]
+*** xref:documentation:onecx-portal-ui-libs:contribution-testing/application-only.adoc[Application-only]
