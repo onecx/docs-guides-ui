@@ -24,6 +24,7 @@ For why OneCX Angular applications use NgRx, see the xref:documentation:docs-gui
 [#ngrx-overview]
 == Overview
 Use NgRx when you need any of the following:
+
 * Shared state across multiple routes/components and modules.
 * Complex async orchestration (load, cache, error handling, retries).
 * Auditability and predictability (time-travel debugging, action logs).
