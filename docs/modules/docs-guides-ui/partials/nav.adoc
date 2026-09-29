@@ -27,7 +27,6 @@
 
 ** xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
 *** xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases (tsconfig paths)]
-*** xref:documentation:docs-guides-ui:ui-additional/environment-variables/environment-variables.adoc[Configure OneCX Environment Variables (Runtime Configuration)]
 
 ** xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 *** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
@@ -80,6 +79,7 @@
 
 ** Features
 *** xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages]
+*** xref:documentation:docs-guides-ui:features/environment-variables.adoc[Environment Variables]
 *** xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language]
 *** xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
 **** Angular
