@@ -48,5 +48,4 @@ These conventions, along with the full guidelines, project structure, and the di
 
 * xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] — introduction to the NgRx library, its packages, and getting-started steps.
 * xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx Guidelines] — the full OneCX conventions, project structure, and worked examples referenced above.
-
-NOTE: A reciprocal cross-link to the *NgRx State Management* feature page will be added once that page exists — whichever ticket lands second.
+* xref:documentation:docs-guides-ui:features/ngrx-state-management.adoc[NgRx State Management] — practical setup guide for NgRx and the `@onecx/ngrx-*` libraries in a OneCX Angular application.

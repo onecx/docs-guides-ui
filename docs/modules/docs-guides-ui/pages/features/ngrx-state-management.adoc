@@ -14,7 +14,7 @@ If you are new to NgRx, start with the xref:documentation:docs-guides-ui:angular
 
 Use NgRx in a OneCX app when you need shared state across multiple routes, components, or module-federated remotes, or when you want predictable, testable handling of complex async flows. For purely local, ephemeral UI state, prefer local component state or `ComponentStore` instead.
 
-NOTE: A reciprocal cross-link to the *State Management* concept page will be added once that page exists — whichever ticket lands second.
+For why OneCX Angular applications use NgRx and the conventions they follow, see the xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] concept page.
 
 == Installation
 
@@ -30,16 +30,17 @@ The three `@onecx/ngrx-*` packages are released as part of the same OneCX portal
 
 == Wiring OneCX platform state into the store
 
-@onecx/ngrx-integration-interface
+Library: `@onecx/ngrx-integration-interface`
 
 `@onecx/ngrx-integration-interface` bridges OneCX platform state — location, permissions, configuration, app config, current MFE, page, theme, and workspace — into the NgRx store as a single `onecx` feature slice. You provide a reducer and opt into the platform pieces you need by registering one or more store-connector providers.
 
-Register the `onecx` slice with its reducer, then add the connectors you want to your root providers. For a standalone app, pass them to `bootstrapApplication`:
+Register the `onecx` slice with its reducer and add the connectors you want to the providers of your application module. The module is bootstrapped with `bootstrapModule()` from `@onecx/angular-webcomponents`, as described in xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Module Approach]:
 
-[source, typescript]
+.src/app/app.module.ts
+[source,typescript]
 ----
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideStore } from '@ngrx/store';
+import { NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
 import {
   oneCxReducer,
   providePermissionsStoreConnector,
@@ -48,15 +49,47 @@ import {
   provideAppConfigStoreConnector,
 } from '@onecx/ngrx-integration-interface';
 
-bootstrapApplication(AppComponent, [
-  // feature key is "onecx"
-  provideStore({ onecx: oneCxReducer }),
+@NgModule({
+  imports: [
+    // feature key is "onecx"
+    StoreModule.forRoot({ onecx: oneCxReducer }),
+  ],
+  providers: [
+    // opt into the platform state you consume
+    providePermissionsStoreConnector(),
+    provideConfigurationStoreConnector(),
+    provideCurrentThemeStoreConnector(),
+    provideAppConfigStoreConnector(),
+  ],
+})
+export class AppModule {}
+----
 
-  // opt into the platform state you consume
+.src/bootstrap.ts
+[source,typescript]
+----
+import { bootstrapModule } from '@onecx/angular-webcomponents';
+import { environment } from './environments/environment';
+import { AppModule } from './app/app.module';
+
+bootstrapModule(AppModule, 'microfrontend', environment.production);
+----
+
+A Remote Component has no application module. It is bootstrapped with `bootstrapRemoteComponent()` from `@onecx/angular-webcomponents`, as described in xref:documentation:docs-guides-ui:setup/required/expose-remote-module/component-approach.adoc[Component Approach], so pass the store and the connectors in its providers array instead:
+
+.src/app/remotes/example/example.component.bootstrap.ts
+[source,typescript]
+----
+import { provideStore } from '@ngrx/store';
+import { bootstrapRemoteComponent } from '@onecx/angular-webcomponents';
+import { oneCxReducer, providePermissionsStoreConnector } from '@onecx/ngrx-integration-interface';
+import { environment } from '../../../environments/environment';
+import { ExampleComponent } from './example.component';
+
+bootstrapRemoteComponent(ExampleComponent, 'example-remote-component', environment.production, [
+  // other Remote Component providers
+  provideStore({ onecx: oneCxReducer }),
   providePermissionsStoreConnector(),
-  provideConfigurationStoreConnector(),
-  provideCurrentThemeStoreConnector(),
-  provideAppConfigStoreConnector(),
 ]);
 ----
 
@@ -76,7 +109,7 @@ NOTE: The full list of available store-connector providers and the `onecx` slice
 
 == Using the NgRx helpers
 
-@onecx/ngrx-accelerator
+Library: `@onecx/ngrx-accelerator`
 
 `@onecx/ngrx-accelerator` provides small helpers for the recurring NgRx patterns in OneCX apps:
 
@@ -88,7 +121,7 @@ NOTE: The full helper API and usage examples are documented with the library.
 
 == Enforcing the conventions
 
-@onecx/ngrx-linter-rules
+Library: `@onecx/ngrx-linter-rules`
 
 `@onecx/ngrx-linter-rules` is an ESLint plugin that encodes the xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] as static checks. Register it with the `recommended` config so that, for example, HTTP calls only run inside effects and effects never dispatch to the store directly:
 
@@ -104,5 +137,6 @@ export default tseslint.config(
 
 == Related
 
+* xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] — why OneCX Angular applications use NgRx and the conventions on top of it.
 * xref:documentation:docs-guides-ui:angular/ngrx/ngrx.adoc[NgRx] — the Angular NgRx reference (packages, getting started, OneCX guides and examples).
 * xref:documentation:docs-guides-ui:angular/ngrx/guidelines.adoc[NgRx guidelines] — the conventions the linter rules enforce.
