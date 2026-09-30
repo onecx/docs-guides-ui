@@ -57,6 +57,30 @@ Because the generated stylesheet filename normally includes a content hash, adju
 
 Verify that `styles.css`, including all of the app's styles, is present in the build output before deploying.
 
+[#angular-expose-styles-local-dev]
+== Make `styles.css` available in local development
+
+To serve the app with `npm run start` and load `styles.css` directly in OneCX during local development, add permissive CORS headers to the dev-server serve options so the shell can fetch the file. In NX, set the `headers` on the `serve` target in `project.json`:
+
+.project.json
+[source,json]
+----
+{
+  "serve": {
+    ...
+    "options": {
+      ...
+      "headers": {
+        "Allow": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+      }
+    }
+  }
+}
+----
+
 [#angular-expose-library-styles]
 == Expose Library Styles
 

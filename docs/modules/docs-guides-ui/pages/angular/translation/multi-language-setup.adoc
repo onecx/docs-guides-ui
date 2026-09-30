@@ -4,7 +4,7 @@
 :idseparator: -
 :imagesdir: ../../../images
 
-:onecx_compatible_application: xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc
+:onecx_compatible_application: xref:documentation:docs-guides-ui:migration/vanilla-to-onecx-angular.adoc
 :multi_language_usage: xref:./multi-language-usage.adoc
 
 [#overview]
@@ -65,75 +65,76 @@ Create translation files (e.g. en.json, de.json) in a directory such as assets/i
 
 [#import-utilities]
 === Step 4: Import Required Utilities
-In your remote module file, import the following:
+In your remote module file, import the following. The loader and missing-translation handler come from `@onecx/angular-utils`; the provider functions come from `@ngx-translate/core`:
 
 .remote.module.ts
 [source,typescript]
 ----
-import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
-import { createTranslateLoader, provideTranslationPathFromMeta } from '@onecx/angular-utils';
+import { OnecxTranslateLoader, MultiLanguageMissingTranslationHandler, provideTranslationPathFromMeta } from '@onecx/angular-utils';
+import {
+  provideMissingTranslationHandler,
+  provideTranslateLoader,
+  provideTranslateService,
+  TranslateModule
+} from '@ngx-translate/core';
 ----
 
 [#wrap-routes]
-=== Step 5: Wrap Routes with Initialization Guard
-Wrap your routes with addInitializeModuleGuard to ensure translations are loaded correctly:
+=== Step 5: Register Routes
+Register the routes directly with `RouterModule.forRoot(routes)` and `RouterModule.forChild(routes)`. Translations are loaded through the `TranslationConnectionService`, so the `addInitializeModuleGuard()` wrapper around the routes is no longer needed.
+
+[IMPORTANT]
+====
+If the module imports `AngularAcceleratorModule` from `@onecx/angular-accelerator`, it already provides `TranslationConnectionService` and no further changes are required. Otherwise, add `provideTranslationConnectionService()` from `@onecx/angular-utils` to the module's `providers` list.
+====
 
 .remote.module.ts
 [source,typescript]
 ----
+import { provideTranslationConnectionService } from '@onecx/angular-utils';
+
 imports: [
   ...
-  RouterModule.forRoot(addInitializeModuleGuard(routes)),
+  RouterModule.forRoot(routes),
+  ...
+]
+
+providers: [
+  ...
+  provideTranslationConnectionService(), // only when the module does not import AngularAcceleratorModule
   ...
 ]
 ----
 
 [#configure-translate-module]
-=== Step 6: Configure TranslateModule
-Add TranslateModule.forRoot() to your module's imports array (or commonImports if shared):
+=== Step 6: Provide TranslateService
+Provide translation through `provideTranslateService()` in the module's `providers`, using `OnecxTranslateLoader` as the loader. The `createTranslateLoader` factory and the `AsyncTranslateLoader` class have been removed, so the loader-based `TranslateModule.forRoot()` configuration is no longer used. Import `TranslateModule` (not `TranslateModule.forRoot()`) for the modules that use the `translate` pipe:
 
 .remote.module.ts
 [source,typescript]
 ----
-imports: [
+providers: [
   ...
-  TranslateModule.forRoot({
-    isolate: false,
-    loader: {
-      provide: TranslateLoader,
-      useFactory: createTranslateLoader,
-      deps: [HttpClient]
-    }
+  provideTranslateService({
+    defaultLanguage: 'en',
+    loader: provideTranslateLoader(OnecxTranslateLoader),
+    missingTranslationHandler: provideMissingTranslationHandler(MultiLanguageMissingTranslationHandler)
   }),
   ...
 ]
 ----
 
-Optionally, if you intend to support multiple locales at the same time in case of missing translations for the current locale, you can utilize the `MultiLanguageMissingTranslationHandler` available via `@onecx/angular-utils`:
+The `MultiLanguageMissingTranslationHandler` (from `@onecx/angular-utils`) supports multiple locales at the same time, falling back across languages when a translation is missing for the current locale. Omit the `missingTranslationHandler` argument if you do not need that fallback.
 
-.remote.module.ts
+In components and services, obtain `TranslateService` with Angular's `inject()` function rather than through the constructor:
+
+.Component
 [source,typescript]
 ----
-import {
-  MultiLanguageMissingTranslationHandler
-} from '@onecx/angular-utils'
+import { inject } from '@angular/core'
+import { TranslateService } from '@ngx-translate/core'
 
-imports: [
-  ...
-  TranslateModule.forRoot({
-    isolate: false,
-    loader: {
-      provide: TranslateLoader,
-      useFactory: createTranslateLoader,
-      deps: [HttpClient]
-    },
-    missingTranslationHandler: {
-      provide: MissingTranslationHandler,
-      useClass: MultiLanguageMissingTranslationHandler
-    }
-  }),
-  ...
-]
+private readonly translateService: TranslateService = inject(TranslateService)
 ----
 
 [#provide-translation-path]
@@ -197,8 +198,8 @@ To verify that the setup is complete, ensure the following:
 * `@ngx-translate/core` is installed and listed in `package.json` with a `^` sign.
 * Webpack configuration includes `@ngx-translate/core` as a shared package.
 * Translation files are created and accessible.
-* Application routes are wrapped with `addInitializeModuleGuard`.
-* `TranslateModule.forRoot()` is configured in the remote module.
+* Routes are registered directly with `RouterModule`, and `provideTranslationConnectionService()` is added when the module does not import `AngularAcceleratorModule`.
+* `provideTranslateService()` is configured with `provideTranslateLoader(OnecxTranslateLoader)`.
 ** (Optional) `MultiLanguageMissingTranslationHandler` is set up for full multi-language support.
 * `provideTranslationPathFromMeta` is used to specify the translation files' path.
 * `TranslateModule` is imported in any feature modules using translation features.

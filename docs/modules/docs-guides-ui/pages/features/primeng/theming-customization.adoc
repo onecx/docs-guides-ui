@@ -57,7 +57,22 @@ export const appConfig: ApplicationConfig = {
 }
 -----
 
-If the application uses `AppModule` instead of standalone bootstrap, add the same provider to `AppModule`'s `providers` array. Remote modules do not register this provider, because the override configuration belongs to application bootstrap and should be set by the application that owns the current runtime.
+Since version 6 of the OneCX libraries, registering `provideThemeConfig()` is required for an application that uses PrimeNG, in both microfrontends and remote components. The `overrides` argument is what makes the call application-specific — it belongs to the application that owns the current runtime.
+
+If the application uses `AppModule` instead of standalone bootstrap, add the same provider to `AppModule`'s `providers` array.
+
+Remote components register the base `provideThemeConfig()` provider in their bootstrap providers as well. A remote component registers the provider without `overrides`, because the override configuration belongs to the application bootstrap:
+
+.remote-component.bootstrap.ts
+[source,typescript]
+-----
+import { provideThemeConfig } from '@onecx/angular-utils/theme/primeng'
+import { bootstrapRemoteComponent } from '@onecx/angular-webcomponents'
+
+bootstrapRemoteComponent(RemoteComponent, 'my-remote-component', environment.production, [
+  provideThemeConfig()
+])
+-----
 
 To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument has a property called `overrides` that can be one of the following:
 

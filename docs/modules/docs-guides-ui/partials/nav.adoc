@@ -6,6 +6,8 @@
 **** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/component-approach.adoc[Component Approach]
 *** xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]
 *** xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication]
+*** xref:documentation:docs-guides-ui:setup/required/primeng/primeng.adoc[PrimeNG: Webpack Source Transformation]
+*** xref:documentation:docs-guides-ui:setup/required/material/material.adoc[Angular Material: Webpack Source Transformation]
 
 ** xref:documentation:docs-guides-ui:setup/recommended/index.adoc[Recommended Setup]
 *** xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles]
@@ -30,7 +32,6 @@
 
 ** xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 *** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
-*** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
 *** xref:documentation:docs-guides-ui:angular/standalone.adoc[Standalone Mode]
 
 *** xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Translations]
@@ -91,3 +92,7 @@
 **** xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[Theming Customization]
 *** Development
 **** xref:documentation:docs-guides-ui:features/development/source-maps.adoc[Source Maps]
+
+** Migrating an Existing App
+*** xref:documentation:docs-guides-ui:migration/index.adoc[Overview]
+*** xref:documentation:docs-guides-ui:migration/vanilla-to-onecx-angular.adoc[Bring a vanilla Angular app to OneCX]

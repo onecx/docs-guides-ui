@@ -1,0 +1,71 @@
+:idprefix:
+:idseparator: -
+
+[#angular-material-modify-source-plugin]
+= Angular Material: Webpack Source Transformation (Required)
+
+A OneCX-compatible application that uses Angular Material or Angular CDK must add a Webpack plugin that rewrites a Material runtime call so it behaves correctly under Module Federation. Without it, Material components fail at runtime once the app is built and loaded by the shell. This page documents the configuration to write into a new application's Webpack setup.
+
+[NOTE]
+====
+This setup will be replaced by a OneCX-provided Webpack plugin in a future version.
+====
+
+[#install]
+== Install the plugin
+
+Install `modify-source-webpack-plugin` as a dev dependency:
+
+[source,bash]
+----
+npm install modify-source-webpack-plugin --save-dev
+----
+
+[#configure]
+== Configure the plugin
+
+In `webpack.config.js`, import `ModifySourcePlugin` and `ReplaceOperation` from `modify-source-webpack-plugin` and create a `modifyMaterialPlugin` instance. The plugin needs one rule:
+
+* the rule's `test` function returns `true` when `module.resource` exists and its path includes `@angular/material` or `@angular/cdk`;
+* the rule's `operations` array contains a `ReplaceOperation` that matches `document.createElement(` and rewrites it to `document.createElementFromMaterial({"this": this, "arguments": Array.from(arguments)},`.
+
+Example:
+
+.Example `webpack.config.js`
+[source,javascript]
+----
+const { ModifySourcePlugin, ReplaceOperation } = require('modify-source-webpack-plugin')
+
+const modifyMaterialPlugin = new ModifySourcePlugin({
+  rules: [
+    {
+      test: (module) => {
+        return (
+          module.resource &&
+          (module.resource.includes('@angular/material') ||
+            module.resource.includes('@angular/cdk'))
+        )
+      },
+      operations: [
+        new ReplaceOperation(
+          'all',
+          'document\\.createElement\\(',
+          'document.createElementFromMaterial({"this": this, "arguments": Array.from(arguments)},'
+        )
+      ]
+    }
+  ]
+})
+
+module.exports = {
+  ...webpackConfig,
+  plugins: [...plugins, modifyMaterialPlugin]
+}
+----
+
+Finally, add the `modifyMaterialPlugin` instance to the Webpack `plugins` array.
+
+[#verify]
+== Verify
+
+Build the application and confirm Material / CDK components render without runtime errors, both when the app runs standalone and when it is loaded by the shell.

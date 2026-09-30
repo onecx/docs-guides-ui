@@ -1,0 +1,23 @@
+:idprefix:
+:idseparator: -
+
+[#migration]
+= Migrating an Existing App to OneCX
+
+Getting an Angular application into the OneCX platform means either bringing a fresh, non-OneCX application up to the current end-state, or stepping an application that already runs on OneCX up to the latest release line. Pick the path that matches your starting point.
+
+[#start-from-vanilla]
+== Start from a vanilla app
+
+If your application is not on OneCX yet, follow the step-by-step guide that turns a fresh Angular application into a OneCX-compatible microfrontend and walks the full v8 setup.
+
+* xref:documentation:docs-guides-ui:migration/vanilla-to-onecx-angular.adoc[Bring a vanilla Angular app to OneCX]
+
+[#upgrade-existing]
+== Upgrade an existing OneCX app
+
+If your application already runs on OneCX and you need to move it up a version line, follow the per-release migration guide for the step you are on. Each guide covers the Angular and OneCX library changes for that release.
+
+* xref:documentation:onecx-portal-ui-libs:migrations/angular-19/index.adoc[Migrate OneCX App from Angular 18 to Angular 19]
+* xref:documentation:onecx-portal-ui-libs:migrations/angular-20/index.adoc[Migrate OneCX App from Angular 19 to Angular 20]
+* xref:documentation:onecx-portal-ui-libs:migrations/angular-21/index.adoc[Migrate OneCX App from Angular 20 to Angular 21]

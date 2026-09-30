@@ -1,0 +1,69 @@
+:idprefix:
+:idseparator: -
+
+[#primeng-modify-source-plugin]
+= PrimeNG: Webpack Source Transformation (Required)
+
+A OneCX-compatible application that uses PrimeNG must add a Webpack plugin that rewrites two PrimeNG runtime calls so they behave correctly under Module Federation. Without it, PrimeNG components fail at runtime once the app is built and loaded by the shell. This page documents the configuration to write into a new application's Webpack setup.
+
+[NOTE]
+====
+This setup will be replaced by a OneCX-provided Webpack plugin in a future version.
+====
+
+[#install]
+== Install the plugin
+
+Install `modify-source-webpack-plugin` (compatible with Webpack 5) as a dev dependency:
+
+[source,bash]
+----
+npm install modify-source-webpack-plugin@^4 --save-dev
+----
+
+[#configure]
+== Configure the plugin
+
+In `webpack.config.js`, import `ModifySourcePlugin` and `ReplaceOperation` from `modify-source-webpack-plugin` and create a `modifyPrimeNgPlugin` instance. The plugin needs one rule:
+
+* the rule's `test` function returns `true` when `module.resource` exists and its path includes `primeng`;
+* the rule's `operations` array contains two `ReplaceOperation`s:
+** one that matches `document.createElement(...)` and rewrites it to `document.createElementFromPrimeNg({"this": this, "arguments": Array.from(arguments), element: $1})`;
+** one that replaces `Theme.setLoadedStyleName` with a no-op `(function(_){})`.
+
+Example:
+
+.Example `webpack.config.js`
+[source,javascript]
+----
+const { ModifySourcePlugin, ReplaceOperation } = require('modify-source-webpack-plugin')
+...
+const modifyPrimeNgPlugin = new ModifySourcePlugin({
+  rules: [
+    {
+      test: (module) => {
+        return module.resource && module.resource.includes('primeng')
+      },
+      operations: [
+        new ReplaceOperation(
+          'all',
+          'document\\.createElement\\(([^)]+)\\)',
+          'document.createElementFromPrimeNg({"this": this, "arguments": Array.from(arguments), element: $1})'
+        ),
+        new ReplaceOperation('all', 'Theme.setLoadedStyleName', '(function(_){})')
+      ]
+    }
+  ]
+})
+module.exports = {
+  ...webpackConfig,
+  plugins: [...plugins, modifyPrimeNgPlugin]
+}
+----
+
+Finally, add the `modifyPrimeNgPlugin` instance to the Webpack `plugins` array.
+
+[#verify]
+== Verify
+
+Build the application and confirm PrimeNG components render without runtime errors, both when the app runs standalone and when it is loaded by the shell.
