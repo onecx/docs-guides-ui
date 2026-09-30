@@ -1,0 +1,179 @@
+= Migrate a vanilla Angular app to OneCX
+:source-highlighter: highlight.js
+
+:idprefix:
+:idseparator: -
+:page-aliases: angular/app-to-onecx.adoc
+
+This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. It does not restate the setup steps that already have a home page — each step is a cross-link into the xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup] pages and the topical home pages. If a step has a home page, follow that page.
+
+[#general]
+== General
+
+[#prerequisites]
+=== Prerequisites
+This page assumes that an Angular project is already set up and that a OneCX platform instance is up and running. The target is the current end-state: an Angular application on Angular 21, built against the OneCX platform libraries version 8. If your app is on an older Angular version, upgrade it to Angular 21 first.
+
+The required Angular version and the compatible versions of the shared packages are documented in xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements]. Install the dependencies and align their versions there — this page does not restate the install steps.
+
+Note that this page does not cover general Angular project setup or the steps to configure OneCX.
+
+[#migration-steps]
+== Setup steps
+The goal of this setup is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. The steps have been tested in fresh Angular apps generated with the Angular CLI and the NX CLI (using Webpack as a bundler). Some steps only apply to either Angular CLI or NX based applications and are marked accordingly.
+
+[#ensure-functionality]
+=== Ensure that your application works as expected
+Before starting, verify that the application works in its pre-migration state by running its tests, building it, and running it in a browser. This helps prevent unexpected errors in later stages.
+
+[#refactor-angular-json]
+=== Refactor `angular.json` to use ngx-build-plus builders [.red]#(Only Angular CLI)#
+To correctly bundle an app for use in a microfrontend context, the default Angular bundler must be replaced with ngx-build-plus, and a few additional configuration options need to be specified. This hook-up has no home page, so it is documented here.
+
+NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application, which can be obtained from `angular.json`. `TODO` comments should be taken care of and afterwards removed from the file.
+
+.angular.json
+[source,json]
+...
+"architect": {
+    "build": {
+        "builder": "ngx-build-plus:browser",
+        "options": {
+            ...
+            // TODO: property "browser" should be removed in favor of "main" if it exists
+            "main": "src/main.ts",
+            "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
+            "extraWebpackConfig": "webpack.config.js",
+            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "./YOUR_ASSETS_FOLDER",
+                "output": "assets"
+              },
+              ...
+            ]
+        },
+        ...
+        "configurations": {
+            "production": {
+               ...
+               "extraWebpackConfig": "webpack.prod.config.js"
+            },
+           ...
+        }
+    },
+    "serve": {
+        "builder": "ngx-build-plus:dev-server",
+        "options": {
+            ...
+            "buildTarget": "YOUR_APP_NAME:build",
+            "port": 4200,
+            "publicHost": "http://localhost:4200",
+            "extraWebpackConfig": "webpack.config.js"
+        },
+        "configurations": {
+            ...
+            "production": {
+                ...
+                "extraWebpackConfig": "webpack.prod.config.js"
+            },
+        },
+        ...
+    },
+    "extract-i18n": {
+        "builder": "ngx-build-plus:extract-i18n",
+        "options": {
+            "buildTarget": "YOUR_APP_NAME:build",
+            "extraWebpackConfig": "webpack.config.js"
+        }
+    },
+    ...
+}
+
+[#refactor-project-json]
+=== Refactor `project.json` to enable custom bundling [.aqua]#(Only NX)#
+To correctly bundle an app for use in a microfrontend context, the default bundler used for NX Angular projects must be replaced with a specific Webpack bundler, and a few additional configuration options need to be specified.
+
+.project.json
+[source,json]
+...
+"targets": {
+    "build": {
+        "executor": "@nx/angular:webpack-browser",
+        "options": {
+            ...
+            "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
+            "customWebpackConfig": {
+              "path": "webpack.config.js"
+            },
+            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "./YOUR_ASSETS_FOLDER",
+                "output": "assets"
+              },
+              ...
+            ]
+        },
+        ...
+        "configurations": {
+            "production": {
+              ...
+              "customWebpackConfig": {
+                "path": "webpack.prod.config.js"
+              }
+            },
+            ...
+        }
+    },
+    "serve": {
+        "builder": "@nx/angular:dev-server",
+        ...
+    },
+    ...
+}
+
+[#create-entrypoints]
+=== Create the app entrypoint files
+To enable an app to run both as a standalone application and as a microfrontend, it must expose the entrypoint files that bootstrap the remote module: the `DoBootstrap` module, the `createAppEntrypoint` call, the `initializeRouter` provider, the `startsWith` route matcher, and `PortalApiConfiguration`. These entrypoint files have a home page — see xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Expose a Remote Module (Module Approach)] — and are not restated here.
+
+[#webpack-configuration]
+=== Configure the Webpack `shared` scope
+A fresh app must assign itself and its shared dependencies to the correct Module Federation share scope and choose which packages to share. That configuration has a home page — see xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] — and is not restated here. As a starting point, the fresh app shares the Angular framework packages and the OneCX packages it depends on, and exposes `remoteEntry.js` with the `uniqueName` set to its microfrontend name and `publicPath` set to `auto`.
+
+[#environment-file]
+=== Add environment file `env.json`
+During the loading of an app, OneCX will try to load its environment file. To avoid any errors, a file called `env.json` should be accessible at http://localhost:4200/assets/env.json. This can be achieved by adding the respective file to the assets folder of the application. The file can be used to pass environment variables to OneCX. For now it can just contain an empty object (`{}`).
+
+[#test-remote-entrypoint]
+=== Verify that the app is exposing a remote entry point
+After completing all steps listed above, the application should be ready to be used as a microfrontend in the OneCX platform. After starting the application with its start command (e.g. `npm start`), the application's entrypoint file (remoteEntry.js) should be accessible at http://localhost:4200/remoteEntry.js.
+
+[#v8-setup-checklist]
+== v8 setup checklist
+Reach the following home pages, in order, to complete the OneCX setup for the fresh app. Each page owns the step; this page links out rather than restating it.
+
+. xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements] — the Angular 21 / libs 8.x baseline and the compatible shared package versions.
+. xref:documentation:docs-guides-ui:setup/required/expose-remote-module.adoc[Expose a Remote Module] — expose the app's module via Module Federation so the shell can load it (see the xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Module Approach]).
+. xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] — assign the app and its shared dependencies to the correct share scope.
+. xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication] — ensure requests carry the shell's authentication header, and keep the app clear of the shell's IDP client.
+. xref:documentation:docs-guides-ui:setup/required/primeng/primeng.adoc[PrimeNG] — add the required Webpack `ModifySourcePlugin` config when the app uses PrimeNG.
+. xref:documentation:docs-guides-ui:setup/required/material/material.adoc[Material] — add the required Webpack `ModifySourcePlugin` config when the app uses `@angular/material` or `@angular/cdk`.
+. xref:documentation:docs-guides-ui:setup/recommended/apply-theming.adoc[Apply Theming] — let the shell load and apply the theme globally; do not load it in the app.
+. xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[PrimeNG Theming Customization] — register `provideThemeConfig()` for PrimeNG in microfrontends and remote components.
+. xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Multi-language Translations] — set up `OnecxTranslateLoader` and the translation connection service.
+. xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/angular.adoc[Expose Component Styles (Angular)] — expose a stable `styles.css` and the OneCX library styles in the build output.
+
+[#standalone-mode]
+== Standalone Mode
+After completing the steps above, a previously existing "vanilla" Angular application can be run as a microfrontend in OneCX. If the app additionally has to support running standalone (e.g. in local development), see xref:documentation:docs-guides-ui:angular/standalone.adoc[Enable OneCX app to run in standalone].
+
+[#further-reading]
+== Further Reading
+For more information on how OneCX loads microfrontends and utilizes web components for content rendering, refer to the xref:documentation:onecx-docs-overview:module-federation/microfrontend-content-loading.adoc[Microfrontend Content Loading in OneCX] and xref:documentation:onecx-docs-overview:module-federation/webcomponents.adoc[Web Components in OneCX] pages of the OneCX Docs.
+
+[#troubleshooting]
+== Troubleshooting
+See the xref:documentation:docs-guides-ui:troubleshooting/index.adoc[Troubleshooting] section for the preparation steps, common causes, and named errors to work through when the app does not load, route, or render as expected.

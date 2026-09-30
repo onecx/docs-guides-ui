@@ -57,6 +57,28 @@ Because the generated stylesheet filename normally includes a content hash, adju
 
 Verify that `styles.css`, including all of the app's styles, is present in the build output before deploying.
 
+[#angular-dev-cors-headers]
+=== Local development
+
+When the application is served locally (e.g. with `npm run start`) and the shell loads its `styles.css` directly, the dev server must serve the file with permissive CORS headers or the shell cannot fetch it. Add the following headers to the dev server configuration in `project.json`:
+
+.project.json
+[source,json]
+----
+{
+  "serve": {
+    "options": {
+      "headers": {
+        "Allow": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+      }
+    }
+  }
+}
+----
+
 [#angular-expose-library-styles]
 == Expose Library Styles
 

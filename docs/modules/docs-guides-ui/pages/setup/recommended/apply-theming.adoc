@@ -7,3 +7,16 @@
 An application integrated with OneCX still loads and runs even if it doesn't use OneCX theme variables, but it renders with a theme that doesn't match the rest of the shell. In OneCX, each workspace can use a different theme for its pages, and the shell makes the active theme's CSS variables available on every page automatically — the application should use those variables in its own styles instead of hard-coded values.
 
 See xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming] for the full list of available theme variables and how to use them in Angular and React applications.
+
+[#who-loads-the-theme]
+== Who loads the theme
+
+The OneCX shell is responsible for loading and applying the theme globally for the selected workspace. Application code must not load or apply the theme itself; removing the theme-loading logic from the application is required, not optional.
+
+The `ThemeService` is therefore read-only with respect to loading and applying a theme. It exposes only the `currentTheme$` property, which reflects the theme the shell has made active on the page:
+
+* Remove any `loadAndApplyTheme()`, `apply()`, or `getThemeRef()` calls from the application code.
+* Remove any `baseUrlV1` property usage from the application code.
+* Read the active theme through `ThemeService`'s `currentTheme$` instead of loading it.
+
+In the uncommon case where the application needs to apply a theme temporarily for preview purposes only, apply it by publishing it on `currentTheme$` and setting the resulting CSS variables on the document element — without loading a theme from the platform.

@@ -1,0 +1,57 @@
+:idprefix:
+:idseparator: -
+
+[#required-setup-primeng]
+= PrimeNG
+
+An Angular application that uses PrimeNG must add a Webpack plugin to its Module Federation setup. The plugin rewrites the PrimeNG source at build time so that PrimeNG resolves against the shared package in the share scope instead of a duplicate copy being bundled into the application. Without it, the PrimeNG output that the OneCX shell loads from `remoteEntry.js` does not render correctly. This is a required step, not an optional one.
+
+[#primeng-modifysourceplugin]
+== Add the Webpack plugin
+
+. Install `modify-source-webpack-plugin` compatible with Webpack 5:
++
+[source,bash]
+----
+npm install modify-source-webpack-plugin@^4 --save-dev
+----
+. Import `ModifySourcePlugin` and `ReplaceOperation` from `modify-source-webpack-plugin` in `webpack.config.js`.
+. Create a `modifyPrimeNgPlugin` instance with a rules array containing one rule object:
+  * The rule must define a `test` function that returns `true` when `module.resource` exists and the resource path includes `primeng`.
+  * The rule must include an `operations` array with a `ReplaceOperation` configured with:
+    - scope: `all`
+    - match pattern: `document\.createElement\(([^)]+)\)`
+    - replacement: `document.createElementFromPrimeNg({"this": this, "arguments": Array.from(arguments), element: $1})`
+  * The rule must also include a `ReplaceOperation` configured with:
+    - scope: `all`
+    - match pattern: `Theme.setLoadedStyleName`
+    - replacement: `(function(_){})`
+. Add the `modifyPrimeNgPlugin` instance to the Webpack `plugins` array.
+
+.Example webpack.config.js
+[source,javascript]
+----
+const { ModifySourcePlugin, ReplaceOperation } = require('modify-source-webpack-plugin')
+...
+const modifyPrimeNgPlugin = new ModifySourcePlugin({
+  rules: [
+    {
+      test: (module) => {
+        return module.resource && module.resource.includes('primeng')
+      },
+      operations: [
+        new ReplaceOperation(
+          'all',
+          'document\\.createElement\\(([^)]+)\\)',
+          'document.createElementFromPrimeNg({"this": this, "arguments": Array.from(arguments), element: $1})'
+        ),
+        new ReplaceOperation('all', 'Theme.setLoadedStyleName', '(function(_){})')
+      ]
+    }
+  ]
+})
+module.exports = {
+  ...webpackConfig,
+  plugins: [...plugins, modifyPrimeNgPlugin]
+}
+----

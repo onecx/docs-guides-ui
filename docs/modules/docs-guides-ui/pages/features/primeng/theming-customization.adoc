@@ -15,6 +15,42 @@ This feature is Angular-only today, because it targets PrimeNG specifically; Rea
 
 The reason PrimeNG follows the active OneCX theme is a mapping mechanism between OneCX theming and PrimeNG theming. The OneCX theme is itself a set of design tokens (see the {theming_concept}[Theming] concept page), and each application that has all required setup completed maps those tokens to a PrimeNG preset through the `provideThemeConfig` call, so PrimeNG — and the OneCX components built on it — pick up the active OneCX theme automatically. This feature is about such an application overriding those mapped PrimeNG design tokens for its own content, so that it styles PrimeNG differently from other applications on the page.
 
+[#primeng-theming-in-mfe-remote-components]
+== PrimeNG theming in microfrontends and remote components
+
+In addition to the standalone application, a PrimeNG application that runs as a microfrontend or as a remote component must register the `provideThemeConfig()` provider in that context so that the active OneCX theme is mapped to PrimeNG there. Import `provideThemeConfig` from `@onecx/angular-utils/theme/primeng`.
+
+=== Microfrontend
+
+Register the provider in the microfrontend's remote module:
+
+.my-mfe-remote.module.ts
+[source,typescript]
+----
+import { provideThemeConfig } from '@onecx/angular-utils/theme/primeng'
+...
+@NgModule({
+  providers: [
+    provideThemeConfig()
+  ]
+})
+export class MyMfe {}
+----
+
+=== Remote component
+
+Add the provider to the `bootstrapRemoteComponent` providers array in `bootstrap.ts`:
+
+.remote-component.bootstrap.ts
+[source,typescript]
+----
+import { provideThemeConfig } from '@onecx/angular-utils/theme/primeng'
+
+bootstrapRemoteComponent(RemoteComponent, 'my-remote-component', environment.production, [
+  provideThemeConfig()
+])
+----
+
 [#theme-overrides]
 == Application-Level Overrides
 
@@ -57,7 +93,7 @@ export const appConfig: ApplicationConfig = {
 }
 -----
 
-If the application uses `AppModule` instead of standalone bootstrap, add the same provider to `AppModule`'s `providers` array. Remote modules do not register this provider, because the override configuration belongs to application bootstrap and should be set by the application that owns the current runtime.
+If the application uses `AppModule` instead of standalone bootstrap, add the same provider to `AppModule`'s `providers` array. The application-level override values belong to the application bootstrap and should be set by the application that owns the current runtime, while a microfrontend or remote component registers the base `provideThemeConfig()` provider as described in the section above.
 
 To use this feature, it's required to add the options object as an argument to the `provideThemeConfig` call. This argument has a property called `overrides` that can be one of the following:
 

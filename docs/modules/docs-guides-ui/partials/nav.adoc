@@ -6,6 +6,8 @@
 **** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/component-approach.adoc[Component Approach]
 *** xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]
 *** xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication]
+*** xref:documentation:docs-guides-ui:setup/required/primeng/primeng.adoc[PrimeNG]
+*** xref:documentation:docs-guides-ui:setup/required/material/material.adoc[Material]
 
 ** xref:documentation:docs-guides-ui:setup/recommended/index.adoc[Recommended Setup]
 *** xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles.adoc[Expose Component Styles]
@@ -28,9 +30,10 @@
 ** xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
 *** xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases (tsconfig paths)]
 
+** xref:documentation:docs-guides-ui:migration/index.adoc[Migrating an Existing App]
+
 ** xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 *** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
-*** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate Angular App to OneCX]
 *** xref:documentation:docs-guides-ui:angular/standalone.adoc[Standalone Mode]
 
 *** xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Translations]
