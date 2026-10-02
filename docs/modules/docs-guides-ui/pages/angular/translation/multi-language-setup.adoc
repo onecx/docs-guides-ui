@@ -10,16 +10,15 @@
 [#overview]
 == Overview
 
-This document contains instructions on how to set up multi-language translations in a {onecx_compatible_application}[*OneCX compatible*] application using the `@ngx-translate` library.
+This document contains instructions on how to set up multi-language translations in a {onecx_compatible_application}[OneCX-compatible] application using the `@ngx-translate` library.
 
 [#prerequisites]
 == Prerequisites
-Before proceeding, ensure that your application meets the compatibility requirements.
+Before proceeding, complete the xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup] and confirm the application versions against xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements].
 
 [#setup]
 == Setup
 To set up the multi-language translations support follow the steps listed below.
-
 
 [#install-ngx-translate]
 === Step 1: Install ngx-translate Library
@@ -30,25 +29,11 @@ The `@ngx-translate/core` package has to be installed in the project.
 npm i @ngx-translate/core
 ----
 
-IMPORTANT: Make sure to add a `^` sign in the `package.json` file of the project for `@ngx-translate/core` library.
+IMPORTANT: Use the caret range described in xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc#package-sharing-convention[Package Sharing Convention] for the `@ngx-translate/core` entry in `package.json`.
 
 [#share-ngx-translate]
-=== Step 2: Share ngx-translate In Webpack Configuration
-The `@ngx-translate/core` package has to be added as a shared package in webpack configuration.
-
-[source,typescript]
-----
-const config = withModuleFederationPlugin({
-  ...
-  shared: share({
-    ...
-    '@ngx-translate/core': { requiredVersion: 'auto' },
-    ...
-  }),
-});
-----
-
-This ensures the package is shared between the app and OneCX.
+=== Step 2: Share ngx-translate through Remote Package Sharing
+Share `@ngx-translate/core` according to xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]. The package must participate in the application's share scope so the app and the shell reuse the same `@ngx-translate/core` instance.
 
 [#create-translation-files]
 === Step 3: Create Translation Files
@@ -94,33 +79,9 @@ providers: [
 
 To support multiple locales at the same time when the current locale is missing a translation, keep the `MultiLanguageMissingTranslationHandler` in the `missingTranslationHandler` slot as shown above.
 
-[#injection-pattern]
-==== Inject TranslateService with `inject()`
-
-`TranslateService` should no longer be injected through the constructor. Use Angular's `inject()` function instead:
-
-[%collapsible]
-====
-[source,typescript]
-----
-import { Component, inject } from '@angular/core'
-import { TranslateService } from '@ngx-translate/core'
-
-@Component({
-  selector: 'ocx-shell-root',
-  templateUrl: './app.component.html'
-})
-export class AppComponent {
-  private readonly translateService: TranslateService = inject(TranslateService)
-
-  ...
-}
-----
-====
-
 [#provide-translation-connection]
 === Step 6: Provide the Translation Connection Service
-Register routes with `RouterModule.forRoot(routes)` and `RouterModule.forChild(routes)` without an initialization-guard wrapper. If the module imports `AngularAcceleratorModule` from `@onecx/angular-accelerator`, it already provides `TranslationConnectionService` and no further change is required. Otherwise, add `provideTranslationConnectionService()` from `@onecx/angular-utils` to the module's `providers` list:
+The translation connection service replaces the older route setup. In OneCX UI libraries v6, `addInitializeModuleGuard()` was removed; see xref:documentation:onecx-portal-ui-libs:migrations/angular-19/remove-add-initialize-module-guard.adoc[Remove addInitializeModuleGuard]. If the module imports `AngularAcceleratorModule` from `@onecx/angular-accelerator`, it already provides `TranslationConnectionService`. Otherwise, add `provideTranslationConnectionService()` from `@onecx/angular-utils` to the module's `providers` list:
 
 .remote.module.ts
 [source,typescript]

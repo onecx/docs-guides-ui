@@ -3,9 +3,8 @@
 
 :idprefix:
 :idseparator: -
-:page-aliases: angular/app-to-onecx.adoc
 
-This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. It does not restate the setup steps that already have a home page — each step is a cross-link into the xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup] pages and the topical home pages. If a step has a home page, follow that page.
+This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. It keeps the migration focused on the v8 baseline and links out to the setup pages instead of restating their steps. If you are still on the legacy migration path, first use xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate vanilla Angular apps to OneCX] to bring that app up to the current OneCX version, then continue with the version-specific upgrade path.
 
 [#general]
 == General
@@ -14,126 +13,29 @@ This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. 
 === Prerequisites
 This page assumes that an Angular project is already set up and that a OneCX platform instance is up and running. The target is the current end-state: an Angular application on Angular 21, built against the OneCX platform libraries version 8. If your app is on an older Angular version, upgrade it to Angular 21 first.
 
-The required Angular version and the compatible versions of the shared packages are documented in xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements]. Install the dependencies and align their versions there — this page does not restate the install steps.
+The required Angular version and compatible shared package versions are documented in xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements]. Complete the xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup] before following this guide; this page does not restate the install steps.
 
 Note that this page does not cover general Angular project setup or the steps to configure OneCX.
 
 [#migration-steps]
 == Setup steps
-The goal of this setup is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. The steps have been tested in fresh Angular apps generated with the Angular CLI and the NX CLI (using Webpack as a bundler). Some steps only apply to either Angular CLI or NX based applications and are marked accordingly.
+The goal of this setup is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. The steps have been tested in fresh Angular apps generated with the Angular CLI and the Nx CLI (using Webpack as a bundler). Some steps only apply to either Angular CLI or Nx-based applications and are marked accordingly.
 
 [#ensure-functionality]
 === Ensure that your application works as expected
 Before starting, verify that the application works in its pre-migration state by running its tests, building it, and running it in a browser. This helps prevent unexpected errors in later stages.
 
 [#refactor-angular-json]
-=== Refactor `angular.json` to use ngx-build-plus builders [.red]#(Only Angular CLI)#
-To correctly bundle an app for use in a microfrontend context, the default Angular bundler must be replaced with ngx-build-plus, and a few additional configuration options need to be specified. This hook-up has no home page, so it is documented here.
+=== Refactor `angular.json` for Angular CLI apps [.red]#(Only Angular CLI)#
+To correctly bundle an app for use in a microfrontend context, Angular CLI applications should use `ngx-build-plus` builders. See https://github.com/manfredsteyer/ngx-build-plus for the official project.
 
-NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application, which can be obtained from `angular.json`. `TODO` comments should be taken care of and afterwards removed from the file.
-
-.angular.json
-[source,json]
-...
-"architect": {
-    "build": {
-        "builder": "ngx-build-plus:browser",
-        "options": {
-            ...
-            // TODO: property "browser" should be removed in favor of "main" if it exists
-            "main": "src/main.ts",
-            "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
-            "extraWebpackConfig": "webpack.config.js",
-            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "./YOUR_ASSETS_FOLDER",
-                "output": "assets"
-              },
-              ...
-            ]
-        },
-        ...
-        "configurations": {
-            "production": {
-               ...
-               "extraWebpackConfig": "webpack.prod.config.js"
-            },
-           ...
-        }
-    },
-    "serve": {
-        "builder": "ngx-build-plus:dev-server",
-        "options": {
-            ...
-            "buildTarget": "YOUR_APP_NAME:build",
-            "port": 4200,
-            "publicHost": "http://localhost:4200",
-            "extraWebpackConfig": "webpack.config.js"
-        },
-        "configurations": {
-            ...
-            "production": {
-                ...
-                "extraWebpackConfig": "webpack.prod.config.js"
-            },
-        },
-        ...
-    },
-    "extract-i18n": {
-        "builder": "ngx-build-plus:extract-i18n",
-        "options": {
-            "buildTarget": "YOUR_APP_NAME:build",
-            "extraWebpackConfig": "webpack.config.js"
-        }
-    },
-    ...
-}
+Add the `node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js` script to the build configuration and keep the rest of the Module Federation setup aligned with xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] and xref:documentation:onecx-docs-overview:module-federation/webcomponents.adoc[Web Components in OneCX].
 
 [#refactor-project-json]
-=== Refactor `project.json` to enable custom bundling [.aqua]#(Only NX)#
-To correctly bundle an app for use in a microfrontend context, the default bundler used for NX Angular projects must be replaced with a specific Webpack bundler, and a few additional configuration options need to be specified.
+=== Configure `project.json` for Nx apps [.aqua]#(Only NX)#
+Nx applications should use a Webpack-based builder such as `@nx/angular:webpack-browser`. See https://nx.dev/nx-api/angular/executors/webpack-browser for the official Nx Angular executor reference.
 
-.project.json
-[source,json]
-...
-"targets": {
-    "build": {
-        "executor": "@nx/angular:webpack-browser",
-        "options": {
-            ...
-            "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
-            "customWebpackConfig": {
-              "path": "webpack.config.js"
-            },
-            // TODO: Replace "./YOUR_ASSETS_FOLDER" with the path to your projects asset folder.
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "./YOUR_ASSETS_FOLDER",
-                "output": "assets"
-              },
-              ...
-            ]
-        },
-        ...
-        "configurations": {
-            "production": {
-              ...
-              "customWebpackConfig": {
-                "path": "webpack.prod.config.js"
-              }
-            },
-            ...
-        }
-    },
-    "serve": {
-        "builder": "@nx/angular:dev-server",
-        ...
-    },
-    ...
-}
+Other Nx builders are acceptable if they still produce the same Webpack-based behavior, but they must still include the `node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js` script and the Module Federation/Web Components configuration described above.
 
 [#create-entrypoints]
 === Create the app entrypoint files
