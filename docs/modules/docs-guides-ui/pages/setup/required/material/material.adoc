@@ -1,0 +1,57 @@
+:idprefix:
+:idseparator: -
+
+[#required-setup-material]
+= Material
+
+An Angular application that uses Angular Material (`@angular/material`) or the Component Development Kit (`@angular/cdk`) must add a Webpack plugin to its Module Federation setup. The plugin rewrites the Material source at build time so that `@angular/material` and `@angular/cdk` resolve against the shared packages in the share scope instead of duplicate copies being bundled into the application. Without it, the Material output that the OneCX shell loads from `remoteEntry.js` does not render correctly. This is a required step, not an optional one.
+
+[#material-modifysourceplugin]
+== Add the Webpack plugin
+
+. Install `modify-source-webpack-plugin`:
++
+[source,bash]
+----
+npm install modify-source-webpack-plugin --save-dev
+----
+. Import `ModifySourcePlugin` and `ReplaceOperation` from `modify-source-webpack-plugin` in `webpack.config.js`.
+. Create a `modifyMaterialPlugin` instance with a rules array containing one rule object:
+  * The rule must define a `test` function that returns `true` when `module.resource` exists and the resource path includes `@angular/material` or `@angular/cdk`.
+  * The rule must include an `operations` array with a `ReplaceOperation` configured with:
+    - scope: `all`
+    - match pattern: `document\.createElement\(`
+    - replacement: `document.createElementFromMaterial({"this": this, "arguments": Array.from(arguments)},`
+. Add the `modifyMaterialPlugin` instance to the Webpack `plugins` array.
+
+.Example webpack.config.js
+[source,javascript]
+----
+const { ModifySourcePlugin, ReplaceOperation } = require('modify-source-webpack-plugin')
+
+const modifyMaterialPlugin = new ModifySourcePlugin({
+  rules: [
+    {
+      test: (module) => {
+        return (
+          module.resource &&
+          (module.resource.includes('@angular/material') ||
+            module.resource.includes('@angular/cdk'))
+        )
+      },
+      operations: [
+        new ReplaceOperation(
+          'all',
+          'document\\.createElement\\(',
+          'document.createElementFromMaterial({"this": this, "arguments": Array.from(arguments)},'
+        )
+      ]
+    }
+  ]
+})
+
+module.exports = {
+  ...webpackConfig,
+  plugins: [...plugins, modifyMaterialPlugin]
+}
+----
