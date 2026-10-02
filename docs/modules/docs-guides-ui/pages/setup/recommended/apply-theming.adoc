@@ -1,21 +1,9 @@
-= Apply Theming
-
 :idprefix:
 :idseparator: -
 
 [#apply-theming]
-== Apply Theming
+= Apply Theming
 
 The OneCX shell loads and applies the active theme for the selected workspace. Application code should not load or apply the theme itself; it should use the CSS variables the shell exposes.
 
 See xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming] for the full list of available theme variables and how to use them in Angular and React applications.
-
-[#shell-responsibility]
-== Shell responsibility
-
-The shell is responsible for loading and applying the workspace theme globally. Applications should treat that theme as read-only and only consume the exposed variables.
-
-[#using-theme-variables]
-== Using the theme variables
-
-Use the exposed theme variables in component styles and global styles instead of hard-coded colors, spacing, and other theme values.

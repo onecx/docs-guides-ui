@@ -41,7 +41,7 @@ bootstrapRemoteComponent(RemoteComponent, 'my-remote-component', environment.pro
 ])
 ----
 
-=== Application-level overrides
+=== Microfrontend and remote-component overrides
 
 If a microfrontend or remote component needs to adjust PrimeNG design tokens for its own UI, pass an `overrides` object to `provideThemeConfig({ overrides })`. Use the same structure as PrimeNG presets.
 

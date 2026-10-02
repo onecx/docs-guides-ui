@@ -1,7 +1,7 @@
 = Migrate vanilla Angular apps to OneCX
 :source-highlighter: highlight.js
 
-The goal of this guide is to provide step by step instructions on how to migrate a vanilla Angular app to a OneCX compatible microfrontend application. 
+The goal of this guide is to provide step by step instructions on how to migrate a vanilla Angular app to a OneCX compatible microfrontend application.
 
 [#general]
 == General
@@ -14,7 +14,7 @@ Note that this guide does not cover general Angular project setup or the steps t
 
 [#migration-steps]
 == Migration steps
-The goal of this migration is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. To achieve this goal, a few migration steps have to be completed. All steps have been tested in fresh Angular apps generated with the Angular CLI and the NX CLI (using Webpack as a bundler). Some steps only apply to either Angular CLI or NX based applications and are marked accordingly. 
+The goal of this migration is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. To achieve this goal, a few migration steps have to be completed. All steps have been tested in fresh Angular apps generated with the Angular CLI and the NX CLI (using Webpack as a bundler). Some steps only apply to either Angular CLI or NX based applications and are marked accordingly.
 
 [#ensure-functionality]
 === Ensure that your application works as expected
@@ -41,7 +41,7 @@ NOTE: For `nx` based applications the above mentioned dev dependencies are not n
 === Refactor `angular.json` to use ngx-build-plus builders [.red]#(Only Angular CLI)#
 To correctly bundle an app for use in a microfrontend context, the default Angular bundler must be replaced with ngx-build-plus, and a few additional configuration options need to be specified.
 
-NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application, which can be obtained from `angular.json`. `TODO` comments should be taken care of and afterwards removed from the file. 
+NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application, which can be obtained from `angular.json`. `TODO` comments should be taken care of and afterwards removed from the file.
 
 .angular.json
 [source,json]
@@ -279,12 +279,12 @@ To ensure correct translation loading in an application using `@ngx-translate` a
 
 [NOTE]
 ====
-If the error 
-"Cannot construct translation path from local file path. Please check whether the webpack configuration for importMeta is correct: https://webpack.js.org/configuration/module/#moduleparserjavascriptimportmeta" 
+If the error
+"Cannot construct translation path from local file path. Please check whether the webpack configuration for importMeta is correct: https://webpack.js.org/configuration/module/#moduleparserjavascriptimportmeta"
 appears, it means either
 
 * the provider is used in the application and import.meta.url incorrectly resolves to a local file:// path.
-* or the application does not use provideTranslationPathFromMeta, but is likely using a newer Angular version than the shell or preloader. In this case, modules are loaded from the app's context, which also leads to a local file:// prefix. 
+* or the application does not use provideTranslationPathFromMeta, but is likely using a newer Angular version than the shell or preloader. In this case, modules are loaded from the app's context, which also leads to a local file:// prefix.
 
 To fix this, this line has to be added to module.exports in the webpack.config.js:
 

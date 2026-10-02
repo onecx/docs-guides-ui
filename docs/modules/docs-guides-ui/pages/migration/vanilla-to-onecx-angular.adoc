@@ -4,7 +4,7 @@
 :idprefix:
 :idseparator: -
 
-This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. It keeps the migration focused on the v8 baseline and links out to the setup pages instead of restating their steps. If you are still on the legacy migration path, first use xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate vanilla Angular apps to OneCX] to bring that app up to the current OneCX version, then continue with the version-specific upgrade path.
+This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. It keeps the migration focused on the v8 baseline and links out to the setup pages instead of restating their steps. If the application has not yet been migrated to OneCX, first use the xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[legacy migration guide] to integrate it with the OneCX library version compatible with its current Angular version. Then follow the version-specific upgrade guides to reach the current OneCX version.
 
 [#general]
 == General
@@ -33,9 +33,9 @@ Add the `node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js` sc
 
 [#refactor-project-json]
 === Configure `project.json` for Nx apps [.aqua]#(Only NX)#
-Nx applications should use a Webpack-based builder such as `@nx/angular:webpack-browser`. See https://nx.dev/nx-api/angular/executors/webpack-browser for the official Nx Angular executor reference.
+Nx applications should use a Webpack-based builder such as `@nx/angular:webpack-browser`. See https://nx.dev/technologies/angular/api/executors/webpack-browser for the official Nx Angular executor reference.
 
-Other Nx builders are acceptable if they still produce the same Webpack-based behavior, but they must still include the `node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js` script and the Module Federation/Web Components configuration described above.
+Other Nx builders can be chosen; they must still include the `node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js` script and support the Module Federation and Web Components requirements described above.
 
 [#create-entrypoints]
 === Create the app entrypoint files
@@ -51,7 +51,7 @@ During the loading of an app, OneCX will try to load its environment file. To av
 
 [#test-remote-entrypoint]
 === Verify that the app is exposing a remote entry point
-After completing all steps listed above, the application should be ready to be used as a microfrontend in the OneCX platform. After starting the application with its start command (e.g. `npm start`), the application's entrypoint file (remoteEntry.js) should be accessible at http://localhost:4200/remoteEntry.js.
+The important outcome is a Module Federation build that exposes `remoteEntry.js` for the OneCX shell to load; see the xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] and xref:documentation:onecx-docs-overview:module-federation/webcomponents.adoc[Web Components in OneCX] guides. After starting the application with its start command (e.g. `npm start`), the application's entrypoint file (`remoteEntry.js`) should be accessible at http://localhost:4200/remoteEntry.js.
 
 [#v8-setup-checklist]
 == v8 setup checklist
