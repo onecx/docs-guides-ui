@@ -2,6 +2,7 @@
 :idseparator: -
 
 = AutoComplete search criteria input field
+:page-aliases: angular/ngrx/search-criteria/autocomplete/autocomplete.adoc
 
 There are different cases for implementing AutoComplete depending on the array type of the Request and Response object for the suggestions/options. Each case requires a different way of implementation:
 

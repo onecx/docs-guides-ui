@@ -1,4 +1,5 @@
 = Calendar
+:page-aliases: angular/ngrx/search-criteria/calendar.adoc
 
 :idprefix:
 :idseparator: -

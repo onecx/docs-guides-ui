@@ -1,4 +1,5 @@
 = Lazy loading tabs
+:page-aliases: angular/ngrx/lazy-loading.adoc
 
 :idprefix:
 :idseparator: -

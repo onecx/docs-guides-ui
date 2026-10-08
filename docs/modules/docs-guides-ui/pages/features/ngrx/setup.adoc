@@ -1,0 +1,131 @@
+:idprefix:
+:idseparator: -
+
+[#ngrx-setup]
+= NgRx Setup
+
+This page walks through setting up NgRx in a OneCX Angular application: installing the packages, the general steps to build a feature store, and wiring OneCX platform state into the store with `@onecx/ngrx-integration-interface`.
+
+NOTE: This page covers Angular only. There is currently no equivalent state-management pattern documented for React applications in OneCX.
+
+For what NgRx is and when to use it, see xref:documentation:docs-guides-ui:features/ngrx.adoc[NgRx]. For the conventions OneCX applications follow, see xref:documentation:docs-guides-ui:features/ngrx/guidelines.adoc[NgRx Guidelines].
+
+[#ngrx-setup-installation]
+== Installation
+
+Install the NgRx packages plus the three OneCX libraries:
+
+[source,bash]
+----
+npm install @ngrx/store @ngrx/effects @ngrx/entity @ngrx/router-store @ngrx/component-store @ngrx/store-devtools
+npm install @onecx/ngrx-integration-interface @onecx/ngrx-accelerator @onecx/ngrx-linter-rules
+----
+
+The three `@onecx/ngrx-*` packages are released as part of the same OneCX portal release train as the other `@onecx/*` libraries, so keep them on a matching version.
+
+[#ngrx-setup-getting-started]
+== Getting started
+
+High-level steps:
+
+1. Define actions for user intents and async outcomes.
+2. Create feature state, initial state, and reducers.
+3. Add selectors to expose view models from state.
+4. Implement effects to handle HTTP calls, routing, and other side effects.
+5. Wire up the feature with `provideState`/`provideEffects` (standalone) or feature modules.
+6. Use the Redux DevTools for debugging (`StoreDevtoolsModule` or `provideStoreDevtools`).
+
+[#ngrx-setup-platform-state]
+== Wiring OneCX platform state into the store
+
+Library: `@onecx/ngrx-integration-interface`
+
+`@onecx/ngrx-integration-interface` bridges OneCX platform state — location, permissions, configuration, app config, current MFE, page, theme, and workspace — into the NgRx store as a single `onecx` feature slice. You provide a reducer and opt into the platform pieces you need by registering one or more store-connector providers.
+
+Register the `onecx` slice with its reducer and add the connectors you want to the providers of your application module. The module is bootstrapped with `bootstrapModule()` from `@onecx/angular-webcomponents`, as described in xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Module Approach]:
+
+.src/app/app.module.ts
+[source,typescript]
+----
+import { NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import {
+  oneCxReducer,
+  providePermissionsStoreConnector,
+  provideConfigurationStoreConnector,
+  provideCurrentThemeStoreConnector,
+  provideAppConfigStoreConnector,
+} from '@onecx/ngrx-integration-interface';
+
+@NgModule({
+  imports: [
+    // feature key is "onecx"
+    StoreModule.forRoot({ onecx: oneCxReducer }),
+  ],
+  providers: [
+    // opt into the platform state you consume
+    providePermissionsStoreConnector(),
+    provideConfigurationStoreConnector(),
+    provideCurrentThemeStoreConnector(),
+    provideAppConfigStoreConnector(),
+  ],
+})
+export class AppModule {}
+----
+
+.src/bootstrap.ts
+[source,typescript]
+----
+import { bootstrapModule } from '@onecx/angular-webcomponents';
+import { environment } from './environments/environment';
+import { AppModule } from './app/app.module';
+
+bootstrapModule(AppModule, 'microfrontend', environment.production);
+----
+
+A Remote Component has no application module. It is bootstrapped with `bootstrapRemoteComponent()` from `@onecx/angular-webcomponents`, as described in xref:documentation:docs-guides-ui:setup/required/expose-remote-module/component-approach.adoc[Component Approach], so pass the store and the connectors in its providers array instead:
+
+.src/app/remotes/example/example.component.bootstrap.ts
+[source,typescript]
+----
+import { provideStore } from '@ngrx/store';
+import { bootstrapRemoteComponent } from '@onecx/angular-webcomponents';
+import { oneCxReducer, providePermissionsStoreConnector } from '@onecx/ngrx-integration-interface';
+import { environment } from '../../../environments/environment';
+import { ExampleComponent } from './example.component';
+
+bootstrapRemoteComponent(ExampleComponent, 'example-remote-component', environment.production, [
+  // other Remote Component providers
+  provideStore({ onecx: oneCxReducer }),
+  providePermissionsStoreConnector(),
+]);
+----
+
+Each connector subscribes to the matching OneCX platform service and dispatches into the store, so you can read platform state with selectors instead of reaching for a service directly. Read it back with the generated selectors:
+
+.src/app/shared/onecx.selectors.ts
+[source,typescript]
+----
+import { createOneCxSelector, getOneCxSelectors, OneCxState } from '@onecx/ngrx-integration-interface';
+
+// root state of the application; the "onecx" key matches the StoreModule.forRoot registration
+interface AppState {
+  onecx: OneCxState;
+}
+
+export const { selectPermissions, selectConfig, selectCurrentTheme, selectAppConfig } =
+  getOneCxSelectors(createOneCxSelector<AppState>());
+----
+
+Use the matching `select...` for each slice you registered. Selectors for slices that are not registered simply resolve to `undefined` until that connector is added.
+
+NOTE: The full list of available store-connector providers and the `onecx` slice state shape is documented with the library.
+
+For the other OneCX NgRx libraries, `@onecx/ngrx-accelerator` and `@onecx/ngrx-linter-rules`, see xref:documentation:docs-guides-ui:features/ngrx/guidelines.adoc#ngrx-guidelines-onecx-utilities[OneCX utilities] in the guidelines.
+
+[#ngrx-setup-related]
+== Related
+
+* xref:documentation:docs-guides-ui:features/ngrx.adoc[NgRx] — what NgRx is, when to use it, and an index of the NgRx pages.
+* xref:documentation:docs-guides-ui:features/ngrx/guidelines.adoc[NgRx Guidelines] — the conventions OneCX applications follow and the OneCX utility libraries.
+* xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] — why OneCX Angular applications use NgRx.

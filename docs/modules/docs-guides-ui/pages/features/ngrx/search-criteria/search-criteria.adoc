@@ -1,4 +1,5 @@
 = Adding search criteria
+:page-aliases: angular/ngrx/search-criteria/search-criteria.adoc
 
 :idprefix:
 :idseparator: -
@@ -119,7 +120,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     }}</label>
 ----
 
-* xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/calendar.adoc[Calendar input field]
-* xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/dropdown.adoc[Dropdown input field]
-* xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/multiselect.adoc[MultiSelect input field]
-* xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]
+* xref:documentation:docs-guides-ui:features/ngrx/search-criteria/calendar.adoc[Calendar input field]
+* xref:documentation:docs-guides-ui:features/ngrx/search-criteria/dropdown.adoc[Dropdown input field]
+* xref:documentation:docs-guides-ui:features/ngrx/search-criteria/multiselect.adoc[MultiSelect input field]
+* xref:documentation:docs-guides-ui:features/ngrx/search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]

@@ -1,14 +1,15 @@
-= MultiSelect
+= Dropdown
+:page-aliases: angular/ngrx/search-criteria/dropdown.adoc
 
 :idprefix:
 :idseparator: -
 :!sectids:
 [#goal]
-== Goal: Add MultiSelect Input
+== Goal: Add Dropdown Input
 :sectids:
 :sectnums:
 
-Add a MultiSelect as a search criteria input field for your search page.
+Add a Dropdown as a search criteria input field for your search page.
 
 NOTE: Please replace all occurences of *exampleEnum* with the actual name in the following code snippets
 
@@ -21,9 +22,8 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
 [source, javascript]
 ----    
     exampleEnum: z
-        .union([z.string(), z.array(z.string())])
-        .transform(singleToArray)
-        .transform((value) => value.map((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum))
+        .string()
+        .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum)
         .optional(),
 ----
 
@@ -36,16 +36,17 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 [source, html]
 ----
     <span class="p-float-label">
-        <p-multiSelect
+        <p-dropdown
               id="exampleEnum"
               formControlName="exampleEnum"
+              appendTo="body"
               [options]="(exampleEnum$ | async) ?? []"
               optionLabel="label"
               optionValue="value"
               placeholder="{{ 'YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ENUM.PLACEHOLDER' | translate }}"
               display="chip"
-              appendTo="body"
-        ></p-multiSelect>
+              [showClear]="true"
+        ></p-dropdown>
         <label for="exampleEnum$">{{
             'YOUR_PRODUCT_SEARCH.CRITERIA.EXAMPLE_ENUM.TITLE' | translate
         }}</label>
@@ -62,7 +63,7 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
 ----
     import { TranslateService } from '@ngx-translate/core';
     import { enumToDropdownOptions } from '@onecx/angular-accelerator';
-    ... 
+    ...
 
     constructor(
         ...
@@ -79,3 +80,4 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
 ----
 
 NOTE: Don't forget to add the translations to your *de.json* and *en.json*.
+
