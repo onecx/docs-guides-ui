@@ -11,6 +11,21 @@ Every application integrated with OneCX must ensure that all outgoing HTTP reque
 
 Import `AngularAuthModule` from `@onecx/angular-auth` in the application's bootstrap providers. It registers an HTTP interceptor that automatically attaches the required authentication headers to outgoing requests.
 
+[#regular-apps-must-not-install-idp-client]
+=== Do not install the IDP client in a regular application
+
+The shell owns the identity provider (IDP) client. A regular OneCX Angular application must not install `keycloak-js` or depend on `@onecx/shell-auth`; the shell is responsible for the Keycloak-specific authentication logic.
+
+* Use only `@onecx/angular-auth` (token-based authentication) for the application's interceptor and token wiring.
+* Do not install `keycloak-js`:
++
+[source,bash]
+----
+npm uninstall keycloak-js
+----
+
+Only a standalone application that runs the shell locally needs `@onecx/shell-auth` and `keycloak-js`, and even then it keeps `AngularAuthModule` from `@onecx/angular-auth` for the application's token wiring.
+
 [#react-applications]
 == React Applications
 
