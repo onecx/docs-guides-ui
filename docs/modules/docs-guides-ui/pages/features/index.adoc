@@ -1,0 +1,18 @@
+:idprefix:
+:idseparator: -
+
+[#features]
+= Features
+
+This section holds standalone pages describing platform features an application may choose to adopt. Unlike the Setup tiers, adopting a feature has no correctness impact if skipped — the application still loads, runs, and behaves correctly without it. Each page is independent of the others.
+
+[#features-pages]
+== Pages
+
+* xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language] — how an Angular application opts into fallback languages so a missing translation key resolves to a supported language instead of showing the raw key.
+* xref:documentation:docs-guides-ui:features/display-messages.adoc[Display Messages] — how an application triggers a message and leaves its rendering to the shell, instead of shipping its own message UI.
+* xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling] — how an application reacts to the permissions the platform assigns a user by rendering UI conditionally.
+* xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[PrimeNG Theming Customization] — how to override PrimeNG design tokens at the application level so one application styles PrimeNG differently from every other application on the page.
+* xref:documentation:docs-guides-ui:features/development/source-maps.adoc[Source Maps] — how to enable source maps so browser developer tools can show the original source instead of the compiled build output.
+* xref:documentation:docs-guides-ui:features/environment-variables.adoc[Environment Variables] — how an application reads runtime configuration values (endpoints, auth settings, feature flags) that can change after the build.
+* NgRx State Management — a practical guide to adopting the `@onecx/ngrx-*` libraries in an Angular application, pairing with xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management]. This page is being authored and will be linked once it is published.
