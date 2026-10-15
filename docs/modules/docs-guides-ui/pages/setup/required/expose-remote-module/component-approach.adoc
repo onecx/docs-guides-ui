@@ -6,6 +6,8 @@
 
 This page covers exposing a single Angular component as a Remote Component webcomponent, bootstrapped via `@onecx/angular-webcomponents`.
 
+The examples use the `REMOTE_COMPONENT_CONFIG` token and `RemoteComponentConfig` type from `@onecx/angular-utils`, which are available from OneCX UI libraries v6 (Angular 19) onward and replace the `BASE_URL` token removed in v6. On earlier versions the remote component received a base URL string through the `BASE_URL` token instead. For the migration, see xref:documentation:onecx-portal-ui-libs:migrations/angular-19/update-base-url.adoc[Replace `BASE_URL` injection token].
+
 [#angular-component-bootstrap-files]
 == Bootstrap Files
 
