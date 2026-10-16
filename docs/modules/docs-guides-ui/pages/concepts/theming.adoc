@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired angular theming page (absorbed into this concept page).
+:page-aliases: angular/theming.adoc
+
 [#theming]
 = Theming
 

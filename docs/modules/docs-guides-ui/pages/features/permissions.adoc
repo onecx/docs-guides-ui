@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired angular permissions page (absorbed into this feature page).
+:page-aliases: angular/permissions/permissions.adoc
+
 [#permissions-handling]
 = Permissions Handling
 

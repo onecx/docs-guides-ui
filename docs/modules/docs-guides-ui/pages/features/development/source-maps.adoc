@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired ui-additional enable-source-maps page (moved into this feature page).
+:page-aliases: ui-additional/enable-source-maps.adoc
+
 :shell_source_maps: xref:documentation:onecx-shell:enable-shell-source-maps.adoc
 
 [#source-maps]

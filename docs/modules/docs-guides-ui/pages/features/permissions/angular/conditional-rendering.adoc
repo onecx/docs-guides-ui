@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired angular ifPermissions page (absorbed into this page).
+:page-aliases: angular/permissions/ifPermissions.adoc
+
 :permissions_handling:   xref:documentation:docs-guides-ui:features/permissions.adoc[Permissions Handling]
 :user_service:           xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
 :checking_permissions_code: xref:documentation:docs-guides-ui:features/permissions/angular/checking-permissions-in-code.adoc[Checking permissions in code (Angular)]

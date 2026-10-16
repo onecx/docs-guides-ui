@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired module-federation bootstrapping pages (now covered by this Required Setup page).
+:page-aliases: module-federation/application-bootstrapping.adoc, module-federation/mf-shell-router.adoc
+
 [#expose-a-remote-module]
 = Expose a Remote Module
 
