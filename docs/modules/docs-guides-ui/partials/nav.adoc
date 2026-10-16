@@ -1,4 +1,5 @@
 * UI
+** xref:documentation:docs-guides-ui:index.adoc[Working on OneCX UIs]
 ** xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup]
 *** xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements]
 *** xref:documentation:docs-guides-ui:setup/required/expose-remote-module.adoc[Expose a Remote Module]
