@@ -41,7 +41,6 @@
 *** xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Translations]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Setup]
 **** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
-*** xref:documentation:docs-guides-ui:angular/toast-messages.adoc[Toast Messages]
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
 
 

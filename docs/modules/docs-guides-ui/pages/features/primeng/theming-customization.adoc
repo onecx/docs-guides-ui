@@ -3,6 +3,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired angular PrimeNG theming page (absorbed into this feature page).
+:page-aliases: angular/primeng/theming.adoc
+
 :theming_concept: xref:documentation:docs-guides-ui:concepts/theming.adoc
 
 [#how-primeNG-is-themed]

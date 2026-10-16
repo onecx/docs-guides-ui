@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired module-federation custom-authentication page (now covered by this Required Setup page).
+:page-aliases: module-federation/mf-authentication-service.adoc
+
 [#configure-authentication]
 = Configure Authentication
 

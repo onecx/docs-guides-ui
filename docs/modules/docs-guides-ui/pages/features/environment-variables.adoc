@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired ui-additional environment variables pages (absorbed into this feature page).
+:page-aliases: ui-additional/environment-variables/environment-variables.adoc, ui-additional/environment-variables/appConfigService.adoc, ui-additional/environment-variables/configurationService.adoc
+
 :app_config_service: xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-config-service[AppConfigService]
 :configuration_service: xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#configuration-service[ConfigurationService]
 
