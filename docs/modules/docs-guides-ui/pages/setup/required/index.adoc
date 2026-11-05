@@ -21,4 +21,5 @@ TIP: If a step isn't listed here, it belongs to a different tier. See xref:docum
 ** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Module Approach]
 ** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/component-approach.adoc[Component Approach]
 * xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] — how to assign the app and its shared dependencies to the correct Module Federation share scope.
+** xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing/build-utils.adoc[Share Packages with @onecx/build-utils]
 * xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication] — how to ensure requests carry the shell's authentication header.
