@@ -11,7 +11,7 @@ A *microfrontend* is an application, or a part of one, that is developed and dep
 
 A regular web application is built and deployed as one unit and is opened on its own. A microfrontend is loaded into the OneCX Shell instead. It is developed and deployed by its own team, independently of the Shell and of other applications.
 
-For development and deployment this means that releasing a new version of a microfrontend does not require a rebuild of the Shell. In return, the microfrontend must follow the platform rules described in xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup].
+For development and deployment this means that releasing a new version of a microfrontend does not require a rebuild of the Shell. At the same time, the microfrontend must follow the platform rules described in xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup].
 
 [#types-of-microfrontends]
 == Types of microfrontends
@@ -39,7 +39,7 @@ The loading method defines how the Shell loads the exposed code of a microfronte
 [#webcomponentscript]
 === WebComponentScript
 
-*WebComponentScript* is the loading method for microfrontends built with any technology that do not use ESM module loading. The exposed code is loaded as a script and rendered as a web component.
+*WebComponentScript* is the loading method for microfrontends that do not use ESM module loading, whatever technology they are built with. The exposed code is loaded as a script and rendered as a web component.
 
 For the difference between module and script loading, see https://module-federation.io/configure/remotetype#usage[Module Federation remote types].
 
