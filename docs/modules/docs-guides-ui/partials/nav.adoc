@@ -38,7 +38,6 @@
 ** xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 *** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 *** xref:documentation:docs-guides-ui:angular/standalone.adoc[Standalone Mode]
-
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
 
 
