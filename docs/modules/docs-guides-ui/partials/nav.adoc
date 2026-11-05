@@ -49,7 +49,7 @@
 *** xref:documentation:docs-guides-ui:guidelines/react.adoc[React]
 
 ** xref:documentation:docs-guides-ui:react/index.adoc[React]
-*** xref:documentation:docs-guides-ui:react/getting-started.adoc[Getting Started]
+*** xref:documentation:docs-guides-ui:react/getting-started.adoc[Getting Started with React]
 *** OneCX Libraries
 **** xref:documentation:docs-guides-ui:react/libraries/react-integration-interface.adoc[react-integration-interface]
 **** xref:documentation:docs-guides-ui:react/libraries/react-auth.adoc[react-auth]

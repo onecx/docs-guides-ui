@@ -1,7 +1,7 @@
 :idprefix:
 :idseparator: -
 
-= Getting Started
+= Getting Started with React
 
 [#onecx-libraries]
 == OneCX libraries
