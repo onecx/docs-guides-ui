@@ -1,0 +1,148 @@
+:idprefix:
+:idseparator: -
+
+[#browser-logging]
+= Browser Logging
+
+Since OneCX UI libraries v8, the `@onecx/*` libraries log through https://www.npmjs.com/package/debug[`debug`] (also known as *debug-js*) instead of `console.log`.
+
+* Logging is *disabled by default*.
+* You enable it in the browser by setting `localStorage.debug` to one or more namespace patterns and reloading the page.
+* Enabled log output is written to the browser console.
+
+The shell, applications and remote components share one `window` and one `localStorage`, so a single `localStorage.debug` value enables the matching logs of all of them at once.
+
+[#enable-logging]
+== Enable logging
+
+Set `localStorage.debug` in the browser developer tools console and reload the page:
+
+[source,js]
+----
+// Enable all OneCX UI library logs
+localStorage.debug = '@onecx*'
+location.reload()
+----
+
+To turn logging off again, remove the value:
+
+[source,js]
+----
+localStorage.removeItem('debug')
+location.reload()
+----
+
+[#namespaces]
+== Namespaces
+
+Every log line has a namespace of the form:
+
+[source,text]
+----
+<prefix>:<location>:<level>
+----
+
+* `<prefix>` is the library namespace, see <<library-namespaces>>.
+* `<location>` is the component, service, directive or utility that logs, for example `AuthProxyService`.
+* `<level>` is one of `debug`, `info`, `warn` or `error`.
+
+For example, `@onecx/angular-auth:AuthProxyService:warn`.
+
+[#library-namespaces]
+=== Library namespaces
+
+These namespace prefixes are used by the current OneCX UI libraries:
+
+* Framework-agnostic libraries
+** `@onecx/accelerator`
+** `@onecx/integration-interface`
+** `@onecx/shell-auth`
+* Angular libraries
+** `@onecx/angular-accelerator`, `@onecx/angular-accelerator:testing`
+** `@onecx/angular-auth`
+** `@onecx/angular-integration-interface`, `@onecx/angular-integration-interface:mocks`
+** `@onecx/angular-remote-components`, `@onecx/angular-remote-components:mocks`, `@onecx/angular-remote-components:testing`
+** `@onecx/angular-standalone-shell`
+** `@onecx/angular-testing`
+** `@onecx/angular-utils`, `@onecx/angular-utils:guards`, `@onecx/angular-utils:mocks`, `@onecx/angular-utils:style`, `@onecx/angular-utils:theme/optimus`
+** `@onecx/angular-webcomponents`
+** `@onecx/ngrx-accelerator`
+** `@onecx/ngrx-integration-interface`
+* React libraries
+** `@onecx/react-auth`
+** `@onecx/react-integration-interface`
+** `@onecx/react-remote-components`
+** `@onecx/react-utils`, `@onecx/react-utils:guards`
+** `@onecx/react-webcomponents`
+
+[#high-volume-namespaces]
+=== High-volume namespaces
+
+Topic and Gatherer communication is logged under dedicated locations of `@onecx/accelerator`, because it produces many log lines:
+
+* `@onecx/accelerator:Topic:<name>` and `@onecx/accelerator:TopicPublisher:<name>`
+* `@onecx/accelerator:Gatherer:<name>`
+
+[#patterns]
+== Patterns
+
+`localStorage.debug` accepts namespace patterns:
+
+* `*` matches anything, so `@onecx/angular-utils*` also matches `@onecx/angular-utils:guards`.
+* Separate several patterns with a comma.
+* Prefix a pattern with `-` to exclude it.
+
+See https://github.com/debug-js/debug#browser-support[debug-js: Browser support] for the full syntax.
+
+[#examples]
+=== Examples
+
+[source,js]
+----
+// All OneCX logs except the high-volume Topic and Gatherer namespaces
+localStorage.debug = '@onecx*,-@onecx/accelerator:Topic*,-@onecx/accelerator:Gatherer:*'
+
+// A single library
+localStorage.debug = '@onecx/angular-utils*'
+
+// A single location of a library, all levels
+localStorage.debug = '@onecx/angular-auth:AuthProxyService:*'
+
+// Only errors of all OneCX libraries
+localStorage.debug = '@onecx*:error'
+
+// Only warnings and errors of all OneCX libraries
+localStorage.debug = '@onecx*:warn,@onecx*:error'
+
+// Only debug logs of a single location
+localStorage.debug = '@onecx/angular-auth:AuthProxyService:debug'
+----
+
+Reload the page after changing the value.
+
+[#log-levels]
+== Log levels
+
+The level is the last segment of the namespace, so you can filter by severity:
+
+* `debug`: high-volume diagnostics for deep troubleshooting, such as state transitions, inputs and outputs, and timing.
+* `info`: important lifecycle milestones, such as initialization, successful operations and configuration decisions.
+* `warn`: unexpected situations the application recovers from, such as fallback paths or missing optional dependencies.
+* `error`: failures that prevent a feature from working or indicate a bug, such as exceptions or invalid critical configuration.
+
+[#logging-in-your-application]
+== Logging in your application
+
+An application can use the same mechanism with its own prefix. `createLoggerFactory` from `@onecx/accelerator` takes the prefix and returns a `createLogger` function; `createLogger` takes the location and returns a logger with `debug`, `info`, `warn` and `error` members:
+
+[source,typescript]
+----
+import { createLoggerFactory } from '@onecx/accelerator'
+
+export const createLogger = createLoggerFactory('my-app')
+
+const logger = createLogger('MyComponent')
+logger.warn('Configuration value missing, using default')
+----
+
+Its logs are enabled with `localStorage.debug = 'my-app*'`.
