@@ -4,7 +4,7 @@
 :idprefix:
 :idseparator: -
 
-This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. It keeps the migration focused on the v8 baseline and links out to the setup pages instead of restating their steps. If the application has not yet been migrated to OneCX, first use the xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[legacy migration guide] to integrate it with the OneCX library version compatible with its current Angular version. Then follow the version-specific upgrade guides to reach the current OneCX version.
+This page walks a fresh (non-OneCX) Angular app to the current OneCX end-state. It keeps the migration focused on the v8 baseline and links out to the setup pages instead of restating their steps. If the application has not yet been migrated to OneCX, first use the xref:documentation:docs-guides-ui:migration/vanilla-to-onecx-angular-legacy.adoc[legacy migration guide] to integrate it with the OneCX library version compatible with its current Angular version. Then follow the version-specific upgrade guides to reach the current OneCX version.
 
 [#general]
 == General
