@@ -9,7 +9,7 @@ A *share scope* is a named pool of shared dependencies in xref:documentation:doc
 [#available-share-scopes]
 == Available share scopes
 
-OneCX uses one share scope per major version of a technology. The shell fills each scope at startup with a *preloader*: a small bundle that provides the framework packages and OneCX libraries for that version.
+OneCX uses one share scope per major version of a technology. The shell fills each scope at startup with one or more *preloaders*: small bundles that provide the framework packages and OneCX libraries for that version.
 
 [%header,cols="1,2,1"]
 |===
@@ -21,7 +21,7 @@ OneCX uses one share scope per major version of a technology. The shell fills ea
 
 | `angular_21`
 | Angular 21 applications
-| Shell v3
+| Shell 3.0.0
 
 | `angular_22`
 | Angular 22 applications
@@ -67,4 +67,5 @@ To check which scopes and package versions the shell provides in a running envir
 * xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]: how to set the share scope in the build configuration and in the Helm values.
 * xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation]: how the shell loads applications at runtime.
 * xref:documentation:docs-guides-ui:troubleshooting/application-setup.adoc#share-scope[Troubleshooting: Share scope]: what to check when an application does not start.
+* xref:documentation:onecx-docs-dev:shell-integration/shell-v3-migration.adoc[Migrate to Shell v3] — moving Angular 21 applications to `angular_21`.
 * https://module-federation.io/configure/shareScope.html[Module Federation: shareScope]: the underlying Module Federation option.

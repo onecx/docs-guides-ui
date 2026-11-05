@@ -99,4 +99,4 @@ app:
                 shareScope: 'angular_21' # this app should be loaded into the 'angular_21' share scope
 ----
 
-See xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc#share-scopes[Share Scopes] for the full explanation of how share scopes are assigned and which scope an application should use.
+See xref:documentation:docs-guides-ui:concepts/share-scopes.adoc[Share Scopes] for the full explanation of how share scopes are assigned and which scope an application should use.
