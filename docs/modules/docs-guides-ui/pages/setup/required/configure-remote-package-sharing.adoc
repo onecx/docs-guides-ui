@@ -1,6 +1,9 @@
 :idprefix:
 :idseparator: -
 
+// Redirect the retired ui-additional stub pages (UI Additional Topics index and Share Scopes).
+:page-aliases: ui-additional/index.adoc, ui-additional/share-scopes.adoc
+
 [#configure-remote-package-sharing]
 = Configure Remote Package Sharing
 
