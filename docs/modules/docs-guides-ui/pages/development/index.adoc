@@ -1,0 +1,13 @@
+:idprefix:
+:idseparator: -
+
+[#development]
+= Development
+
+This section holds pages that help while developing and debugging a OneCX UI application. They do not change how the application behaves at runtime.
+
+[#development-pages]
+== Pages
+
+* xref:documentation:docs-guides-ui:development/source-maps.adoc[Source Maps] — how to enable source maps so browser developer tools can show the original source instead of the compiled build output.
+* xref:documentation:docs-guides-ui:development/browser-logging.adoc[Browser Logging] — how to turn on the `debug-js` logging of the OneCX UI libraries in the browser and filter it by library, location and log level.
