@@ -4,7 +4,7 @@
 [#multi-language]
 = Multi-language
 
-:multi_language_setup: xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc
+:multi_language_setup: xref:documentation:docs-guides-ui:concepts/translations/angular.adoc#setup
 :translations_concept: xref:documentation:docs-guides-ui:concepts/translations.adoc
 :user_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
 
