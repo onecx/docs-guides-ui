@@ -65,7 +65,7 @@ Reach the following home pages, in order, to complete the OneCX setup for the fr
 . xref:documentation:docs-guides-ui:setup/required/material/material.adoc[Material] — add the required Webpack `ModifySourcePlugin` config when the app uses `@angular/material` or `@angular/cdk`.
 . xref:documentation:docs-guides-ui:setup/recommended/apply-theming.adoc[Apply Theming] — let the shell load and apply the theme globally; do not load it in the app.
 . xref:documentation:docs-guides-ui:features/primeng/theming-customization.adoc[PrimeNG Theming Customization] — register `provideThemeConfig()` for PrimeNG in microfrontends and remote components.
-. xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Multi-language Translations] — set up `OnecxTranslateLoader` and the translation connection service.
+. xref:documentation:docs-guides-ui:concepts/translations/angular.adoc#setup[Multi-language Translations] — set up `OnecxTranslateLoader` and the translation connection service.
 . xref:documentation:docs-guides-ui:setup/recommended/expose-component-styles/angular.adoc[Expose Component Styles (Angular)] — expose a stable `styles.css` and the OneCX library styles in the build output.
 
 [#standalone-mode]

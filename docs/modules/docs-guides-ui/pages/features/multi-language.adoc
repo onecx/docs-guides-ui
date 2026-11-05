@@ -4,7 +4,7 @@
 [#multi-language]
 = Multi-language
 
-:multi_language_setup: xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc
+:multi_language_setup: xref:documentation:docs-guides-ui:concepts/translations/angular.adoc#setup
 :translations_concept: xref:documentation:docs-guides-ui:concepts/translations.adoc
 :user_service: xref:documentation:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#user-service
 
@@ -14,7 +14,7 @@ This feature builds on the {translations_concept}[Translations] concept — it d
 
 == How it works
 
-Angular OneCX applications are set up with `@onecx/angular-utils`'s `MultiLanguageMissingTranslationHandler` as the `ngx-translate` `MissingTranslationHandler` (see {multi_language_setup}[Multi-language Translations — Setup], Step 6). When a translation key cannot be resolved in the current language, the handler builds a list of candidate fallback languages and tries them one after another until one produces a value:
+Angular OneCX applications are set up with `@onecx/angular-utils`'s `MultiLanguageMissingTranslationHandler` as the `ngx-translate` `MissingTranslationHandler` (see {multi_language_setup}[Multi-language Translations — Setup], Step 5). When a translation key cannot be resolved in the current language, the handler builds a list of candidate fallback languages and tries them one after another until one produces a value:
 
 * If the user's profile has explicit language settings (`settings.locales`, exposed via the {user_service}[UserService]), those languages are used, in the order given.
 * Otherwise, the browser's configured languages (`navigator.languages`) are used, normalized to the application's supported locale format.
