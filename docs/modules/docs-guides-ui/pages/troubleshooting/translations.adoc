@@ -1,0 +1,86 @@
+:idprefix:
+:idseparator: -
+
+[#translations-troubleshooting]
+= Translations
+
+Use this checklist when an Angular application shows translation keys instead of text, translates only part of the page (for example its own texts but not the texts of OneCX library components), or does not follow the user's language. Work through the sections in order.
+
+For the full setup, see xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Angular Translations — Setup]. For how translations work in OneCX, see xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations].
+
+[#inspect-loaded-translations]
+== Inspect what the browser loaded
+
+Start in the browser DevTools to see which translation files were requested:
+
+* In the *Network* tab, filter for `.json`. Every translation source is requested as `<translation path><language>.json`, for example `\https://<host>/<app-path>/assets/i18n/en.json`. Each request must return `200` with the expected JSON. A `404` points to a wrong translation path or to assets missing from the build output.
+* In the console, inspect the page-wide translation cache:
++
+.DevTools console
+[source,javascript]
+----
+window.onecxTranslations
+----
++
+Each key is the URL of a translation file and each value is its content. A `null` value means the file is still loading. If a file of your app or of a library is not listed at all, no translation path points to it (see <<translation-path>>).
+* Failed files are logged by `@onecx/angular-utils`. These logs are off by default. Enable them in the console and reload the page:
++
+.DevTools console
+[source,javascript]
+----
+localStorage.debug = '@onecx/angular-utils:*'
+----
++
+A message such as `Failed to load translation file: <url>` names the file that could not be loaded. A file that fails to load does not break the other translations: its keys are only missing.
+
+[#translation-path]
+== Check the translation path (`TRANSLATION_PATH`)
+
+`OnecxTranslateLoader` loads the translation files from all paths registered under the `TRANSLATION_PATH` injection token. Without a path for your app, the loader does not request your app's files.
+
+* The module or bootstrap configuration that sets up translations provides the app's own path with `provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/')` from `@onecx/angular-utils`. See xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc#provide-translation-path[Provide Translation Path].
+* The path is resolved relative to the URL of the JavaScript file that contains the call, so the second argument must match the location of the translation files in the build output (for example `assets/i18n/` next to `remoteEntry.js`).
+* If the console shows `Cannot construct translation path from local file path`, `import.meta.url` is not kept by webpack. Set `module.parser.javascript.importMeta` to `false` in the webpack configuration, as described in the note of xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc#provide-translation-path[Provide Translation Path].
+* Replace remaining `TRANSLATION_PATH` providers that use the deprecated `translationPathFactory` or `remoteComponentTranslationPathFactory` with `provideTranslationPathFromMeta`.
+
+[#ngx-translate-setup]
+== Check the ngx-translate setup
+
+* `@ngx-translate/core` and `@ngx-translate/http-loader` are installed in versions that match the shell. `@ngx-translate/http-loader` is a peer dependency of `@onecx/angular-utils`: `OnecxTranslateLoader` uses it to fetch the files. See xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements].
+* The translation service is provided with `provideTranslateService()`, using `provideTranslateLoader(OnecxTranslateLoader)` as loader and, for fallback across the user's languages, `provideMissingTranslationHandler(MultiLanguageMissingTranslationHandler)`. See xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc#provide-translations[Provide Translations with OnecxTranslateLoader].
+* `HttpClient` is available in the app, for example through `provideHttpClient()`. The translation files are fetched with it.
+* The language follows the user: `TranslationConnectionService` sets the ngx-translate language from the user's language. It is registered by `AngularAcceleratorModule` or by `provideTranslationConnectionService()` from `@onecx/angular-utils`. If neither is present, the app does not switch language. See xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc#provide-translation-connection[Provide the Translation Connection Service].
+* Every module whose templates use the `translate` pipe imports `TranslateModule`. Otherwise Angular reports that the pipe `translate` could not be found. See xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc#feature-modules[Support in Feature Modules].
+
+[#library-modules]
+== Check that the translation-related library providers are included
+
+OneCX libraries register the translation paths of their own texts. If these providers are missing, the app's texts are translated, but texts of library components show their keys (for example `OCX_...`).
+
+* `AngularAcceleratorModule` from `@onecx/angular-accelerator` registers the paths `onecx-angular-accelerator/assets/i18n/` and `onecx-angular-accelerator/assets/i18n/optimus/`. Import it in the module that provides the translation service when the app uses `@onecx/angular-accelerator` components.
+* `provideAngularUtils()` (or `provideTranslationPaths()` on its own) from `@onecx/angular-utils` registers the path `onecx-angular-utils/assets/i18n/`.
+
+[#library-assets]
+== Check that the library translation files are in the build output
+
+The library providers above only register paths. The translation files themselves are shipped in each library's `assets` folder and must be copied into the app's build output, at exactly the output folder the library expects:
+
+[%header,cols="1,1"]
+|===
+| Library | Assets output
+| `@onecx/angular-accelerator` | `/onecx-angular-accelerator/assets/`
+| `@onecx/angular-utils` | `/onecx-angular-utils/assets/`
+|===
+
+Configure this in the `assets` array of `project.json` (Nx) or `angular.json` (Angular CLI), as shown in xref:documentation:docs-guides-ui:setup/recommended/expose-library-assets/angular.adoc[Expose Library Assets in Angular Applications]. To verify, open `<app base URL>/onecx-angular-accelerator/assets/i18n/en.json` in the browser.
+
+[#package-sharing]
+== Check package sharing
+
+The app and the shell must use the same instances of the translation-related packages. Share at least:
+
+* `@angular/*`
+* `@ngx-translate/*`
+* the OneCX packages the app uses (`@onecx/*`), including `@onecx/angular-utils`
+
+`getOneCXSharedLibraryConfig` from `@onecx/build-utils` shares all of these when they are dependencies in `package.json`. See xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] and the general xref:documentation:docs-guides-ui:troubleshooting/general-issues.adoc#package-sharing[package sharing] checks. To see which versions are actually loaded on the page, use xref:documentation:docs-guides-ui:troubleshooting/shell-compatibility.adoc#devtools-inspection[the DevTools inspection of shared packages].
