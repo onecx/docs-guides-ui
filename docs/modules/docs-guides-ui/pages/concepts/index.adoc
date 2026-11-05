@@ -16,5 +16,6 @@ This section holds OneCX's core platform concepts as short, public, technology-a
 * xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication] — how the shell owns the entire authentication flow and session, and the small set of interactions an integrated app is limited to.
 * xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation] — the rules OneCX places on application styles so they stay confined to the region each app renders into.
 * xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] — the mechanism that lets OneCX compose many independently developed and independently deployed applications at runtime.
+* xref:documentation:docs-guides-ui:concepts/share-scopes.adoc[Share Scopes] — which Module Federation share scopes the shell provides per framework version, and why an application must be loaded into the right one.
 * xref:documentation:docs-guides-ui:concepts/remote-components.adoc[Remote Components] — how a piece of UI owned by one application can be embedded inside another, and the *Slots* that host them.
 * xref:documentation:docs-guides-ui:concepts/state-management.adoc[State Management] — how OneCX Angular applications use NgRx to model the data that drives their UI as a single, predictable store.

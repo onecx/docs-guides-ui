@@ -11,7 +11,7 @@ Configuring remote package sharing has two parts: assigning a *share scope* (see
 [#share-scopes]
 == Share Scopes
 
-Share scopes are a way to group shared dependencies under a specific name, and every application must specify which share scope it should be loaded into.
+Share scopes are a way to group shared dependencies under a specific name, and every application must specify which share scope it should be loaded into. Which share scopes exist, why OneCX uses them, and what happens when the scope is wrong is explained in xref:documentation:docs-guides-ui:concepts/share-scopes.adoc[Share Scopes].
 
 Every application can specify the following in relation to share scopes:
 
@@ -31,7 +31,7 @@ app:
         microfrontend:
             spec:
                 shareScope: 'angular_21' # this app should be loaded into the 'angular_21' share scope
-            spec:
+            specs:
                 my-mfe:
                     shareScope: 'angular_21' # this mfe should be shared within the 'angular_21' share scope
 ----
@@ -108,11 +108,4 @@ export default config
 [#onecx-share-scopes]
 == OneCX Share Scopes
 
-The OneCX shell operates with the following share scopes:
-
-* `angular_X` — where X represents the Angular version, e.g. `angular_21` for Angular 21 applications and their dependencies.
-* `default` — scope for all applications integrated with older shell versions and their dependencies.
-
-For Angular 21 and newer applications, the shell expects them to be loaded into the `angular_X` share scope corresponding to their Angular version. For applications integrated with older shell versions, the expected share scope is `default`. If no scope is specified for an application, it is loaded into the `default` share scope by default.
-
-For details on the migration of Angular 21+ applications to the correct share scope, see the xref:documentation:onecx-docs-dev:shell-integration/shell-v3-migration.adoc[Migrate to Shell v3] page in the OneCX documentation.
+Use the share scope that matches the framework major of your application, for example `angular_21` for an Angular 21 application or `react_19` for a React 19 application. Applications on Angular 18 to 20 use `default`, which is also used when no scope is set. The full list of share scopes the shell provides is on xref:documentation:docs-guides-ui:concepts/share-scopes.adoc#available-share-scopes[Share Scopes].

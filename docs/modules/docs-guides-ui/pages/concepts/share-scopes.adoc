@@ -1,0 +1,71 @@
+:idprefix:
+:idseparator: -
+
+[#share-scopes]
+= Share Scopes
+
+A *share scope* is a named pool of shared dependencies in xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation]. Applications loaded into the same share scope reuse one instance of a shared package, such as Angular, React or a OneCX library. Applications in different share scopes never share packages with each other. This page explains which share scopes the OneCX shell provides, why they exist, and what they mean for your application. How to configure them is described in xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing].
+
+[#available-share-scopes]
+== Available share scopes
+
+OneCX uses one share scope per major version of a technology. The shell fills each scope at startup with one or more *preloaders*: small bundles that provide the framework packages and OneCX libraries for that version.
+
+[%header,cols="1,2,1"]
+|===
+| Share scope | Used by | Available since
+
+| `default`
+| Angular 18, 19 and 20 applications, and every application that does not declare a share scope
+| All shell versions
+
+| `angular_21`
+| Angular 21 applications
+| Shell 3.0.0
+
+| `angular_22`
+| Angular 22 applications
+| Shell 3.10.0
+
+| `react_19`
+| React 19 applications
+| Shell 3.6.0
+|===
+
+A share scope only works if the shell you deploy against has a preloader for it. An application built for a framework major that the shell does not preload has no packages to resolve against.
+
+[#why-share-scopes]
+== Why share scopes
+
+Without share scopes, every application on the page would share packages from one common pool. Module Federation picks one version of each shared package from that pool, as long as it satisfies every application's version range. This breaks as soon as applications built on different framework majors run side by side:
+
+* *Clear separation per framework version.* Angular 20 and Angular 21 are not compatible with each other at runtime. Each major needs its own instance of the framework, and every library that builds on it must use that same instance.
+* *Libraries that support more than one major.* A single version of a library can declare support for several framework majors, for example a version of `@ngx-translate/core` that works with both Angular 20 and Angular 21. In one common pool, both applications would get the same library instance. That instance is bound to only one Angular instance, so the application on the other Angular version fails at runtime. A separate share scope per major gives each application its own instance, bound to its own framework.
+
+Share scopes therefore let applications on different framework versions run on the same page, and let teams upgrade their applications independently of each other.
+
+[#effect-on-your-application]
+== What this means for your application
+
+The share scope of your application is set in two places, and both must name the same scope:
+
+* *At build time*, the Module Federation configuration assigns every shared package to a share scope. `getOneCXSharedLibraryConfig` from `@onecx/build-utils` derives the scope from the framework major in your `package.json`: `react_<major>` for React 19 and newer, `angular_<major>` for Angular 21 and newer, and `default` otherwise.
+* *At deployment*, the microfrontend registration in your Helm values sets `shareScope`. The shell loads your application into this scope. If the value is missing, the shell uses `default`.
+
+When the shell loads your application, it looks for your shared packages only in that scope. If the scope is wrong, missing, or not provided by the shell:
+
+* your shared packages are not found in the scope, so the framework and OneCX libraries your code expects are not available;
+* your application may load but fail to bootstrap, or fail later with runtime errors from the framework, for example Angular dependency injection errors.
+
+A typical example is an Angular 21 application registered without `shareScope`: the shell loads it into `default`, which only holds Angular 18 to 20 packages, so the application cannot start. When upgrading to a new framework major, update both the build configuration and the `shareScope` in the Helm values in the same release.
+
+To check which scopes and package versions the shell provides in a running environment, see xref:documentation:docs-guides-ui:troubleshooting/shell-compatibility.adoc[Shell Compatibility].
+
+[#related]
+== Related
+
+* xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]: how to set the share scope in the build configuration and in the Helm values.
+* xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation]: how the shell loads applications at runtime.
+* xref:documentation:docs-guides-ui:troubleshooting/application-setup.adoc#share-scope[Troubleshooting: Share scope]: what to check when an application does not start.
+* xref:documentation:onecx-docs-dev:shell-integration/shell-v3-migration.adoc[Migrate to Shell v3] — moving Angular 21 applications to `angular_21`.
+* https://module-federation.io/configure/shareScope.html[Module Federation: shareScope]: the underlying Module Federation option.

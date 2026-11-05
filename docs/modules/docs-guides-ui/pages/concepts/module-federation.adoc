@@ -32,7 +32,7 @@ Because each application publishes its own module federation configuration indep
 
 Loading every application's code independently would be wasteful if each one also shipped its own copy of every shared library (the framework itself, the OneCX platform libraries, and so on). Module federation addresses this with *shared dependencies*: a host and its remotes can negotiate, at runtime, to reuse a single instance of a matching dependency instead of each loading their own. In OneCX, this is what allows many independently built applications to share a single instance of Angular or React, `rxjs`, and the OneCX platform packages, rather than loading a duplicate copy per application.
 
-This negotiation is governed by *share scopes* — named groupings that determine which applications' shared dependencies are eligible to be reused by which other applications. Configuring an application's share scope, and which dependencies it shares into that scope, is covered in xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing].
+This negotiation is governed by *share scopes* — named groupings that determine which applications' shared dependencies are eligible to be reused by which other applications. Which share scopes OneCX provides and why is explained in xref:documentation:docs-guides-ui:concepts/share-scopes.adoc[Share Scopes]. Configuring an application's share scope, and which dependencies it shares into that scope, is covered in xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing].
 
 [#related]
 == Related
