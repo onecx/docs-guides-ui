@@ -6,6 +6,7 @@
 **** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Module Approach]
 **** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/component-approach.adoc[Component Approach]
 *** xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]
+**** xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing/build-utils.adoc[Share Packages with @onecx/build-utils]
 *** xref:documentation:docs-guides-ui:setup/required/configure-authentication.adoc[Configure Authentication]
 *** xref:documentation:docs-guides-ui:setup/required/primeng/primeng.adoc[PrimeNG]
 *** xref:documentation:docs-guides-ui:setup/required/material/material.adoc[Material]
