@@ -31,20 +31,6 @@ With Nx, emit the application's styles as the `styles` bundle:
 
 Because the generated stylesheet filename normally includes a content hash, rename it to a stable `styles.css` after the build.
 
-With the Angular CLI, add a `postbuild` script that renames the generated file:
-
-.Angular CLI (package.json)
-[source,json]
-----
-{
-  ...
-  "scripts": {
-    "postbuild": "mv \"$(find dist/my-project-name -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)\" dist/my-project-name/styles.css",
-  }
-  ...
-}
-----
-
 With Nx, adjust the build command to copy the generated file:
 
 .Nx (package.json)
@@ -56,6 +42,20 @@ With Nx, adjust the build command to copy the generated file:
     ...
     "build": "nx build && cp dist/my-project-name/styles.*.css dist/my-project-name/styles.css",
     ...
+  }
+  ...
+}
+----
+
+With the Angular CLI, add a `postbuild` script that renames the generated file:
+
+.Angular CLI (package.json)
+[source,json]
+----
+{
+  ...
+  "scripts": {
+    "postbuild": "mv \"$(find dist/my-project-name -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)\" dist/my-project-name/styles.css"
   }
   ...
 }
