@@ -13,25 +13,29 @@ This page shows the recommended usage. For the full API, see the xref:documentat
 
 `getOneCXSharedLibraryConfig(dependencies, shouldGenerateSubDeps, options)` returns one shared entry per package for the given `dependencies`:
 
-* *Which packages are shared:* only packages that match the OneCX sharing recommendations, such as `@angular/*`, `@onecx/*`, `rxjs`, `@ngrx/*` and `@ngx-translate/*`. All other dependencies are not shared and are bundled into the application.
+* *Which packages are shared:* only packages that match the OneCX sharing recommendations. All other dependencies are not shared and are bundled into the application.
+** Version 8.x: `@angular/*`, `@onecx/*`, `rxjs`, `primeng`, `@ngx-translate/*`, `@ngrx/*` and `react*`.
+** Version 9.x: `@angular/*`, `@onecx/*`, `rxjs`, `@openng/optimus-ui`, `@ngx-translate/*`, `@ngrx/*`, `react*` and `primereact`.
 * *Share scope:* derived from the application's own framework version: `react_<major>` for React 19 or newer, otherwise `angular_<major>` for Angular 21 or newer, otherwise `default`.
 * *Settings:* `requiredVersion` is taken from `package.json`; `singleton`, `strictVersion` and `eager` are set to `false`.
 * *Secondary entry points:* when `shouldGenerateSubDeps` is `true`, the exported subpackages of each shared package (for example `@angular/common/http`) are added as separate entries.
 
+NOTE: Neither version shares `primeicons`, and 9.x does not share `primeng`, although both must be shared (see xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]). If the application uses them, add them to the generated `shared` configuration yourself.
+
 [#install]
 == Install
 
-Install the package as a development dependency, in the same version as the other `@onecx` libraries of the application:
+Install the package as a development dependency, in the same version as the other `@onecx` libraries of the application. Version 9.x is published under the `main` dist-tag.
 
 [source,bash]
 ----
-npm install @onecx/build-utils --save-dev
+npm install @onecx/build-utils@<version of your other @onecx packages> --save-dev
 ----
 
 [#recommended-usage]
 == Recommended Usage
 
-Pass the `dependencies` of the application's `package.json` to `getOneCXSharedLibraryConfig` and use the result as the `shared` configuration. This is the setup generated for new Angular applications by the OneCX Nx plugin:
+Pass the `dependencies` of the application's `package.json` to `getOneCXSharedLibraryConfig` and use the result as the `shared` configuration. This is the setup that the current OneCX Angular generator (`@onecx/angular-generator` 9.x, Angular 21) generates for new applications:
 
 .module-federation.config.js
 [source,javascript]
@@ -97,7 +101,7 @@ Complete examples for each plugin are in the xref:documentation:onecx-portal-ui-
 Keep the generated configuration unchanged where possible: an application that changes the settings or the set of shared packages no longer shares the same way as other OneCX applications, which can cause version or share scope mismatches at runtime. If a change is required, pass `options`:
 
 * `configCallback(packageName, currentConfig)` changes the settings of single packages, for example `singleton: true`.
-* `packageFilterCallback(packageName)` excludes packages from sharing when it returns `true`. Fall back to the exported `onecxPackageFilter` to keep the default exclusions.
+* `packageFilterCallback(packageName)` excludes packages from sharing when it returns `true`. Call `onecxPackageFilter(packageName)` at the end of your filter to keep the default exclusions (`@nx/*`, `@module-federation/*`, `@onecx/build-utils` and selected secondary entry points).
 
 See xref:documentation:onecx-portal-ui-libs:libraries/build-utils.adoc#customization[Customization Options] for examples.
 
