@@ -12,6 +12,7 @@ Before an application can be loaded by the OneCX shell, it must satisfy a baseli
 The application's Angular version must be equal to or lower than the version used by the shell (or, for shell-loaded technology preloaders, the respective preloader).
 
 * Check the shell version and ensure the app uses an equal or lower Angular version. See xref:documentation:onecx-shell-ui:onecx-shell-ui-docs.adoc#shell-version-information[Shell Version Information] for how to check the shell's supported version.
+* To see which package versions the running shell actually shares, see xref:documentation:docs-guides-ui:troubleshooting/shell-compatibility.adoc#devtools-inspection[Inspect the shell's shared packages in the browser].
 
 .Compatible package versions for Angular 18 (libs version 5.x)
 |===

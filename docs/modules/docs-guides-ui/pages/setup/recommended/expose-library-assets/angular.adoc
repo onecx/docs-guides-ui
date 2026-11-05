@@ -81,3 +81,26 @@ If the application uses OneCX libraries, confirm their assets (e.g. i18n files) 
   }
 ...
 ----
+
+[#angular-webpack-import-meta]
+== Webpack Configuration for importMeta
+
+The application (and shared OneCX libraries such as `@onecx/angular-accelerator`) resolves translation paths from `import.meta.url`, relative to the URL the code was loaded from (e.g. with `provideTranslationPathFromMeta(import.meta.url, ...)` from `@onecx/angular-utils`). For this to work, webpack must leave `import.meta.url` to the browser instead of replacing it with the local file path at build time. Otherwise translations are missing and the following error is logged:
+
+----
+Cannot construct translation path from local file path. Please check whether the webpack configuration for importMeta is correct: https://webpack.js.org/configuration/module/#moduleparserjavascriptimportmeta
+----
+
+Disable the `importMeta` parser option in `module.exports` of the application's `webpack.config.js`:
+
+.webpack.config.js
+[source,javascript]
+----
+module.exports = {
+  ...config,
+  module: { parser: { javascript: { importMeta: false } } },
+  ...
+}
+----
+
+See xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc#provide-translation-path[Provide the translation path] for how an application provides its own translation path.
