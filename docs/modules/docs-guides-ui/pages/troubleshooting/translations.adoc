@@ -13,7 +13,7 @@ For the full setup, see xref:documentation:docs-guides-ui:angular/translation/mu
 
 Start in the browser DevTools to see which translation files were requested:
 
-* In the *Network* tab, filter for `.json`. Every translation source is requested as `<translation path><language>.json`, for example `\https://<host>/<app-path>/assets/i18n/en.json`. Each request must return `200` with the expected JSON. A `404` points to a wrong translation path or to assets missing from the build output.
+* In the *Network* tab, filter for `.json`. Every translation source is requested as `<translation path><language>.json`, for example `\https://<host>/<app-path>/assets/i18n/en.json`. Each request must return `200` with the expected JSON. A `404` points to a wrong translation path or to assets missing from the build output. A file that fails shows three requests, because the loader retries twice.
 * In the console, inspect the page-wide translation cache:
 +
 .DevTools console
@@ -22,7 +22,7 @@ Start in the browser DevTools to see which translation files were requested:
 window.onecxTranslations
 ----
 +
-Each key is the URL of a translation file and each value is its content. A `null` value means the file is still loading. If a file of your app or of a library is not listed at all, no translation path points to it (see <<translation-path>>).
+Each key is the URL of a translation file and each value is its content. A `null` value means the file is still loading. If a file of your app or of a library is not listed at all, no translation path points to it (see <<translation-path>>). A listed file is not necessarily part of your app's translations; the app's loader only merges files from its own `TRANSLATION_PATH` entries.
 * Failed files are logged by `@onecx/angular-utils`. These logs are off by default. Enable them in the console and reload the page:
 +
 .DevTools console
@@ -57,7 +57,7 @@ A message such as `Failed to load translation file: <url>` names the file that c
 
 OneCX libraries register the translation paths of their own texts. If these providers are missing, the app's texts are translated, but texts of library components show their keys (for example `OCX_...`).
 
-* `AngularAcceleratorModule` from `@onecx/angular-accelerator` registers the paths `onecx-angular-accelerator/assets/i18n/` and `onecx-angular-accelerator/assets/i18n/optimus/`. Import it in the module that provides the translation service when the app uses `@onecx/angular-accelerator` components.
+* `AngularAcceleratorModule` from `@onecx/angular-accelerator` registers the paths `onecx-angular-accelerator/assets/i18n/` and `onecx-angular-accelerator/assets/i18n/optimus/`. Import it in the module that provides the translation service when the app uses `@onecx/angular-accelerator` components. `TRANSLATION_PATH` is a multi provider: paths provided in a lazy-loaded feature module are not seen by the loader of a root-provided translation service.
 * `provideAngularUtils()` (or `provideTranslationPaths()` on its own) from `@onecx/angular-utils` registers the path `onecx-angular-utils/assets/i18n/`.
 
 [#library-assets]
