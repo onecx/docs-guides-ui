@@ -16,7 +16,7 @@ TIP: If a step isn't listed here, it belongs to a different tier. See xref:docum
 [#required-setup-pages]
 == Pages
 
-* xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements] — the Angular version, package-version, and package-sharing constraints an app must satisfy to be compatible with the shell.
+* xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements] — the Angular and React version, package-version, and package-sharing constraints an app must satisfy to be compatible with the shell.
 * xref:documentation:docs-guides-ui:setup/required/expose-remote-module.adoc[Expose a Remote Module] — how to expose an application's module or component via Module Federation so the shell can load it.
 ** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Module Approach]
 ** xref:documentation:docs-guides-ui:setup/required/expose-remote-module/component-approach.adoc[Component Approach]
