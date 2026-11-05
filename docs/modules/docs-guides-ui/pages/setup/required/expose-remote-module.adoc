@@ -19,6 +19,8 @@ Content loading is triggered by route changes (for modules) or Slot Component di
 [#angular-applications]
 == Angular Applications
 
+An Angular application must be bootstrapped with `@onecx/angular-webcomponents` (`bootstrapModule()` or `bootstrapRemoteComponent()`). Without it, the application's router is not connected to the shell's router and gets out of sync, and the Angular issues with Module Federation that the library handles (e.g. NgZone and platform sharing) remain unsolved. Both approaches below use it.
+
 [#angular-webcomponent-method]
 === Webcomponent Method (Recommended)
 
