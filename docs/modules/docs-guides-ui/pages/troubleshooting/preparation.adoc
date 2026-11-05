@@ -12,4 +12,4 @@ Make sure that the app follows the required OneCX application setup described in
 
 To understand the root cause of issues, it is recommended to enable source maps in the application and shell during development. For more information on how to enable source maps, see xref:documentation:docs-guides-ui:development/source-maps.adoc[Enable source maps guide].
 
-To see what the OneCX UI libraries do at runtime, enable their browser logging, see xref:documentation:docs-guides-ui:development/browser-logging.adoc[Browser Logging].
+To see what the OneCX UI libraries do at runtime, enable their browser logging; see xref:documentation:docs-guides-ui:development/browser-logging.adoc[Browser Logging].

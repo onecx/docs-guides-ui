@@ -129,20 +129,3 @@ The level is the last segment of the namespace, so you can filter by severity:
 * `info`: important lifecycle milestones, such as initialization, successful operations and configuration decisions.
 * `warn`: unexpected situations the application recovers from, such as fallback paths or missing optional dependencies.
 * `error`: failures that prevent a feature from working or indicate a bug, such as exceptions or invalid critical configuration.
-
-[#logging-in-your-application]
-== Logging in your application
-
-An application can use the same mechanism with its own prefix. `createLoggerFactory` from `@onecx/accelerator` takes the prefix and returns a `createLogger` function; `createLogger` takes the location and returns a logger with `debug`, `info`, `warn` and `error` members:
-
-[source,typescript]
-----
-import { createLoggerFactory } from '@onecx/accelerator'
-
-export const createLogger = createLoggerFactory('my-app')
-
-const logger = createLogger('MyComponent')
-logger.warn('Configuration value missing, using default')
-----
-
-Its logs are enabled with `localStorage.debug = 'my-app*'`.
