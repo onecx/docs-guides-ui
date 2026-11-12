@@ -1,0 +1,62 @@
+:idprefix:
+:idseparator: -
+
+[#microfrontends]
+= Microfrontends
+
+A *microfrontend* is an application, or a part of one, that is developed and deployed independently and loaded into OneCX at runtime. This page is a technology-agnostic overview of the microfrontend types and loading methods in OneCX. It does not describe how to configure a microfrontend.
+
+[#microfrontends-compared-to-regular-web-applications]
+== Microfrontends compared to regular web applications
+
+A regular web application is built and deployed as one unit and is opened on its own. A microfrontend is loaded into the OneCX Shell instead. It is developed and deployed by its own team, independently of the Shell and of other applications.
+
+For development and deployment this means that releasing a new version of a microfrontend does not require a rebuild of the Shell. At the same time, the microfrontend must follow the platform rules described in xref:documentation:docs-guides-ui:setup/required/index.adoc[Required Setup].
+
+[#types-of-microfrontends]
+== Types of microfrontends
+
+[#module]
+=== Module
+
+A *module* is a complete web application, usually with several routes and views, that is the main content of the page. The OneCX Shell loads it and renders it in the main content area. See xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] for the mechanism behind this.
+
+[#remote-component]
+=== Remote component
+
+A *remote component* is a single self-contained piece of UI that other applications can embed through a Slot. See xref:documentation:docs-guides-ui:concepts/remote-components.adoc[Remote Components].
+
+[#loading-methods]
+== Loading methods
+
+The loading method defines how the Shell loads the exposed code of a microfrontend and turns it into a web component.
+
+[#webcomponentmodule]
+=== WebComponentModule
+
+*WebComponentModule* is the loading method for microfrontends built with modern JavaScript frameworks that use ESM module loading. The exposed code is loaded as an ES module and rendered as a web component.
+
+[#webcomponentscript]
+=== WebComponentScript
+
+*WebComponentScript* is the loading method for microfrontends that do not use ESM module loading, whatever technology they are built with. The exposed code is loaded as a script and rendered as a web component.
+
+For the difference between module and script loading, see https://module-federation.io/configure/remotetype#usage[Module Federation remote types].
+
+[#web-components-in-onecx]
+== Web components in OneCX
+
+Web components give a technology-agnostic way to build microfrontends and let components be reused across microfrontends. Element names must be unique across the platform, because the browser allows each name to be registered only once.
+
+* `@onecx/angular-webcomponents` — bootstraps an Angular microfrontend as a web component. See xref:documentation:docs-guides-ui:concepts/remote-components/angular.adoc[Angular Applications].
+* `@onecx/react-webcomponents` — bootstraps a React microfrontend as a web component. See xref:documentation:docs-guides-ui:react/libraries/react-webcomponents.adoc[@onecx/react-webcomponents].
+
+For details on web components, see https://developer.mozilla.org/en-US/docs/Web/API/Web_components[MDN Web components].
+
+[#related]
+== Related
+
+* xref:documentation:docs-guides-ui:concepts/module-federation.adoc[Module Federation] — the mechanism that loads microfrontends into OneCX at runtime.
+* xref:documentation:docs-guides-ui:concepts/remote-components.adoc[Remote Components] — how a remote component is embedded into another application through a Slot.
+* xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation] — how the styles of a microfrontend stay confined to the region it renders into.
+* xref:documentation:docs-guides-ui:module-federation/mf-preloaders.adoc[Module Federation and Preloaders] — preloaders load before the Shell and provide the shared packages.
