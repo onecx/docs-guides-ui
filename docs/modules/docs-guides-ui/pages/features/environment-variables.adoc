@@ -59,7 +59,7 @@ The major requirement is that an `env.json` file is *available to be fetched* by
 
 1. Create `src/assets/env.json` in the application.
    The file is a JSON object of string keys and string values:
-
++
 .Example `src/assets/env.json`
 [source,json]
 ----
@@ -70,10 +70,10 @@ The major requirement is that an `env.json` file is *available to be fetched* by
 }
 ----
 
-2. The Angular build copies `src/assets/` to the build output, so the file is available at `{baseUrl}/assets/env.json` at runtime.
+2. The Angular build copies `src/assets/` to the build output, so the file is available at `\{baseUrl}/assets/env.json` at runtime.
    Because the file is a *deployment artifact*, it can be produced or rewritten at deploy time (for example by a container entrypoint that substitutes deployment-specific values).
 
-3. `AppConfigService` reads the file from `{baseUrl}/assets/env.json`, so the path must resolve from the application's own base URL.
+3. `AppConfigService` reads the file from `\{baseUrl}/assets/env.json`, so the path must resolve from the application's own base URL.
 
 [#environment-variables-mfe-read]
 === Reading the values
@@ -84,7 +84,7 @@ The values in `env.json` are the same regardless of framework; only the way they
 ==== Angular
 
 `AppConfigService` is a plain `@Injectable()` (not provided in root), so the application provides it and calls `init(baseUrl)` once during bootstrap.
-Rather than hard-coding the base URL, read it from {xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-state-service[AppStateService]}: the current micro-frontend's `remoteBaseUrl` is the base path under which the application is mounted, and it is exactly what `init()` needs to locate `{baseUrl}/assets/env.json`.
+Rather than hard-coding the base URL, read it from {xref:onecx-portal-ui-libs:libraries/angular-integration-interface.adoc#app-state-service[AppStateService]}: the current micro-frontend's `remoteBaseUrl` is the base path under which the application is mounted, and it is exactly what `init()` needs to locate `\{baseUrl}/assets/env.json`.
 
 .Example `src/app/app.config.ts`
 [source,ts]
@@ -324,7 +324,7 @@ Only the variables the Shell and the OneCX libraries actually read today are lis
 === `GET .../assets/env.json` returns 404
 
 - Confirm `src/assets/env.json` exists in the source and is included in the build output.
-- Confirm the file is reachable at the expected path: `{baseUrl}/assets/env.json` for the application, the Shell's own `assets/env.json` for the Shell.
+- Confirm the file is reachable at the expected path: `\{baseUrl}/assets/env.json` for the application, the Shell's own `assets/env.json` for the Shell.
 - If the file is produced at deploy time, confirm the deployment step actually wrote it next to the running application.
 
 [#environment-variables-troubleshooting-not-applied]
