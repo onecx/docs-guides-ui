@@ -7,7 +7,7 @@
 
 = Troubleshooting
 
-Troubleshooting helps you diagnose and resolve common problems when building, integrating, or running OneCX UI applications. This section is organized by the stage of the issue: preparation steps to run first, followed by application setup, shell compatibility, general causes, specific errors, and tsconfig path-alias errors.
+Troubleshooting helps you diagnose and resolve common problems when building, integrating, or running OneCX UI applications. This section is organized by the stage of the issue: preparation steps to run first, followed by application setup, shell compatibility, general causes, specific errors, tsconfig path-alias errors, and translation issues.
 
 Start with the xref:documentation:docs-guides-ui:troubleshooting/preparation.adoc[Preparation] page and work through the sections until you find the fix for your problem. Each page is a standalone entry point and links to the canonical guides for the details.
 
@@ -17,3 +17,4 @@ Start with the xref:documentation:docs-guides-ui:troubleshooting/preparation.ado
 * xref:documentation:docs-guides-ui:troubleshooting/general-issues.adoc[General Issues]
 * xref:documentation:docs-guides-ui:troubleshooting/specific-issues.adoc[Specific Issues]
 * xref:documentation:docs-guides-ui:troubleshooting/tsconfig-paths.adoc[TSConfig Paths]
+* xref:documentation:docs-guides-ui:troubleshooting/translations.adoc[Translations]

@@ -27,6 +27,7 @@
 *** xref:documentation:docs-guides-ui:troubleshooting/shell-compatibility.adoc[Shell Compatibility]
 *** xref:documentation:docs-guides-ui:troubleshooting/specific-issues.adoc[Specific Issues]
 *** xref:documentation:docs-guides-ui:troubleshooting/tsconfig-paths.adoc[TSConfig Paths]
+*** xref:documentation:docs-guides-ui:troubleshooting/translations.adoc[Translations]
 
 ** xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
 *** xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases (tsconfig paths)]
