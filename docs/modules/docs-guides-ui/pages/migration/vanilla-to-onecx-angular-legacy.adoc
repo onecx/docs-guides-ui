@@ -1,5 +1,9 @@
-= Migrate vanilla Angular apps to OneCX
+= Migrate vanilla Angular apps to OneCX (legacy)
 :source-highlighter: highlight.js
+// Keep the original URL of this guide resolving.
+:page-aliases: angular/app-to-onecx.adoc
+
+WARNING: This is the legacy migration guide, written for Angular 18. To migrate an app to the current OneCX version, use xref:documentation:docs-guides-ui:migration/vanilla-to-onecx-angular.adoc[Migrate a vanilla Angular app to OneCX].
 
 The goal of this guide is to provide step by step instructions on how to migrate a vanilla Angular app to a OneCX compatible microfrontend application.
 
@@ -380,7 +384,7 @@ After completing all steps listed above, the application should be ready to be u
 
 [#standalone-mode]
 == Standalone Mode
-After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:./standalone.adoc[Enable OneCX app to run in standalone] cookbook.
+After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:documentation:docs-guides-ui:angular/standalone.adoc[Enable OneCX app to run in standalone] cookbook.
 
 [#further-reading]
 == Further Reading
@@ -388,6 +392,4 @@ For more information on how OneCX loads microfrontends and utilizes web componen
 
 [#troubleshooting]
 == Troubleshooting
-[#troubleshooting-compilation-error]
-=== Compilation error `TypeError: The 'compilation' argument must be an instance of Compilation`
-If you encounter the above mentioned error you might be using multiple conflicting `webpack` versions in your project. To verify that this is the case, first run `npm ls webpack`. If this command returns a list of multiple **different** versions of `webpack`, please modify your `package.json` file to resolve the version mismatches (change version or install webpack dependency if it doesn't exist yet). In our case it helped to set the version to a fixed version (5.94.0), as this was the exact version that one other package tried to use as a peer dependency.
+For the error `TypeError: The 'compilation' argument must be an instance of Compilation` and other common problems, see xref:documentation:docs-guides-ui:troubleshooting/specific-issues.adoc#webpack-compilation[Troubleshooting].
