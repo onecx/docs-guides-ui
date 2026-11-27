@@ -1,6 +1,112 @@
+:idprefix:
+:idseparator: -
+
+// Redirect the retired ui-additional configure-tsconfig-paths page (merged into this page).
+:page-aliases: ui-additional/configure-tsconfig-paths.adoc
+
 = TSConfig Paths
 
-This page covers troubleshooting for TypeScript path alias (`tsconfig paths`) errors. For more information on how to configure tsconfig paths, refer to xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure tsconfig paths documentation].
+TypeScript path aliases ("tsconfig paths") are defined in the root `tsconfig.json` of a OneCX compatible UI App. Aliases replace long relative imports (for example, `../../../shared/components`) with stable names (for example, `@shared/components`). This improves readability and reduces refactoring when files move.
+
+This page explains how to configure tsconfig paths and how to fix common errors.
+
+[#tsconfig-paths-types]
+== Types of tsconfig paths
+
+Two common patterns are used:
+
+[#wildcard-paths]
+=== Wildcard paths
+Wildcard paths map an alias prefix to a folder. Use this pattern for importing multiple modules from the mapped folder.
+
+[source,json]
+----
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@custom-path/*": ["src/app/custom-folder/*"]
+        }
+    }
+}
+----
+
+[#specific-paths]
+=== Specific paths
+Specific paths map one exact import to a single file (often a barrel file). Only the exact import `@custom-path` is mapped; `@custom-path/custom.component` does not match.
+
+[source,json]
+----
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@custom-path": ["src/app/custom-folder/index.ts"]
+        }
+    }
+}
+----
+
+[#bundler-configuration]
+== Bundler configuration
+
+OneCX-compatible UI Apps use Webpack (module federation). TypeScript path aliases are defined in `tsconfig.json`, but Webpack does not read them unless configured.
+
+[#angular-cli-nx-app-configuration]
+=== Angular CLI / Nx App Configuration
+
+Angular CLI's Webpack-based build integrates TypeScript path mapping into module resolution. In most cases, path aliases work without duplicating them in a custom Webpack configuration.
+
+[#react-app-configuration]
+=== React App Configuration (and other non-Angular apps)
+
+For React apps (and other non-Angular setups), the bundler may not apply `tsconfig.json` path aliases automatically. Webpack configuration is typically required.
+
+[#tsconfig-paths-plugin]
+==== Recommended Approach: Use TsconfigPathsPlugin
+
+. Install the plugin:
++
+[source,bash]
+----
+npm install --save-dev tsconfig-paths-webpack-plugin
+----
+
+. In `webpack.config.js`, import the plugin:
++
+[source,js]
+----
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+----
+
+. Register the plugin in `resolve.plugins`:
++
+[source,js]
+----
+module.exports = {
+    // ... other webpack configuration options ...
+    resolve: {
+        // ... other resolve options ...
+        plugins: [
+            new TsconfigPathsPlugin({
+                configFile: './tsconfig.json'
+            })
+        ]
+    }
+};
+----
+
+Alternatively, aliases can be duplicated in Webpack via `resolve.alias` (see link:https://webpack.js.org/configuration/resolve/#resolvealias[Webpack documentation]). This is less maintainable because manual synchronization with `tsconfig.json` is required.
+
+[#best-practices]
+== Best Practices
+
+Recommended practices:
+
+* Use unique, descriptive aliases to avoid conflicts with packages used in OneCX-compatible apps.
+* Use an `@` prefix to make custom aliases explicit.
+* Group related aliases and remove unused entries periodically.
+* Avoid aliases for shared libraries consumed across multiple microfrontends. Module federation and bundlers can resolve them differently.
 
 [#cannot-find-module-build-error]
 == Error: Cannot find module (build error)
@@ -9,13 +115,13 @@ This page covers troubleshooting for TypeScript path alias (`tsconfig paths`) er
 If Webpack cannot resolve an import such as `@custom-path/...`, errors like `Cannot find module '@custom-path'` may occur.
 
 *Solution*:
-To fix this, please configure Webpack to understand TypeScript path aliases. See xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc#tsconfig-paths-plugin[Webpack path aliases configuration].
+To fix this, please configure Webpack to understand TypeScript path aliases. See <<tsconfig-paths-plugin,TsconfigPathsPlugin>>.
 
 [#cannot-find-module-after-paths-configuration]
 == Error: Cannot find module or type errors (for imports that worked before paths configuration)
 
 *Problem*:
-Conflicts can show up as `Module not found: Error: Can't resolve ...` or as TypeScript resolving to the wrong file.
+Alias names that overlap with existing imports used by a OneCX-compatible UI App (or its dependencies) can cause unexpected resolution and type errors. Conflicts can show up as `Module not found: Error: Can't resolve ...` or as TypeScript resolving to the wrong file.
 
 *Solution*:
 Use unique, descriptive aliases that do not overlap with existing package names.
@@ -24,7 +130,7 @@ Use unique, descriptive aliases that do not overlap with existing package names.
 == Cannot find module or its corresponding type declarations (editor error on import)
 
 *Problem*:
-Imports must match the alias pattern (wildcard vs specific). If they don't, TypeScript reports `Cannot find module ...` (for example `@custom-path` vs `@custom-path/custom.component`).
+Using specific paths when wildcard paths are needed (or vice versa) leads to resolution errors. Imports must match the alias pattern (wildcard vs specific). If they don't, TypeScript reports `Cannot find module ...` (for example `@custom-path` vs `@custom-path/custom.component`).
 
 *Solution*:
-Use the correct alias type. See xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc#tsconfig-paths-types[Types of tsconfig paths].
+Use the correct alias type. See <<tsconfig-paths-types,Types of tsconfig paths>>.

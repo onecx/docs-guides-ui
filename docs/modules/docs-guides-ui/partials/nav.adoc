@@ -28,9 +28,6 @@
 *** xref:documentation:docs-guides-ui:troubleshooting/specific-issues.adoc[Specific Issues]
 *** xref:documentation:docs-guides-ui:troubleshooting/tsconfig-paths.adoc[TSConfig Paths]
 
-** xref:documentation:docs-guides-ui:ui-additional/index.adoc[UI Additional Topics]
-*** xref:documentation:docs-guides-ui:ui-additional/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases (tsconfig paths)]
-
 ** xref:documentation:docs-guides-ui:migration/index.adoc[Migrating an Existing App]
 *** xref:documentation:docs-guides-ui:angular/app-to-onecx.adoc[Migrate vanilla Angular apps to OneCX]
 *** xref:documentation:docs-guides-ui:migration/vanilla-to-onecx-angular.adoc[Migrate a vanilla Angular app to OneCX]
