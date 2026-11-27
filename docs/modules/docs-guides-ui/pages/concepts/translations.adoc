@@ -12,7 +12,7 @@ An application owns its own translation content and provides it to the framework
 
 How a translation is written and looked up is the same idea regardless of technology: the source text is replaced by a key, and the framework resolves that key against the translation files for the current language. The only difference between technologies is which service does the lookup.
 
-* **Angular** applications use `@ngx-translate`. Translations are exposed by the app's own files, shared through the module-federation setup, and looked up in templates and components through the `translate` pipe or the `TranslateService`. See xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Multi-language Translations] for the full Angular setup and usage.
+* **Angular** applications use `@ngx-translate`. Translations are exposed by the app's own files, shared through the module-federation setup, and looked up in templates and components through the `translate` pipe or the `TranslateService`. See xref:documentation:docs-guides-ui:concepts/translations/angular.adoc[Translations in Angular Applications] for the full Angular setup and usage.
 * **React** applications use `@onecx/react-utils` to configure an `i18next` backend and keep the current language in sync with the OneCX user language. The app's own translation files are wired in through `getTranslationPathFromMeta`; `registerPortalPageTranslations` is a separate helper that registers the portal/react-utils resources, not the app's own files. See xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils] for the full library reference.
 
 == What an application must do
@@ -21,7 +21,7 @@ The responsibility of a OneCX-compatible application is to expose its translatio
 
 == Related
 
-* xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Angular Translations — Setup] and xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Angular Translations — Usage]
+* xref:documentation:docs-guides-ui:concepts/translations/angular.adoc#setup[Angular Translations — Setup] and xref:documentation:docs-guides-ui:concepts/translations/angular.adoc#usage[Angular Translations — Usage]
 * xref:documentation:docs-guides-ui:react/libraries/react-utils.adoc[@onecx/react-utils]
 * xref:documentation:docs-guides-ui:features/multi-language.adoc[Multi-language] — fallback-language behavior when a translation key cannot be resolved.
 

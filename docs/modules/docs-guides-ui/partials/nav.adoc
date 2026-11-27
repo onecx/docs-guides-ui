@@ -38,10 +38,6 @@
 ** xref:documentation:docs-guides-ui:angular/index.adoc[Angular]
 *** xref:documentation:docs-guides-ui:angular/guidelines.adoc[Guidelines]
 *** xref:documentation:docs-guides-ui:angular/standalone.adoc[Standalone Mode]
-
-*** xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc[Translations]
-**** xref:documentation:docs-guides-ui:angular/translation/multi-language-setup.adoc[Setup]
-**** xref:documentation:docs-guides-ui:angular/translation/multi-language-usage.adoc[Usage]
 *** xref:documentation:docs-guides-ui:angular/primeng/primeng.adoc[PrimeNG]
 
 
@@ -60,6 +56,7 @@
 **** xref:documentation:docs-guides-ui:concepts/routing/react.adoc[React Applications]
 *** xref:documentation:docs-guides-ui:concepts/theming.adoc[Theming]
 *** xref:documentation:docs-guides-ui:concepts/translations.adoc[Translations]
+**** xref:documentation:docs-guides-ui:concepts/translations/angular.adoc[Angular Applications]
 *** xref:documentation:docs-guides-ui:concepts/assets.adoc[Assets]
 *** xref:documentation:docs-guides-ui:concepts/authentication.adoc[Authentication]
 *** xref:documentation:docs-guides-ui:concepts/style-isolation.adoc[Style Isolation]
