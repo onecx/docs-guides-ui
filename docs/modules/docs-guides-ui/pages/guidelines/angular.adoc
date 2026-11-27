@@ -1,7 +1,7 @@
 = Angular Guidelines
-
 :idprefix:
 :idseparator: -
+:page-aliases: angular/guidelines.adoc
 
 This chapter gives guidance which guidelines should be followed during the development.
 

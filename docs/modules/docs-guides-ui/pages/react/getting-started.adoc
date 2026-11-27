@@ -1,28 +1,7 @@
 :idprefix:
 :idseparator: -
 
-= React Guidelines
-When developing React applications within the OneCX platform, it's essential to follow specific guidelines to ensure consistency, maintainability, and compatibility with the overall architecture. Here are some key guidelines to consider:
-
-* **Component Structure**: Organize your components in a modular fashion, separating presentational and container components. Use functional components with hooks for state management and side effects.
-
-* **State Management**: Utilize state management libraries like Redux or Context API to manage global state. Ensure that state changes are predictable and traceable.
-
-* **Styling**: Follow the OneCX theming guidelines to maintain a consistent look and feel across applications. Use CSS-in-JS libraries or CSS modules for component-specific styles.
-
-* **Routing**: Implement routing using libraries like React Router. Ensure that routes are defined clearly and support lazy loading for performance optimization.
-
-* **Testing**: Write unit tests for components and integration tests for application flows using testing libraries like Jest and React Testing Library.
-
-* **Performance Optimization**: Use techniques like code splitting, memoization, and lazy loading to enhance application performance.
-
-* **Accessibility**: Ensure that your application adheres to accessibility standards (WCAG) to provide an inclusive experience for all users.
-
-* **Documentation**: Maintain comprehensive documentation for your components and application architecture to facilitate collaboration and future maintenance.
-
-* **Version Control**: Follow best practices for version control, including meaningful commit messages and branching strategies.
-
-* **Code Quality**: Adhere to coding standards and use linters like ESLint to maintain code quality and consistency across the codebase.
+= Getting Started with React
 
 [#onecx-libraries]
 == OneCX libraries
@@ -149,28 +128,3 @@ const AppRoutes = () => {
 @import "primeicons/primeicons.css";
 @import "@onecx/react-utils/src/lib/primeBaseTheme.scss";
 ----
-
-[#testing]
-== Testing
-
-* Write Unit Tests and Component Tests.
-** Prefer Unit Tests over Component Tests.
-*	Manually test with shell and in the standalone mode.
-*	Tests should run in the build pipeline.
-
-
-[#code-quality]
-== Code quality
-Committed code must have a certain quality. The following guidelines must be considered:
-
-*	Do not commit commented out code.
-**	Comments should only be used to:
-***	Document the *Why of the code* and *not* the *What*.
-***	Create documentation for the autocompletion mechanism.
-*	Do not commit debug outputs.
-**	`console.log()` message should be used to inform about error or problem and to give some information of the application state e.g. "Configuration loaded with values xyz"
-*	Remove unused imports
-*	Format the code
-**	Run `npm run format`
-**	If you need to format a specific file, you can use:
-***	`nx format:write –files  *_filepath_*`
