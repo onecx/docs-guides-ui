@@ -24,6 +24,8 @@ Content loading is triggered by route changes (for modules) or Slot Component di
 
 This method uses Web Components *Custom Elements* to register content, allowing multiple frameworks and Angular versions to coexist in the shell. It is the recommended approach; the alternative "Angular expose method" (exposing an `NgModule` directly) limits the whole platform to a single Angular version and is not recommended.
 
+With this method the application is bootstrapped through `@onecx/angular-webcomponents` (`bootstrapModule()` for the module approach, `bootstrapRemoteComponent()` for the component approach). This connects the application's router to the shell's router and shares NgZone and the Angular platform with the shell; an application bootstrapped any other way ends up with its router out of sync and is not OneCX-compatible.
+
 There are two ways to expose an Angular application depending on what needs to be loaded by the shell:
 
 * xref:documentation:docs-guides-ui:setup/required/expose-remote-module/module-approach.adoc[Module Approach] — expose a full Angular module, loaded on route activation.

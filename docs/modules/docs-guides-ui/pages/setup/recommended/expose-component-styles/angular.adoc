@@ -9,7 +9,9 @@ This page covers exposing an Angular application's and its OneCX libraries' styl
 [#angular-expose-app-styles]
 == Expose App styles.css
 
-The application must expose its own `styles.css` in the build output. How this is done depends on the build tool used:
+The application must expose its own `styles.css` in the build output. How this is done depends on the build tool used (Nx or Angular CLI).
+
+With Nx, emit the application's styles as the `styles` bundle:
 
 .Nx (project.json)
 [source,json]
@@ -27,21 +29,11 @@ The application must expose its own `styles.css` in the build output. How this i
 }
 ----
 
-.package.json
-[source,json]
-----
-{
-  ...
-  "scripts": {
-    "postbuild": "mv \"$(find dist/my-project-name -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)\" dist/my-project-name/styles.css",
-  }
-  ...
-}
-----
+Because the generated stylesheet filename normally includes a content hash, rename it to a stable `styles.css` after the build.
 
-Because the generated stylesheet filename normally includes a content hash, adjust the build command to rename it to a stable `styles.css`:
+With Nx, adjust the build command to copy the generated file:
 
-.package.json build output
+.Nx (package.json)
 [source,json]
 ----
 {
@@ -50,6 +42,20 @@ Because the generated stylesheet filename normally includes a content hash, adju
     ...
     "build": "nx build && cp dist/my-project-name/styles.*.css dist/my-project-name/styles.css",
     ...
+  }
+  ...
+}
+----
+
+With the Angular CLI, add a `postbuild` script that renames the generated file:
+
+.Angular CLI (package.json)
+[source,json]
+----
+{
+  ...
+  "scripts": {
+    "postbuild": "mv \"$(find dist/my-project-name -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)\" dist/my-project-name/styles.css"
   }
   ...
 }
