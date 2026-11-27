@@ -87,23 +87,7 @@ Use the caret (`^`) range for shared package versions in `package.json`, except 
 [#automatic-package-sharing]
 == Automatic Package Sharing
 
-Use `getOneCXSharedLibraryConfig` from `@onecx/build-utils` instead of hand-writing the shared package map. It generates shared entries for OneCX-related libraries and assigns the correct `shareScope` based on the application's Angular or React version.
-
-[source,typescript]
-----
-import { withModuleFederationPlugin } from '@module-federation/enhanced/webpack'
-import { getOneCXSharedLibraryConfig } from '@onecx/build-utils'
-import { dependencies } from './package.json'
-
-const shared = getOneCXSharedLibraryConfig(dependencies, true)
-
-const config = withModuleFederationPlugin({
-  // name, filename, exposes, etc.
-  shared,
-})
-
-export default config
-----
+Use `getOneCXSharedLibraryConfig` from `@onecx/build-utils` instead of hand-writing the shared package map. It generates shared entries for OneCX-related libraries and assigns the correct `shareScope` based on the application's Angular or React version. See xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing/build-utils.adoc[Share Packages with @onecx/build-utils] for the recommended setup.
 
 [#onecx-share-scopes]
 == OneCX Share Scopes

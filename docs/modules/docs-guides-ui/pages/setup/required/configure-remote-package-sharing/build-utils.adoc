@@ -1,0 +1,113 @@
+:idprefix:
+:idseparator: -
+
+[#share-packages-with-build-utils]
+= Share Packages with @onecx/build-utils
+
+`@onecx/build-utils` generates the `shared` section of an application's Module Federation configuration from its `package.json`. Use it instead of maintaining the shared package map by hand, so the application shares the same packages, with the same settings and share scope, as every other OneCX application.
+
+This page shows the recommended usage. For the full API, see the xref:documentation:onecx-portal-ui-libs:libraries/build-utils.adoc[@onecx/build-utils library reference].
+
+[#what-the-utility-does]
+== What the Utility Does
+
+`getOneCXSharedLibraryConfig(dependencies, shouldGenerateSubDeps, options)` returns one shared entry per package for the given `dependencies`:
+
+* *Which packages are shared:* only packages that match the OneCX sharing recommendations. All other dependencies are not shared and are bundled into the application.
+** Version 8.x: `@angular/*`, `@onecx/*`, `rxjs`, `primeng`, `@ngx-translate/*`, `@ngrx/*` and `react*`.
+** Version 9.x: `@angular/*`, `@onecx/*`, `rxjs`, `@openng/optimus-ui`, `@ngx-translate/*`, `@ngrx/*`, `react*` and `primereact`.
+* *Share scope:* derived from the application's own framework version: `react_<major>` for React 19 or newer, otherwise `angular_<major>` for Angular 21 or newer, otherwise `default`.
+* *Settings:* `requiredVersion` is taken from `package.json`; `singleton`, `strictVersion` and `eager` are set to `false`.
+* *Secondary entry points:* when `shouldGenerateSubDeps` is `true`, the exported subpackages of each shared package (for example `@angular/common/http`) are added as separate entries.
+
+NOTE: Neither version shares `primeicons`, and 9.x does not share `primeng`, although both must be shared (see xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing]). If the application uses them, add them to the generated `shared` configuration yourself.
+
+[#install]
+== Install
+
+Install the package as a development dependency, in the same version as the other `@onecx` libraries of the application. Version 9.x is published under the `main` dist-tag.
+
+[source,bash]
+----
+npm install @onecx/build-utils@<version of your other @onecx packages> --save-dev
+----
+
+[#recommended-usage]
+== Recommended Usage
+
+Pass the `dependencies` of the application's `package.json` to `getOneCXSharedLibraryConfig` and use the result as the `shared` configuration. This is the setup that the current OneCX Angular generator (`@onecx/angular-generator` 9.x, Angular 21) generates for new applications:
+
+.module-federation.config.js
+[source,javascript]
+----
+const { getOneCXSharedLibraryConfig } = require('@onecx/build-utils')
+const { dependencies } = require('./package.json')
+
+const sharedEntries = getOneCXSharedLibraryConfig(dependencies, true)
+
+module.exports = {
+  name: 'onecx-example-ui',
+  filename: 'remoteEntry.js',
+  library: { type: 'module' },
+  exposes: {
+    './OneCXExampleModule': './src/main.ts'
+  },
+  shared: sharedEntries,
+  shareScope: 'angular_21'
+}
+----
+
+.webpack.config.js
+[source,javascript]
+----
+const { ModuleFederationPlugin } = require('@module-federation/enhanced/webpack')
+const mfConfig = require('./module-federation.config')
+
+module.exports = {
+  plugins: [new ModuleFederationPlugin(mfConfig)],
+  // other webpack settings
+}
+----
+
+The share scope the application is loaded into is set separately in its deployment configuration and must match the generated scope; see xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc#setting-loading-share-scope[Setting Loading Share Scope].
+
+[#other-module-federation-plugins]
+== Other Module Federation Plugins
+
+Set `shouldGenerateSubDeps` according to the Module Federation plugin the application uses:
+
+[%header,cols="2,1,3"]
+|===
+| Plugin | `shouldGenerateSubDeps` | How to pass the result
+
+| `@module-federation/enhanced`
+| `true`
+| As `shared`, see xref:#recommended-usage[Recommended Usage].
+
+| `@nx/module-federation`
+| `true`
+| Converted to `{ libraryName, sharedConfig }` entries in `additionalShared`, with `getOneCXSharedRecommendations` in the `shared` callback.
+
+| `@angular-architects/module-federation`
+| `false`
+| Through `share()`, with `includeSecondaries: true` and `requiredVersion: 'auto'` set in a `configCallback`; `share()` adds the secondary entry points.
+|===
+
+Complete examples for each plugin are in the xref:documentation:onecx-portal-ui-libs:libraries/build-utils.adoc#sharedLibraryConfigUsage[library reference].
+
+[#customize-the-generated-configuration]
+== Customize the Generated Configuration
+
+Keep the generated configuration unchanged where possible: an application that changes the settings or the set of shared packages no longer shares the same way as other OneCX applications, which can cause version or share scope mismatches at runtime. If a change is required, pass `options`:
+
+* `configCallback(packageName, currentConfig)` changes the settings of single packages, for example `singleton: true`.
+* `packageFilterCallback(packageName)` excludes packages from sharing when it returns `true`. Call `onecxPackageFilter(packageName)` at the end of your filter to keep the default exclusions (`@nx/*`, `@module-federation/*`, `@onecx/build-utils` and selected secondary entry points).
+
+See xref:documentation:onecx-portal-ui-libs:libraries/build-utils.adoc#customization[Customization Options] for examples.
+
+[#related-pages]
+== Related Pages
+
+* xref:documentation:docs-guides-ui:setup/required/configure-remote-package-sharing.adoc[Configure Remote Package Sharing] — share scopes and which packages must be shared.
+* xref:documentation:docs-guides-ui:setup/required/platform-package-compatibility.adoc[Platform & Package Compatibility Requirements] — compatible package versions and the package sharing version convention.
+* xref:documentation:onecx-portal-ui-libs:onecx-compatibility.adoc[OneCX UI Libraries: Compatibility] — the must-have and should-have requirements for a OneCX-compatible application.
